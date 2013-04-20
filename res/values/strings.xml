@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Fahrgemeinschaft</string>
+    <string name="my_rides">My Rides</string>
+    <string name="profile">Profile</string>
+    <string name="settings">Settings</string>
+
+</resources>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="de.fahrgemeinschaft"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="17" />
+    
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity 
+            android:name=".PlacePickActivity" 
+            android:theme="@style/AppTheme.Translucent" >
+            <intent-filter>
+                <action android:name="android.intent.action.PICK" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="content" android:host="de.fahrgemeinschaft" />
+            </intent-filter>
+        </activity>
+                
+        <activity
+            android:name=".ResultsActivity"
+            android:label="@string/app_name" >
+        </activity>
+        
+        
+        <!-- teleportR Android Library -->
+        
+        <service android:name="org.teleportr.ConnectorService" />
+        
+        <provider
+            android:name="org.teleportr.RidesProvider"
+            android:authorities="de.fahrgemeinschaft" />
+        
+	</application>
+</manifest>
