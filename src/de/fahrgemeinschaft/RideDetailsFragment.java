@@ -1,5 +1,5 @@
 /**
- * Ridesharing Android App
+ * Fahrgemeinschaft Ridesharing App
  *
  * Copyright (c) 2013 by it's authors.
  * Some rights reserved. See LICENSE.. 
@@ -8,32 +8,23 @@
 
 package de.fahrgemeinschaft;
 
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockListFragment;
-
-import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.CursorAdapter;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-public class RideDetailsFragment extends SherlockFragment implements
-        LoaderCallbacks<Cursor> {
+import com.actionbarsherlock.app.SherlockFragment;
+
+public class RideDetailsFragment extends SherlockFragment
+        implements LoaderCallbacks<Cursor> {
 
     private static final String TAG = "Fahrgemeinschaft";
     private ViewPager pager;
@@ -65,12 +56,12 @@ public class RideDetailsFragment extends SherlockFragment implements
 
             @Override
             public Object instantiateItem(View view, int position) {
-//                View viewRideDetails = getActivity().getLayoutInflater()
-//                        .inflate(R.layout.view_ride_details, null, false);
-//                ((ViewPager) view).addView(viewRideDetails);
-//                Log.d(TAG, "instantiateItem");
-//                return viewRideDetails;
-            	return null;
+                // View viewRideDetails = getActivity().getLayoutInflater()
+                // .inflate(R.layout.view_ride_details, null, false);
+                // ((ViewPager) view).addView(viewRideDetails);
+                // Log.d(TAG, "instantiateItem");
+                // return viewRideDetails;
+                return null;
             }
 
             @Override

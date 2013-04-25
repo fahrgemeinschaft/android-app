@@ -1,5 +1,5 @@
 /**
- * Ridesharing Android App
+ * Fahrgemeinschaft Ridesharing App
  *
  * Copyright (c) 2013 by it's authors.
  * Some rights reserved. See LICENSE.. 
@@ -32,8 +32,9 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class RideListFragment extends SherlockListFragment implements LoaderCallbacks<Cursor> {
-    
+public class RideListFragment extends SherlockListFragment implements
+        LoaderCallbacks<Cursor> {
+
     private static final String TAG = "Fahrgemeinschaft";
     private static final SimpleDateFormat day = new SimpleDateFormat("EE");
     private static final SimpleDateFormat date = new SimpleDateFormat("dd.MM");
@@ -47,100 +48,100 @@ public class RideListFragment extends SherlockListFragment implements LoaderCall
     @Override
     public void onViewCreated(View layout, Bundle savedInstanceState) {
         super.onViewCreated(layout, savedInstanceState);
-        
-        
-        
-        setListAdapter( new CursorAdapter(getActivity(), null, 0) {
-			
-			@Override
-			public View newView(Context arg0, Cursor arg1, ViewGroup parent) {
-				return getLayoutInflater(null).inflate(R.layout.view_ride_list_entry, parent, false);
-			}
-			
-			@Override
-			public void bindView(View view, Context ctx, Cursor ride) {
-				RideView v = (RideView) view;
-				v.from_city.setText(ride.getString(1));
-				v.from_place.setText(ride.getString(2));
-				v.to_city.setText(ride.getString(3));
-				v.to_place.setText(ride.getString(4));
-				
-				Date timestamp = new Date(ride.getLong(5));
-				v.day.setText(day.format(timestamp).substring(0, 2));
-				v.date.setText(date.format(timestamp));
-				v.time.setText(time.format(timestamp));
-				
+
+        setListAdapter(new CursorAdapter(getActivity(), null, 0) {
+
+            @Override
+            public View newView(Context arg0, Cursor arg1, ViewGroup parent) {
+                return getLayoutInflater(null).inflate(
+                        R.layout.view_ride_list_entry, parent, false);
+            }
+
+            @Override
+            public void bindView(View view, Context ctx, Cursor ride) {
+                RideView v = (RideView) view;
+                v.from_city.setText(ride.getString(1));
+                v.from_place.setText(ride.getString(2));
+                v.to_city.setText(ride.getString(3));
+                v.to_place.setText(ride.getString(4));
+
+                Date timestamp = new Date(ride.getLong(5));
+                v.day.setText(day.format(timestamp).substring(0, 2));
+                v.date.setText(date.format(timestamp));
+                v.time.setText(time.format(timestamp));
+
                 if (ride.getPosition() % 2 == 0) {
-                    v.setBackgroundColor(getResources().getColor(R.color.medium_green));
+                    v.setBackgroundColor(getResources().getColor(
+                            R.color.medium_green));
                 } else {
-                	v.setBackgroundColor(getResources().getColor(R.color.light_green));
+                    v.setBackgroundColor(getResources().getColor(
+                            R.color.light_green));
                 }
-			}
-		});
-        
-        getActivity().getSupportLoaderManager().initLoader(0, null, this);		
-        		        
+            }
+        });
+
+        getActivity().getSupportLoaderManager().initLoader(0, null, this);
+
         getActivity().getContentResolver().registerContentObserver(
-        		Uri.parse("content://"+getActivity().getPackageName()+"/rides"),
-        		false, new ContentObserver(new Handler()) {
-        			
-        			@Override
-        			public void onChange(boolean selfChange) {
-        				super.onChange(selfChange);
-        				if (getActivity() != null) {
-        					getActivity().getSupportLoaderManager().restartLoader(0,
-        							null, RideListFragment.this);	
-        				}
-        			}
-		});
+                Uri.parse("content://" + getActivity().getPackageName()
+                        + "/rides"), false, new ContentObserver(new Handler()) {
+
+                    @Override
+                    public void onChange(boolean selfChange) {
+                        super.onChange(selfChange);
+                        if (getActivity() != null) {
+                            getActivity().getSupportLoaderManager()
+                                    .restartLoader(0, null,
+                                            RideListFragment.this);
+                        }
+                    }
+                });
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle arg1) {
-        Uri uri = Uri.parse("content://"+getActivity().getPackageName()+"/rides");
+        Uri uri = Uri.parse("content://" + getActivity().getPackageName()
+                + "/rides");
         return new CursorLoader(getActivity(), uri, null, null, null, null);
     }
-    
+
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor rides) {
         ((CursorAdapter) getListAdapter()).swapCursor(rides);
         Log.d(TAG, "hier " + rides.getCount());
     }
-    
+
     @Override
     public void onLoaderReset(Loader<Cursor> arg0) {
         Log.d(TAG, "onLoaderReset");
     }
-    
 
     public interface ListItemClicker {
         public void onListItemClick(String id);
     }
-    
+
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         ((ListItemClicker) getActivity()).onListItemClick("foo");
     }
 
-    
-    
     static class RideView extends RelativeLayout {
 
-		TextView from_city;
-		TextView from_place;
-		TextView to_city;
-		TextView to_place;
-		TextView seats;
-		TextView price;
-		TextView day;
-		TextView date;
-		TextView time;
+        TextView from_city;
+        TextView from_place;
+        TextView to_city;
+        TextView to_place;
+        TextView seats;
+        TextView price;
+        TextView day;
+        TextView date;
+        TextView time;
 
         public RideView(Context context, AttributeSet attrs) {
             super(context, attrs);
         }
-        
+
         @Override
         protected void onFinishInflate() {
             super.onFinishInflate();
