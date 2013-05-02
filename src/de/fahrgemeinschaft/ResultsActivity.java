@@ -23,7 +23,6 @@ public class ResultsActivity extends SherlockFragmentActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("");
         setContentView(R.layout.activity_results);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

@@ -24,8 +24,6 @@
     <style name="ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse">
         <item name="background">@color/dark_green</item>
         <item name="android:background">@color/light_green</item>
-    
-
     </style>
     
     <style name="AppTheme.Translucent" parent="AppBaseTheme">
@@ -39,7 +37,7 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
     <style name="light.Large">
-        <item name="android:textSize">24dp</item>
+        <item name="android:textSize">21dp</item>
     </style>
     <style name="dark" parent="@style/light">
         <item name="android:layout_marginTop">-9dp</item>

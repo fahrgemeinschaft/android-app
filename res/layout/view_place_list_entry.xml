@@ -27,7 +27,7 @@
         android:layout_marginLeft="8dp"
         android:layout_toRightOf="@+id/place_type"
         android:background="#00000000"
-        android:text="place name"
+        android:singleLine="true"
         android:textStyle="bold"
         android:textSize="21sp" />
     
@@ -39,7 +39,7 @@
         android:layout_marginLeft="8dp"
         android:layout_toRightOf="@+id/place_type"
         android:background="#00000000"
-        android:text="place address"
+        android:singleLine="true"
         android:textSize="13sp" />
 
 </RelativeLayout>

@@ -11,7 +11,6 @@ package de.fahrgemeinschaft;
 import java.util.Date;
 
 import org.teleportr.ConnectorService;
-import org.teleportr.Place;
 import org.teleportr.Ride;
 
 import android.app.Activity;
@@ -26,7 +25,6 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
-import android.widget.ProgressBar;
 
 public class MainActivity extends Activity implements OnClickListener {
 
@@ -39,7 +37,6 @@ public class MainActivity extends Activity implements OnClickListener {
     private long to_id;
     private View selberfahren_btn;
     private View mitfahren_btn;
-    private ProgressBar wheel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,15 +94,20 @@ public class MainActivity extends Activity implements OnClickListener {
             break;
 
         case R.id.btn_mitfahren:
-            new Ride()
-                .type(Ride.SEARCH)
-                .from(from_id)
-                .to(to_id)
-                .dep(new Date())
-                .store(this);
-            // Toast.makeText(this, "yay", 200).show();
-            startService(new Intent(this, ConnectorService.class));
-            startActivity(new Intent(this, ResultsActivity.class));
+            if (from_id != 0 && to_id != 0) {
+                new Ride()
+                    .type(Ride.SEARCH)
+                    .from(from_id)
+                    .to(to_id)
+                    .dep(new Date())
+                    .store(this);
+                // Toast.makeText(this, "yay", 200).show();
+                startService(new Intent(this, ConnectorService.class)
+                .setAction(ConnectorService.SEARCH));
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("content://" + getPackageName() + "/rides" +
+                                "?from_id=" + from_id + "&to_id=" + to_id)));
+            }
             break;
         }
     }

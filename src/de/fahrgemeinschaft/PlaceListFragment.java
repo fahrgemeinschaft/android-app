@@ -8,9 +8,12 @@
 
 package de.fahrgemeinschaft;
 
+import org.teleportr.ConnectorService;
 import org.teleportr.Place;
 
+import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +24,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +38,7 @@ public class PlaceListFragment extends ListFragment implements
 
     private static final int GPLACES = 42;
     private static final int LOCAL = 55;
+    private static final String TAG = "PlaceList";
     private EditText search_field;
     private CursorAdapter adapter;
     private Uri uri;
@@ -81,12 +86,18 @@ public class PlaceListFragment extends ListFragment implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle b) {
+        String text = search_field.getText().toString();
         switch (id) {
         case LOCAL:
+            String from_id = uri.getQueryParameter("from_id");
+            uri = uri.buildUpon().encodedQuery(
+                    ((from_id != null)? "from_id=" +from_id : "")
+                    + "&q=" + text).build();
+            System.out.println(uri);
             return new CursorLoader(getActivity(), uri, null, null, null, null);
         case GPLACES:
             return new GPlaces.AutocompleteLoader(getActivity(),
-                    search_field.getText().toString(), adapter.getCursor());
+                    text, adapter.getCursor());
         }
         return null;
     }
@@ -125,9 +136,21 @@ public class PlaceListFragment extends ListFragment implements
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         adapter.getCursor().moveToPosition(position);
-        uri = new Place().name(adapter.getCursor().getString(2))
-                .address(adapter.getCursor().getString(3)).store(getActivity());
-
+        if (adapter.getCursor().getColumnCount() == 5) {
+            uri = new Place()
+                .name(adapter.getCursor().getString(2))
+                .address(adapter.getCursor().getString(3))
+                .set("gplace:id", adapter.getCursor().getString(4))
+                .store(getActivity());
+            Log.d(TAG, "picked new gPlace: " + uri);
+            getActivity().startService(
+                    new Intent(getActivity(), ConnectorService.class)
+                        .setAction(ConnectorService.RESOLVE));
+        } else {
+            uri = Uri.parse("content://" + getActivity().getPackageName()
+                    + "/places/"+ adapter.getCursor().getLong(0));
+            Log.d(TAG, "picked: " + uri);
+        }
         ((PlacePickListener) getActivity()).onPlacePicked(uri);
     }
 

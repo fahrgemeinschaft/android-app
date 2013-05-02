@@ -10,9 +10,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import org.teleportr.Connector;
-import org.teleportr.ConnectorService;
 import org.teleportr.Place;
 import org.teleportr.Ride;
 
@@ -20,103 +21,113 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.widget.Toast;
+
+public class FahrgemeinschaftConnector extends Connector {
+
+    private static final String APIKEY = "API-KEY"; 
+    static final SimpleDateFormat fulldf = new SimpleDateFormat("yyyyMMddHHmm");
+    static final SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+
+    @Override
+    public void getRides(Place from, Place to, Date dep, Date arr) {
 
 
+        JSONObject from_json = new JSONObject();
+        JSONObject to_json = new JSONObject();
+        try {
+            from_json.put("Longitude", "" + from.getLng());
+            from_json.put("Latitude", "" + from.getLat());
+            from_json.put("Startdate", df.format(dep));
+            from_json.put("Reoccur", JSONObject.NULL);
+            // place.put("Starttime", JSONObject.NULL);
 
-public class FahrgemeinschaftConnector implements Connector {
+            to_json.put("Longitude", "" + to.getLng());
+            to_json.put("Latitude", "" + to.getLat());
+            // place.put("ToleranceRadius", "25");
+            // place.put("ToleranceDays", "3");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-	private static final String APIKEY = "API-KEY"; "API-KEY";
+        JSONObject json = loadJson("http://service.fahrgemeinschaft.de/trip?"
+                + "searchOrigin=" + from_json + "&searchDestination=" + to_json);
 
-	@Override
-	public void getRides(Place from, Place to, Date dep, Date arr) {
-		
-		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
-		
-		JSONObject from_json = new JSONObject();
-		JSONObject to_json = new JSONObject();
-		try {
-			from_json.put("Longitude", "" + from.getLng());
-			from_json.put("Latitude", "" + from.getLat());
-			from_json.put("Startdate", df.format(dep));
-			from_json.put("Reoccur", JSONObject.NULL);
-			//		place.put("Starttime", JSONObject.NULL);
-			
-			to_json.put("Longitude", "" + to.getLng());
-			to_json.put("Latitude", "" + to.getLat());
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-//		place.put("ToleranceRadius", "25");
-//		place.put("ToleranceDays", "3");
-		
-		
-		JSONObject json = loadJson("http://service.fahrgemeinschaft.de/trip?" +
-				"searchOrigin=" + from_json + "&searchDestination=" + to_json);
-		
-		try {
-			//System.out.println(json);
-			JSONArray results = json.getJSONArray("results");
-			System.out.println("FOUND " + results.length() + " rides");
-			
-			
-			for (int i = 0; i < results.length(); i++) {
-				JSONObject ride = results.getJSONObject(i);
-				String description = ride.getString("Description");
-				String tel = ride.getString("Contactlandline");
-				JSONArray routings = ride.getJSONArray("Routings");
-				JSONObject origin = routings.getJSONObject(0).getJSONObject("Origin");
-				JSONObject destination = routings.getJSONObject(routings.length()-1).getJSONObject("Destination");
-				
-				from = new Place(
-						Double.parseDouble(origin.getString("Latitude")),
-						Double.parseDouble(origin.getString("Longitude")))
-						.name(origin.getString("Address"));
-				
-				to = new Place(
-						Double.parseDouble(destination.getString("Latitude")),
-						Double.parseDouble(destination.getString("Longitude")))
-						.name(destination.getString("Address"));
-				
-				
-				//JSONArray routings = ride.getJSONArray("Routings");
-//				Date enterDate = new Date(Long.parseLong(ride.getString("Enterdate")));
+        try {
+            JSONArray results = json.getJSONArray("results");
+            System.out.println("FOUND " + results.length() + " rides");
 
-				Date now = new Date(); //df.parse(ride.getString("Startdate"));
-				Calendar departure = Calendar.getInstance();
-				departure.clear();
-				departure.set(now.getYear()+1900, now.getMonth(), now.getDay());
-				if (!ride.isNull("Starttime")) {
-					String startTime = ride.getString("Starttime");
-					int splitIdx = startTime.length() - 2;
-					String hours = startTime.substring(0, splitIdx);
-					String minutes = startTime.substring(splitIdx);
-					departure.set(now.getYear()+1900, now.getMonth(), now.getDay(),
-							Integer.parseInt(hours), Integer.parseInt(minutes), 0);
-					System.out.println(departure.getTime());
-				}
-				
-				new Ride().type(Ride.OFFER)
-					.from(from).to(to).dep(departure.getTime());
-				
-				System.out.println(to);
-				System.out.println(from);
-				System.out.println();
-			}
-			
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+            String departure;
+            String[] split;
+            String who;
+            
+            for (int i = 0; i < results.length(); i++) {
+                JSONObject ride = results.getJSONObject(i);
+                
+                who = "mail=" + ride.getString("Contactmail");
+                who += ";mobile=" + ride.getString("Contactmobile");
+                who += ";landline=" + ride.getString("Contactlandline");
 
-	}
+//              new Date(Long.parseLong(ride.getString("Enterdate"));
+                departure = "000000000000";
+                if (!ride.isNull("Starttime")) {
+                    departure = ride.getString("Starttime");
+                    if (departure.length() == 3)
+                        departure = "0" + departure;
+                    departure = ride.getString("Startdate") + departure;
+                } else {
+                    System.out.println("no start time!");
+                }
+                
+                long price = 0;
+                if (!ride.isNull("Price")) {
+                    System.out.println("price : " + ride.getString("Price"));
+                    price = Long.parseLong(ride.getString("Price"));
+                }
+                JSONArray routings = ride.getJSONArray("Routings");
+                for (int j = 0; j < routings.length(); j++) {
+                    JSONObject r = routings.getJSONObject(j);
+                    JSONObject origin = routings.getJSONObject(j)
+                            .getJSONObject("Origin");
+                    JSONObject destination = routings.getJSONObject(j)
+                            .getJSONObject("Destination");
+                    System.out.println(origin.getString("Address")
+                            +" --->  "+destination.getString("Address"));
+                    
+                    split = origin.getString("Address").split(", ");
+                    from = store(new Place(
+                                Double.parseDouble(origin.getString("Latitude")),
+                                Double.parseDouble(origin.getString("Longitude")))
+                            .address(origin.getString("Address"))
+                            .name((split.length > 0)? split[0] : ""));
+                    
+                    split = destination.getString("Address").split(", ");
+                    to = store(new Place(
+                                Double.parseDouble(destination.getString("Latitude")),
+                                Double.parseDouble(destination.getString("Longitude")))
+                            .address(destination.getString("Address"))
+                            .name((split.length > 0)? split[0] : ""));
+                    
+                    store(new Ride()
+                        .type(Ride.OFFER)
+                        .from(from).to(to)
+                        .who(who).price(price)
+                        .dep(fulldf.parse(departure))
+                        .seats(ride.getLong("Places"))
+                        .details(ride.getString("Description")));
+                }
+            }
 
-	@Override
-	public void postRide(Place orig, Place dest, Date dep, Date arr) {
-		
-	}
-	
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
     JSONObject loadJson(String url) {
-    	System.out.println(url);
+        System.out.println(url);
         HttpURLConnection conn = null;
         StringBuilder result = new StringBuilder();
         try {
@@ -131,11 +142,11 @@ public class FahrgemeinschaftConnector implements Connector {
             }
             return new JSONObject(result.toString());
         } catch (JSONException e) {
-        	System.out.println("json error");
+            System.out.println("json error");
         } catch (MalformedURLException e) {
-        	System.out.println("url error ");
+            System.out.println("url error ");
         } catch (IOException e) {
-        	System.out.println("io error");
+            System.out.println("io error");
         } finally {
             if (conn != null) {
                 conn.disconnect();
@@ -146,42 +157,41 @@ public class FahrgemeinschaftConnector implements Connector {
 
 }
 
-
-//"Triptype": "offer",
-//"Smoker": "no",
-//"Startdate": "20130419",
-//"Accuracy": {
-//  "DistanceDestination": 0,
-//  "OverallDistance": 0,
-//  "DistanceOrigin": 0
-//},
-//"TripID": "887b0da0-5a55-6e04-995d-367e06fffc7a",
-//"Starttime": "1300",
-//"Contactmail": "wuac@me.com",
-//"Enterdate": "1366178563",
-//"IDuser": "29ae8215-223f-63f4-9982-39b9aca69556",
-//"Reoccur": {
-//  "Saturday": false,
-//  "Thursday": false,
-//  "Monday": false,
-//  "Tuesday": false,
-//  "Wednesday": false,
-//  "Friday": false,
-//  "Sunday": false
-//},
-//"Deeplink": null,
-//"Places": "3",
-//"Prefgender": null,
-//"Price": "0",
-//"Privacy": {
-//  "Name": "1",
-//  "Landline": "1",
-//  "Email": "1",
-//  "Mobile": "1",
-//  "NumberPlate": "1"
-//},
-//"Relevance": "10",
-//"Partnername": null,
-//"ClientIP": null,
-//"NumberPlate": "",
-//"Contactlandline": ""
+// "Triptype": "offer",
+// "Smoker": "no",
+// "Startdate": "20130419",
+// "Accuracy": {
+// "DistanceDestination": 0,
+// "OverallDistance": 0,
+// "DistanceOrigin": 0
+// },
+// "TripID": "887b0da0-5a55-6e04-995d-367e06fffc7a",
+// "Starttime": "1300",
+// "Contactmail": "wuac@me.com",
+// "Enterdate": "1366178563",
+// "IDuser": "29ae8215-223f-63f4-9982-39b9aca69556",
+// "Reoccur": {
+// "Saturday": false,
+// "Thursday": false,
+// "Monday": false,
+// "Tuesday": false,
+// "Wednesday": false,
+// "Friday": false,
+// "Sunday": false
+// },
+// "Deeplink": null,
+// "Places": "3",
+// "Prefgender": null,
+// "Price": "0",
+// "Privacy": {
+// "Name": "1",
+// "Landline": "1",
+// "Email": "1",
+// "Mobile": "1",
+// "NumberPlate": "1"
+// },
+// "Relevance": "10",
+// "Partnername": null,
+// "ClientIP": null,
+// "NumberPlate": "",
+// "Contactlandline": ""
