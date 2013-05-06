@@ -33,8 +33,8 @@ public class MainActivity extends Activity implements OnClickListener {
     private static final int TO = 55;
     private Button from_btn;
     private Button to_btn;
-    private long from_id;
-    private long to_id;
+    private int from_id;
+    private int to_id;
     private View selberfahren_btn;
     private View mitfahren_btn;
 
@@ -56,10 +56,14 @@ public class MainActivity extends Activity implements OnClickListener {
         findViewById(R.id.btn_pick_from).setOnClickListener(this);
 
         if (savedInstanceState != null) {
-            from_id = savedInstanceState.getLong("from_id");
-            to_id = savedInstanceState.getLong("to_id");
+            setFromButtonText(Uri.parse("content://de.fahrgemeinschaft/places/"
+                    + savedInstanceState.getInt("from_id")));
+            setToButtonText(Uri.parse("content://de.fahrgemeinschaft/places/"
+                    + savedInstanceState.getInt("to_id")));
         }
-
+//        startActivity(new Intent(Intent.ACTION_VIEW,
+//                Uri.parse("content://" + getPackageName() + "/rides" +
+//                        "?from_id=1&to_id=2")));
     }
 
     @Override
@@ -116,24 +120,35 @@ public class MainActivity extends Activity implements OnClickListener {
     protected void onActivityResult(int req, int res, final Intent intent) {
         if (res == RESULT_OK) {
             Log.d(TAG, "selected " + intent.getData());
-            Cursor place = getContentResolver().query(intent.getData(), null,
-                    null, null, null);
-            place.moveToFirst();
             switch (req) {
             case FROM:
-                animatePulse(from_btn);
-                from_id = place.getLong(0);
-                from_btn.setText(place.getString(2));
-                from_btn.setTextAppearance(this, R.style.white_button_text);
+                setFromButtonText(intent.getData());
                 break;
             case TO:
-                animatePulse(to_btn);
-                to_id = place.getLong(0);
-                to_btn.setText(place.getString(2));
-                to_btn.setTextAppearance(this, R.style.white_button_text);
+                setToButtonText(intent.getData());
                 break;
             }
         }
+    }
+
+    private void setFromButtonText(Uri uri) {
+        Cursor place = getContentResolver().query(uri, null, null, null, null);
+        place.moveToFirst();
+        animatePulse(from_btn);
+        from_id = place.getInt(0);
+        from_btn.setText(place.getString(2));
+        from_btn.setTextAppearance(this, R.style.white_button_text);
+        place.close();
+    }
+
+    private void setToButtonText(Uri uri) {
+        Cursor place = getContentResolver().query(uri, null, null, null, null);
+        place.moveToFirst();
+        animatePulse(to_btn);
+        to_id = place.getInt(0);
+        to_btn.setText(place.getString(2));
+        to_btn.setTextAppearance(this, R.style.white_button_text);
+        place.close();
     }
 
     private void animatePulse(final View view) {
@@ -141,12 +156,10 @@ public class MainActivity extends Activity implements OnClickListener {
         fade_in.setAnimationListener(new AnimationListener() {
 
             @Override
-            public void onAnimationStart(Animation animation) {
-            }
+            public void onAnimationStart(Animation animation) {}
 
             @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
+            public void onAnimationRepeat(Animation animation) {}
 
             @Override
             public void onAnimationEnd(Animation animation) {
@@ -155,17 +168,14 @@ public class MainActivity extends Activity implements OnClickListener {
                 fade_out.setAnimationListener(new AnimationListener() {
 
                     @Override
-                    public void onAnimationStart(Animation animation) {
-                    }
+                    public void onAnimationStart(Animation animation) {}
 
                     @Override
-                    public void onAnimationRepeat(Animation animation) {
-                    }
+                    public void onAnimationRepeat(Animation animation) {}
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         view.setBackgroundResource(R.drawable.btn_white);
-
                     }
                 });
                 fade_out.setDuration(1400);

@@ -1,0 +1,111 @@
+<!--
+Ridesharing Android App
+Copyright (c) 2013 by it's authors.
+Some rights reserved. See LICENSE..
+-->
+
+<view xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    class="de.fahrgemeinschaft.RideDetailsFragment$RideView"
+    android:background="@color/light_green_translucent"
+    android:padding="12dp" >
+
+    <LinearLayout
+        android:id="@+id/row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/day"
+            style="@style/dark.Large"
+            android:layout_height="match_parent"
+            android:background="@color/medium_green"
+            android:text="Sa" />
+
+        <TextView
+            android:id="@+id/date"
+            style="@style/light.Large"
+            android:layout_height="match_parent"
+            android:background="@color/medium_green"
+            android:text="Di 31.01" />
+
+        <TextView
+            android:id="@+id/time"
+            style="@style/dark.Large.Bold"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp"
+            android:background="@color/medium_green"
+            android:text="17:00" />
+
+        <TextView
+            android:id="@+id/seats"
+            style="@style/dark.Large.Bold"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:background="@color/medium_green"
+            android:text="3" />
+
+        <ImageView
+            android:id="@+id/seats_icon"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp"
+            android:background="@color/medium_green"
+            android:src="@drawable/ic_seats" />
+
+        <TextView
+            android:id="@+id/price"
+            style="@style/dark.Large.Bold"
+            android:layout_height="match_parent"
+            android:background="@color/medium_green"
+            android:text="25" />
+
+        <TextView
+            android:id="@+id/currency"
+            style="@style/light.Large"
+            android:layout_height="match_parent"
+            android:background="@color/medium_green"
+            android:text="€" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/row" >
+
+        <LinearLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/from_place"
+                style="@style/dark"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="34dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:background="@color/medium_green" />
+
+            <TextView
+                android:id="@+id/to_place"
+                style="@style/dark"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="34dp"
+                android:layout_marginTop="2dp"
+                android:background="@color/medium_green" />
+
+            <TextView
+                android:id="@+id/details"
+                android:layout_width="match_parent"
+                android:layout_marginTop="2dp"
+                android:background="@color/medium_green"
+                android:padding="12dp"
+                android:singleLine="false"
+                android:textColor="@color/opacity_black" />
+        </LinearLayout>
+    </ScrollView>
+
+</view>

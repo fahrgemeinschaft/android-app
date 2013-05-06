@@ -57,10 +57,11 @@
     </style>
     
     <color name="medium_green">#89A33C</color>
-    <color name="light_green_translucent">#BBBCE053</color>
+    <color name="light_green_translucent">#77BCE053</color>
     <color name="light_green">#BCE053</color>
+    <color name="dark_green">#99AA4D</color>
     <color name="dark_green">#667A2D</color>
     <color name="opacity_white">#AAFFFFFF</color>
-    <color name="opacity_back">#88000000</color>
+    <color name="opacity_black">#99000000</color>
     <color name="opaque">#00000000</color>
 </resources>

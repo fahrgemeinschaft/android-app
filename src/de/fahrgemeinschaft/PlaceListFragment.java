@@ -11,7 +11,6 @@ package de.fahrgemeinschaft;
 import org.teleportr.ConnectorService;
 import org.teleportr.Place;
 
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -27,14 +26,17 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class PlaceListFragment extends ListFragment implements
-        LoaderCallbacks<Cursor>, TextWatcher {
+public class PlaceListFragment extends ListFragment
+        implements LoaderCallbacks<Cursor>, TextWatcher {
 
     private static final int GPLACES = 42;
     private static final int LOCAL = 55;
@@ -43,6 +45,7 @@ public class PlaceListFragment extends ListFragment implements
     private CursorAdapter adapter;
     private Uri uri;
     private ProgressBar wheel;
+    private ImageButton toggle;
 
     @Override
     public View onCreateView(LayoutInflater f, ViewGroup p, Bundle state) {
@@ -55,6 +58,16 @@ public class PlaceListFragment extends ListFragment implements
 
         search_field = (EditText) view.findViewById(R.id.autocomplete_text);
         wheel = (ProgressBar) view.findViewById(R.id.busy_search);
+        toggle = (ImageButton) view.findViewById(R.id.toggle);
+        search_field.addTextChangedListener(this);
+        toggle.setOnClickListener(
+                new OnClickListener() {
+                    
+                    @Override
+                    public void onClick(View arg0) {
+                        toggleSearchField();
+                    }
+                });
 
         adapter = new CursorAdapter(getActivity(), null, false) {
 
@@ -78,10 +91,17 @@ public class PlaceListFragment extends ListFragment implements
         getActivity().getSupportLoaderManager().initLoader(LOCAL, null, this);
     }
 
-    public void showSearchField() {
-        search_field.setVisibility(View.VISIBLE);
-        search_field.requestFocus();
-        search_field.addTextChangedListener(this);
+    public void toggleSearchField() {
+        if (search_field.getVisibility() == View.GONE) {
+            search_field.setVisibility(View.VISIBLE);
+            search_field.requestFocus();
+            toggle.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
+        } else {
+            search_field.setVisibility(View.GONE);
+            toggle.setImageResource(android.R.drawable.ic_menu_search);
+        }
+        ((InputMethodManager) getActivity().getSystemService(Context
+                .INPUT_METHOD_SERVICE)).toggleSoftInput(0, 0);
     }
 
     @Override
@@ -105,7 +125,7 @@ public class PlaceListFragment extends ListFragment implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor places) {
         adapter.swapCursor(places);
-        if (loader.getId() == LOCAL) {
+        if (loader.getId() == LOCAL && search_field.getVisibility() == 0) {
             getActivity().getSupportLoaderManager()
                     .restartLoader(GPLACES, null, this);
         } else {

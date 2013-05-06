@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.WindowManager;
 import de.fahrgemeinschaft.PlaceListFragment.PlacePickListener;
 
 public class PlacePickActivity extends FragmentActivity implements
@@ -24,13 +25,18 @@ public class PlacePickActivity extends FragmentActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        WindowManager.LayoutParams params = getWindow().getAttributes();
+        params.dimAmount = 0.7f;
+        getWindow().setAttributes(params);
+
         setContentView(R.layout.activity_place_pick);
 
         place_list = (PlaceListFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.place_list);
 
         if (getIntent().getBooleanExtra("show_textfield", false)) {
-            place_list.showSearchField();
+            place_list.toggleSearchField();
         }
     }
 

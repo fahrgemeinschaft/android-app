@@ -10,37 +10,36 @@ package de.fahrgemeinschaft;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
-
-import com.actionbarsherlock.app.SherlockListFragment;
 
 import android.content.Context;
-import android.database.ContentObserver;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class RideListFragment extends SherlockListFragment implements
-        LoaderCallbacks<Cursor> {
+import com.actionbarsherlock.app.SherlockListFragment;
+
+public class RideListFragment extends SherlockListFragment {
 
     private static final String TAG = "Fahrgemeinschaft";
     private static final SimpleDateFormat day = new SimpleDateFormat("EE");
     private static final SimpleDateFormat date = new SimpleDateFormat("dd.MM");
     private static SimpleDateFormat time = new SimpleDateFormat("HH:mm");
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "on create list " + savedInstanceState);
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(final LayoutInflater lI, ViewGroup p, Bundle b) {
@@ -53,6 +52,8 @@ public class RideListFragment extends SherlockListFragment implements
 
         setListAdapter(new CursorAdapter(getActivity(), null, 0) {
 
+            private String[] split;
+
             @Override
             public View newView(Context arg0, Cursor arg1, ViewGroup parent) {
                 return getLayoutInflater(null).inflate(
@@ -62,10 +63,20 @@ public class RideListFragment extends SherlockListFragment implements
             @Override
             public void bindView(View view, Context ctx, Cursor ride) {
                 RideView v = (RideView) view;
-                v.from_city.setText(ride.getString(2));
+
                 v.from_place.setText(ride.getString(1));
-                v.to_city.setText(ride.getString(4));
+                split = ride.getString(2).split(",");
+                if (split.length > 1)
+                    v.from_city.setText(split[1]);
+                else
+                    v.from_city.setText(ride.getString(2));
+
                 v.to_place.setText(ride.getString(3));
+                split = ride.getString(4).split(",");
+                if (split.length > 1)
+                    v.to_city.setText(split[1]);
+                else
+                    v.to_city.setText(ride.getString(4));
 
                 Date timestamp = new Date(ride.getLong(5));
                 v.day.setText(day.format(timestamp).substring(0, 2));
@@ -83,50 +94,51 @@ public class RideListFragment extends SherlockListFragment implements
                             R.color.light_green));
                 }
             }
+
+            @Override
+            public int getCount() {
+                return super.getCount() + 1;
+            }
+
+            @Override
+            public int getViewTypeCount() {
+                return 2;
+            }
+
+            @Override
+            public int getItemViewType(int position) {
+                if (position < getCount() - 1)
+                    return 0;
+                else
+                    return 1;
+            }
+
+            @Override
+            public View getView(int pos, View v, ViewGroup p) {
+                if (pos < getCount() - 1)
+                    return super.getView(pos, v, p);
+                else {
+                    ProgressBar progress = new ProgressBar(getActivity());
+                    progress.setLayoutParams(new ListView.LayoutParams(
+                            LayoutParams.MATCH_PARENT, 180));
+                    progress.setPadding(170, 20, 170, 20);
+                    return progress;
+                }
+            }
         });
-
-        getActivity().getSupportLoaderManager().initLoader(0, null, this);
-
+        getListView().setFocusableInTouchMode(true);
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle arg1) {
-        Uri uri = getActivity().getIntent().getData();
-        getActivity().getContentResolver().registerContentObserver(
-                Uri.parse("content://"+getActivity().getPackageName()+"/rides"),
-                false, new ContentObserver(new Handler()) {
-                    @Override
-                    public void onChange(boolean selfChange) {
-                        super.onChange(selfChange);
-                        if (getActivity() != null) {
-                            getActivity().getSupportLoaderManager()
-                                .restartLoader(0, null, RideListFragment.this);
-                        }
-                    }
-                });
-        Log.d(TAG, "query " + uri);
-        return new CursorLoader(getActivity(), uri, null, null, null, null);
-    }
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor rides) {
-        ((CursorAdapter) getListAdapter()).swapCursor(rides);
-        Log.d(TAG, "got results: " + rides.getCount());
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> arg0) {
-        Log.d(TAG, "onLoaderReset");
-    }
 
     public interface ListItemClicker {
-        public void onListItemClick(String id);
+        public void onListItemClick(int position);
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        ((ListItemClicker) getActivity()).onListItemClick("foo");
+        ((ListItemClicker) getActivity()).onListItemClick(position);
     }
 
     static class RideView extends RelativeLayout {

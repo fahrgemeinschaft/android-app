@@ -8,21 +8,23 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
-
-import org.teleportr.Connector;
-import org.teleportr.Place;
-import org.teleportr.Ride;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.teleportr.Connector;
+import org.teleportr.Place;
+import org.teleportr.Ride;
+
+import android.content.Context;
 
 
 public class FahrgemeinschaftConnector extends Connector {
+
+    public FahrgemeinschaftConnector(Context ctx) {
+        super(ctx);
+    }
 
     private static final String APIKEY = "API-KEY"; 
     static final SimpleDateFormat fulldf = new SimpleDateFormat("yyyyMMddHHmm");
@@ -30,7 +32,6 @@ public class FahrgemeinschaftConnector extends Connector {
 
     @Override
     public void getRides(Place from, Place to, Date dep, Date arr) {
-
 
         JSONObject from_json = new JSONObject();
         JSONObject to_json = new JSONObject();
@@ -51,80 +52,81 @@ public class FahrgemeinschaftConnector extends Connector {
 
         JSONObject json = loadJson("http://service.fahrgemeinschaft.de/trip?"
                 + "searchOrigin=" + from_json + "&searchDestination=" + to_json);
+        if (json == null) return;
 
         try {
             JSONArray results = json.getJSONArray("results");
             System.out.println("FOUND " + results.length() + " rides");
 
-            String departure;
-            String[] split;
-            String who;
-            
             for (int i = 0; i < results.length(); i++) {
-                JSONObject ride = results.getJSONObject(i);
-                
-                who = "mail=" + ride.getString("Contactmail");
-                who += ";mobile=" + ride.getString("Contactmobile");
-                who += ";landline=" + ride.getString("Contactlandline");
-
-//              new Date(Long.parseLong(ride.getString("Enterdate"));
-                departure = "000000000000";
-                if (!ride.isNull("Starttime")) {
-                    departure = ride.getString("Starttime");
-                    if (departure.length() == 3)
-                        departure = "0" + departure;
-                    departure = ride.getString("Startdate") + departure;
-                } else {
-                    System.out.println("no start time!");
-                }
-                
-                long price = 0;
-                if (!ride.isNull("Price")) {
-                    System.out.println("price : " + ride.getString("Price"));
-                    price = Long.parseLong(ride.getString("Price"));
-                }
-                JSONArray routings = ride.getJSONArray("Routings");
-                for (int j = 0; j < routings.length(); j++) {
-                    JSONObject r = routings.getJSONObject(j);
-                    JSONObject origin = routings.getJSONObject(j)
-                            .getJSONObject("Origin");
-                    JSONObject destination = routings.getJSONObject(j)
-                            .getJSONObject("Destination");
-                    System.out.println(origin.getString("Address")
-                            +" --->  "+destination.getString("Address"));
-                    
-                    split = origin.getString("Address").split(", ");
-                    from = store(new Place(
-                                Double.parseDouble(origin.getString("Latitude")),
-                                Double.parseDouble(origin.getString("Longitude")))
-                            .address(origin.getString("Address"))
-                            .name((split.length > 0)? split[0] : ""));
-                    
-                    split = destination.getString("Address").split(", ");
-                    to = store(new Place(
-                                Double.parseDouble(destination.getString("Latitude")),
-                                Double.parseDouble(destination.getString("Longitude")))
-                            .address(destination.getString("Address"))
-                            .name((split.length > 0)? split[0] : ""));
-                    
-                    store(new Ride()
-                        .type(Ride.OFFER)
-                        .from(from).to(to)
-                        .who(who).price(price)
-                        .dep(fulldf.parse(departure))
-                        .seats(ride.getLong("Places"))
-                        .details(ride.getString("Description")));
-                }
+                store(parseRide(results.getJSONObject(i)));
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
-
     }
 
+    private Ride parseRide(JSONObject json)  throws JSONException {
+        String who = "mail=" + json.getString("Contactmail");
+        who += "; mobile=" + json.getString("Contactmobile");
+        who += "; landline=" + json.getString("Contactlandline");
+
+        Ride ride = new Ride().type(Ride.OFFER).who(who);
+        ride.details(json.getString("Description"));
+        ride.seats(json.getLong("Places"));
+        ride.dep(parseTimestamp(json));
+
+        if (!json.isNull("Price")) {
+            ride.price((int) Double.parseDouble(
+                    json.getString("Price")) * 100);
+        }
+
+        JSONArray routings = json.getJSONArray("Routings");
+
+        ride.from(store(parsePlace(
+                routings.getJSONObject(0)
+                .getJSONObject("Origin"))));
+
+        for (int j = 1; j < routings.length(); j++) {
+            ride.via(store(parsePlace(
+                    routings.getJSONObject(j)
+                    .getJSONObject("Destination"))));
+        }
+
+        ride.to(store(parsePlace(
+                routings.getJSONObject(0)
+                .getJSONObject("Destination"))));
+        return ride;
+    }
+
+    private Place parsePlace(JSONObject json) throws JSONException {
+        String[] split = json.getString("Address").split(", ");
+        return new Place(
+                    Double.parseDouble(json.getString("Latitude")),
+                    Double.parseDouble(json.getString("Longitude")))
+                .address(json.getString("Address"))
+                .name((split.length > 0)? split[0] : "");
+    }
+
+    private Date parseTimestamp(JSONObject json) throws JSONException {
+//              new Date(Long.parseLong(ride.getString("Enterdate"));
+        String departure = "000000000000";
+        if (!json.isNull("Starttime")) {
+            departure = json.getString("Starttime");
+            if (departure.length() == 3)
+                departure = "0" + departure;
+            departure = json.getString("Startdate") + departure;
+        } else {
+            System.out.println("no start time!");
+        }
+        try {
+            return fulldf.parse(departure);
+        } catch (ParseException e) {
+            System.out.println("date/time parse error!");
+            e.printStackTrace();
+            return new Date(0);
+        }
+    }
 
     JSONObject loadJson(String url) {
         System.out.println(url);

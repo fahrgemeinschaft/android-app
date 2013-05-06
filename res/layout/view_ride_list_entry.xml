@@ -10,13 +10,13 @@
     >
     <TextView
         android:id="@+id/from_city"
-        android:text="Stuttgart"
+        android:width="175dp"
         style="@style/light"
     />
     <TextView
         android:id="@+id/from_place"
         android:layout_below="@id/from_city"
-        android:text="Hauptbahnhof"
+        android:width="175dp"
         style="@style/dark"
     />
     <View 
@@ -29,14 +29,12 @@
     <TextView
         android:id="@+id/to_city"
         android:layout_marginLeft="175dp"
-        android:text="München"
         style="@style/light"
     />
     <TextView
         android:id="@+id/to_place"
         android:layout_marginLeft="175dp"
         android:layout_below="@id/to_city"
-        android:text="Stachus"
         style="@style/dark"
     />
     <View 
@@ -51,21 +49,18 @@
     <TextView
         android:id="@+id/day"
         android:layout_alignParentBottom="true"
-        android:text="Sa"
         style="@style/dark.Large"
     />
     <TextView
         android:id="@+id/date"
         android:layout_toRightOf="@id/day"
         android:layout_alignParentBottom="true"
-        android:text="31.01"
         style="@style/light.Large"
     />
     <TextView
         android:id="@+id/time"
         android:layout_toRightOf="@id/date"
         android:layout_alignParentBottom="true"
-        android:text="17:00"
         style="@style/dark.Large.Bold"
     />
     <View 
@@ -80,7 +75,6 @@
         android:id="@+id/price"
         android:layout_marginLeft="175dp"
         android:layout_alignParentBottom="true"
-        android:text="24,50"
         style="@style/dark.Large.Bold"
     />
     <TextView
@@ -88,7 +82,6 @@
         android:layout_toRightOf="@id/price"
         android:layout_alignParentBottom="true"
         style="@style/light.Large"
-        android:text="€"
     />
     <View 
         android:layout_width="2dp"
@@ -109,7 +102,6 @@
         android:layout_toLeftOf="@id/seats_icon"
         android:layout_alignParentBottom="true"
         style="@style/dark.Large.Bold"
-        android:text="3"
     />
     <View 
         android:layout_height="2dp"

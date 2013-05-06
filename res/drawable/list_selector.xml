@@ -13,5 +13,11 @@
         </shape>
     </item>
 
+    <item android:state_selected="true" >
+        <shape>
+            <solid android:color="@color/opacity_white"/>
+        </shape>
+    </item>
+
     <item android:drawable="@android:color/transparent" />
 </selector>
