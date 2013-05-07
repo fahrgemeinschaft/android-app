@@ -1,7 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
-Ridesharing Android App
-Copyright (c) 2013 by it's authors.
-Some rights reserved. See LICENSE..
+  Fahrgemeinschaft / Ridesharing App
+  Copyright (c) 2013 by it's authors.
+  Some rights reserved. See LICENSE.. 
 -->
 
 <view xmlns:android="http://schemas.android.com/apk/res/android"

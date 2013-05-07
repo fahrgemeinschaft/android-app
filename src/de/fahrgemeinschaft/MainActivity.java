@@ -1,6 +1,5 @@
 /**
- * Fahrgemeinschaft Ridesharing App
- *
+ * Fahrgemeinschaft / Ridesharing App
  * Copyright (c) 2013 by it's authors.
  * Some rights reserved. See LICENSE.. 
  *
@@ -133,21 +132,25 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private void setFromButtonText(Uri uri) {
         Cursor place = getContentResolver().query(uri, null, null, null, null);
-        place.moveToFirst();
-        animatePulse(from_btn);
-        from_id = place.getInt(0);
-        from_btn.setText(place.getString(2));
-        from_btn.setTextAppearance(this, R.style.white_button_text);
+        if (place.getCount() > 0) {
+            place.moveToFirst();
+            animatePulse(from_btn);
+            from_id = place.getInt(0);
+            from_btn.setText(place.getString(2));
+            from_btn.setTextAppearance(this, R.style.white_button_text);
+        }
         place.close();
     }
 
     private void setToButtonText(Uri uri) {
         Cursor place = getContentResolver().query(uri, null, null, null, null);
-        place.moveToFirst();
-        animatePulse(to_btn);
-        to_id = place.getInt(0);
-        to_btn.setText(place.getString(2));
-        to_btn.setTextAppearance(this, R.style.white_button_text);
+        if (place.getCount() > 0) {
+            place.moveToFirst();
+            animatePulse(to_btn);
+            to_id = place.getInt(0);
+            to_btn.setText(place.getString(2));
+            to_btn.setTextAppearance(this, R.style.white_button_text);
+        }
         place.close();
     }
 

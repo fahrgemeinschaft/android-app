@@ -1,9 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Fahrgemeinschaft / Ridesharing App
+  Copyright (c) 2013 by it's authors.
+  Some rights reserved. See LICENSE.. 
+-->
+
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    -->
     <style name="AppBaseTheme" parent="Theme.Sherlock.Light">
         <!--
             Theme customizations available in newer API levels can go in
@@ -12,7 +15,6 @@
         -->
     </style>
 
-    <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <item name="android:windowBackground">@color/light_green</item>
         <item name="android:layout_width">wrap_content</item>
@@ -57,11 +59,11 @@
     </style>
     
     <color name="medium_green">#89A33C</color>
-    <color name="light_green_translucent">#77BCE053</color>
+    <color name="light_green_translucent">#55BCE053</color>
     <color name="light_green">#BCE053</color>
     <color name="dark_green">#99AA4D</color>
     <color name="dark_green">#667A2D</color>
-    <color name="opacity_white">#AAFFFFFF</color>
+    <color name="opacity_white">#BBFFFFFF</color>
     <color name="opacity_black">#99000000</color>
     <color name="opaque">#00000000</color>
 </resources>
