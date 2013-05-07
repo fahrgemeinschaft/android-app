@@ -80,6 +80,7 @@ public class FahrgemeinschaftConnector extends Connector {
 
         Ride ride = new Ride().type(Ride.OFFER).who(who);
         ride.details(json.getString("Description"));
+        ride.ref(json.getString("TripID"));
         ride.seats(json.getLong("Places"));
         ride.dep(parseTimestamp(json));
 
