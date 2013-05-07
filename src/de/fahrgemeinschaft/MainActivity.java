@@ -192,8 +192,8 @@ public class MainActivity extends Activity implements OnClickListener {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putLong("from_id", from_id);
-        outState.putLong("to_id", to_id);
+        outState.putInt("from_id", from_id);
+        outState.putInt("to_id", to_id);
     }
 
 }
