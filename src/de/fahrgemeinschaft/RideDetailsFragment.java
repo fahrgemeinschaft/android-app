@@ -90,8 +90,8 @@ public class RideDetailsFragment extends SherlockFragment {
                 view.date.setText(date.format(timestamp));
                 view.time.setText(time.format(timestamp));
 
-                view.price.setText(cursor.getLong(9) + "€");
-                view.seats.setText(cursor.getLong(10) + "");
+                view.price.setText(cursor.getString(9));
+                view.seats.setText(cursor.getString(10));
                 view.details.setText(cursor.getString(8));
 
                 getActivity().getSupportLoaderManager()
@@ -168,7 +168,11 @@ public class RideDetailsFragment extends SherlockFragment {
                 tv.setTextAppearance(getContext(), R.style.dark);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                         LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-                lp.leftMargin = 34;
+                float density = getContext().getResources().getDisplayMetrics()
+                        .density;
+                lp.leftMargin = (int) (density * 21);
+                if (i == 2)
+                    lp.topMargin = (int) (density * 3); 
                 tv.setLayoutParams(lp);
                 content.addView(tv, i - 1);
                 Log.d(TAG, c.getString(1) + " --> " + c.getString(3));

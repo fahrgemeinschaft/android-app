@@ -9,7 +9,7 @@
     android:layout_height="?android:attr/listPreferredItemHeight"
     class="de.fahrgemeinschaft.RideDetailsFragment$RideView"
     android:background="@color/light_green_translucent"
-    android:padding="12dp" >
+    android:padding="3dp" >
 
     <LinearLayout
         android:id="@+id/row"
@@ -20,7 +20,6 @@
         <TextView
             android:id="@+id/day"
             style="@style/dark.Large"
-            android:layout_height="match_parent"
             android:background="@color/medium_green"
             android:text="Sa" />
 
@@ -34,30 +33,18 @@
         <TextView
             android:id="@+id/time"
             style="@style/dark.Large.Bold"
+            android:layout_marginLeft="3dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="2dp"
             android:background="@color/medium_green"
             android:text="17:00" />
 
         <TextView
-            android:id="@+id/seats"
-            style="@style/dark.Large.Bold"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="2dp"
-            android:layout_weight="1"
-            android:background="@color/medium_green"
-            android:text="3" />
-
-        <ImageView
-            android:id="@+id/seats_icon"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="2dp"
-            android:background="@color/medium_green"
-            android:src="@drawable/ic_seats" />
-
-        <TextView
             android:id="@+id/price"
             style="@style/dark.Large.Bold"
+            android:layout_marginLeft="3dp"
+            android:paddingLeft="12dp"
+            android:layout_weight="1"
+            android:gravity="right|bottom"
             android:layout_height="match_parent"
             android:background="@color/medium_green"
             android:text="25" />
@@ -68,12 +55,51 @@
             android:layout_height="match_parent"
             android:background="@color/medium_green"
             android:text="€" />
+
+        <TextView
+            android:id="@+id/seats"
+            style="@style/dark.Large.Bold"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="3dp"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:background="@color/medium_green" />
+
+        <ImageView
+            android:id="@+id/seats_icon"
+            android:layout_height="match_parent"
+            android:background="@color/medium_green"
+            android:src="@drawable/ic_seats" />
     </LinearLayout>
 
+    <ImageButton
+        android:onClick="call"
+        android:id="@+id/btn_contact"
+        android:layout_width="140dp"
+        android:layout_height="89dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/content"
+        android:background="@drawable/btn_dark_green"
+        android:src="@android:drawable/ic_menu_call" />
+
+    <ImageButton
+        android:onClick="mark"
+        android:id="@+id/btn_mark"
+        android:layout_width="140dp"
+        android:layout_height="89dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/btn_medium_green"
+        android:src="@drawable/btn_check_on_holo" />
+    
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/row" >
+        android:layout_above="@id/btn_mark"
+        android:layout_below="@id/row"
+        android:paddingRight="13dp"
+        android:paddingLeft="13dp" >
 
         <LinearLayout
             android:id="@+id/content"
@@ -85,28 +111,24 @@
                 android:id="@+id/from_place"
                 style="@style/dark"
                 android:layout_width="match_parent"
-                android:layout_marginLeft="34dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginTop="3dp"
                 android:background="@color/medium_green" />
 
             <TextView
                 android:id="@+id/to_place"
                 style="@style/dark"
                 android:layout_width="match_parent"
-                android:layout_marginLeft="34dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="3dp"
                 android:background="@color/medium_green" />
 
             <TextView
                 android:id="@+id/details"
                 android:layout_width="match_parent"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="3dp"
                 android:background="@color/medium_green"
                 android:padding="12dp"
                 android:singleLine="false"
                 android:textColor="@color/opacity_black" />
         </LinearLayout>
     </ScrollView>
-
 </view>

@@ -91,7 +91,7 @@
         android:layout_marginTop="21dp"
         android:background="@drawable/btn_mitfahren" />
     
-    <ImageButton
+    <Button
         android:id="@+id/btn_selberfahren"
         android:layout_width="140dp"
         android:layout_height="89dp"

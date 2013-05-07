@@ -119,8 +119,8 @@ public class RideListFragment extends SherlockListFragment {
                 else {
                     ProgressBar progress = new ProgressBar(getActivity());
                     progress.setLayoutParams(new ListView.LayoutParams(
-                            LayoutParams.MATCH_PARENT, 180));
-                    progress.setPadding(170, 20, 170, 20);
+                            LayoutParams.MATCH_PARENT, 120));
+                    progress.setPadding(190, 10, 190, 10);
                     return progress;
                 }
             }

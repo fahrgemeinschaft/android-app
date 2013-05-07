@@ -14,8 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="75dp"
         android:hint="search"
-        android:singleLine="true"
         android:textSize="35dp"
+        android:singleLine="true"
         android:visibility="gone" />
 
     <ListView

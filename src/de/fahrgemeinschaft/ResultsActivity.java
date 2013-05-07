@@ -7,6 +7,7 @@
 
 package de.fahrgemeinschaft;
 
+import android.content.Intent;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
@@ -19,6 +20,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -82,12 +84,31 @@ public class ResultsActivity extends SherlockFragmentActivity
     @Override
     public void onListItemClick(int position) {
         selected = position;
-        System.out.println(position);
         getSupportFragmentManager().beginTransaction()
             .replace(R.id.container, details, null)
             .addToBackStack(null).commit();
     }
 
+    public void call(View v) {
+        Cursor c = ((CursorAdapter) list.getListAdapter()).getCursor();
+        c.moveToPosition(selected);
+        String[] split = c.getString(7).split("; ");
+        for (int i = 0; i < split.length; i++) {
+            if (split[i].startsWith("mobile")) {
+                split = split[i].split("=");
+                startActivity(new Intent(Intent.ACTION_CALL,
+                        Uri.parse("tel:" + split[1])));
+                return;
+            }
+            if (split[i].startsWith("landline")) {
+                split = split[i].split("=");
+                startActivity(new Intent(Intent.ACTION_CALL,
+                        Uri.parse("tel:" + split[1])));
+                return;
+            }
+        }
+        Log.d(TAG, "no phone number");
+    }
     @Override
     public void onPageSelected(int position) {
     }

@@ -34,22 +34,25 @@
     </style>
     
     <style name="light" parent="@android:style/TextAppearance">
-        <item name="android:paddingLeft">5dp</item>
         <item name="android:textSize">12dp</item>
+        <item name="android:gravity">bottom</item>
+        <item name="android:paddingRight">2dp</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
-    <style name="light.Large">
-        <item name="android:textSize">21dp</item>
+    <style name="light.Large" parent="@style/light">
+        <item name="android:textSize">18dp</item>
+        <item name="android:paddingLeft">3dp</item>
+        <item name="android:paddingBottom">2dp</item>
     </style>
     <style name="dark" parent="@style/light">
-        <item name="android:layout_marginTop">-9dp</item>
         <item name="android:textColor">#000000</item>
-        <item name="android:textSize">17dp</item>
+        <item name="android:paddingLeft">3dp</item>
+        <item name="android:textSize">18dp</item>
     </style>
-    <style name="dark.Large">
+    <style name="dark.Large" parent="@style/dark">
         <item name="android:textSize">26dp</item>
     </style>
-    <style name="dark.Large.Bold">
+    <style name="dark.Large.Bold" parent="@style/dark.Large">
         <item name="android:textSize">23dp</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -58,10 +61,9 @@
         <item name="android:textSize">28sp</item>
     </style>
     
-    <color name="medium_green">#89A33C</color>
-    <color name="light_green_translucent">#55BCE053</color>
+    <color name="light_green_translucent">#99BCE053</color>
     <color name="light_green">#BCE053</color>
-    <color name="dark_green">#99AA4D</color>
+    <color name="medium_green">#89A33C</color>
     <color name="dark_green">#667A2D</color>
     <color name="opacity_white">#BBFFFFFF</color>
     <color name="opacity_black">#99000000</color>
