@@ -73,7 +73,7 @@
     </LinearLayout>
 
     <ImageButton
-        android:onClick="call"
+        android:onClick="contact"
         android:id="@+id/btn_contact"
         android:layout_width="140dp"
         android:layout_height="89dp"
