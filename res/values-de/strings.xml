@@ -7,19 +7,17 @@
 
 <resources>
 
-    <string name="app_name">Fahrgemeinschaft</string>
+    <string name="my_rides">Meine Fahrten</string>
+    <string name="profile">Profil</string>
+    <string name="settings">Einstellungen</string>
 
-    <string name="my_rides">My Rides</string>
-    <string name="profile">Profile</string>
-    <string name="settings">Settings</string>
-
-    <string name="background_data">Background Data</string>
+    <string name="background_data">Hintergrund Daten</string>
     <string name="background_data_description">
-        Continue to search when app is not running
+        Weiter Suchen wenn die App nicht mehr läuft
     </string>
     <string name="background_interval">Interval</string>
     <string name="background_interval_description">
-        Refresh search results every %1$s
+        Suchergebnisse neu laden alle %1$s
     </string>
     <string-array name="background_iterval" >
         <item name="interval_24h">24h</item>
@@ -30,13 +28,13 @@
         <item name="interval_30min">30min</item>
         <item name="interval_15min">15min</item>
     </string-array>
-    <string name="notification">Notification</string>
+    <string name="notification">Benachrichtigung</string>
     <string name="notification_description">
-        Notify about updates in status bar
+        Über neue Fahrten in der Statusleiste benachrichtigen
     </string>
 
     <string name="login">Login</string>
-    <string name="username">username</string>
-    <string name="password">password</string>
+    <string name="username">Benutzername</string>
+    <string name="password">Passwort</string>
 
 </resources>

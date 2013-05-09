@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Fahrgemeinschaft / Ridesharing App
+  Copyright (c) 2013 by it's authors.
+  Some rights reserved. See LICENSE.. 
+-->
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.fahrgemeinschaft"
-    android:versionCode="2"
+    android:versionCode="3"
     android:versionName="alpha 0.1" >
 
     <uses-sdk
@@ -43,6 +49,13 @@
                 <data
                     android:host="de.fahrgemeinschaft"
                     android:scheme="content" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="SettingsActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MANAGE_NETWORK_USAGE" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 

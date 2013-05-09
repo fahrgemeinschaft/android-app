@@ -16,8 +16,7 @@
     
     <item
         android:icon="@drawable/ic_my_rides"
-        android:showAsAction="always|withText"
-    >
+        android:showAsAction="always|withText" >
     <menu >
             <item android:id="@+id/profile"
                 android:title="@string/profile"
@@ -27,6 +26,6 @@
                 android:title="@string/settings"
                 android:icon="@drawable/ic_my_rides"
             />
-        </menu>
+    </menu>
     </item>
 </menu>

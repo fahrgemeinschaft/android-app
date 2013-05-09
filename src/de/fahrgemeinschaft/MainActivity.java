@@ -12,11 +12,11 @@ import java.util.Date;
 import org.teleportr.ConnectorService;
 import org.teleportr.Ride;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,7 +25,11 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
 
-public class MainActivity extends Activity implements OnClickListener {
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
+public class MainActivity extends SherlockActivity implements OnClickListener {
 
     protected static final String TAG = "fahrgemeinschaft";
     private static final int FROM = 42;
@@ -41,6 +45,7 @@ public class MainActivity extends Activity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        PreferenceManager.setDefaultValues(this, R.xml.settings, false);
 
         from_btn = (Button) findViewById(R.id.btn_autocomplete_from);
         to_btn = (Button) findViewById(R.id.btn_autocomplete_to);
@@ -60,9 +65,9 @@ public class MainActivity extends Activity implements OnClickListener {
             setToButtonText(Uri.parse("content://de.fahrgemeinschaft/places/"
                     + savedInstanceState.getInt("to_id")));
         }
-        startActivity(new Intent(Intent.ACTION_VIEW,
-                Uri.parse("content://" + getPackageName() + "/rides" +
-                        "?from_id=1&to_id=2")));
+//        startActivity(new Intent(Intent.ACTION_VIEW,
+//                Uri.parse("content://" + getPackageName() + "/rides" +
+//                        "?from_id=1&to_id=2")));
     }
 
     @Override
@@ -189,6 +194,31 @@ public class MainActivity extends Activity implements OnClickListener {
         view.startAnimation(fade_in);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getSupportMenuInflater().inflate(R.menu.action_bar, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.settings:
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        case R.id.profile:
+            startActivity(new Intent(this, SettingsActivity.class)
+                    .putExtra("profile", true));
+            return true;
+        case android.R.id.home:
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

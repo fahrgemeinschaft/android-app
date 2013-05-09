@@ -13,7 +13,6 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.LabeledIntent;
 import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
@@ -23,7 +22,6 @@ import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents.Insert;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -31,7 +29,6 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -197,8 +194,15 @@ public class ResultsActivity extends SherlockFragmentActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Toast.makeText(this, "hey", Toast.LENGTH_LONG).show();
-        return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+        case android.R.id.home:
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
