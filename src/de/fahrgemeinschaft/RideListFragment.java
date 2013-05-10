@@ -20,6 +20,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -33,6 +35,8 @@ public class RideListFragment extends SherlockListFragment {
     private static final SimpleDateFormat day = new SimpleDateFormat("EE");
     private static final SimpleDateFormat date = new SimpleDateFormat("dd.MM");
     private static SimpleDateFormat time = new SimpleDateFormat("HH:mm");
+    private boolean spin = true;
+    private View wheel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,13 +58,15 @@ public class RideListFragment extends SherlockListFragment {
             private String[] split;
 
             @Override
-            public View newView(Context arg0, Cursor arg1, ViewGroup parent) {
-                return getLayoutInflater(null).inflate(
-                        R.layout.view_ride_list_entry, parent, false);
+            public View newView(Context ctx, Cursor rides, ViewGroup parent) {
+                    return getLayoutInflater(null).inflate(
+                            R.layout.view_ride_list_entry, parent, false);
             }
 
             @Override
             public void bindView(View view, Context ctx, Cursor ride) {
+                if (ride.getPosition() == ride.getCount()) return;
+
                 RideView v = (RideView) view;
 
                 v.from_place.setText(ride.getString(1));
@@ -113,21 +119,38 @@ public class RideListFragment extends SherlockListFragment {
             }
 
             @Override
-            public View getView(int pos, View v, ViewGroup p) {
+            public View getView(int pos, View v, ViewGroup parent) {
                 if (pos < getCount() - 1)
-                    return super.getView(pos, v, p);
+                    return super.getView(pos, v, parent);
                 else {
-                    ProgressBar progress = new ProgressBar(getActivity());
-                    progress.setLayoutParams(new ListView.LayoutParams(
-                            LayoutParams.MATCH_PARENT, 120));
-                    progress.setPadding(190, 10, 190, 10);
-                    return progress;
+                    if (v == null) {
+                        v = getLayoutInflater(null).inflate(
+                                R.layout.loading, parent, false);
+                        wheel = v.findViewById(R.id.progress);
+                    }
+                    if (pos % 2 == 0) {
+                        v.setBackgroundColor(getResources().getColor(
+                                R.color.medium_green));
+                    } else {
+                        v.setBackgroundColor(getResources().getColor(
+                                R.color.light_green));
+                    }
+                    return v;
                 }
             }
         });
         getListView().setFocusableInTouchMode(true);
     }
 
+    public void startSpinningWheel() {
+        if (wheel != null) wheel.setVisibility(View.VISIBLE);
+        spin = false;
+    }
+
+    public void stopSpinningWheel() {
+        if (wheel != null) wheel.setVisibility(View.INVISIBLE);
+        spin = true;
+    }
 
 
     public interface ListItemClicker {

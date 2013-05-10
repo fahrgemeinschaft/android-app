@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Fahrgemeinschaft / Ridesharing App
+  Copyright (c) 2013 by it's authors.
+  Some rights reserved. See LICENSE.. 
+-->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="3dp" >
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="64dip"
+        android:layout_height="64dip"
+        android:layout_gravity="center" />
+
+</FrameLayout>

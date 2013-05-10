@@ -73,6 +73,7 @@ public class ResultsActivity extends SherlockFragmentActivity
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle arg1) {
+        list.startSpinningWheel();
         return new CursorLoader(this, uri, null, null, null, null);
     }
 
@@ -81,6 +82,8 @@ public class ResultsActivity extends SherlockFragmentActivity
         ((CursorAdapter) list.getListAdapter()).swapCursor(rides);
         Log.d(TAG, "got results: " + rides.getCount());
         details.setCursor(rides);
+        if (rides.getCount() > 0)
+            list.stopSpinningWheel();
     }
 
     @Override
@@ -200,9 +203,10 @@ public class ResultsActivity extends SherlockFragmentActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case android.R.id.home:
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
+            finish();
+//            Intent intent = new Intent(this, MainActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            startActivity(intent);
             return true;
         default:
             return super.onOptionsItemSelected(item);

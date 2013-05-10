@@ -118,15 +118,16 @@ public class FahrgemeinschaftConnector extends Connector {
 
     private Date parseTimestamp(JSONObject json) throws JSONException {
 //              new Date(Long.parseLong(ride.getString("Enterdate"));
-        String departure = "000000000000";
+        String departure = "0000";
         if (!json.isNull("Starttime")) {
             departure = json.getString("Starttime");
             if (departure.length() == 3)
                 departure = "0" + departure;
-            departure = json.getString("Startdate") + departure;
+//            departure = json.getString("Startdate") + departure;
         } else {
             System.out.println("no start time!");
         }
+        departure = df.format(new Date()) + departure;
         try {
             return fulldf.parse(departure);
         } catch (ParseException e) {
