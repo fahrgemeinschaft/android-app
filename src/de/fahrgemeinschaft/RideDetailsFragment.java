@@ -104,7 +104,6 @@ public class RideDetailsFragment extends SherlockFragment {
                 return position;
             }
         });
-        pager.setOnPageChangeListener((OnPageChangeListener) getActivity());
     }
 
     public void setCursor(Cursor cursor) {
@@ -118,6 +117,7 @@ public class RideDetailsFragment extends SherlockFragment {
     public void onResume() {
         super.onResume();
         pager.setCurrentItem(((ResultsActivity) getActivity()).selected);
+        pager.setOnPageChangeListener((OnPageChangeListener) getActivity());
     }
 
     static class RideView extends RelativeLayout implements LoaderCallbacks<Cursor>{
