@@ -6,8 +6,9 @@
 -->
 
 <resources>
+    <string name="from">von</string>
+    <string name="to">nach</string>
 
-    <string name="my_rides">Meine Fahrten</string>
     <string name="profile">Profil</string>
     <string name="settings">Einstellungen</string>
 

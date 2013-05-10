@@ -9,6 +9,9 @@
 
     <string name="app_name">Fahrgemeinschaft</string>
 
+    <string name="from">from</string>
+    <string name="to">to</string>
+
     <string name="my_rides">My Rides</string>
     <string name="profile">Profile</string>
     <string name="settings">Settings</string>
