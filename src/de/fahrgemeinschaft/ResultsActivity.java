@@ -92,8 +92,12 @@ public class ResultsActivity extends SherlockFragmentActivity
     public void onListItemClick(int position) {
         selected = position;
         getSupportFragmentManager().beginTransaction()
+            .addToBackStack(null)
+            .setCustomAnimations(
+                    R.anim.scale_up, R.anim.do_nix,
+                    R.anim.do_nix, R.anim.scale_down)
             .replace(R.id.container, details, null)
-            .addToBackStack(null).commit();
+            .commit();
     }
 
     @Override
