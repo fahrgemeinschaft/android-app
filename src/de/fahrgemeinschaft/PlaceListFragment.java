@@ -124,9 +124,13 @@ public class PlaceListFragment extends ListFragment
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor places) {
         adapter.swapCursor(places);
-        if (loader.getId() == LOCAL && search_field.getVisibility() == 0) {
-            getActivity().getSupportLoaderManager()
-                    .restartLoader(GPLACES, null, this);
+        if (loader.getId() == LOCAL) {
+            if (search_field.getVisibility() == View.VISIBLE) {
+                getActivity().getSupportLoaderManager()
+                .restartLoader(GPLACES, null, this);
+            } else if (places.getCount() == 0) {
+                toggleSearchField();
+            }
         } else {
             wheel.setVisibility(View.GONE);
         }

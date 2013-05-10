@@ -160,7 +160,7 @@ public class RideDetailsFragment extends SherlockFragment {
         @Override
         public void onLoadFinished(Loader<Cursor> l, Cursor c) {
             Log.d(TAG, "finished loading subrides " + l.getId());
-            for (int i = 2; i < c.getCount(); i++) {
+            for (int i = 1; i < c.getCount(); i++) {
                 c.moveToPosition(i);
                 TextView tv = new TextView(getContext());
                 tv.setText(c.getString(2));
@@ -168,13 +168,13 @@ public class RideDetailsFragment extends SherlockFragment {
                 tv.setTextAppearance(getContext(), R.style.dark);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                         LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-                float density = getContext().getResources().getDisplayMetrics()
-                        .density;
+                float density = getContext().getResources()
+                        .getDisplayMetrics().density;
                 lp.leftMargin = (int) (density * 21);
-                if (i == 2)
+                if (i == 1)
                     lp.topMargin = (int) (density * 3); 
                 tv.setLayoutParams(lp);
-                content.addView(tv, i - 1);
+                content.addView(tv, i);
                 Log.d(TAG, c.getString(1) + " --> " + c.getString(3));
             }
         }
