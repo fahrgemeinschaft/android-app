@@ -47,11 +47,12 @@ public class FahrgemeinschaftConnector extends Connector {
             from_json.put("Latitude", "" + from.getLat());
             from_json.put("Startdate", df.format(dep));
             from_json.put("Reoccur", JSONObject.NULL);
+            from_json.put("ToleranceRadius", "15");
             // place.put("Starttime", JSONObject.NULL);
 
             to_json.put("Longitude", "" + to.getLng());
             to_json.put("Latitude", "" + to.getLat());
-            // place.put("ToleranceRadius", "25");
+            to_json.put("ToleranceRadius", "25");
             // place.put("ToleranceDays", "3");
         } catch (JSONException e) {
             e.printStackTrace();
