@@ -98,6 +98,8 @@ public class PlaceListFragment extends ListFragment
         } else {
             search_field.setVisibility(View.GONE);
             toggle.setImageResource(android.R.drawable.ic_menu_search);
+            if (getListView().getAdapter().getCount() == 0)
+                getActivity().finish();
         }
         ((InputMethodManager) getActivity().getSystemService(Context
                 .INPUT_METHOD_SERVICE)).toggleSoftInput(0, 0);
