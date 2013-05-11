@@ -15,6 +15,7 @@
     />
     
     <item
+        android:title="overflow"
         android:icon="@drawable/ic_my_rides"
         android:showAsAction="always|withText" >
     <menu >
