@@ -1,6 +1,6 @@
-Android Foo App
+### [Fahrgemeinschaft](http://fahrgemeinschaft.de) Android App
 
-    Copyright (C) 2013 by it's authors.
+    Copyright (C) 2013 by it's authors. Some rights reserved. See LICENSE
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
