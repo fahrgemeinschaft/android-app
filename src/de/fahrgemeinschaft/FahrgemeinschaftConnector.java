@@ -29,6 +29,8 @@ import android.content.Context;
 
 public class FahrgemeinschaftConnector extends Connector {
 
+    private String startDate;
+
     public FahrgemeinschaftConnector(Context ctx) {
         super(ctx);
     }
@@ -38,7 +40,9 @@ public class FahrgemeinschaftConnector extends Connector {
     static final SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
 
     @Override
-    public void getRides(Place from, Place to, Date dep, Date arr) {
+    public long getRides(Place from, Place to, Date dep, Date arr) {
+        
+        startDate = df.format(dep);
 
         JSONObject from_json = new JSONObject();
         JSONObject to_json = new JSONObject();
@@ -60,18 +64,19 @@ public class FahrgemeinschaftConnector extends Connector {
 
         JSONObject json = loadJson("http://service.fahrgemeinschaft.de/trip?"
                 + "searchOrigin=" + from_json + "&searchDestination=" + to_json);
-        if (json == null) return;
-
-        try {
-            JSONArray results = json.getJSONArray("results");
-            System.out.println("FOUND " + results.length() + " rides");
-
-            for (int i = 0; i < results.length(); i++) {
-                store(parseRide(results.getJSONObject(i)));
+        if (json != null) {
+            try {
+                JSONArray results = json.getJSONArray("results");
+                System.out.println("FOUND " + results.length() + " rides");
+                
+                for (int i = 0; i < results.length(); i++) {
+                    store(parseRide(results.getJSONObject(i)));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
+        return dep.getTime() + 24 * 3600 * 1000;
     }
 
     private Ride parseRide(JSONObject json)  throws JSONException {
@@ -128,7 +133,7 @@ public class FahrgemeinschaftConnector extends Connector {
         } else {
             System.out.println("no start time!");
         }
-        departure = df.format(new Date()) + departure;
+        departure = startDate + departure;
         try {
             return fulldf.parse(departure);
         } catch (ParseException e) {

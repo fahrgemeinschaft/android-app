@@ -8,6 +8,10 @@
 package de.fahrgemeinschaft;
 
 import java.util.ArrayList;
+import java.util.Date;
+
+import org.teleportr.ConnectorService;
+import org.teleportr.Ride;
 
 import android.content.ComponentName;
 import android.content.Intent;
@@ -41,6 +45,7 @@ public class ResultsActivity extends SherlockFragmentActivity
             ListItemClicker, OnPageChangeListener {
 
     private static final String TAG = "Results";
+    protected static final int RIDES = -1;
     private RideListFragment list;
     private Uri uri;
     private RideDetailsFragment details;
@@ -62,10 +67,10 @@ public class ResultsActivity extends SherlockFragmentActivity
                     @Override
                     public void onChange(boolean selfChange) {
                         getSupportLoaderManager()
-                                .restartLoader(0, null, ResultsActivity.this);
+                                .restartLoader(RIDES, null, ResultsActivity.this);
                     }
                 });
-        getSupportLoaderManager().initLoader(0, null, this);
+        getSupportLoaderManager().initLoader(RIDES, null, this);
         if (savedInstanceState != null) {
             selected = savedInstanceState.getInt("selected");
         }
@@ -79,11 +84,13 @@ public class ResultsActivity extends SherlockFragmentActivity
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor rides) {
+        if(rides.isClosed()) {
+            Log.d(TAG, "CURSOR RETURNED CLOSED");
+        }
         ((CursorAdapter) list.getListAdapter()).swapCursor(rides);
-        Log.d(TAG, "got results: " + rides.getCount());
+        Log.d(TAG, "got rides: " + rides.getCount());
+        getSupportLoaderManager().restartLoader(0, null, list);
         details.setCursor(rides);
-        if (rides.getCount() > 0)
-            list.stopSpinningWheel();
     }
 
     @Override
@@ -93,14 +100,29 @@ public class ResultsActivity extends SherlockFragmentActivity
 
     @Override
     public void onListItemClick(int position) {
-        selected = position;
-        getSupportFragmentManager().beginTransaction()
+        Cursor cursor = ((CursorAdapter)list.getListView().getAdapter()).getCursor();
+        if (position == cursor.getCount()) {
+            cursor.moveToLast();
+            long latest_dep = cursor.getLong(5);
+            Log.d(TAG, "continue to search beond " +latest_dep);
+            new Ride().type(Ride.SEARCH)
+                .from(Integer.parseInt(uri.getQueryParameter("from_id")))
+                .to(Integer.parseInt(uri.getQueryParameter("to_id")))
+                .dep(new Date())
+                .arr(new Date(latest_dep + 2*24*3600*1000))
+                .store(this);
+            startService(new Intent(this, ConnectorService.class)
+                    .setAction(ConnectorService.SEARCH));
+        } else {
+            selected = position;
+            getSupportFragmentManager().beginTransaction()
             .addToBackStack(null)
             .setCustomAnimations(
                     R.anim.scale_up, R.anim.do_nix,
                     R.anim.do_nix, R.anim.scale_down)
-            .replace(R.id.container, details, null)
-            .commit();
+                    .replace(R.id.container, details, null)
+                    .commit();
+        }
     }
 
     @Override

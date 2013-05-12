@@ -25,7 +25,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -38,9 +37,8 @@ public class RideDetailsFragment extends SherlockFragment {
     private static final SimpleDateFormat day = new SimpleDateFormat("EE");
     private static final SimpleDateFormat date = new SimpleDateFormat("dd.MM");
     private static SimpleDateFormat time = new SimpleDateFormat("HH:mm");
-    ViewPager pager;
+    private ViewPager pager;
     private Cursor cursor;
-    private int current;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

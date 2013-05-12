@@ -108,10 +108,11 @@ public class MainActivity extends SherlockActivity implements OnClickListener {
                     .from(from_id)
                     .to(to_id)
                     .dep(new Date())
+                    .arr(new Date(System.currentTimeMillis() + 2*24*3600*1000))
                     .store(this);
                 // Toast.makeText(this, "yay", 200).show();
                 startService(new Intent(this, ConnectorService.class)
-                .setAction(ConnectorService.SEARCH));
+                        .setAction(ConnectorService.SEARCH));
                 startActivity(new Intent(Intent.ACTION_VIEW,
                         Uri.parse("content://" + getPackageName() + "/rides" +
                                 "?from_id=" + from_id + "&to_id=" + to_id)));

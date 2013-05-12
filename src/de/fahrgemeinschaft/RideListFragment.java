@@ -12,31 +12,34 @@ import java.util.Date;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 
-public class RideListFragment extends SherlockListFragment {
+public class RideListFragment extends SherlockListFragment
+        implements LoaderCallbacks<Cursor> {
 
     private static final String TAG = "Fahrgemeinschaft";
     private static final SimpleDateFormat day = new SimpleDateFormat("EE");
     private static final SimpleDateFormat date = new SimpleDateFormat("dd.MM");
     private static SimpleDateFormat time = new SimpleDateFormat("HH:mm");
-    private boolean spin = true;
     private View wheel;
+    private boolean spin;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -127,6 +130,7 @@ public class RideListFragment extends SherlockListFragment {
                         v = getLayoutInflater(null).inflate(
                                 R.layout.loading, parent, false);
                         wheel = v.findViewById(R.id.progress);
+                        if (spin) startSpinningWheel();
                     }
                     if (pos % 2 == 0) {
                         v.setBackgroundColor(getResources().getColor(
@@ -143,13 +147,44 @@ public class RideListFragment extends SherlockListFragment {
     }
 
     public void startSpinningWheel() {
-        if (wheel != null) wheel.setVisibility(View.VISIBLE);
-        spin = false;
+        if (wheel != null) {
+            final RotateAnimation rotateAnimation = new RotateAnimation(
+                    0f, 360f, Animation.RELATIVE_TO_SELF,
+                    0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            rotateAnimation.setDuration(600);
+            rotateAnimation.setRepeatMode(Animation.RESTART);
+            rotateAnimation.setRepeatCount(Animation.INFINITE);
+            wheel.startAnimation(rotateAnimation);
+        }
+        spin = true;
     }
 
     public void stopSpinningWheel() {
-        if (wheel != null) wheel.setVisibility(View.INVISIBLE);
-        spin = true;
+        if (wheel != null) {
+            wheel.clearAnimation();
+        }
+        spin = false;
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle b) {
+        System.out.println("query jobs");
+        return new CursorLoader(getActivity(), Uri.parse(
+                "content://" + getActivity().getPackageName() + "/jobs/rides"),
+                null, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> l, Cursor jobs) {
+        System.out.println(" jobs " + jobs.getCount());
+        if (jobs.getCount() == 0) {
+            stopSpinningWheel();
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> arg0) {
+        Log.d(TAG, "onLoaderReset in RideListFragment");
     }
 
 
@@ -193,4 +228,5 @@ public class RideListFragment extends SherlockListFragment {
             time = (TextView) findViewById(R.id.time);
         }
     }
+
 }
