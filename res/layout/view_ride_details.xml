@@ -6,10 +6,10 @@
 -->
 
 <view xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:layout_height="match_parent"
     class="de.fahrgemeinschaft.RideDetailsFragment$RideView"
     android:background="@color/light_green_translucent"
-    android:padding="3dp" >
+    android:padding="13dp" >
 
     <LinearLayout
         android:id="@+id/row"
@@ -97,9 +97,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/btn_mark"
-        android:layout_below="@id/row"
-        android:paddingRight="13dp"
-        android:paddingLeft="13dp" >
+        android:layout_below="@id/row" >
 
         <LinearLayout
             android:id="@+id/content"
@@ -107,20 +105,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <TextView
+            <include
                 android:id="@+id/from_place"
-                style="@style/dark"
-                android:layout_width="match_parent"
-                android:layout_marginTop="3dp"
-                android:background="@color/medium_green" />
+                layout="@layout/view_place_in_ride_details"
+                android:layout_width="match_parent" />
 
-            <TextView
+            <include
                 android:id="@+id/to_place"
-                style="@style/dark"
-                android:layout_width="match_parent"
-                android:layout_marginTop="3dp"
-                android:background="@color/medium_green" />
-
+                layout="@layout/view_place_in_ride_details"
+                android:layout_width="match_parent" />
+            
             <TextView
                 android:id="@+id/details"
                 android:layout_width="match_parent"

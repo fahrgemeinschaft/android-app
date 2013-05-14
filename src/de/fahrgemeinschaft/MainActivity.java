@@ -65,9 +65,9 @@ public class MainActivity extends SherlockActivity implements OnClickListener {
             setToButtonText(Uri.parse("content://de.fahrgemeinschaft/places/"
                     + savedInstanceState.getInt("to_id")));
         }
-//        startActivity(new Intent(Intent.ACTION_VIEW,
-//                Uri.parse("content://" + getPackageName() + "/rides" +
-//                        "?from_id=1&to_id=2")));
+        startActivity(new Intent(Intent.ACTION_VIEW,
+                Uri.parse("content://" + getPackageName() + "/rides" +
+                        "?from_id=1&to_id=2")));
     }
 
     @Override

@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -137,8 +138,10 @@ public class RideDetailsFragment extends SherlockFragment {
         @Override
         protected void onFinishInflate() {
             super.onFinishInflate();
-            from_place = (TextView) findViewById(R.id.from_place);
-            to_place = (TextView) findViewById(R.id.to_place);
+            from_place = (TextView)
+                    ((FrameLayout) findViewById(R.id.from_place)).getChildAt(1);
+            to_place = (TextView)
+                    ((FrameLayout) findViewById(R.id.to_place)).getChildAt(1);
             seats = (TextView) findViewById(R.id.seats);
             price = (TextView) findViewById(R.id.price);
             day = (TextView) findViewById(R.id.day);
