@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -140,8 +141,10 @@ public class RideDetailsFragment extends SherlockFragment {
             super.onFinishInflate();
             from_place = (TextView)
                     ((FrameLayout) findViewById(R.id.from_place)).getChildAt(1);
-            to_place = (TextView)
-                    ((FrameLayout) findViewById(R.id.to_place)).getChildAt(1);
+            FrameLayout to = (FrameLayout) findViewById(R.id.to_place);
+            to_place = (TextView) to.getChildAt(1);
+            ((ImageView)to.getChildAt(0)).setImageResource(R.drawable.shape_to);
+            
             seats = (TextView) findViewById(R.id.seats);
             price = (TextView) findViewById(R.id.price);
             day = (TextView) findViewById(R.id.day);
@@ -163,19 +166,21 @@ public class RideDetailsFragment extends SherlockFragment {
             Log.d(TAG, "finished loading subrides " + l.getId());
             for (int i = 1; i < c.getCount(); i++) {
                 c.moveToPosition(i);
-                TextView tv = new TextView(getContext());
-                tv.setText(c.getString(2));
-                tv.setBackgroundResource(R.color.medium_green);
-                tv.setTextAppearance(getContext(), R.style.dark);
+                FrameLayout view = (FrameLayout)
+                        LayoutInflater.from(getContext())
+                        .inflate(R.layout.view_place_bubble, null, false);
+                ((TextView) view.getChildAt(1)).setText(c.getString(2));
+                ((ImageView) view.getChildAt(0))
+                        .setImageResource(R.drawable.shape_via);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                         LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-                float density = getContext().getResources()
-                        .getDisplayMetrics().density;
-                lp.leftMargin = (int) (density * 21);
-                if (i == 1)
-                    lp.topMargin = (int) (density * 3); 
-                tv.setLayoutParams(lp);
-                content.addView(tv, i);
+//                float density = getContext().getResources()
+//                        .getDisplayMetrics().density;
+//                lp.leftMargin = (int) (density * 21);
+//                if (i == 1)
+//                    lp.topMargin = (int) (density * 3); 
+                view.setLayoutParams(lp);
+                content.addView(view, i);
                 Log.d(TAG, c.getString(1) + " --> " + c.getString(3));
             }
         }

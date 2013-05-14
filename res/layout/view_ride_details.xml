@@ -107,12 +107,12 @@
 
             <include
                 android:id="@+id/from_place"
-                layout="@layout/view_place_in_ride_details"
+                layout="@layout/view_place_bubble"
                 android:layout_width="match_parent" />
 
             <include
                 android:id="@+id/to_place"
-                layout="@layout/view_place_in_ride_details"
+                layout="@layout/view_place_bubble"
                 android:layout_width="match_parent" />
             
             <TextView
