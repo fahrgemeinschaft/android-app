@@ -43,7 +43,7 @@ public class PlacePickActivity extends FragmentActivity implements
 
         setResult(RESULT_OK, new Intent("", uri));
         finish();
-        if (getIntent().getData().getQueryParameter("from") == null)
+        if (getIntent().getData().getQueryParameter("from_id") == null)
             overridePendingTransition(R.anim.do_nix, R.anim.slide_out_left);
         else
             overridePendingTransition(R.anim.do_nix, R.anim.slide_out_right);
@@ -56,7 +56,7 @@ public class PlacePickActivity extends FragmentActivity implements
     public void onBackPressed() {
         setResult(RESULT_CANCELED);
         finish();
-        if (getIntent().getData().getQueryParameter("from") == null)
+        if (getIntent().getData().getQueryParameter("from_id") == null)
             overridePendingTransition(R.anim.do_nix, R.anim.slide_out_left);
         else
             overridePendingTransition(R.anim.do_nix, R.anim.slide_out_right);
