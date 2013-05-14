@@ -47,9 +47,10 @@ public class ResultsActivity extends SherlockFragmentActivity
     private static final String TAG = "Results";
     protected static final int RIDES = -1;
     private RideListFragment list;
-    private Uri uri;
+    private Uri search_uri;
     private RideDetailsFragment details;
     int selected;
+    private Ride query_ride;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,15 +62,16 @@ public class ResultsActivity extends SherlockFragmentActivity
                 .findFragmentById(R.id.rides);
         details = new RideDetailsFragment();
 
-        uri = getIntent().getData();
-        getContentResolver().registerContentObserver(uri, false,
-                new ContentObserver(new Handler()) {
-                    @Override
-                    public void onChange(boolean selfChange) {
-                        getSupportLoaderManager()
-                                .restartLoader(RIDES, null, ResultsActivity.this);
-                    }
-                });
+        search_uri = getIntent().getData();
+        query_ride = new Ride(search_uri);
+//        getContentResolver().registerContentObserver(search_uri, false,
+//                new ContentObserver(new Handler()) {
+//                    @Override
+//                    public void onChange(boolean selfChange) {
+//                        getSupportLoaderManager()
+//                                .restartLoader(RIDES, null, ResultsActivity.this);
+//                    }
+//                });
         getSupportLoaderManager().initLoader(RIDES, null, this);
         if (savedInstanceState != null) {
             selected = savedInstanceState.getInt("selected");
@@ -79,14 +81,11 @@ public class ResultsActivity extends SherlockFragmentActivity
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle arg1) {
         list.startSpinningWheel();
-        return new CursorLoader(this, uri, null, null, null, null);
+        return new CursorLoader(this, search_uri, null, null, null, null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor rides) {
-        if(rides.isClosed()) {
-            Log.d(TAG, "CURSOR RETURNED CLOSED");
-        }
         ((CursorAdapter) list.getListAdapter()).swapCursor(rides);
         Log.d(TAG, "got rides: " + rides.getCount());
         getSupportLoaderManager().restartLoader(0, null, list);
@@ -102,15 +101,10 @@ public class ResultsActivity extends SherlockFragmentActivity
     public void onListItemClick(int position) {
         Cursor cursor = ((CursorAdapter)list.getListView().getAdapter()).getCursor();
         if (position == cursor.getCount()) {
-            cursor.moveToLast();
-            long latest_dep = cursor.getLong(5);
-            Log.d(TAG, "continue to search beond " +latest_dep);
-            new Ride().type(Ride.SEARCH)
-                .from(Integer.parseInt(uri.getQueryParameter("from_id")))
-                .to(Integer.parseInt(uri.getQueryParameter("to_id")))
-                .dep(new Date())
-                .arr(new Date(latest_dep + 2*24*3600*1000))
-                .store(this);
+            Log.d(TAG, " search later than " +query_ride.getArr());
+            query_ride.arr(query_ride.getArr() + 2*24*3600*1000);
+            search_uri = query_ride.store(this);
+            list.startSpinningWheel();
             startService(new Intent(this, ConnectorService.class)
                     .setAction(ConnectorService.SEARCH));
         } else {

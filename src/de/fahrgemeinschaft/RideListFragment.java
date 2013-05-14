@@ -38,7 +38,6 @@ public class RideListFragment extends SherlockListFragment
     private static final SimpleDateFormat day = new SimpleDateFormat("EE");
     private static final SimpleDateFormat date = new SimpleDateFormat("dd.MM");
     private static SimpleDateFormat time = new SimpleDateFormat("HH:mm");
-    private View wheel;
     private boolean spin;
 
     @Override
@@ -129,8 +128,8 @@ public class RideListFragment extends SherlockListFragment
                     if (v == null) {
                         v = getLayoutInflater(null).inflate(
                                 R.layout.loading, parent, false);
-                        wheel = v.findViewById(R.id.progress);
                         if (spin) startSpinningWheel();
+                        else stopSpinningWheel();
                     }
                     if (pos % 2 == 0) {
                         v.setBackgroundColor(getResources().getColor(
@@ -147,6 +146,7 @@ public class RideListFragment extends SherlockListFragment
     }
 
     public void startSpinningWheel() {
+        View wheel = getListView().findViewById(R.id.progress);
         if (wheel != null) {
             final RotateAnimation rotateAnimation = new RotateAnimation(
                     0f, 360f, Animation.RELATIVE_TO_SELF,
@@ -160,6 +160,7 @@ public class RideListFragment extends SherlockListFragment
     }
 
     public void stopSpinningWheel() {
+        View wheel = getListView().findViewById(R.id.progress);
         if (wheel != null) {
             wheel.clearAnimation();
         }
