@@ -144,7 +144,6 @@ public class RideDetailsFragment extends SherlockFragment {
             FrameLayout to = (FrameLayout) findViewById(R.id.to_place);
             to_place = (TextView) to.getChildAt(1);
             ((ImageView)to.getChildAt(0)).setImageResource(R.drawable.shape_to);
-            
             seats = (TextView) findViewById(R.id.seats);
             price = (TextView) findViewById(R.id.price);
             day = (TextView) findViewById(R.id.day);

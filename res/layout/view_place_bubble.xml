@@ -13,11 +13,10 @@
     <TextView
         style="@style/dark"
         android:layout_marginLeft="21dp"
-        android:layout_marginBottom="1dp"
         android:background="@color/medium_green"
         android:layout_gravity="center_vertical"
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_height="25dp"
         android:text="foo" />
 
 </FrameLayout>

@@ -21,7 +21,7 @@
             android:thickness="2dp"
             android:useLevel="false" >
             <size
-                android:height="25dp"
+                android:height="26dp"
                 android:width="21dp" />
 
             <solid android:color="@color/light_green" />
