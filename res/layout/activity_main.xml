@@ -110,7 +110,7 @@
     <Button
         android:id="@+id/btn_mitfahren"
         android:layout_width="140dp"
-        android:layout_height="89dp"
+        android:layout_height="80dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/btn_datepicker"
         android:layout_marginTop="21dp"
@@ -119,7 +119,7 @@
     <Button
         android:id="@+id/btn_selberfahren"
         android:layout_width="140dp"
-        android:layout_height="89dp"
+        android:layout_height="80dp"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/btn_datepicker"
         android:layout_marginTop="21dp"
