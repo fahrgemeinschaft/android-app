@@ -168,7 +168,7 @@ public class RideDetailsFragment extends SherlockFragment {
                 FrameLayout view = (FrameLayout)
                         LayoutInflater.from(getContext())
                         .inflate(R.layout.view_place_bubble, null, false);
-                ((TextView) view.getChildAt(1)).setText(c.getString(2));
+                ((TextView) view.getChildAt(1)).setText("- " + c.getString(2));
                 ((ImageView) view.getChildAt(0))
                         .setImageResource(R.drawable.shape_via);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
