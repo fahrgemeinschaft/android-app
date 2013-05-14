@@ -226,7 +226,9 @@ public class ResultsActivity extends SherlockFragmentActivity
                     .putExtra("profile", true));
             return true;
         case android.R.id.home:
-            finish();
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0)
+                getSupportFragmentManager().popBackStack();
+            else finish();
 //            Intent intent = new Intent(this, MainActivity.class);
 //            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //            startActivity(intent);
