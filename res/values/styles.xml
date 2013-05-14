@@ -61,7 +61,7 @@
         <item name="android:textSize">28sp</item>
     </style>
     
-    <color name="light_green_translucent">#99BCE053</color>
+    <color name="light_green_translucent">#EEBCE053</color>
     <color name="light_green">#BCE053</color>
     <color name="medium_green">#89A33C</color>
     <color name="dark_green">#667A2D</color>
