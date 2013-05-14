@@ -7,6 +7,7 @@
 
 package de.fahrgemeinschaft;
 
+import java.security.acl.LastOwnerException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -46,6 +47,7 @@ public class ResultsActivity extends SherlockFragmentActivity
 
     private static final String TAG = "Results";
     protected static final int RIDES = -1;
+    private static final int JOBS = 0;
     private RideListFragment list;
     private Uri search_uri;
     private RideDetailsFragment details;
@@ -64,14 +66,6 @@ public class ResultsActivity extends SherlockFragmentActivity
 
         search_uri = getIntent().getData();
         query_ride = new Ride(search_uri);
-//        getContentResolver().registerContentObserver(search_uri, false,
-//                new ContentObserver(new Handler()) {
-//                    @Override
-//                    public void onChange(boolean selfChange) {
-//                        getSupportLoaderManager()
-//                                .restartLoader(RIDES, null, ResultsActivity.this);
-//                    }
-//                });
         getSupportLoaderManager().initLoader(RIDES, null, this);
         if (savedInstanceState != null) {
             selected = savedInstanceState.getInt("selected");
@@ -87,9 +81,15 @@ public class ResultsActivity extends SherlockFragmentActivity
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor rides) {
         ((CursorAdapter) list.getListAdapter()).swapCursor(rides);
+        getSupportLoaderManager().restartLoader(JOBS, null, list);
         Log.d(TAG, "got rides: " + rides.getCount());
-        getSupportLoaderManager().restartLoader(0, null, list);
         details.setCursor(rides);
+        if (rides.getCount() > 0) {
+            rides.moveToLast();
+            long latest_dep = rides.getLong(5);
+            if (latest_dep > query_ride.getArr())
+                query_ride.arr(latest_dep);
+        }
     }
 
     @Override

@@ -39,6 +39,7 @@ public class RideListFragment extends SherlockListFragment
     private static final SimpleDateFormat date = new SimpleDateFormat("dd.MM");
     private static SimpleDateFormat time = new SimpleDateFormat("HH:mm");
     private boolean spin;
+    private View wheel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -146,7 +147,7 @@ public class RideListFragment extends SherlockListFragment
     }
 
     public void startSpinningWheel() {
-        View wheel = getListView().findViewById(R.id.progress);
+        wheel = getListView().findViewById(R.id.progress);
         if (wheel != null) {
             final RotateAnimation rotateAnimation = new RotateAnimation(
                     0f, 360f, Animation.RELATIVE_TO_SELF,
@@ -160,10 +161,7 @@ public class RideListFragment extends SherlockListFragment
     }
 
     public void stopSpinningWheel() {
-        View wheel = getListView().findViewById(R.id.progress);
-        if (wheel != null) {
-            wheel.clearAnimation();
-        }
+        if (wheel != null) wheel.clearAnimation();
         spin = false;
     }
 

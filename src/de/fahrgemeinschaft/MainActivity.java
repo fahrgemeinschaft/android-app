@@ -103,19 +103,22 @@ public class MainActivity extends SherlockActivity implements OnClickListener {
 
         case R.id.btn_mitfahren:
             if (from_id != 0 && to_id != 0) {
+                long dep = System.currentTimeMillis();
                 new Ride()
                     .type(Ride.SEARCH)
                     .from(from_id)
                     .to(to_id)
-                    .dep(new Date())
+                    .dep(dep)
                     .arr(new Date(System.currentTimeMillis() + 2*24*3600*1000))
-                    .store(this);
+                .store(this);
                 // Toast.makeText(this, "yay", 200).show();
                 startService(new Intent(this, ConnectorService.class)
                         .setAction(ConnectorService.SEARCH));
                 startActivity(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("content://" + getPackageName() + "/rides" +
-                                "?from_id=" + from_id + "&to_id=" + to_id)));
+                        Uri.parse("content://" + getPackageName() + "/rides"
+                                + "?from_id=" + from_id
+                                + "&to_id=" + to_id
+                                + "&dep=" + dep)));
             }
             break;
         }
