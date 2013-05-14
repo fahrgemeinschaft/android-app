@@ -10,12 +10,12 @@
     <item
         android:left="9dp"
         android:right="9dp"
-        android:top="15dp" >
+        android:bottom="15dp" >
         <shape android:shape="rectangle" >
             <solid android:color="@color/light_green" />
         </shape>
     </item>
-    <item>
+        <item>
         <shape
             android:innerRadius="2dp"
             android:shape="ring"
@@ -28,5 +28,6 @@
             <solid android:color="@color/light_green" />
         </shape>
     </item>
+
 
 </layer-list>
