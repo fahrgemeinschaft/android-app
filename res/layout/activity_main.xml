@@ -82,12 +82,37 @@
         android:layout_marginRight="12.5dp"
         android:visibility="invisible" />
     
+    <Button 
+        android:id="@+id/btn_datepicker"
+        android:gravity="left|center_vertical"
+        android:layout_below="@+id/btn_autocomplete_to"
+        android:layout_alignLeft="@+id/btn_autocomplete_to"
+        android:layout_marginTop="21dp"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@drawable/btn_white"
+        android:paddingLeft="16dp"
+        android:singleLine="true"
+        android:textSize="28sp"
+        android:text="@string/pick_time" 
+        android:onClick="showTimePickerDialog" />
+    
+    <ImageButton
+        android:id="@+id/btn_pick_to"
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btn_datepicker"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/btn_datepicker"
+        android:background="@drawable/btn_white"
+        android:src="@drawable/icn_datepicker" />
+    
     <Button
         android:id="@+id/btn_mitfahren"
         android:layout_width="140dp"
         android:layout_height="89dp"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/btn_autocomplete_to"
+        android:layout_below="@+id/btn_datepicker"
         android:layout_marginTop="21dp"
         android:background="@drawable/btn_mitfahren" />
     
@@ -96,7 +121,7 @@
         android:layout_width="140dp"
         android:layout_height="89dp"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/btn_autocomplete_to"
+        android:layout_below="@+id/btn_datepicker"
         android:layout_marginTop="21dp"
         android:background="@drawable/btn_selberfahren" />
 

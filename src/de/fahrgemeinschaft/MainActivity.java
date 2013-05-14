@@ -12,6 +12,7 @@ import java.util.Date;
 import org.teleportr.ConnectorService;
 import org.teleportr.Ride;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -24,6 +25,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
+import android.widget.TimePicker;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
@@ -124,6 +126,26 @@ public class MainActivity extends SherlockActivity implements OnClickListener {
         }
     }
 
+    public static class TimePickerFragment extends DialogFragment
+    implements TimePickerDialog.OnTimeSetListener {
+
+    	@Override
+    	public Dialog onCreateDialog(Bundle savedInstanceState) {
+    		// Use the current time as the default values for the picker
+    		final Calendar c = Calendar.getInstance();
+    		int hour = c.get(Calendar.HOUR_OF_DAY);
+    		int minute = c.get(Calendar.MINUTE);
+
+    		// Create a new instance of TimePickerDialog and return it
+    		return new TimePickerDialog(getActivity(), this, hour, minute,
+    				DateFormat.is24HourFormat(getActivity()));
+    	}
+
+    	public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+    		// Do something with the time chosen by the user
+    	}
+    }
+    
     @Override
     protected void onActivityResult(int req, int res, final Intent intent) {
         if (res == RESULT_OK) {
