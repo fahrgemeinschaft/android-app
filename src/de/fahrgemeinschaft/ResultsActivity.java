@@ -7,9 +7,7 @@
 
 package de.fahrgemeinschaft;
 
-import java.security.acl.LastOwnerException;
 import java.util.ArrayList;
-import java.util.Date;
 
 import org.teleportr.ConnectorService;
 import org.teleportr.Ride;
@@ -18,11 +16,9 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.LabeledIntent;
 import android.content.pm.PackageManager;
-import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;
@@ -132,7 +128,7 @@ public class ResultsActivity extends SherlockFragmentActivity
         contact.putExtra(Insert.NAME, c.getString(1) + " -> " + c.getString(3));
         contact.putExtra(ContactsContract.Intents.EXTRA_FORCE_CREATE, true);
         ArrayList<Intent> intents = new ArrayList<Intent>();
-        String[] who = c.getString(7).split("; ");
+        String[] who = c.getString(7).split(";");
         for (int i = 0; i < who.length; i++) {
             String[] split = who[i].split("=");
             if (split.length > 1) {
