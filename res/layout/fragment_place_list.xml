@@ -8,7 +8,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="21dp"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin" >
 
@@ -42,12 +41,11 @@
 
     <ImageButton
         android:id="@+id/toggle"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_alignParentRight="true"
         android:layout_alignBottom="@android:id/list"
-        android:layout_margin="21dp"
-        android:layout_marginRight="21dp"
+        android:layout_marginBottom="21dp"
         android:background="@drawable/btn_black"
         android:src="@drawable/ic_menu_search" />
 

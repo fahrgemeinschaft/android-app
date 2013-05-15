@@ -108,30 +108,31 @@
         android:src="@drawable/icn_datepicker" />
     
     <Button
-        android:id="@+id/btn_mitfahren"
-        android:layout_width="140dp"
-        android:layout_height="80dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/btn_datepicker"
-        android:layout_marginTop="21dp"
-        android:background="@drawable/btn_mitfahren" />
-    
-    <Button
         android:id="@+id/btn_selberfahren"
         android:layout_width="140dp"
         android:layout_height="80dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/btn_datepicker"
-        android:layout_marginTop="21dp"
+        android:layout_alignRight="@+id/btn_datepicker"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
         android:background="@drawable/btn_selberfahren" />
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/logo_fahrgemeinschaft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_autocomplete_from"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:src="@drawable/logo_fahrgemeinschaft" />
+
+    <Button
+        android:id="@+id/btn_mitfahren"
+        android:layout_width="140dp"
+        android:layout_height="80dp"
+        android:layout_alignLeft="@+id/btn_datepicker"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/btn_mitfahren"
+        android:gravity="bottom" />
 
 </RelativeLayout>

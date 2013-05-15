@@ -7,26 +7,22 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     
-    <item android:id="@+id/my_rides"
+    <item 
+        android:id="@+id/my_rides"
         android:title="@string/my_rides"
-        android:icon="@drawable/ic_my_rides"
+        android:icon="@drawable/ic_topmenu_rides"
         android:alphabeticShortcut="m"
-        android:showAsAction="always|withText"
-    />
+        android:showAsAction="always|withText" />
     
-    <item
-        android:title="overflow"
-        android:icon="@drawable/ic_my_rides"
-        android:showAsAction="always|withText" >
-    <menu >
-            <item android:id="@+id/profile"
-                android:title="@string/profile"
-                android:icon="@drawable/ic_my_rides"
-            />
-            <item android:id="@+id/settings"
-                android:title="@string/settings"
-                android:icon="@drawable/ic_my_rides"
-            />
-    </menu>
-    </item>
+    <item 
+        android:id="@+id/profile"
+        android:title="@string/profile"
+        android:icon="@drawable/ic_topmenu_user"
+        android:showAsAction="always|withText" />
+    
+    <item 
+        android:id="@+id/settings"
+        android:title="@string/settings"
+        android:icon="@drawable/ic_topmenu_settings"
+        android:showAsAction="always|withText" />
 </menu>
