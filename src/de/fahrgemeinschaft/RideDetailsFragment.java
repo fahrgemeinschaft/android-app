@@ -173,11 +173,6 @@ public class RideDetailsFragment extends SherlockFragment {
                         .setImageResource(R.drawable.shape_via);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                         LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-//                float density = getContext().getResources()
-//                        .getDisplayMetrics().density;
-//                lp.leftMargin = (int) (density * 21);
-//                if (i == 1)
-//                    lp.topMargin = (int) (density * 3); 
                 view.setLayoutParams(lp);
                 content.addView(view, i);
                 Log.d(TAG, c.getString(1) + " --> " + c.getString(3));

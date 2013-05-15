@@ -110,12 +110,12 @@ public class ResultsActivity extends SherlockFragmentActivity
         } else {
             selected = position;
             getSupportFragmentManager().beginTransaction()
-            .addToBackStack(null)
             .setCustomAnimations(
-                    R.anim.scale_up, R.anim.do_nix,
-                    R.anim.do_nix, R.anim.scale_down)
-                    .replace(R.id.container, details, null)
-                    .commit();
+                    R.anim.slide_in_right, R.anim.do_nix,
+                    R.anim.do_nix, R.anim.slide_out_right)
+            .replace(R.id.container, details, null)
+            .addToBackStack(null)
+            .commit();
         }
     }
 
@@ -226,7 +226,9 @@ public class ResultsActivity extends SherlockFragmentActivity
                     .putExtra("profile", true));
             return true;
         case android.R.id.home:
-            finish();
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0)
+                getSupportFragmentManager().popBackStack();
+            else finish();
 //            Intent intent = new Intent(this, MainActivity.class);
 //            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //            startActivity(intent);
