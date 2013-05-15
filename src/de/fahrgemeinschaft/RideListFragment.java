@@ -91,7 +91,7 @@ public class RideListFragment extends SherlockListFragment
                 v.date.setText(date.format(timestamp));
                 v.time.setText(time.format(timestamp));
 
-                v.price.setText(ride.getLong(9) + "€");
+                v.price.setText(ride.getInt(9) / 100 + "€");
                 v.seats.setText(ride.getLong(10) + "");
                 
                 if (ride.getPosition() % 2 == 0) {

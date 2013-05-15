@@ -90,7 +90,7 @@ public class RideDetailsFragment extends SherlockFragment {
                 view.date.setText(date.format(timestamp));
                 view.time.setText(time.format(timestamp));
 
-                view.price.setText(cursor.getString(9));
+                view.price.setText("" + (cursor.getInt(9) / 100));
                 view.seats.setText(cursor.getString(10));
                 view.details.setText(cursor.getString(8));
 
