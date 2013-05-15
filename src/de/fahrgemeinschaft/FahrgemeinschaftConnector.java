@@ -80,9 +80,13 @@ public class FahrgemeinschaftConnector extends Connector {
     }
 
     private Ride parseRide(JSONObject json)  throws JSONException {
-        String who = "mail=" + json.getString("Contactmail");
-        who += "; mobile=" + json.getString("Contactmobile");
-        who += "; landline=" + json.getString("Contactlandline");
+        JSONObject p = json.getJSONObject("Privacy");
+        String who = "mail=" + p.getInt("Email")
+                + json.getString("Contactmail");
+        who += "; mobile=" + p.getInt("Mobile")
+                + json.getString("Contactmobile");
+        who += "; landline=" + p.getInt("Mobile")
+                + json.getString("Contactlandline");
 
         Ride ride = new Ride().type(Ride.OFFER).who(who);
         ride.details(json.getString("Description"));

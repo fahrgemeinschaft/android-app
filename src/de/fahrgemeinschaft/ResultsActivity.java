@@ -34,6 +34,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -135,33 +136,41 @@ public class ResultsActivity extends SherlockFragmentActivity
         for (int i = 0; i < who.length; i++) {
             String[] split = who[i].split("=");
             if (split.length > 1) {
-                if (split[0].equals("mobile")) {
-                    System.out.println(split[1]);
-                    contact.putExtra(Insert.PHONE, split[1]);
-                    Intent call = labeledIntent(callIntent(split[1]),
-                            R.drawable.ic_call, "Call " + split[1]);
+                System.out.println(split[1]);
+                String value = split[1].substring(1);
+                if (split[0].equals("mobile") && split[1].startsWith("1")) {
+                    System.out.println(value);
+                    contact.putExtra(Insert.PHONE, value);
+                    Intent call = labeledIntent(callIntent(value),
+                            R.drawable.ic_call, "Call " + value);
                     if (call != null) intents.add(call);
-                    Intent sms = labeledIntent(smsIntent(split[1],
+                    Intent sms = labeledIntent(smsIntent(value,
                             c.getString(1) + " -> " + c.getString(3)),
-                            R.drawable.ic_sms, "SMS " + split[1]);
+                            R.drawable.ic_sms, "SMS " + value);
                     if (sms != null) intents.add(sms);
-                } else if (split[0].equals("landline")) {
-                    contact.putExtra(Insert.SECONDARY_PHONE, split[1]);
-                    Intent call = labeledIntent(callIntent(split[1]),
-                            R.drawable.ic_dial, "Call " + split[1]);
+                } else if (split[0].equals("landline") 
+                        && split[1].startsWith("1")) {
+                    contact.putExtra(Insert.SECONDARY_PHONE, value);
+                    Intent call = labeledIntent(callIntent(value),
+                            R.drawable.ic_dial, "Call " + value);
                     if (call != null) intents.add(call);
-                } else if (split[0].equals("mail")) {
-                    contact.putExtra(Insert.EMAIL, split[1]);
-                    Intent mail = labeledIntent(mailIntent(split[1],
+                } else if (split[0].equals("mail")
+                        && split[1].startsWith("1")) {
+                    contact.putExtra(Insert.EMAIL, value);
+                    Intent mail = labeledIntent(mailIntent(value,
                             c.getString(1) + " --> " + c.getString(3)),
-                            R.drawable.ic_mail, "Mail " + split[1]);
+                            R.drawable.ic_mail, "Mail " + value);
                     if (mail != null) intents.add(mail);
                 }
             }
         }
-        startActivity(Intent.createChooser(contact, "Kontakt")
-                .putExtra(Intent.EXTRA_INITIAL_INTENTS,
-                intents.toArray(new Parcelable[intents.size()])));
+        if (intents.size() == 0) {
+            Toast.makeText(this, "private", Toast.LENGTH_SHORT);
+        } else {
+            startActivity(Intent.createChooser(contact, "Kontakt")
+                    .putExtra(Intent.EXTRA_INITIAL_INTENTS,
+                            intents.toArray(new Parcelable[intents.size()])));
+        }
     }
 
     private Intent callIntent(String num) {
