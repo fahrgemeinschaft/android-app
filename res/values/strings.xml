@@ -11,6 +11,10 @@
 
     <string name="from">from</string>
     <string name="to">to</string>
+    <string name="when">when</string>
+    <string name="now">now</string>
+    <string name="tomorrow">tomorrow</string>
+    <string name="after_tomorrow">day after tomorrow</string>
 
     <string name="my_rides">My Rides</string>
     <string name="profile">Profile</string>
@@ -41,6 +45,5 @@
     <string name="login">Login</string>
     <string name="username">username</string>
     <string name="password">password</string>
-    <string name="pick_time">when?</string>
 
 </resources>

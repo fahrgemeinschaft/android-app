@@ -8,6 +8,10 @@
 <resources>
     <string name="from">von</string>
     <string name="to">nach</string>
+    <string name="when">wann</string>
+    <string name="now">demnächst</string>
+    <string name="tomorrow">morgen</string>
+    <string name="after_tomorrow">übermorgen</string>
 
     <string name="profile">Profil</string>
     <string name="settings">Einstellungen</string>

@@ -94,7 +94,7 @@
         android:paddingLeft="16dp"
         android:singleLine="true"
         android:textSize="28sp"
-        android:text="@string/pick_time" 
+        android:text="@string/when" 
         android:onClick="showTimePickerDialog" />
     
     <ImageButton

@@ -7,12 +7,15 @@
 
 package de.fahrgemeinschaft;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import org.teleportr.ConnectorService;
 import org.teleportr.Ride;
 
+import android.app.DatePickerDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -29,13 +32,15 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TimePicker;
 
-import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-public class MainActivity extends SherlockActivity implements OnClickListener {
+public class MainActivity extends SherlockFragmentActivity
+        implements OnClickListener, OnDateSetListener {
 
     protected static final String TAG = "fahrgemeinschaft";
     private static final int FROM = 42;
@@ -44,8 +49,10 @@ public class MainActivity extends SherlockActivity implements OnClickListener {
     private Button to_btn;
     private int from_id;
     private int to_id;
+    private long dep;
     private View selberfahren_btn;
     private View mitfahren_btn;
+    private Button when_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +62,7 @@ public class MainActivity extends SherlockActivity implements OnClickListener {
 
         from_btn = (Button) findViewById(R.id.btn_autocomplete_from);
         to_btn = (Button) findViewById(R.id.btn_autocomplete_to);
+        when_btn = (Button) findViewById(R.id.btn_datepicker);
         selberfahren_btn = findViewById(R.id.btn_selberfahren);
         mitfahren_btn = findViewById(R.id.btn_mitfahren);
 
@@ -65,11 +73,13 @@ public class MainActivity extends SherlockActivity implements OnClickListener {
         findViewById(R.id.btn_pick_to).setOnClickListener(this);
         findViewById(R.id.btn_pick_from).setOnClickListener(this);
 
+        dep = System.currentTimeMillis();
         if (savedInstanceState != null) {
             setFromButtonText(Uri.parse("content://de.fahrgemeinschaft/places/"
                     + savedInstanceState.getInt("from_id")));
             setToButtonText(Uri.parse("content://de.fahrgemeinschaft/places/"
                     + savedInstanceState.getInt("to_id")));
+            setDateButtonText(savedInstanceState.getLong("dep"), -1);
         }
 //        startActivity(new Intent(Intent.ACTION_VIEW,
 //                Uri.parse("content://" + getPackageName() + "/rides" +
@@ -109,7 +119,6 @@ public class MainActivity extends SherlockActivity implements OnClickListener {
 
         case R.id.btn_mitfahren:
             if (from_id != 0 && to_id != 0) {
-                long dep = System.currentTimeMillis();
                 new Ride()
                     .type(Ride.SEARCH)
                     .from(from_id)
@@ -130,26 +139,25 @@ public class MainActivity extends SherlockActivity implements OnClickListener {
         }
     }
 
-    public static class TimePickerFragment extends DialogFragment implements
-            TimePickerDialog.OnTimeSetListener {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current time as the default values for the picker
-            final Calendar c = Calendar.getInstance();
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
-
-            // Create a new instance of TimePickerDialog and return it
-            return new TimePickerDialog(getActivity(), this, hour, minute,
-                    DateFormat.is24HourFormat(getActivity()));
-        }
-
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            // Do something with the time chosen by the user
-        }
+    public void showTimePickerDialog(View v) {
+        final Calendar c = Calendar.getInstance();
+        c.setTime(new Date(dep));
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        new DatePickerDialog(this, this, year, month, day).show();
     }
-    
+
+    @Override
+    public void onDateSet(DatePicker picker, int year, int month, int day) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month);
+        cal.set(Calendar.DAY_OF_MONTH, day);
+        dep = cal.getTime().getTime();
+        setDateButtonText(dep, cal.get(Calendar.DAY_OF_YEAR));
+    }
+
     @Override
     protected void onActivityResult(int req, int res, final Intent intent) {
         if (res == RESULT_OK) {
@@ -163,6 +171,19 @@ public class MainActivity extends SherlockActivity implements OnClickListener {
                 break;
             }
         }
+    }
+
+    public void setDateButtonText(long date, int dayOfYear) {
+        Calendar cal = Calendar.getInstance();
+        int today = cal.get(Calendar.DAY_OF_YEAR);
+        if (dayOfYear == -1 || dayOfYear == today)
+            when_btn.setText(getString(R.string.now));
+        else if (dayOfYear == today + 1)
+            when_btn.setText(getString(R.string.tomorrow));
+        else if (dayOfYear == today + 2)
+            when_btn.setText(getString(R.string.after_tomorrow));
+        else
+            when_btn.setText(new SimpleDateFormat("dd. MMM yyyy").format(date));
     }
 
     private void setFromButtonText(Uri uri) {
@@ -254,6 +275,7 @@ public class MainActivity extends SherlockActivity implements OnClickListener {
         super.onSaveInstanceState(outState);
         outState.putInt("from_id", from_id);
         outState.putInt("to_id", to_id);
+        outState.putLong("dep", dep);
     }
 
 }
