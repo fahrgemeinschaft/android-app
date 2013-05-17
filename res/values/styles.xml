@@ -53,6 +53,12 @@
     <style name="dark.Large" parent="@style/dark">
         <item name="android:textSize">26dp</item>
     </style>
+    <style name="dark.Small" parent="@style/dark">
+        <item name="android:textSize">18dp</item>
+    </style>
+    <style name="dark.Bold" parent="@style/dark">
+        <item name="android:textStyle">bold</item>
+    </style>
     <style name="dark.Large.Bold" parent="@style/dark.Large">
         <item name="android:textSize">23dp</item>
         <item name="android:textStyle">bold</item>
