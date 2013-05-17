@@ -17,11 +17,14 @@ import org.teleportr.Ride;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
@@ -31,6 +34,8 @@ import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
@@ -258,8 +263,29 @@ public class MainActivity extends SherlockFragmentActivity
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
         case R.id.profile:
-            startActivity(new Intent(this, SettingsActivity.class)
-                    .putExtra("profile", true));
+            WebView wv = new WebView(this);
+            wv.getSettings().setJavaScriptEnabled(true);
+            wv.loadUrl("file:///android_asset/register.html");
+            setContentView(wv);
+            wv.setWebViewClient(new WebViewClient() {
+                ProgressDialog p = new ProgressDialog(MainActivity.this);
+                @Override
+                public void onPageStarted(WebView v, String url, Bitmap favic) {
+                    Log.d(TAG, "url");
+                    if (url.startsWith("http")) {
+                        Log.d(TAG, "url http");
+                        p.show();
+                    }
+                    super.onPageStarted(v, url, favic);
+                }
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    Log.d(TAG, "finished");
+                    p.dismiss();
+                    super.onPageFinished(view, url);
+                }
+            });
+            wv.requestFocus(View.FOCUS_DOWN);
             return true;
         case android.R.id.home:
             Intent intent = new Intent(this, MainActivity.class);
