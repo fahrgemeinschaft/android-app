@@ -26,7 +26,8 @@
     <style name="ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse">
         <item name="background">@color/dark_green</item>
         <item name="android:background">@color/light_green</item>
-        
+        <item name="actionBarItemBackground">@color/dark_green</item>
+        <item name="android:itemBackground">#ddefa9</item>
     </style>
     
     <style name="AppTheme.Translucent" parent="AppBaseTheme">
@@ -38,7 +39,7 @@
         <item name="android:textSize">12dp</item>
         <item name="android:gravity">bottom</item>
         <item name="android:paddingRight">2dp</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">#DDEFA9</item>
     </style>
     <style name="light.Large" parent="@style/light">
         <item name="android:textSize">18dp</item>
@@ -46,7 +47,7 @@
         <item name="android:paddingBottom">2dp</item>
     </style>
     <style name="dark" parent="@style/light">
-        <item name="android:textColor">#000000</item>
+        <item name="android:textColor">#384219</item>
         <item name="android:paddingLeft">3dp</item>
         <item name="android:textSize">18dp</item>
     </style>
@@ -68,7 +69,7 @@
         <item name="android:textSize">28sp</item>
     </style>
     
-    <color name="light_green_translucent">#EEBCE053</color>
+    <color name="light_green_translucent">#EEBBDF53</color>
     <color name="light_green">#BBDF53</color>
     <color name="medium_green">#839C3A</color>
     <color name="dark_green">#5D6F29</color>
