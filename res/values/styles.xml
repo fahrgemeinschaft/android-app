@@ -7,13 +7,7 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppBaseTheme" parent="Theme.Sherlock.Light">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
-    </style>
+    <style name="AppBaseTheme" parent="Theme.Sherlock.Light" />
 
     <style name="AppTheme" parent="AppBaseTheme">
         <item name="android:windowBackground">@color/light_green</item>
@@ -35,32 +29,32 @@
     </style>
     
     <style name="light" parent="@android:style/TextAppearance">
-        <item name="android:textSize">12dp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:gravity">bottom</item>
         <item name="android:paddingRight">2dp</item>
         <item name="android:textColor">#DDEFA9</item>
     </style>
     <style name="light.Large" parent="@style/light">
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:paddingLeft">3dp</item>
         <item name="android:paddingBottom">2dp</item>
     </style>
     <style name="dark" parent="@style/light">
         <item name="android:textColor">#384219</item>
         <item name="android:paddingLeft">3dp</item>
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">18sp</item>
     </style>
     <style name="dark.Large" parent="@style/dark">
-        <item name="android:textSize">26dp</item>
+        <item name="android:textSize">26sp</item>
     </style>
     <style name="dark.Small" parent="@style/dark">
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">18sp</item>
     </style>
     <style name="dark.Bold" parent="@style/dark">
         <item name="android:textStyle">bold</item>
     </style>
     <style name="dark.Large.Bold" parent="@style/dark.Large">
-        <item name="android:textSize">23dp</item>
+        <item name="android:textSize">23sp</item>
         <item name="android:textStyle">bold</item>
     </style>
     
