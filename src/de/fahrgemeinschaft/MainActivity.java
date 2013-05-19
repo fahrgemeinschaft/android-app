@@ -10,24 +10,21 @@ package de.fahrgemeinschaft;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import org.teleportr.ConnectorService;
 import org.teleportr.Ride;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
-import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Message;
 import android.preference.PreferenceManager;
-import android.support.v4.app.DialogFragment;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,7 +35,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.TimePicker;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -188,7 +184,8 @@ public class MainActivity extends SherlockFragmentActivity
         else if (dayOfYear == today + 2)
             when_btn.setText(getString(R.string.after_tomorrow));
         else
-            when_btn.setText(new SimpleDateFormat("dd. MMM yyyy").format(date));
+            when_btn.setText(new SimpleDateFormat("dd. MMM yyyy",
+                    Locale.GERMANY).format(date));
     }
 
     private void setFromButtonText(Uri uri) {
@@ -257,6 +254,7 @@ public class MainActivity extends SherlockFragmentActivity
     }
 
     @Override
+    @SuppressLint("SetJavaScriptEnabled")
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.settings:

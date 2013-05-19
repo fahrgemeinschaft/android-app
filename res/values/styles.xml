@@ -14,7 +14,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="actionBarStyle">@style/ActionBar</item>
-        <item name="actionBarItemBackground">@drawable/btn_white</item>
+        <item name="actionBarItemBackground">@drawable/btn_actionbar_item</item>
         <item name="android:itemBackground">#ddefa9</item>
         <item name="android:singleLine">true</item>
     </style>
@@ -68,5 +68,4 @@
     <color name="dark_green">#5D6F29</color>
     <color name="opacity_white">#BBFFFFFF</color>
     <color name="opacity_black">#99000000</color>
-    <color name="opaque">#00000000</color>
 </resources>

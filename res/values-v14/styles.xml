@@ -6,7 +6,9 @@
         res/values-v11/styles.xml on API 14+ devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <item name="android:actionBarItemBackground">@drawable/btn_white</item>
+        <item name="android:actionBarItemBackground">
+            @drawable/btn_actionbar_item
+        </item>
     </style>
 
 </resources>
