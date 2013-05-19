@@ -16,13 +16,13 @@
     <string name="profile">Profil</string>
     <string name="settings">Einstellungen</string>
 
-    <string name="background_data">Hintergrund Daten</string>
-    <string name="background_data_description">
-        Weiter Suchen wenn die App nicht mehr läuft
-    </string>
-    <string name="background_interval">Interval</string>
-    <string name="background_interval_description">
-        Suchergebnisse neu laden alle %1$s
+    <string name="login">Login</string>
+    <string name="username">Benutzername</string>
+    <string name="password">Passwort</string>
+
+    <string name="refresh_title">Refresh</string>
+    <string name="refresh_description">
+        Suchergebnisse neu laden nach %1$s
     </string>
     <string-array name="background_iterval" >
         <item name="interval_24h">24h</item>
@@ -37,9 +37,5 @@
     <string name="notification_description">
         Über neue Fahrten in der Statusleiste benachrichtigen
     </string>
-
-    <string name="login">Login</string>
-    <string name="username">Benutzername</string>
-    <string name="password">Passwort</string>
 
 </resources>
