@@ -9,6 +9,7 @@ package de.fahrgemeinschaft;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -35,9 +36,9 @@ public class RideListFragment extends SherlockListFragment
         implements LoaderCallbacks<Cursor> {
 
     private static final String TAG = "Fahrgemeinschaft";
-    private static final SimpleDateFormat day = new SimpleDateFormat("EE");
-    private static final SimpleDateFormat date = new SimpleDateFormat("dd.MM");
-    private static SimpleDateFormat time = new SimpleDateFormat("HH:mm");
+    private static final SimpleDateFormat day = new SimpleDateFormat("EEE", Locale.GERMANY);
+    private static final SimpleDateFormat date = new SimpleDateFormat("dd.MM", Locale.GERMANY);
+    private static SimpleDateFormat time = new SimpleDateFormat("HH:mm", Locale.GERMANY);
     private boolean spin;
     private View wheel;
 
@@ -87,7 +88,9 @@ public class RideListFragment extends SherlockListFragment
                     v.to_city.setText(ride.getString(4));
 
                 Date timestamp = new Date(ride.getLong(5));
-                v.day.setText(day.format(timestamp).substring(0, 2));
+                Log.d(TAG, "t: "+timestamp);
+                Log.d(TAG, day.format(timestamp));
+                v.day.setText(day.format(timestamp));
                 v.date.setText(date.format(timestamp));
                 v.time.setText(time.format(timestamp));
 
