@@ -17,8 +17,14 @@
     <string name="settings">Einstellungen</string>
 
     <string name="login">Login</string>
-    <string name="username">Benutzername</string>
-    <string name="password">Passwort</string>
+    <string name="email">Email</string>
+    <string name="passwd">Passwort</string>
+
+    <string name="search_settings">Sucheinstellungen</string>
+    <string name="radius_from">Umkreis um Start</string>
+    <string name="radius_from_desc">Suche Fahrten in Abfahrt Umgebung</string>
+    <string name="radius_to">Umkreis um Ziel</string>
+    <string name="radius_to_desc">Suche Fahrten in Ankunft Umgebung</string>
 
     <string name="refresh_title">Refresh</string>
     <string name="refresh_description">

@@ -17,8 +17,17 @@
     <string name="after_tomorrow">day after tomorrow</string>
 
     <string name="my_rides">My Rides</string>
-    <string name="profile">Profile</string>
     <string name="settings">Settings</string>
+
+    <string name="login">Login</string>
+    <string name="email">email</string>
+    <string name="passwd">password</string>
+
+    <string name="search_settings">Search Settings</string>
+    <string name="radius_from">Nearby radius origin</string>
+    <string name="radius_from_desc">Search rides nearby \'from\' place</string>
+    <string name="radius_to">Nearby radius destination</string>
+    <string name="radius_to_desc">Search rides nearby \'to\' place</string>
 
     <string name="refresh_title">Refresh after</string>
     <string name="refresh_description">
@@ -52,9 +61,5 @@
     <string name="notification_description">
         Notify about updates in status bar
     </string>
-
-    <string name="login">Login</string>
-    <string name="username">username</string>
-    <string name="password">password</string>
 
 </resources>

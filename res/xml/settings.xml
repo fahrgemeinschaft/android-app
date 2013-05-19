@@ -1,16 +1,39 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:robobunny="http://robobunny.com"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:title="@string/login">
         <EditTextPreference
                 android:key="username"
-                android:title="@string/username"
-                android:dialogTitle="@string/username" />
+                android:title="@string/email"
+                android:dialogTitle="@string/email" />
 
         <EditTextPreference
                 android:key="password"
-                android:title="@string/password"
+                android:title="@string/passwd"
                 android:inputType="textPassword"
-                android:dialogTitle="@string/password" />
+                android:dialogTitle="@string/passwd" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/search_settings">
+        <com.robobunny.SeekBarPreference
+            android:key="radius_from"
+            android:title="@string/radius_from"
+            android:summary="@string/radius_from_desc"
+            robobunny:min="1"
+            android:max="75"
+            robobunny:unitsLeft="ca."
+            robobunny:unitsRight="km"
+            android:defaultValue="15" />
+        <com.robobunny.SeekBarPreference
+            android:key="radius_to"
+            android:title="@string/radius_to"
+            android:summary="@string/radius_to_desc"
+            robobunny:min="1"
+            android:max="75"
+            robobunny:unitsLeft="ca."
+            robobunny:unitsRight="km"
+            android:defaultValue="25" />
     </PreferenceCategory>
 
     <PreferenceCategory 
