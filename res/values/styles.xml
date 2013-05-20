@@ -7,20 +7,14 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppBaseTheme" parent="Theme.Sherlock.Light">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
-    </style>
+    <style name="AppBaseTheme" parent="Theme.Sherlock.Light" />
 
     <style name="AppTheme" parent="AppBaseTheme">
         <item name="android:windowBackground">@color/light_green</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="actionBarStyle">@style/ActionBar</item>
-        <item name="actionBarItemBackground">@drawable/btn_white</item>
+        <item name="actionBarItemBackground">@drawable/btn_actionbar_item</item>
         <item name="android:itemBackground">#ddefa9</item>
         <item name="android:singleLine">true</item>
     </style>
@@ -40,6 +34,12 @@
     </style>
     <style name="light.Large" parent="@style/light">
         <item name="android:textSize">26dp</item>
+        <item name="android:gravity">bottom</item>
+        <item name="android:paddingRight">2dp</item>
+        <item name="android:textColor">#DDEFA9</item>
+    </style>
+    <style name="light.Large" parent="@style/light">
+        <item name="android:textSize">18sp</item>
         <item name="android:paddingLeft">3dp</item>
     </style>
     <style name="light.Bold" parent="@style/light">
@@ -48,16 +48,19 @@
     <style name="dark" parent="@style/light">
         <item name="android:textColor">#384219</item>
         <item name="android:paddingLeft">3dp</item>
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">18sp</item>
     </style>
     <style name="dark.Large" parent="@style/dark">
-        <item name="android:textSize">26dp</item>
+        <item name="android:textSize">26sp</item>
+    </style>
+    <style name="dark.Small" parent="@style/dark">
+        <item name="android:textSize">18sp</item>
     </style>
     <style name="dark.Bold" parent="@style/dark">
         <item name="android:textStyle">bold</item>
     </style>
     <style name="dark.Large.Bold" parent="@style/dark.Large">
-        <item name="android:textSize">23dp</item>
+        <item name="android:textSize">23sp</item>
         <item name="android:textStyle">bold</item>
     </style>
     
@@ -71,5 +74,4 @@
     <color name="dark_green">#5D6F29</color>
     <color name="opacity_white">#BBFFFFFF</color>
     <color name="opacity_black">#99000000</color>
-    <color name="opaque">#00000000</color>
 </resources>

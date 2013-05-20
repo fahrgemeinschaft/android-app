@@ -9,6 +9,7 @@ package de.fahrgemeinschaft;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -36,9 +37,9 @@ import com.calciumion.widget.BasePagerAdapter;
 public class RideDetailsFragment extends SherlockFragment {
 
     private static final String TAG = "Fahrgemeinschaft";
-    private static final SimpleDateFormat day = new SimpleDateFormat("EE");
-    private static final SimpleDateFormat date = new SimpleDateFormat("dd.MM");
-    private static SimpleDateFormat time = new SimpleDateFormat("HH:mm");
+    private static final SimpleDateFormat day = new SimpleDateFormat("EEE", Locale.GERMANY);
+    private static final SimpleDateFormat date = new SimpleDateFormat("dd.MM", Locale.GERMANY);
+    private static SimpleDateFormat time = new SimpleDateFormat("HH:mm", Locale.GERMANY);
     private ViewPager pager;
     private Cursor cursor;
 
@@ -86,7 +87,7 @@ public class RideDetailsFragment extends SherlockFragment {
                 view.to_place.setText(cursor.getString(4));
 
                 Date timestamp = new Date(cursor.getLong(5));
-                view.day.setText(day.format(timestamp).substring(0, 2));
+                view.day.setText(day.format(timestamp));
                 view.date.setText(date.format(timestamp));
                 view.time.setText(time.format(timestamp));
 

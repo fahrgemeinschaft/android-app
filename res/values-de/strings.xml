@@ -10,19 +10,26 @@
     <string name="to">nach</string>
     <string name="when">wann</string>
     <string name="now">demnächst</string>
+    <string name="ready">Fertig</string>
     <string name="tomorrow">morgen</string>
     <string name="after_tomorrow">übermorgen</string>
 
     <string name="profile">Profil</string>
     <string name="settings">Einstellungen</string>
 
-    <string name="background_data">Hintergrund Daten</string>
-    <string name="background_data_description">
-        Weiter Suchen wenn die App nicht mehr läuft
-    </string>
-    <string name="background_interval">Interval</string>
-    <string name="background_interval_description">
-        Suchergebnisse neu laden alle %1$s
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="passwd">Passwort</string>
+
+    <string name="search_settings">Sucheinstellungen</string>
+    <string name="radius_from">Umkreis um Start</string>
+    <string name="radius_from_desc">Suche Fahrten in Abfahrt Umgebung</string>
+    <string name="radius_to">Umkreis um Ziel</string>
+    <string name="radius_to_desc">Suche Fahrten in Ankunft Umgebung</string>
+
+    <string name="refresh_title">Refresh</string>
+    <string name="refresh_description">
+        Suchergebnisse neu laden nach %1$s
     </string>
     <string-array name="background_iterval" >
         <item name="interval_24h">24h</item>
@@ -37,9 +44,5 @@
     <string name="notification_description">
         Über neue Fahrten in der Statusleiste benachrichtigen
     </string>
-
-    <string name="login">Login</string>
-    <string name="username">Benutzername</string>
-    <string name="password">Passwort</string>
 
 </resources>

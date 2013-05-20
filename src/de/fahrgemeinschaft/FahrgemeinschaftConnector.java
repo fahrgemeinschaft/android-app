@@ -51,12 +51,12 @@ public class FahrgemeinschaftConnector extends Connector {
             from_json.put("Latitude", "" + from.getLat());
             from_json.put("Startdate", df.format(dep));
             from_json.put("Reoccur", JSONObject.NULL);
-            from_json.put("ToleranceRadius", "15");
+            from_json.put("ToleranceRadius", getSetting("radius_from"));
             // place.put("Starttime", JSONObject.NULL);
 
             to_json.put("Longitude", "" + to.getLng());
             to_json.put("Latitude", "" + to.getLat());
-            to_json.put("ToleranceRadius", "25");
+            to_json.put("ToleranceRadius", getSetting("radius_to"));
             // place.put("ToleranceDays", "3");
         } catch (JSONException e) {
             e.printStackTrace();
@@ -83,7 +83,7 @@ public class FahrgemeinschaftConnector extends Connector {
         StringBuffer who = new StringBuffer();
         JSONObject p = json.getJSONObject("Privacy");
         String value = json.getString("Contactmail");
-        if (!value.equals(""))
+        if (!value.equals("") && !value.equals("Null"))
             who.append(";mail=").append(p.getInt("Email")).append(value);
         value = json.getString("Contactmobile");
         if (!value.equals(""))

@@ -98,13 +98,14 @@
         android:onClick="showTimePickerDialog" />
     
     <ImageButton
-        android:id="@+id/btn_pick_to"
+        android:id="@+id/btn_pick_date"
         android:layout_width="55dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/btn_datepicker"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/btn_datepicker"
         android:background="@drawable/btn_white"
+        android:onClick="showTimePickerDialog"
         android:src="@drawable/icn_datepicker" />
     
     <Button
