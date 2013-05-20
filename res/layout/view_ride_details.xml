@@ -20,23 +20,20 @@
         <TextView
             android:id="@+id/day"
             style="@style/dark.Large"
-            android:background="@color/medium_green"
-            android:text="Sa" />
+            android:background="@color/medium_green" />
 
         <TextView
             android:id="@+id/date"
             style="@style/light.Large"
             android:layout_height="match_parent"
-            android:background="@color/medium_green"
-            android:text="Di 31.01" />
+            android:background="@color/medium_green" />
 
         <TextView
             android:id="@+id/time"
             style="@style/dark.Large.Bold"
             android:layout_marginLeft="3dp"
             android:layout_height="match_parent"
-            android:background="@color/medium_green"
-            android:text="17:00" />
+            android:background="@color/medium_green" />
 
         <TextView
             android:id="@+id/price"
@@ -46,8 +43,7 @@
             android:layout_weight="1"
             android:gravity="right|bottom"
             android:layout_height="match_parent"
-            android:background="@color/medium_green"
-            android:text="25" />
+            android:background="@color/medium_green" />
 
         <TextView
             android:id="@+id/currency"
@@ -69,36 +65,27 @@
             android:id="@+id/seats_icon"
             android:layout_height="match_parent"
             android:background="@color/medium_green"
+            android:contentDescription="@string/seats"
             android:src="@drawable/ic_seats" />
     </LinearLayout>
 
-    
-
-    <ImageButton
+    <Button
         android:onClick="contact"
         android:id="@+id/btn_contact"
-        android:layout_width="210dp"
         android:layout_height="70dp"
+        android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/content"
         android:background="@drawable/btn_dark_green"
-        android:src="@drawable/kontakt_dummy" />
+        android:text="@string/contact"
+        android:src="@drawable/btn_dark_green" />
 
-    <ImageButton
-        android:id="@+id/btn_mark"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/btn_medium_green"
-        android:src="@drawable/merken_dummy" />
-    
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@id/btn_contact"
         android:layout_below="@id/row"
-        android:layout_above="@id/btn_mark"
         android:layout_marginTop="3dp" >
 
         <LinearLayout

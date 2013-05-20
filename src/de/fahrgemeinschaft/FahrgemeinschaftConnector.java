@@ -84,7 +84,7 @@ public class FahrgemeinschaftConnector extends Connector {
         StringBuffer who = new StringBuffer();
         JSONObject p = json.getJSONObject("Privacy");
         String value = json.getString("Contactmail");
-        if (!value.equals("") && !value.equals("Null"))
+        if (!value.equals("") && !value.equals("null"))
             who.append(";mail=").append(p.getInt("Email")).append(value);
         value = json.getString("Contactmobile");
         if (!value.equals(""))
