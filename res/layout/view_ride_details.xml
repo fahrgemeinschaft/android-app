@@ -14,53 +14,51 @@
     <LinearLayout
         android:id="@+id/row"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="25dp"
         android:orientation="horizontal" >
 
         <TextView
             android:id="@+id/day"
-            style="@style/dark.Large"
+            style="@style/dark"
+            android:layout_height="match_parent"
             android:background="@color/medium_green"
             android:text="Sa" />
 
         <TextView
             android:id="@+id/date"
-            style="@style/light.Large"
+            style="@style/light"
             android:layout_height="match_parent"
             android:background="@color/medium_green"
-            android:text="Di 31.01" />
+            android:text="31.01." />
 
         <TextView
             android:id="@+id/time"
-            style="@style/dark.Large.Bold"
-            android:layout_marginLeft="3dp"
+            style="@style/dark.Bold"
             android:layout_height="match_parent"
             android:background="@color/medium_green"
             android:text="17:00" />
 
         <TextView
             android:id="@+id/price"
-            style="@style/dark.Large.Bold"
-            android:layout_marginLeft="3dp"
+            style="@style/dark.Bold"
             android:paddingLeft="12dp"
             android:layout_weight="1"
-            android:gravity="right|bottom"
+            android:gravity="right"
             android:layout_height="match_parent"
             android:background="@color/medium_green"
             android:text="25" />
 
         <TextView
             android:id="@+id/currency"
-            style="@style/light.Large"
+            style="@style/light"
             android:layout_height="match_parent"
             android:background="@color/medium_green"
             android:text="€" />
 
         <TextView
             android:id="@+id/seats"
-            style="@style/dark.Large.Bold"
+            style="@style/dark.Bold"
             android:layout_height="match_parent"
-            android:layout_marginLeft="3dp"
             android:layout_weight="1"
             android:gravity="right"
             android:background="@color/medium_green" />
