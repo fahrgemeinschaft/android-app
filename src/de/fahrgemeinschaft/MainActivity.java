@@ -56,6 +56,7 @@ public class MainActivity extends SherlockFragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         from_btn = (Button) findViewById(R.id.btn_autocomplete_from);
         to_btn = (Button) findViewById(R.id.btn_autocomplete_to);
@@ -143,7 +144,8 @@ public class MainActivity extends SherlockFragmentActivity
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
         DatePickerDialog d = new DatePickerDialog(this, this, year, month, day);
-        d.getButton(DatePickerDialog.BUTTON_POSITIVE).setText(R.string.ready);
+        d.setButton(DatePickerDialog.BUTTON_POSITIVE, getString(R.string.ready),
+                (android.content.DialogInterface.OnClickListener) null);
         d.show();
     }
 
