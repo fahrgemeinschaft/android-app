@@ -16,6 +16,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,8 +37,8 @@ public class FahrgemeinschaftConnector extends Connector {
     }
 
     private static final String APIKEY = "API-KEY"; 
-    static final SimpleDateFormat fulldf = new SimpleDateFormat("yyyyMMddHHmm");
-    static final SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+    static final SimpleDateFormat fulldf = new SimpleDateFormat("yyyyMMddHHmm", Locale.GERMAN);
+    static final SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd", Locale.GERMAN);
 
     @Override
     public long getRides(Place from, Place to, Date dep, Date arr) {

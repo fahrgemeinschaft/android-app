@@ -20,7 +20,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents.Insert;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -126,7 +125,6 @@ public class ResultsActivity extends SherlockFragmentActivity
         c.moveToPosition(selected);
         Intent contact = new Intent(Intent.ACTION_INSERT, Contacts.CONTENT_URI);
         contact.putExtra(Insert.NAME, c.getString(1) + " -> " + c.getString(3));
-        contact.putExtra(ContactsContract.Intents.EXTRA_FORCE_CREATE, true);
         ArrayList<Intent> intents = new ArrayList<Intent>();
         String[] who = c.getString(7).split(";");
         for (int i = 0; i < who.length; i++) {
@@ -161,7 +159,7 @@ public class ResultsActivity extends SherlockFragmentActivity
             }
         }
         if (intents.size() == 0) {
-            Toast.makeText(this, "private", Toast.LENGTH_SHORT);
+            Toast.makeText(this, "private", Toast.LENGTH_SHORT).show();
         } else {
             startActivity(Intent.createChooser(contact, "Kontakt")
                     .putExtra(Intent.EXTRA_INITIAL_INTENTS,
