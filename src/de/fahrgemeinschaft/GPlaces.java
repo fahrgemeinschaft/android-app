@@ -92,7 +92,7 @@ public class GPlaces extends Connector {
                     + TYPE_AUTOCOMPLETE + OUT_JSON);
             try {
                 sb.append("?sensor=false&key=" + API_KEY);
-                sb.append("&language=de&components=country:de");
+                sb.append("&language=de&location=48.1,11.8&radius=3000");
                 sb.append("&input=" + URLEncoder.encode(text, "utf8"));
 
                 String jsonResults = httpGet(sb.toString());
