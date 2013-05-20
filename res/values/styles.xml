@@ -29,20 +29,20 @@
     </style>
     
     <style name="light" parent="@android:style/TextAppearance">
-        <item name="android:textSize">18dp</item>
-        <item name="android:textColor">#DDEFA9</item>
-    </style>
-    <style name="light.Large" parent="@style/light">
-        <item name="android:textSize">26dp</item>
-        <item name="android:gravity">bottom</item>
-        <item name="android:paddingRight">2dp</item>
-        <item name="android:textColor">#DDEFA9</item>
-    </style>
-    <style name="light.Large" parent="@style/light">
         <item name="android:textSize">18sp</item>
-        <item name="android:paddingLeft">3dp</item>
+        <item name="android:textColor">#DDEFA9</item>
+    </style>
+    <style name="light.Large" parent="@style/light">
+        <item name="android:textSize">23sp</item>
+    </style>
+    <style name="light.Small" parent="@style/light">
+        <item name="android:textSize">12sp</item>
     </style>
     <style name="light.Bold" parent="@style/light">
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="light.Large.Bold" parent="@style/light.Large">
+        <item name="android:textSize">23sp</item>
         <item name="android:textStyle">bold</item>
     </style>
     <style name="dark" parent="@style/light">
@@ -51,10 +51,7 @@
         <item name="android:textSize">18sp</item>
     </style>
     <style name="dark.Large" parent="@style/dark">
-        <item name="android:textSize">26sp</item>
-    </style>
-    <style name="dark.Small" parent="@style/dark">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">23sp</item>
     </style>
     <style name="dark.Bold" parent="@style/dark">
         <item name="android:textStyle">bold</item>

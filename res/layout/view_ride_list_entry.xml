@@ -14,7 +14,7 @@
         android:id="@+id/from_city"
         android:width="175dp"
         android:layout_marginLeft="5dp"
-        style="@style/light"
+        style="@style/light.Small"
     />
     <TextView
         android:id="@+id/from_place"
@@ -34,7 +34,7 @@
     <TextView
         android:id="@+id/to_city"
         android:layout_marginLeft="190dp"
-        style="@style/light"
+        style="@style/light.Small"
     />
     <TextView
         android:id="@+id/to_place"
@@ -55,16 +55,16 @@
     <TextView
         android:id="@+id/day"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="3dp"
         android:layout_marginLeft="5dp"
-        style="@style/dark.Small"
+        style="@style/dark"
     />
     <TextView
         android:id="@+id/date"
         android:layout_toRightOf="@id/day"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="2dp"
-        style="@style/light.Large"
+        android:layout_marginBottom="3dp"
+        style="@style/light"
     />
     <TextView
         android:id="@+id/time"
