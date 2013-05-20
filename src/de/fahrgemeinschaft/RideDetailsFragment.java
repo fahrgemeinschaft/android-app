@@ -45,7 +45,6 @@ public class RideDetailsFragment extends SherlockFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "on create details " + savedInstanceState);
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
     }

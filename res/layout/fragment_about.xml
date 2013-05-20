@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_green_translucent" >
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/logo_fahrgemeinschaft" />
+
+    <TextView
+        android:id="@+id/github"
+        style="@style/dark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-37dp"
+        android:text="github.com/fahrgemeinschaft/android-app"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/version"
+        style="@style/dark.Large.Bold"
+        android:textSize="21sp"
+        android:padding="8dp"
+        android:layout_marginTop="21dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/github"
+        android:layout_centerHorizontal="true"
+        android:background="@color/opacity_white" />
+
+
+    <TextView
+        android:id="@+id/disclaimer"
+        style="@style/dark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/dark_green"
+        android:fontFamily="monospace"
+        android:paddingTop="8dp"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp"
+        android:paddingBottom="8dp"
+        android:singleLine="false"
+        android:text="This program is free software: you can redistribute it and/or modify
+\nit under the terms of the GNU General Public License as published by
+\nthe Free Software Foundation, either version 3 of the License, or
+\n(at your option) any later version. See http://www.gnu.org/licenses
+\n
+\nThis program is distributed in the hope that it will be useful,
+\nbut WITHOUT ANY WARRANTY; without even the implied warranty of
+\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+\nGNU General Public License for more details"
+        android:textSize="8sp" />
+    <TextView 
+        android:textSize="11sp"
+        android:id="@+id/copyright"
+        android:textColor="@color/medium_green"
+        android:layout_above="@id/disclaimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Copyright (C) 2013 by it's authors.  Some rights reserved." />
+
+</RelativeLayout>

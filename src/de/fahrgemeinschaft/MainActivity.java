@@ -79,6 +79,7 @@ public class MainActivity extends SherlockFragmentActivity
                     + savedInstanceState.getInt("to_id")));
             setDateButtonText(savedInstanceState.getLong("dep"), -1);
         }
+        setTitle("");
 //        startActivity(new Intent(Intent.ACTION_VIEW,
 //                Uri.parse("content://" + getPackageName() + "/rides" +
 //                        "?from_id=1&to_id=2")));
@@ -261,9 +262,10 @@ public class MainActivity extends SherlockFragmentActivity
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
         case android.R.id.home:
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
+            getSupportFragmentManager().beginTransaction()
+            .replace(R.id.layout, new AboutFragment())
+            .addToBackStack("")
+            .commit();
             return true;
         default:
             return super.onOptionsItemSelected(item);
