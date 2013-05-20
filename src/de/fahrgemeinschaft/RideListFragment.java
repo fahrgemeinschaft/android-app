@@ -43,12 +43,6 @@ public class RideListFragment extends SherlockListFragment
     private View wheel;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "on create list " + savedInstanceState);
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(final LayoutInflater lI, ViewGroup p, Bundle b) {
         return lI.inflate(R.layout.fragment_ride_list, p, false);
     }
@@ -88,8 +82,6 @@ public class RideListFragment extends SherlockListFragment
                     v.to_city.setText(ride.getString(4));
 
                 Date timestamp = new Date(ride.getLong(5));
-                Log.d(TAG, "t: "+timestamp);
-                Log.d(TAG, day.format(timestamp));
                 v.day.setText(day.format(timestamp));
                 v.date.setText(date.format(timestamp));
                 v.time.setText(time.format(timestamp));

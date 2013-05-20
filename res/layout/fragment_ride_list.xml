@@ -10,7 +10,6 @@
     <ListView
         android:id="@android:id/list"
         android:drawSelectorOnTop="true"
-        android:cacheColorHint="#00000000"
         android:listSelector="@drawable/list_selector"
     />
 

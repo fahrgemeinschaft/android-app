@@ -2,17 +2,24 @@
     xmlns:robobunny="http://robobunny.com"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/login">
-        <EditTextPreference
-                android:key="username"
-                android:title="@string/email"
-                android:dialogTitle="@string/email" />
+    <Preference android:title="@string/register" >
+        <intent
+             android:action="android.intent.action.VIEW"
+             android:targetPackage="de.fahrgemeinschaft"
+             android:data="file:///android_asset/register.html"
+             android:targetClass="de.fahrgemeinschaft.WebActivity" />
+    </Preference>
 
-        <EditTextPreference
-                android:key="password"
-                android:title="@string/passwd"
-                android:inputType="textPassword"
-                android:dialogTitle="@string/passwd" />
+    <PreferenceCategory android:title="@string/login">
+    <EditTextPreference
+            android:key="username"
+            android:title="@string/email"
+            android:dialogTitle="@string/email" />
+    <EditTextPreference
+            android:key="password"
+            android:title="@string/passwd"
+            android:inputType="textPassword"
+            android:dialogTitle="@string/passwd" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/search_settings">
@@ -36,9 +43,7 @@
             android:defaultValue="25" />
     </PreferenceCategory>
 
-    <PreferenceCategory 
-        android:title="@string/settings"
-        android:key="settings">
+    <PreferenceCategory android:title="Advanced" >
         <ListPreference 
             android:key="refresh"
             android:title="@string/refresh_title"
@@ -46,5 +51,12 @@
             android:entryValues="@array/refresh_values"
             android:summary="@string/refresh_description"
             android:defaultValue="600000" />
+        <PreferenceScreen android:title="Special Expert Features" >
+            <CheckBoxPreference
+                android:key="create_contact"
+                android:defaultValue="false"
+                android:title="@string/create_contact"
+                android:summary="@string/create_contact_desc" />
+           </PreferenceScreen>
     </PreferenceCategory>
 </PreferenceScreen>

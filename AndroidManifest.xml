@@ -17,9 +17,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
         android:label="FG"
+        android:icon="@drawable/ic_launcher"
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
@@ -59,7 +58,9 @@
             </intent-filter>
         </activity>
 
-        <!-- teleportR Android Library -->
+        <activity android:name="WebActivity" />
+
+            <!-- teleportR Android Library -->
 
         <service android:name="org.teleportr.ConnectorService" />
 

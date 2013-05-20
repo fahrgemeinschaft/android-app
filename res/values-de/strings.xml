@@ -17,9 +17,13 @@
     <string name="profile">Profil</string>
     <string name="settings">Einstellungen</string>
 
+    <string name="contact">Kontakt</string>
+    <string name="seats">Sitzplätze</string>
+
     <string name="login">Login</string>
     <string name="email">Email</string>
     <string name="passwd">Passwort</string>
+    <string name="register">Registrieren</string>
 
     <string name="search_settings">Sucheinstellungen</string>
     <string name="radius_from">Umkreis um Start</string>
@@ -40,9 +44,9 @@
         <item name="interval_30min">30min</item>
         <item name="interval_15min">15min</item>
     </string-array>
-    <string name="notification">Benachrichtigung</string>
-    <string name="notification_description">
-        Über neue Fahrten in der Statusleiste benachrichtigen
+    <string name="create_contact">Kontakt speichern</string>
+    <string name="create_contact_desc">
+        Ins Telefonbuch speichern als Kontakt Option
     </string>
 
 </resources>

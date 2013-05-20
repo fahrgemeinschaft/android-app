@@ -15,19 +15,36 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="actionBarStyle">@style/ActionBar</item>
         <item name="actionBarItemBackground">@drawable/btn_actionbar_item</item>
+        <item name="android:listViewStyle">@style/ListView</item>
+        <item name="android:listSeparatorTextViewStyle">@style/ListSeparator</item>
         <item name="android:itemBackground">#ddefa9</item>
         <item name="android:singleLine">true</item>
     </style>
-    
-    <style name="ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse">
-        <item name="background">@color/dark_green</item>
-    </style>
-    
+
     <style name="AppTheme.Translucent" parent="AppBaseTheme">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@color/light_green_translucent</item>
     </style>
-    
+
+    <style name="ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse">
+        <item name="background">@color/dark_green</item>
+    </style>
+
+    <style name="ListView" parent="@android:style/Widget.ListView">
+        <item name="android:background">@color/light_green</item>
+        <item name="android:cacheColorHint">#00000000</item>
+    </style>
+
+    <style name="ListSeparator">
+        <item name="android:background">@color/dark_green</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">25dip</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">5sp</item>
+    </style>
+
     <style name="light" parent="@android:style/TextAppearance">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">#DDEFA9</item>
