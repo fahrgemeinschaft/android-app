@@ -30,7 +30,6 @@ public class WebActivity extends SherlockActivity {
         webView = new WebView(this);
         progress = new ProgressDialog(this);
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("file:///android_asset/register.html");
         webView.setWebViewClient(new WebViewClient() {
             
             @Override
@@ -49,6 +48,7 @@ public class WebActivity extends SherlockActivity {
                 super.onPageFinished(view, url);
             }
         });
+        webView.loadUrl(getIntent().getDataString());
         webView.requestFocus(View.FOCUS_DOWN);
         setContentView(webView);
     }

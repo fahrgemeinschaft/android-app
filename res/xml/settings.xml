@@ -6,6 +6,7 @@
         <intent
              android:action="android.intent.action.VIEW"
              android:targetPackage="de.fahrgemeinschaft"
+             android:data="file:///android_asset/register.html"
              android:targetClass="de.fahrgemeinschaft.WebActivity" />
     </Preference>
 
@@ -53,6 +54,7 @@
         <PreferenceScreen android:title="Special Expert Features" >
             <CheckBoxPreference
                 android:key="create_contact"
+                android:defaultValue="false"
                 android:title="@string/create_contact"
                 android:summary="@string/create_contact_desc" />
            </PreferenceScreen>
