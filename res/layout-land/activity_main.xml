@@ -89,6 +89,8 @@
         android:layout_toRightOf="@id/btn_mitfahren"
         android:layout_toLeftOf="@id/btn_selberfahren"
         android:layout_marginTop="21dp"
+        android:layout_marginLeft="21dp"
+        android:layout_marginRight="21dp"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:background="@drawable/btn_white"

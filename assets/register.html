@@ -1,78 +1,176 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>Title</title>
+   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+   <title>Fahrgemeinschaft.de - Registrierung</title>
+   <style type="text/css" media="screen">
+		@import "inc/style.css";
+		@font-face { font-family:roboto; src:url("inc/roboto.ttf"); } 			
+		@font-face { font-family:roboto2; src:url("inc/roboto2.ttf"); } 			
+	</style>
 </head>
+<body>
 <form action="http://test.fahrgemeinschaft.de/register.php" method="post" name="regform" id="regform" style="display:inline ">
-                                                            <table border="0" cellpadding="0" cellspacing="0" width="540">
-                                                                <tbody><tr>
-                                                                    <td>
-                                                                                                                                                <h2>Registrierung</h2>
-                                                                        <table class="tablelist" border="0" cellpadding="2" cellspacing="0" width="540" align="center">
-                                                                            <tbody><tr>
-                                                                                <td class="f_11b" style="padding-right:10px; border: none" width="180"><div align="right">Email-Adresse <img src="http://test.fahrgemeinschaft.de/gfx/ico/mail.gif" alt="" height="16" width="16" align="absmiddle"></div></td>
-                                                                                <td class="f_11b" style=" border: none" width="360"><input name="edtEmail" id="edtEmail" value="" size="40" style="width:235px" tabindex="100" class="textField required email" type="text">
-                                                                                    <div class="f_9hint">Die Emailadresse muss gültig sein.<br>Wir schicken dir eine Bestätigungs-Email nach der Anmeldung.</div>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td class="f_11b" style="padding-right:10px;"><div align="right">Email wiederholen <img src="http://test.fahrgemeinschaft.de/gfx/ico/mail.gif" alt="" height="16" width="16" align="absmiddle"></div></td>
-                                                                                <td class="f_11b"><input name="edtEmail2" onpaste="return false" id="edtEmail2" value="" size="40" style="width:235px" tabindex="100" class="textField required email" type="text">
-
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td class="f_11b" style="padding-right:10px;"><div align="right">Passwort <img src="http://test.fahrgemeinschaft.de/gfx/ico/key.gif" alt="" height="16" width="16" align="absmiddle"></div></td>
-                                                                                <td class="f_11b"><input name="edtPassword" id="edtPassword" size="40" style="width:235px" tabindex="110" class="textField required" minlength="5" type="password">
-                                                                                    <div class="f_9hint">Mindestens 5 Zeichen.<br>Verwende Sonderzeichen und Zahlen, um dein Passwort sicherer zu machen.</div>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td class="f_11b" style="padding-right:10px;"><div align="right">Vorname <img src="http://test.fahrgemeinschaft.de/gfx/ico/user.gif" alt="" height="16" width="16" align="absmiddle"></div></td>
-                                                                                <td class="f_11b" colspan="2"><input name="edtFirstname" id="edtFirstname" value="" size="40" style="width:235px" tabindex="120" class="textField required" minlength="3" type="text">
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td class="f_11b" style="padding-right:10px;"><div align="right">Nachname <img src="http://test.fahrgemeinschaft.de/gfx/ico/user.gif" alt="" height="16" width="16" align="absmiddle"></div></td>
-                                                                                <td class="f_11b" colspan="2"><input name="edtLastname" id="edtLastname" size="40" value="" style="width:235px" tabindex="130" class="privateField textField required" minlength="3" type="text"> <img src="http://test.fahrgemeinschaft.de/gfx/ico/lock_mini.gif">
-                                                                                    <div class="f_9hint">Deine persönlichen Daten sind zu 100% gegen Missbrauch geschützt. <br>Sie sind nur sichtbar nach expliziter Freigabe von dir.</div></td>
-
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td class="f_11b" style="padding-right:10px;"><div align="right">Geschlecht <img src="http://test.fahrgemeinschaft.de/gfx/ico/w-m.gif" alt="" height="16" width="16" align="absmiddle"></div></td>
-                                                                                <td class="f_11b" colspan="2"><label><input id="radF" name="radGender" checked="checked" class="radio" value="f" tabindex="140" type="radio">Weiblich</label> <label><input name="radGender" id="radM" class="radio" tabindex="150" value="m" type="radio">Männlich</label> </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td class="f_11b" style="padding-right:10px;"><div align="right">Wohnort <img src="http://test.fahrgemeinschaft.de/gfx/ico/map.png" alt="" height="16" width="16" align="absmiddle"></div></td>
-                                                                                <td class="f_11b" colspan="2"><input placeholder="Geben Sie einen Standort ein." style="width: 220px; font-size: 12px;" id="suggestPlace" class="suggestField required" autocomplete="off" tabindex="160" type="text"><select style="height: 27px; padding-top: 5px; padding-bottom: 5px;" id="countryOrigin"><option value="DE" title="Deutschland">DE</option><option value="AT" title="Österreich">AT</option><option value="BE" title="Belgien">BE</option><option value="BG" title="Bulgarien">BG</option><option value="CH" title="Schweiz">CH</option><option value="CY" title="Zypern">CY</option><option value="CZ" title="Tschechische Republik">CZ</option><option value="DK" title="Dänemark">DK</option><option value="EE" title="Estland">EE</option><option value="ES" title="Spanien">ES</option><option value="FI" title="Finnland">FI</option><option value="FR" title="Frankreich">FR</option><option value="GR" title="Griechenland">GR</option><option value="HR" title="Kroatien">HR</option><option value="HU" title="Ungarn">HU</option><option value="IE" title="Irland">IE</option><option value="IS" title="Island">IS</option><option value="IT" title="Italien">IT</option><option value="LI" title="Liechtenstein">LI</option><option value="LT" title="Litauen">LT</option><option value="LU" title="Luxemburg">LU</option><option value="LV" title="Lettland">LV</option><option value="MT" title="Malta">MT</option><option value="NL" title="Niederlande">NL</option><option value="NO" title="Norwegen">NO</option><option value="PL" title="Polen">PL</option><option value="PT" title="Portugal">PT</option><option value="RO" title="Rumänien">RO</option><option value="SE" title="Schweden">SE</option><option value="SI" title="Slowenien">SI</option><option value="SK" title="Slowakei">SK</option><option value="TR" title="Türkei">TR</option><option value="UK" title="Vereinigtes Königreich">UK</option></select>  </td>
-                                                                            </tr>
-                                                                            <tr id="trMap">
-                                                                                <td class="f_11b" colspan="3">
-                                                                                    <div><span class="f_9hint">Du kannst den Marker auf der Karte frei verschieben um deinen genauen Wohnort anzugeben</span></div>
-                                                                                    <div style="position: relative; background-color: rgb(229, 227, 223); overflow: hidden;" id="divRegisterMap"><div style="position: absolute; left: 0px; top: 0px; overflow: hidden; width: 100%; height: 100%; z-index: 0;"><div style="position: absolute; left: 0px; top: 0px; overflow: hidden; width: 100%; height: 100%; z-index: 0;"><div style="position: absolute; left: 0px; top: 0px; z-index: 1; cursor: url(&quot;https://maps.gstatic.com/mapfiles/openhand_8_8.cur&quot;), default;"><div style="position: absolute; left: 0px; top: 0px; z-index: 200;"><div style="position: absolute; left: 0px; top: 0px; z-index: 101;"></div></div><div style="position: absolute; left: 0px; top: 0px; z-index: 201;"><div style="position: absolute; left: 0px; top: 0px; z-index: 102;"><div style="position: absolute; left: 0px; top: 0px; z-index: 0;"><div style="position: absolute; left: 0px; top: 0px; z-index: 1;"><div style="width: 256px; height: 256px; overflow: hidden; position: absolute; left: 65px; top: -57px;"></div><div style="width: 256px; height: 256px; overflow: hidden; position: absolute; left: 321px; top: -57px;"></div><div style="width: 256px; height: 256px; overflow: hidden; position: absolute; left: 65px; top: -313px;"></div><div style="width: 256px; height: 256px; overflow: hidden; position: absolute; left: 65px; top: 199px;"></div><div style="width: 256px; height: 256px; overflow: hidden; position: absolute; left: 321px; top: -313px;"></div><div style="width: 256px; height: 256px; overflow: hidden; position: absolute; left: 321px; top: 199px;"></div><div style="width: 256px; height: 256px; overflow: hidden; position: absolute; left: -191px; top: -57px;"></div><div style="width: 256px; height: 256px; overflow: hidden; position: absolute; left: 577px; top: -57px;"></div><div style="width: 256px; height: 256px; overflow: hidden; position: absolute; left: -191px; top: -313px;"></div><div style="width: 256px; height: 256px; overflow: hidden; position: absolute; left: -191px; top: 199px;"></div><div style="width: 256px; height: 256px; overflow: hidden; position: absolute; left: 577px; top: -313px;"></div><div style="width: 256px; height: 256px; overflow: hidden; position: absolute; left: 577px; top: 199px;"></div></div></div></div><div style="position: absolute; left: 0px; top: 0px; z-index: 103;"><div style="position: absolute; left: 0px; top: 0px; z-index: -1;"><div style="position: absolute; left: 0px; top: 0px; z-index: 1;"><div style="width: 256px; height: 256px; overflow: hidden; position: absolute; left: 65px; top: -57px;"></div><div style="width: 256px; height: 256px; overflow: hidden; position: absolute; left: 321px; top: -57px;"></div><div style="width: 256px; height: 256px; overflow: hidden; position: absolute; left: 65px; top: -313px;"></div><div style="width: 256px; height: 256px; overflow: hidden; position: absolute; left: 65px; top: 199px;"></div><div style="width: 256px; height: 256px; overflow: hidden; position: absolute; left: 321px; top: -313px;"></div><div style="width: 256px; height: 256px; overflow: hidden; position: absolute; left: 321px; top: 199px;"></div><div style="width: 256px; height: 256px; overflow: hidden; position: absolute; left: -191px; top: -57px;"></div><div style="width: 256px; height: 256px; overflow: hidden; position: absolute; left: 577px; top: -57px;"></div><div style="width: 256px; height: 256px; overflow: hidden; position: absolute; left: -191px; top: -313px;"></div><div style="width: 256px; height: 256px; overflow: hidden; position: absolute; left: -191px; top: 199px;"></div><div style="width: 256px; height: 256px; overflow: hidden; position: absolute; left: 577px; top: -313px;"></div><div style="width: 256px; height: 256px; overflow: hidden; position: absolute; left: 577px; top: 199px;"></div></div></div></div></div><div style="position: absolute; left: 0px; top: 0px; z-index: 202;"><div style="position: absolute; left: 0px; top: 0px; z-index: 104;"></div><div style="position: absolute; left: 0px; top: 0px; z-index: 105;"></div><div style="position: absolute; left: 0px; top: 0px; z-index: 106;"></div></div><div style="position: absolute; left: 0px; top: 0px; z-index: 100;"><div style="position: absolute; left: 0px; top: 0px; z-index: 0;"><div style="position: absolute; left: 0px; top: 0px; z-index: 1;"><div style="width: 256px; height: 256px; position: absolute; left: 65px; top: -57px;"></div><div style="width: 256px; height: 256px; position: absolute; left: 321px; top: -57px;"></div><div style="width: 256px; height: 256px; position: absolute; left: 65px; top: -313px;"></div><div style="width: 256px; height: 256px; position: absolute; left: 65px; top: 199px;"></div><div style="width: 256px; height: 256px; position: absolute; left: 321px; top: -313px;"></div><div style="width: 256px; height: 256px; position: absolute; left: 321px; top: 199px;"></div><div style="width: 256px; height: 256px; position: absolute; left: -191px; top: -57px;"></div><div style="width: 256px; height: 256px; position: absolute; left: 577px; top: -57px;"></div><div style="width: 256px; height: 256px; position: absolute; left: -191px; top: -313px;"></div><div style="width: 256px; height: 256px; position: absolute; left: -191px; top: 199px;"></div><div style="width: 256px; height: 256px; position: absolute; left: 577px; top: -313px;"></div><div style="width: 256px; height: 256px; position: absolute; left: 577px; top: 199px;"></div></div></div></div><div style="position: absolute; z-index: 0; left: 0px; top: 0px;"><div style="overflow: hidden; width: 540px; height: 250px;"><img src="http://test.fahrgemeinschaft.dehttps://maps.googleapis.com/maps/api/js/StaticMapService.GetMapImage?1m2&amp;1i4031&amp;2i2617&amp;2e1&amp;3u5&amp;4m2&amp;1u540&amp;2u250&amp;5m5&amp;1e0&amp;2b1&amp;5sde&amp;6sus&amp;10b0&amp;token=30234" style="width: 540px; height: 250px;"></div></div><div style="position: absolute; left: 0px; top: 0px; z-index: 0;"><div style="position: absolute; left: 0px; top: 0px; z-index: 1;"><div style="width: 256px; height: 256px; position: absolute; left: 65px; top: -57px; opacity: 1; transition: opacity 200ms ease-out 0s;"><img draggable="false" src="http://test.fahrgemeinschaft.dehttps://mts0.googleapis.com/vt?lyrs=m@216000000&amp;src=apiv3&amp;hl=de&amp;x=16&amp;y=10&amp;z=5&amp;s=Ga&amp;style=59,37%7Csmartmaps" style="width: 256px; height: 256px; -moz-user-select: none; border: 0px none; padding: 0px; margin: 0px;"></div><div style="width: 256px; height: 256px; position: absolute; left: 65px; top: -313px; opacity: 1; transition: opacity 200ms ease-out 0s;"><img draggable="false" src="http://test.fahrgemeinschaft.dehttps://mts0.googleapis.com/vt?lyrs=m@216000000&amp;src=apiv3&amp;hl=de&amp;x=16&amp;y=9&amp;z=5&amp;s=G&amp;style=59,37%7Csmartmaps" style="width: 256px; height: 256px; -moz-user-select: none; border: 0px none; padding: 0px; margin: 0px;"></div><div style="width: 256px; height: 256px; position: absolute; left: 65px; top: 199px; opacity: 1; transition: opacity 200ms ease-out 0s;"><img draggable="false" src="http://test.fahrgemeinschaft.dehttps://mts0.googleapis.com/vt?lyrs=m@216000000&amp;src=apiv3&amp;hl=de&amp;x=16&amp;y=11&amp;z=5&amp;s=Gal&amp;style=59,37%7Csmartmaps" style="width: 256px; height: 256px; -moz-user-select: none; border: 0px none; padding: 0px; margin: 0px;"></div><div style="width: 256px; height: 256px; position: absolute; left: 321px; top: -57px; opacity: 1; transition: opacity 200ms ease-out 0s;"><img draggable="false" src="http://test.fahrgemeinschaft.dehttps://mts1.googleapis.com/vt?lyrs=m@216000000&amp;src=apiv3&amp;hl=de&amp;x=17&amp;y=10&amp;z=5&amp;s=Galil&amp;style=59,37%7Csmartmaps" style="width: 256px; height: 256px; -moz-user-select: none; border: 0px none; padding: 0px; margin: 0px;"></div><div style="width: 256px; height: 256px; position: absolute; left: 321px; top: -313px; opacity: 1; transition: opacity 200ms ease-out 0s;"><img draggable="false" src="http://test.fahrgemeinschaft.dehttps://mts1.googleapis.com/vt?lyrs=m@216000000&amp;src=apiv3&amp;hl=de&amp;x=17&amp;y=9&amp;z=5&amp;s=Gali&amp;style=59,37%7Csmartmaps" style="width: 256px; height: 256px; -moz-user-select: none; border: 0px none; padding: 0px; margin: 0px;"></div><div style="width: 256px; height: 256px; position: absolute; left: 321px; top: 199px; opacity: 1; transition: opacity 200ms ease-out 0s;"><img draggable="false" src="http://test.fahrgemeinschaft.dehttps://mts1.googleapis.com/vt?lyrs=m@216000000&amp;src=apiv3&amp;hl=de&amp;x=17&amp;y=11&amp;z=5&amp;s=Galile&amp;style=59,37%7Csmartmaps" style="width: 256px; height: 256px; -moz-user-select: none; border: 0px none; padding: 0px; margin: 0px;"></div><div style="width: 256px; height: 256px; position: absolute; left: -191px; top: -57px; opacity: 1; transition: opacity 200ms ease-out 0s;"><img draggable="false" src="http://test.fahrgemeinschaft.dehttps://mts1.googleapis.com/vt?lyrs=m@216000000&amp;src=apiv3&amp;hl=de&amp;x=15&amp;y=10&amp;z=5&amp;s=Galileo&amp;style=59,37%7Csmartmaps" style="width: 256px; height: 256px; -moz-user-select: none; border: 0px none; padding: 0px; margin: 0px;"></div><div style="width: 256px; height: 256px; position: absolute; left: 577px; top: -57px; opacity: 1; transition: opacity 200ms ease-out 0s;"><img draggable="false" src="http://test.fahrgemeinschaft.dehttps://mts0.googleapis.com/vt?lyrs=m@216000000&amp;src=apiv3&amp;hl=de&amp;x=18&amp;y=10&amp;z=5&amp;s=&amp;style=59,37%7Csmartmaps" style="width: 256px; height: 256px; -moz-user-select: none; border: 0px none; padding: 0px; margin: 0px;"></div><div style="width: 256px; height: 256px; position: absolute; left: -191px; top: -313px; opacity: 1; transition: opacity 200ms ease-out 0s;"><img draggable="false" src="http://test.fahrgemeinschaft.dehttps://mts1.googleapis.com/vt?lyrs=m@216000000&amp;src=apiv3&amp;hl=de&amp;x=15&amp;y=9&amp;z=5&amp;s=Galile&amp;style=59,37%7Csmartmaps" style="width: 256px; height: 256px; -moz-user-select: none; border: 0px none; padding: 0px; margin: 0px;"></div><div style="width: 256px; height: 256px; position: absolute; left: -191px; top: 199px; opacity: 1; transition: opacity 200ms ease-out 0s;"><img draggable="false" src="http://test.fahrgemeinschaft.dehttps://mts1.googleapis.com/vt?lyrs=m@216000000&amp;src=apiv3&amp;hl=de&amp;x=15&amp;y=11&amp;z=5&amp;s=&amp;style=59,37%7Csmartmaps" style="width: 256px; height: 256px; -moz-user-select: none; border: 0px none; padding: 0px; margin: 0px;"></div><div style="width: 256px; height: 256px; position: absolute; left: 577px; top: -313px; opacity: 1; transition: opacity 200ms ease-out 0s;"><img draggable="false" src="http://test.fahrgemeinschaft.dehttps://mts0.googleapis.com/vt?lyrs=m@216000000&amp;src=apiv3&amp;hl=de&amp;x=18&amp;y=9&amp;z=5&amp;s=Galileo&amp;style=59,37%7Csmartmaps" style="width: 256px; height: 256px; -moz-user-select: none; border: 0px none; padding: 0px; margin: 0px;"></div><div style="width: 256px; height: 256px; position: absolute; left: 577px; top: 199px; opacity: 1; transition: opacity 200ms ease-out 0s;"><img draggable="false" src="http://test.fahrgemeinschaft.dehttps://mts0.googleapis.com/vt?lyrs=m@216000000&amp;src=apiv3&amp;hl=de&amp;x=18&amp;y=11&amp;z=5&amp;s=G&amp;style=59,37%7Csmartmaps" style="width: 256px; height: 256px; -moz-user-select: none; border: 0px none; padding: 0px; margin: 0px;"></div></div></div></div></div><div style="margin: 2px 5px 2px 2px; z-index: 1000000; position: absolute; left: 0px; bottom: 0px;"><a title="Klicken, um diese Region in Google Maps anzuzeigen" href="http://maps.google.com/maps?ll=51,9&amp;z=5&amp;t=m&amp;hl=de" target="_blank" style="position: static; overflow: visible; float: none; display: inline;"><div style="width: 62px; height: 24px; cursor: pointer;"><img draggable="false" src="http://test.fahrgemeinschaft.dehttps://maps.gstatic.com/mapfiles/google_white.png" style="position: absolute; left: 0px; top: 0px; width: 62px; height: 24px; -moz-user-select: none; border: 0px none; padding: 0px; margin: 0px;"></div></a></div><div style="z-index: 1000001; position: absolute; right: 134px; bottom: 0px;" class="gmnoprint"><div style="height: 19px; -moz-user-select: none; line-height: 19px; padding-right: 2px; padding-left: 50px; background: -moz-linear-gradient(left center , rgba(255, 255, 255, 0) 0px, rgba(255, 255, 255, 0.5) 50px) repeat scroll 0% 0% transparent; font-family: Arial,sans-serif; font-size: 10px; color: rgb(68, 68, 68); white-space: nowrap; direction: ltr; text-align: right;"><a style="color: rgb(68, 68, 68); text-decoration: underline; cursor: pointer;">Kartendaten</a><span style="display: none;">Kartendaten ©2013 Basarsoft, GeoBasis-DE/BKG (©2009), Google, basado en BCN IGN España</span><span style=""> - </span><a target="_blank" href="http://www.google.com/intl/de_US/help/terms_maps.html" style="color: rgb(68, 68, 68); text-decoration: underline; cursor: pointer;">Nutzungsbedingungen</a></div></div><div style="background-color: white; padding: 15px 21px; border: 1px solid rgb(171, 171, 171); font-family: Arial,sans-serif; color: rgb(34, 34, 34); box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2); z-index: 10000002; display: none; width: 256px; height: 148px; position: absolute; left: 120px; top: 35px;"><div style="padding: 0px 0px 10px; font-size: 16px;">Kartendaten</div><div style="font-size: 13px;">Kartendaten ©2013 Basarsoft, GeoBasis-DE/BKG (©2009), Google, basado en BCN IGN España</div><div style="width: 10px; height: 10px; overflow: hidden; position: absolute; opacity: 0.7; right: 12px; top: 12px; z-index: 10000; cursor: pointer;"><img draggable="false" src="http://test.fahrgemeinschaft.dehttps://maps.gstatic.com/mapfiles/mv/imgs8.png" style="position: absolute; left: -18px; top: -44px; width: 68px; height: 67px; -moz-user-select: none; border: 0px none; padding: 0px; margin: 0px;"></div></div><div style="position: absolute; right: 0px; bottom: 0px;" class="gmnoscreen"><div style="font-family: Arial,sans-serif; font-size: 10px; color: rgb(68, 68, 68); direction: ltr; text-align: right; background-color: rgb(245, 245, 245);">Kartendaten ©2013 Basarsoft, GeoBasis-DE/BKG (©2009), Google, basado en BCN IGN España</div></div><div style="font-size: 10px; height: 17px; background-color: rgb(245, 245, 245); border: 1px solid rgb(220, 220, 220); line-height: 19px; position: absolute; right: 0px; bottom: 0px;" class="gmnoprint"><a href="http://maps.google.com/maps?ll=51,9&amp;z=5&amp;t=m&amp;hl=de&amp;skstate=action:mps_dialog$apiref:1&amp;output=classic" style="font-family: Arial,sans-serif; font-size: 85%; font-weight: bold; bottom: 1px; padding: 1px 3px; color: rgb(68, 68, 68); text-decoration: none; position: relative;" title="Google falsche Straßenkarte oder Bilder melden" target="_new">Fehler bei Google Maps melden</a></div><div controlheight="124" controlwidth="78" style="margin: 5px; -moz-user-select: none; position: absolute; left: 0px; top: 0px;" class="gmnoprint"><div style="cursor: url(&quot;https://maps.gstatic.com/mapfiles/openhand_8_8.cur&quot;), default; width: 78px; height: 78px; position: absolute; left: 0px; top: 0px;" controlheight="80" controlwidth="78" class="gmnoprint"><div style="width: 78px; height: 78px; position: absolute; left: 0px; top: 0px;" controlheight="80" controlwidth="78" class="gmnoprint"><div style="visibility: hidden;"><svg viewBox="0 0 78 78" height="78px" width="78px" overflow="hidden" version="1.1" style="position: absolute; left: 0px; top: 0px;"><circle stroke="#f2f4f6" fill="#f2f4f6" fill-opacity="0.2" stroke-width="3" r="35" cy="39" cx="39"></circle><g transform="rotate(0 39 39)"><rect fill="#f2f4f6" stroke-width="1" stroke="#a6a6a6" height="11" width="12" ry="4" rx="4" y="0" x="33"></rect><polyline stroke="#000" fill="#f2f4f6" stroke-width="1.5" stroke-linejoin="bevel" points="36.5,8.5 36.5,2.5 41.5,8.5 41.5,2.5"></polyline></g></svg></div></div><div style="position: absolute; left: 10px; top: 11px;" controlheight="59" controlwidth="59" class="gmnoprint"><div style="width: 59px; height: 59px; overflow: hidden; position: relative;"><img draggable="false" src="http://test.fahrgemeinschaft.dehttps://maps.gstatic.com/mapfiles/mapcontrols3d7.png" style="position: absolute; left: 0px; top: 0px; width: 59px; height: 492px; -moz-user-select: none; border: 0px none; padding: 0px; margin: 0px;"><div title="Nach links verschieben" style="position: absolute; left: 0px; top: 20px; width: 19.6667px; height: 19.6667px; cursor: pointer;"></div><div title="Nach rechts verschieben" style="position: absolute; left: 39px; top: 20px; width: 19.6667px; height: 19.6667px; cursor: pointer;"></div><div title="Nach oben verschieben" style="position: absolute; left: 20px; top: 0px; width: 19.6667px; height: 19.6667px; cursor: pointer;"></div><div title="Nach unten verschieben" style="position: absolute; left: 20px; top: 39px; width: 19.6667px; height: 19.6667px; cursor: pointer;"></div></div></div></div><div style="position: absolute; left: 28px; top: 85px;" controlheight="39" controlwidth="22" class="gmnoprint"><img draggable="false" src="https://maps.gstatic.com/mapfiles/szc4.png" style="width: 22px; height: 39px; -moz-user-select: none; border: 0px none; padding: 0px; margin: 0px;"><div title="Vergrößern" style="position: absolute; left: 0px; top: 0px; width: 22px; height: 17px; cursor: pointer;"></div><div title="Verkleinern" style="position: absolute; left: 0px; top: 18px; width: 22px; height: 17px; cursor: pointer;"></div></div></div></div></div></td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td colspan="3" style="border:none">
-                                                                                    <div>
-                                                                                        <b>Die Mitgliedschaft ist 100% kostenfrei und kann jederzeit beendet werden!</b>
-                                                                                    </div><br>
-
-                                                                                    <div class="f_9hint">
-                                                                                        Mit der Anmeldung akzeptierst du die <a href="http://fahrgemeinschaft.de/rules.php" target="_blank">Allgemeinen Nutzungsbedingungen</a> für fahrgemeinschaft.de
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td colspan="3" style="border:none;" align="right"><input value="Absenden" tabindex="170" id="btnSend" name="btnSend" type="submit"> </td>
-                                                                            </tr>
-                                                                        </tbody></table>
-                                                                    </td>
-                                                                </tr>
-    <!--                                                                <tr><td align="right">
-                                                                        <h3>Hast du einen Facebook Account? Dann melde dich mit einem Klick an!</h3>
-                                                                        <fb:login-button perms="email"></fb:login-button>
-                                                                    </td>
-                                                                </tr>-->
-                                                            </tbody></table>
-                                                        </form>                                                                                               
+<h2>Registrierung</h2>
+<table cellpadding="2" cellspacing="0" align="center">
+   <tbody>
+      <tr>
+         <td class="col_left">
+            <div align="right">
+               Email-Adresse <img src="http://test.fahrgemeinschaft.de/gfx/ico/mail.gif" alt="" height="16" width="16" align="absmiddle">
+            </div>
+         </td>
+         <td class="col_right">
+            <input name="edtEmail" id="edtEmail" value="" size="40" tabindex="100" class="textField required email" type="text">
+         </td>
+      </tr>
+      <tr>
+         <td class="col_left">&nbsp;</td>
+         <td class="col_right">
+            <div class="f_9hint">
+               Die Email-Adresse muss gültig sein.<br>
+               Wir schicken dir eine Bestätigungs-Email nach der Anmeldung.
+            </div>
+         </td>
+      </tr>
+      <tr>
+         <td class="col_left">
+            <div align="right">
+               Email wiederholen <img src="http://test.fahrgemeinschaft.de/gfx/ico/mail.gif" alt="" height="16" width="16" align="absmiddle">
+            </div>
+         </td>
+         <td class="col_right">
+            <input name="edtEmail2" id="edtEmail2" value="" size="40" tabindex="100" class="textField required email" type="text">
+         </td>
+      </tr>
+      <tr>
+         <td class="col_left">
+            <div align="right">Passwort <img src="http://test.fahrgemeinschaft.de/gfx/ico/key.gif" alt="" height="16" width="16" align="absmiddle"></div>
+         </td>
+         <td class="col_right">
+            <input name="edtPassword" id="edtPassword" size="40" tabindex="110" class="textField required" minlength="5" type="password">
+         </td>
+      </tr>
+      <tr>
+         <td class="col_left">&nbsp;</td>
+         <td class="col_right">
+            <div class="f_9hint">
+               Mindestens 5 Zeichen.<br>
+               Verwende Sonderzeichen und Zahlen, um dein Passwort sicherer zu machen.
+            </div>
+         </td>
+      </tr>
+      <tr>
+         <td class="col_left">
+            <div align="right">
+               Vorname <img src="http://test.fahrgemeinschaft.de/gfx/ico/user.gif" alt="" height="16" width="16" align="absmiddle">
+            </div>
+         </td>
+         <td class="col_right">
+            <input name="edtFirstname" id="edtFirstname" value="" size="40" tabindex="120" class="textField required" minlength="3" type="text">
+         </td>
+      </tr>
+      <tr>
+         <td class="col_left">
+            <div align="right">
+               Nachname <img src="http://test.fahrgemeinschaft.de/gfx/ico/user.gif" alt="" height="16" width="16" align="absmiddle">
+            </div>
+         </td>
+         <td class="col_right">
+            <input name="edtLastname" id="edtLastname" size="40" value="" tabindex="130" class="privateField textField required" minlength="3" type="text">
+            <div id="img_lock"><img src="http://test.fahrgemeinschaft.de/gfx/ico/lock_mini.gif"></div>
+         </td>
+      </tr>
+      <tr>
+         <td class="col_left">&nbsp;</td>
+         <td class="col_right">
+            <div class="f_9hint">
+               Deine persönlichen Daten sind zu 100% gegen Missbrauch geschützt.<br>
+               Sie sind nur sichtbar nach expliziter Freigabe von dir.
+            </div>
+         </td>
+      </tr>
+      <tr>
+         <td class="col_left">
+            <div align="right">
+               Geschlecht <img src="http://test.fahrgemeinschaft.de/gfx/ico/w-m.gif" alt="" height="16" width="16" align="absmiddle">
+            </div>
+         </td>
+         <td class="col_right">
+            <div style="float: left; width: 50%;">
+               <input id="radF" name="radGender" style="width: 15px;" checked="checked" class="radio" value="f" tabindex="140" type="radio">
+               <label>Weiblich</label>
+            </div>
+            <div style="float: left;">
+               <input name="radGender" id="radM" style="width: 15px;" class="radio" tabindex="150" value="m" type="radio">
+               <label>Männlich</label>
+            </div>
+         </td>
+      </tr>
+      <tr>
+         <td class="col_left">
+            <div align="right">
+               Wohnort <img src="http://test.fahrgemeinschaft.de/gfx/ico/map.png" alt="" height="16" width="16" align="absmiddle">
+            </div>
+         </td>
+         <td class="col_right">
+            <input id="suggestPlace" class="suggestField required" autocomplete="off" tabindex="160" type="text">
+            <div id="country_list">
+               <select id="countryOrigin">
+                  <option value="DE" title="Deutschland">DE</option>
+                  <option value="AT" title="Österreich">AT</option>
+                  <option value="BE" title="Belgien">BE</option>
+                  <option value="BG" title="Bulgarien">BG</option>
+                  <option value="CH" title="Schweiz">CH</option>
+                  <option value="CY" title="Zypern">CY</option>
+                  <option value="CZ" title="Tschechische Republik">CZ</option>
+                  <option value="DK" title="Dänemark">DK</option>
+                  <option value="EE" title="Estland">EE</option>
+                  <option value="ES" title="Spanien">ES</option>
+                  <option value="FI" title="Finnland">FI</option>
+                  <option value="FR" title="Frankreich">FR</option>
+                  <option value="GR" title="Griechenland">GR</option>
+                  <option value="HR" title="Kroatien">HR</option>
+                  <option value="HU" title="Ungarn">HU</option>
+                  <option value="IE" title="Irland">IE</option>
+                  <option value="IS" title="Island">IS</option>
+                  <option value="IT" title="Italien">IT</option>
+                  <option value="LI" title="Liechtenstein">LI</option>
+                  <option value="LT" title="Litauen">LT</option>
+                  <option value="LU" title="Luxemburg">LU</option>
+                  <option value="LV" title="Lettland">LV</option>
+                  <option value="MT" title="Malta">MT</option>
+                  <option value="NL" title="Niederlande">NL</option>
+                  <option value="NO" title="Norwegen">NO</option>
+                  <option value="PL" title="Polen">PL</option>
+                  <option value="PT" title="Portugal">PT</option>
+                  <option value="RO" title="Rumänien">RO</option>
+                  <option value="SE" title="Schweden">SE</option>
+                  <option value="SI" title="Slowenien">SI</option>
+                  <option value="SK" title="Slowakei">SK</option>
+                  <option value="TR" title="Türkei">TR</option>
+                  <option value="UK" title="Vereinigtes Königreich">UK</option>
+               </select>
+            </div>
+         </td>
+      </tr>
+      <tr>
+         <td colspan="2">
+            <div>
+               <h3>Die Mitgliedschaft ist 100% kostenfrei und kann jederzeit beendet werden!</h3>
+            </div><br>
+            <div class="f_9hint">
+               Mit der Anmeldung akzeptierst du die <a href="http://fahrgemeinschaft.de/rules.php" target="_blank">Allgemeinen Nutzungsbedingungen</a> für fahrgemeinschaft.de
+            </div>
+         </td>
+      </tr>
+      <tr>
+         <td colspan="2">
+            <input value="Anmelden" tabindex="170" id="btnSend" name="btnSend" type="submit">
+         </td>
+      </tr>
+   </tbody>
+</table>
+</form>
+</body>
+</html>
