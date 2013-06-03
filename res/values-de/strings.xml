@@ -35,15 +35,6 @@
     <string name="refresh_description">
         Suchergebnisse neu laden nach %1$s
     </string>
-    <string-array name="background_iterval" >
-        <item name="interval_24h">24h</item>
-        <item name="interval_12h">12h</item>
-        <item name="interval_3h">3h</item>
-        <item name="interval_2h">2h</item>
-        <item name="interval_1h">1h</item>
-        <item name="interval_30min">30min</item>
-        <item name="interval_15min">15min</item>
-    </string-array>
     <string name="create_contact">Kontakt speichern</string>
     <string name="create_contact_desc">
         Ins Telefonbuch speichern als Kontakt Option
