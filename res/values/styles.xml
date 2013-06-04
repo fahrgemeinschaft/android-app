@@ -88,4 +88,6 @@
     <color name="dark_green">#5D6F29</color>
     <color name="opacity_white">#BBFFFFFF</color>
     <color name="opacity_black">#99000000</color>
+    
+    <dimen name="smallprint">6sp</dimen>
 </resources>
