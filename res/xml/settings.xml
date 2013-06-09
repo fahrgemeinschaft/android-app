@@ -10,7 +10,9 @@
              android:targetClass="de.fahrgemeinschaft.WebActivity" />
     </Preference>
 
-    <PreferenceCategory android:title="@string/login">
+    <PreferenceCategory 
+            android:title="@string/login"
+            android:widgetLayout="@style/SettingsSeperator" >
     <EditTextPreference
             android:key="username"
             android:title="@string/email"

@@ -156,6 +156,13 @@ public class MainActivity extends SherlockFragmentActivity
         cal.set(Calendar.YEAR, year);
         cal.set(Calendar.MONTH, month);
         cal.set(Calendar.DAY_OF_MONTH, day);
+        
+        // If day is today ignore the following
+           cal.set(Calendar.HOUR_OF_DAY, 00);
+           cal.set(Calendar.MINUTE, 00);
+           cal.set(Calendar.SECOND, 00);
+        // end
+        
         dep = cal.getTime().getTime();
         setDateButtonText(dep, cal.get(Calendar.DAY_OF_YEAR));
     }

@@ -35,6 +35,12 @@
         <item name="android:cacheColorHint">#00000000</item>
     </style>
 
+    <style name="SettingsSeperator">
+        <item name="android:background">@color/dark_green</item>
+        <item name="android:textColor">@color/light_green</item>
+        <item name="android:padding">5sp</item>
+    </style>
+    
     <style name="ListSeparator">
         <item name="android:background">@color/dark_green</item>
         <item name="android:layout_width">match_parent</item>
