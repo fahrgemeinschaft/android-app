@@ -19,6 +19,26 @@
         <item name="android:listSeparatorTextViewStyle">@style/ListSeparator</item>
         <item name="android:itemBackground">#ddefa9</item>
         <item name="android:singleLine">true</item>
+        
+        <!-- Scrollbar attributes -->
+        <!--<item name="scrollbarFadeDuration">250</item>
+        <item name="scrollbarDefaultDelayBeforeFade">300</item> 
+        <item name="scrollbarSize">10dip</item>
+        <item name="scrollbarThumbHorizontal">@android:drawable/scrollbar_handle_horizontal</item>
+        <item name="scrollbarThumbVertical">@android:drawable/scrollbar_handle_vertical</item>
+        <item name="scrollbarTrackHorizontal">@null</item>
+        <item name="scrollbarTrackVertical">@null</item> -->
+        
+        <!-- SearchView attributes -->
+        <!-- <item name="searchDropdownBackground">@android:drawable/spinner_dropdown_background</item>
+        <item name="searchViewTextField">@drawable/textfield_searchview_holo_dark</item>
+        <item name="searchViewTextFieldRight">@drawable/textfield_searchview_right_holo_dark</item>
+        <item name="searchViewCloseIcon">@android:drawable/ic_clear</item>
+        <item name="searchViewSearchIcon">@android:drawable/ic_search</item>
+        <item name="searchViewGoIcon">@android:drawable/ic_go</item>
+        <item name="searchViewVoiceIcon">@android:drawable/ic_voice_search</item>
+        <item name="searchViewEditQuery">@android:drawable/ic_commit_search_api_holo_dark</item>
+        <item name="searchViewEditQueryBackground">?attr/selectableItemBackground</item> -->
     </style>
 
     <style name="AppTheme.Translucent" parent="AppBaseTheme">
@@ -33,12 +53,6 @@
     <style name="ListView" parent="@android:style/Widget.ListView">
         <item name="android:background">@color/light_green</item>
         <item name="android:cacheColorHint">#00000000</item>
-    </style>
-
-    <style name="SettingsSeperator">
-        <item name="android:background">@color/dark_green</item>
-        <item name="android:textColor">@color/light_green</item>
-        <item name="android:padding">5sp</item>
     </style>
     
     <style name="ListSeparator">

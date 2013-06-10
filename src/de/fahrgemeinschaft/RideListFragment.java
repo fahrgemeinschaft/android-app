@@ -83,7 +83,7 @@ public class RideListFragment extends SherlockListFragment
 
                 Date timestamp = new Date(ride.getLong(5));
                 v.day.setText(day.format(timestamp));
-                v.date.setText(date.format(timestamp));
+                v.date.setText(date.format(timestamp) + ".");
                 v.time.setText(time.format(timestamp));
 
                 v.price.setText(ride.getInt(9) / 100 + "€");

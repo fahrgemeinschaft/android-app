@@ -11,8 +11,7 @@
     </Preference>
 
     <PreferenceCategory 
-            android:title="@string/login"
-            android:widgetLayout="@style/SettingsSeperator" >
+            android:title="@string/login" >
     <EditTextPreference
             android:key="username"
             android:title="@string/email"
