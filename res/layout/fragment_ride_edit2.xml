@@ -31,11 +31,36 @@
                 android:gravity="left|center_vertical"
                 android:paddingLeft="16dp"
                 android:singleLine="true"
-                android:text="@string/when"
+                android:text="@string/date"
                 android:textSize="28sp" />
 
             <ImageButton
                 android:id="@+id/ic_pick_date"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="right|center_vertical"
+                android:background="@drawable/btn_white"
+                android:src="@drawable/icn_datepicker" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/small" >
+
+            <Button
+                android:id="@+id/btn_pick_time"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:background="@drawable/btn_white"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="16dp"
+                android:singleLine="true"
+                android:text="@string/time"
+                android:textSize="28sp" />
+
+            <ImageButton
+                android:id="@+id/ic_pick_time"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 android:layout_gravity="right|center_vertical"

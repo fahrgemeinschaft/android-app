@@ -12,6 +12,8 @@ import java.util.Calendar;
 
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.app.TimePickerDialog;
+import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -24,12 +26,13 @@ import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
 public class EditRideFragment2 extends SherlockFragment 
-        implements OnClickListener, OnDateSetListener {
+        implements OnClickListener, OnDateSetListener, OnTimeSetListener {
 
     private static final String TAG = "Fahrgemeinschaft";
     private LinearLayout recurrence;
@@ -44,6 +47,8 @@ public class EditRideFragment2 extends SherlockFragment
         super.onViewCreated(v, savedInstanceState);
         v.findViewById(R.id.btn_pick_date).setOnClickListener(this);
         v.findViewById(R.id.ic_pick_date).setOnClickListener(this);
+        v.findViewById(R.id.btn_pick_time).setOnClickListener(this);
+        v.findViewById(R.id.ic_pick_time).setOnClickListener(this);
         
         String[] weekDays = new DateFormatSymbols().getShortWeekdays();
         recurrence = (LinearLayout) v.findViewById(R.id.recurrence);
@@ -56,6 +61,49 @@ public class EditRideFragment2 extends SherlockFragment
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        final Calendar c = Calendar.getInstance();
+        switch (v.getId()) {
+        case R.id.btn_pick_date:
+        case R.id.ic_pick_date:
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+            DatePickerDialog d = new DatePickerDialog(
+                    getActivity(), this, year, month, day);
+            d.setButton(DatePickerDialog.BUTTON_POSITIVE, getString(R.string.ready),
+                    (android.content.DialogInterface.OnClickListener) null); //java!
+            d.show();
+            break;
+        case R.id.btn_pick_time:
+        case R.id.ic_pick_time:
+            int min = c.get(Calendar.MINUTE);
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            TimePickerDialog t = new TimePickerDialog(
+                    getActivity(), this, hour, min, true);
+            t.setButton(DatePickerDialog.BUTTON_POSITIVE, getString(R.string.ready),
+                    (android.content.DialogInterface.OnClickListener) null); //java!
+            t.show();
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int day) {
+        Toast.makeText(getActivity(), "DATE changed", 300).show();
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        Toast.makeText(getActivity(), "TIME changed", 300).show();
+    }
+
+
+
     private TextView makeDayButton(Context ctx) {
         TextView day = new TextView(ctx);
         day.setOnClickListener(toggleSelectedState);
@@ -66,7 +114,6 @@ public class EditRideFragment2 extends SherlockFragment
         return day;
     }
 
-
     OnClickListener toggleSelectedState = new OnClickListener() {
         
         @Override
@@ -74,26 +121,6 @@ public class EditRideFragment2 extends SherlockFragment
             v.setSelected(!v.isSelected());
         }
     };
-
-    @Override
-    public void onClick(View v) {
-        final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-        DatePickerDialog d = new DatePickerDialog(
-                getActivity(), this, year, month, day);
-        d.setButton(DatePickerDialog.BUTTON_POSITIVE, getString(R.string.ready),
-                (android.content.DialogInterface.OnClickListener) null); //java!
-        d.show();
-    }
-
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int day) {
-        Toast.makeText(getActivity(), "Date changed", 300).show();
-    }
-
-
 
     private LayoutParams dayButtonlayoutParams() {
         LayoutParams lp = new LayoutParams(0, LayoutParams.MATCH_PARENT);

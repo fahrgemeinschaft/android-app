@@ -12,6 +12,8 @@
     <string name="from">from</string>
     <string name="to">to</string>
     <string name="when">when</string>
+    <string name="date">date</string>
+    <string name="time">time</string>
     <string name="now">now</string>
     <string name="ready">Ready</string>
     <string name="tomorrow">tomorrow</string>
