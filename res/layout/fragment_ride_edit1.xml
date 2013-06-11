@@ -10,6 +10,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    
+    
     <LinearLayout
         android:id="@+id/seats"
         android:layout_width="match_parent"
@@ -18,6 +20,14 @@
         android:orientation="horizontal"
         android:padding="@dimen/small" >
 
+        <ImageView
+            android:id="@+id/seats_zero"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small"
+            android:background="@drawable/btn_day"
+            android:src="@drawable/icn_seats_full" />
         <ImageView
             android:id="@+id/seats_one"
             android:layout_weight="1"
@@ -33,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/small"
             android:background="@drawable/btn_day"
-            android:src="@drawable/icn_seats_1" />
+            android:src="@drawable/icn_seats_2" />
         <ImageView
             android:id="@+id/seats_three"
             android:layout_weight="1"
@@ -41,17 +51,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/small"
             android:background="@drawable/btn_day"
-            android:src="@drawable/icn_seats_2" />
-        <ImageView
-            android:id="@+id/seats_four"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/small"
-            android:background="@drawable/btn_day"
             android:src="@drawable/icn_seats_3" />
         <ImageView
-            android:id="@+id/seats_five"
+            android:id="@+id/seats_many"
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
