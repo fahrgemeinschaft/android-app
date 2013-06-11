@@ -15,42 +15,36 @@
         android:id="@+id/row"
         android:layout_width="match_parent"
         android:layout_height="30sp"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:background="@color/medium_green" >
 
         <TextView
             android:id="@+id/day"
             style="@style/dark.Large"
-            android:layout_height="match_parent"
-            android:background="@color/medium_green" />
+            android:layout_height="match_parent" />
 
         <TextView
             android:id="@+id/date"
             style="@style/light.Large"
-            android:layout_height="match_parent"
-            android:background="@color/medium_green" />
+            android:layout_height="match_parent" />
 
         <TextView
             android:id="@+id/time"
             style="@style/dark.Large.Bold"
-            android:paddingLeft="30dp"
+            android:gravity="center"
             android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:background="@color/medium_green" />
+            android:layout_height="match_parent" />
 
         <TextView
             android:id="@+id/price"
             style="@style/dark.Large.Bold"
-            android:paddingLeft="12dp"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:layout_height="match_parent"
-            android:background="@color/medium_green" />
+            android:gravity="left"
+            android:layout_height="match_parent" />
 
         <TextView
             android:id="@+id/currency"
             style="@style/light.Large"
             android:layout_height="match_parent"
-            android:background="@color/medium_green"
             android:text="€" />
 
         <TextView
@@ -58,8 +52,7 @@
             style="@style/dark.Large.Bold"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="right"
-            android:background="@color/medium_green" />
+            android:gravity="right" />
 
         <ImageView
             android:id="@+id/seats_icon"
@@ -86,7 +79,8 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/btn_contact"
         android:layout_below="@id/row"
-        android:layout_marginTop="3dp" >
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp" >
 
         <LinearLayout
             android:id="@+id/content"
@@ -103,6 +97,8 @@
                 android:id="@+id/to_place"
                 layout="@layout/view_place_bubble"
                 android:layout_width="match_parent" />
+            
+            
             
             <TextView
                 android:id="@+id/details"

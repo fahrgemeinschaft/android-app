@@ -55,22 +55,22 @@
     <TextView
         android:id="@+id/day"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="3dp"
+        android:layout_marginBottom="1dp"
         android:layout_marginLeft="5dp"
-        style="@style/dark"
+        style="@style/dark.Large"
     />
     <TextView
         android:id="@+id/date"
         android:layout_toRightOf="@id/day"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="3dp"
-        style="@style/light"
+        android:layout_marginBottom="1dp"
+        style="@style/light.Large"
     />
     <TextView
         android:id="@+id/time"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="0dp"
-        android:layout_marginLeft="105dp"
+        android:layout_marginLeft="107dp"
         style="@style/dark.Large.Bold"
     />
     <View 
