@@ -10,6 +10,7 @@
     <string name="app_name">Fahrgemeinschaft</string>
 
     <string name="from">from</string>
+    <string name="via">via</string>
     <string name="to">to</string>
     <string name="when">when</string>
     <string name="date">date</string>

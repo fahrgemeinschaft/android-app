@@ -77,13 +77,6 @@
             layout="@layout/place_pick_button" />
 
         <include
-            android:id="@+id/via"
-            android:layout_width="match_parent"
-            android:layout_margin="@dimen/small"
-            android:layout_marginLeft="42dp"
-            layout="@layout/place_pick_button" />
-
-        <include
             android:id="@+id/to"
             android:layout_width="match_parent"
             android:layout_margin="@dimen/small"
