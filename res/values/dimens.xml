@@ -12,5 +12,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     
     <dimen name="small">5dp</dimen>
+    <dimen name="medium">8dp</dimen>
 
 </resources>
