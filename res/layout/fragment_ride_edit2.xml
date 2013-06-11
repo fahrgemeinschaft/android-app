@@ -68,14 +68,24 @@
                 android:src="@drawable/icn_datepicker" />
         </FrameLayout>
     </LinearLayout>
-
+    
+    <TextView 
+        android:id="@+id/recurrence_text"
+        android:layout_width="match_parent"
+        android:height="12dp"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="5dp"
+        android:background="@color/medium_green"
+        android:textColor="#FFFFFF"
+        android:text="Regelmäßige Fahrt: jede Woche am" />
+    
     <LinearLayout
         android:id="@+id/recurrence"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:background="@color/dark_green"
+        android:layout_height="50dp"
+        android:background="@color/medium_green"
         android:orientation="horizontal"
-        android:layout_marginTop="8dp"
+        android:layout_gravity="bottom"
         android:padding="@dimen/small" >
     </LinearLayout>
 

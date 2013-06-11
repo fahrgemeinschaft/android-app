@@ -11,8 +11,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="100dp" >
+        android:layout_height="match_parent" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,15 +30,19 @@
                 android:name="de.fahrgemeinschaft.EditRideFragment2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+        
+            <ImageButton
+                android:id="@+id/done"
+                android:layout_height="80dp"
+                android:layout_width="match_parent"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/btn_fahrteintragen"
+                android:background="@drawable/btn_medium_green" />
+        
         </LinearLayout>
+        
+        
+        
     </ScrollView>
-
-    <Button
-        android:id="@+id/done"
-        android:layout_height="100dp"
-        android:layout_width="match_parent"
-        android:layout_gravity="bottom"
-        android:src="@drawable/btn_dark_green"
-        android:text="@string/publish" />
 
 </FrameLayout>
