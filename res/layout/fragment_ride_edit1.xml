@@ -14,9 +14,8 @@
         android:id="@+id/seats"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:background="@color/dark_green"
+        android:background="@color/medium_green"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/medium"
         android:padding="@dimen/small" >
 
         <ImageView

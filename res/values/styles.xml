@@ -102,6 +102,10 @@
         <item name="android:textSize">28sp</item>
     </style>
     
+    <style name="white_button_text">
+        <item name="android:textSize">28sp</item>
+    </style>
+    
     <color name="light_green_translucent">#EEBBDF53</color>
     <color name="light_green">#BBDF53</color>
     <color name="medium_green">#839C3A</color>

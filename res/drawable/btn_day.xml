@@ -9,5 +9,5 @@
     <item android:state_selected="true" android:drawable="@color/opacity_white" />
     <item android:state_pressed="true" android:drawable="@android:color/white" />
     <item android:state_focused="true" android:drawable="@android:color/white" />
-    <item android:drawable="@color/medium_green" />
+    <item android:drawable="@color/dark_green" />
 </selector>
