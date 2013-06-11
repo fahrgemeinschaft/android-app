@@ -10,15 +10,15 @@
         android:gravity="left|center_vertical"
         android:layout_gravity="left|center_vertical"
         android:background="@drawable/btn_white"
-        android:layout_marginRight="55dp"
+        android:layout_marginRight="@dimen/xlarge"
         android:paddingLeft="16dp"
         android:singleLine="true"
         android:textSize="28sp" />
 
     <ImageButton
         android:id="@+id/icon"
-        android:layout_height="55dp"
-        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
         android:layout_gravity="right|center_vertical"
         android:background="@drawable/btn_white"
         android:src="@drawable/icn_dropdown" />
