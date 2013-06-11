@@ -105,7 +105,7 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
                 Log.d(TAG, "via " + intent.getDataString());
                 ImageButton icon = (ImageButton) route
                         .getChildAt(i).findViewById(R.id.icon);
-                icon.setImageResource(R.drawable.ic_launcher);
+                icon.setImageResource(R.drawable.icn_close);
                 icon.setOnClickListener(new OnClickListener() {
                     
                     @Override
