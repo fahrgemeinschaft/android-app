@@ -110,8 +110,9 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
                     
                     @Override
                     public void onClick(View v) {
-                        route.removeViewAt(route.indexOfChild(
-                                (View) v.getParent()));
+                        route.removeViewAt(
+                                route.indexOfChild(
+                                        (View) v.getParent()));
                     }
                 });
             }
