@@ -55,7 +55,7 @@ public class EditRideFragment2 extends SherlockFragment
         LayoutParams layoutParams = dayButtonlayoutParams();
         for (int i = 1; i < weekDays.length; i++) {
             TextView day = makeDayButton(getActivity());
-            day.setText(weekDays[i]);
+            day.setText(weekDays[i].substring(0, 2));
             recurrence.addView(day);
             System.out.println(weekDays[i]);
         }
