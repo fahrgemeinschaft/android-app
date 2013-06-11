@@ -73,8 +73,10 @@
         android:id="@+id/recurrence_text"
         android:layout_width="match_parent"
         android:height="12dp"
-        android:layout_marginTop="8dp"
-        android:paddingLeft="5dp"
+        android:layout_marginTop="11dp"
+        android:paddingTop="8dp"
+        android:gravity="bottom"
+        android:paddingLeft="11dp"
         android:background="@color/medium_green"
         android:textColor="#FFFFFF"
         android:text="Regelmäßige Fahrt: jede Woche am" />
@@ -82,11 +84,43 @@
     <LinearLayout
         android:id="@+id/recurrence"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         android:background="@color/medium_green"
         android:orientation="horizontal"
-        android:layout_gravity="bottom"
         android:padding="@dimen/small" >
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/medium_green"
+        android:orientation="vertical"
+        android:layout_marginTop="11dp"
+        android:padding="@dimen/small" >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/small" >
+
+            <Button
+                android:id="@+id/btn_pick_price"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:background="@drawable/btn_white"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="16dp"
+                android:singleLine="true"
+                android:text="@string/price"
+                android:textSize="28sp" />
+
+            <ImageButton
+                android:id="@+id/ic_pick_price"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="right|center_vertical"
+                android:background="@drawable/btn_white"
+                android:src="@drawable/icn_pricepicker" />
+        </FrameLayout>
+    </LinearLayout>
 </LinearLayout>

@@ -16,7 +16,6 @@
         android:layout_height="55dp"
         android:background="@color/medium_green"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/medium"
         android:padding="@dimen/small" >
 
         <ImageView
