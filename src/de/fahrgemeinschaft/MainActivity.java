@@ -7,7 +7,7 @@
 
 package de.fahrgemeinschaft;
 
-import java.text.SimpleDateFormat;
+import java.text.SimpleDateFormat; 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -135,6 +135,8 @@ public class MainActivity extends SherlockFragmentActivity
                                 + "&dep=" + dep)));
             }
             break;
+        case R.id.btn_selberfahren:
+            startActivity(new Intent(this, EditRideActivity.class));
         }
     }
 

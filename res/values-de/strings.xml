@@ -13,6 +13,7 @@
     <string name="ready">Fertig</string>
     <string name="tomorrow">morgen</string>
     <string name="after_tomorrow">übermorgen</string>
+    <string name="publish" >Fahrt Eintragen</string>
 
     <string name="profile">Profil</string>
     <string name="settings">Einstellungen</string>

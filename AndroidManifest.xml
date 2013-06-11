@@ -50,6 +50,24 @@
                     android:scheme="content" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".EditRideActivity"
+            android:label="FG" >
+            <intent-filter>
+                <action android:name="android.intent.action.INSERT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data
+                    android:host="de.fahrgemeinschaft"
+                    android:scheme="content" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.EDIT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data
+                    android:host="de.fahrgemeinschaft"
+                    android:scheme="content" />
+            </intent-filter>
+        </activity>
 
         <activity android:name="SettingsActivity">
             <intent-filter>

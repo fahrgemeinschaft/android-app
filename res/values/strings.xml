@@ -16,6 +16,7 @@
     <string name="ready">Ready</string>
     <string name="tomorrow">tomorrow</string>
     <string name="after_tomorrow">day after tomorrow</string>
+    <string name="publish" >Publish</string>
 
     <string name="my_rides">My Rides</string>
     <string name="settings">Settings</string>

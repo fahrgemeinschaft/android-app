@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Fahrgemeinschaft / Ridesharing App
+  Copyright (c) 2013 by it's authors.
+  Some rights reserved. See LICENSE.. 
+-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/btn_pick_date"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:gravity="left|center_vertical"
+            android:background="@drawable/btn_white"
+            android:paddingLeft="16dp"
+            android:singleLine="true"
+            android:text="@string/when"
+            android:textSize="28sp" />
+
+        <ImageButton
+            android:id="@+id/ic_pick_date"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_gravity="right|center_vertical"
+            android:background="@drawable/btn_white"
+            android:src="@drawable/icn_datepicker" />
+    </FrameLayout>
+
+
+
+</LinearLayout>
