@@ -98,7 +98,7 @@ public class EditRideFragment2 extends SherlockFragment
     private LayoutParams dayButtonlayoutParams() {
         LayoutParams lp = new LayoutParams(0, LayoutParams.MATCH_PARENT);
         int margin = getActivity().getResources() // dips
-                .getDimensionPixelSize(R.dimen.padding_small);
+                .getDimensionPixelSize(R.dimen.small);
         lp.leftMargin = margin;
         lp.rightMargin = margin;
         lp.topMargin = margin;
