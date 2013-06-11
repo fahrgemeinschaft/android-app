@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
@@ -27,8 +28,6 @@ import com.actionbarsherlock.app.SherlockFragment;
 public class EditRideFragment1 extends SherlockFragment implements OnClickListener {
 
     private static final String TAG = "Fahrgemeinschaft";
-    protected static final int FROM = 1;
-    private static final int TO = 2;
     private LinearLayout seats;
     private LinearLayout route;
 
@@ -51,80 +50,69 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
         
         Button from = (Button) v.findViewById(R.id.from).findViewById(R.id.text);
         from.setText(R.string.from);
-        from.setOnClickListener(new OnClickListener() {
-            
-            @Override
-            public void onClick(View v) {
-                autocompletePlace(0);
-            }
-        });
+        from.setOnClickListener(autocompletePlace);
         v.findViewById(R.id.from).findViewById(R.id.icon)
-            .setOnClickListener(new OnClickListener() {
-                    
-            @Override
-            public void onClick(View v) {
-                pickPlace(0);
-            }
-        });
+            .setOnClickListener(pickPlace);
         
         Button to = (Button) v.findViewById(R.id.to).findViewById(R.id.text);
         to.setText(R.string.to);
-        to.setOnClickListener(new OnClickListener() {
-            
-            @Override
-            public void onClick(View v) {
-                autocompletePlace(route.getChildCount() - 1);
-            }
-        });
+        to.setOnClickListener(autocompletePlace);
         v.findViewById(R.id.to).findViewById(R.id.icon)
-            .setOnClickListener(new OnClickListener() {
-            
-            @Override
-            public void onClick(View v) {
-                pickPlace(route.getChildCount() - 1);
-            }
-        });
-        
+            .setOnClickListener(pickPlace);
         addVia();
     }
 
-    @Override
-    public void onClick(View v) {
-        for (int i = 0; i < seats.getChildCount(); i++) {
-            seats.getChildAt(i).setSelected(false);
+    OnClickListener pickPlace = new OnClickListener() {
+        
+        @Override
+        public void onClick(View v) {
+            startActivityForResult(new Intent(Intent.ACTION_PICK,
+                    Uri.parse("content://de.fahrgemeinschaft/places")),
+                    route.indexOfChild((View) v.getParent()));
         }
-        v.setSelected(true);
-    }
+    };
 
-    void pickPlace(int id) {
-        startActivityForResult(new Intent(Intent.ACTION_PICK,
-                Uri.parse("content://de.fahrgemeinschaft/places")), id);
-    }
-
-    void autocompletePlace(int id) {
-        startActivityForResult(new Intent(Intent.ACTION_PICK,
-                Uri.parse("content://de.fahrgemeinschaft/places"))
-                    .putExtra("show_textfield", true), id);
-    }
+    OnClickListener autocompletePlace = new OnClickListener() {
+        
+        @Override
+        public void onClick(View v) {
+            startActivityForResult(new Intent(Intent.ACTION_PICK,
+                    Uri.parse("content://de.fahrgemeinschaft/places"))
+                            .putExtra("show_textfield", true),
+                    route.indexOfChild((View) v.getParent()));
+        }
+    };
 
     @Override
-    public void onActivityResult(int idx, int res, final Intent intent) {
+    public void onActivityResult(final int i, int res, final Intent intent) {
         if (res == Activity.RESULT_OK) {
-            Log.d(TAG, idx + "selected " + intent.getData());
+            Log.d(TAG, i + "selected " + intent.getData());
             Cursor place = getActivity().getContentResolver()
                     .query(intent.getData(), null, null, null, null);
             if (place.getCount() > 0) {
                 place.moveToFirst();
-                ((Button) route.getChildAt(idx).findViewById(R.id.text))
-                    .setText(place.getString(2));
+                Button b = (Button) route.getChildAt(i).findViewById(R.id.text);
+                if (i == route.getChildCount() - 2) {
+                    addVia();
+                }
+                b.setText(place.getString(2));
             }
-            if (idx == 0) {
+            if (i == 0) {
                 Log.d(TAG, "from " + intent.getDataString());
-            } else if (idx == route.getChildCount() - 1 ) {
+            } else if (i == route.getChildCount() - 1 ) {
                 Log.d(TAG, "to " + intent.getDataString());
             } else {
                 Log.d(TAG, "via " + intent.getDataString());
-                addVia();
+                ImageButton icon = (ImageButton) route
+                        .getChildAt(i).findViewById(R.id.icon);
+                icon.setImageResource(R.drawable.ic_launcher);
+                icon.setOnClickListener(new OnClickListener() {
+                    
+                    @Override
+                    public void onClick(View v) {
+                        route.removeViewAt(i);
+                    }
+                });
             }
         }
     }
@@ -141,22 +129,17 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
         lp.bottomMargin = getResources().getDimensionPixelSize(R.dimen.small);
         lp.leftMargin = getResources().getDimensionPixelSize(R.dimen.xlarge);
         btn.setLayoutParams(lp);
-        final int position = route.getChildCount() - 1;
-        btn.findViewById(R.id.text).setOnClickListener(new OnClickListener() {
-            
-            @Override
-            public void onClick(View v) {
-                autocompletePlace(position);
-            }
-        });
-        btn.findViewById(R.id.icon).setOnClickListener(new OnClickListener() {
-            
-            @Override
-            public void onClick(View v) {
-                pickPlace(position);
-            }
-        });
-        
-        route.addView(btn, position);
+        btn.findViewById(R.id.text).setOnClickListener(autocompletePlace);
+        btn.findViewById(R.id.icon).setOnClickListener(pickPlace);
+        route.addView(btn, route.getChildCount() - 1);
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        for (int i = 0; i < seats.getChildCount(); i++) {
+            seats.getChildAt(i).setSelected(false);
+        }
+        v.setSelected(true);
     }
 }
