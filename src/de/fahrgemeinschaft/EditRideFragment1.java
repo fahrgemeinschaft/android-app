@@ -40,8 +40,8 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
     public void onViewCreated(View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
         
-        v.findViewById(R.id.mode_car).setOnClickListener(this);
-        v.findViewById(R.id.mode_rail).setOnClickListener(this);
+        v.findViewById(R.id.mode_car).setOnClickListener(selectMode);
+        v.findViewById(R.id.mode_rail).setOnClickListener(selectMode);
         route = (LinearLayout) v.findViewById(R.id.route);
         seats = (LinearLayout) v.findViewById(R.id.seats);
         v.findViewById(R.id.seats_zero).setOnClickListener(this);
@@ -63,6 +63,28 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
             .setOnClickListener(pickPlace);
         addVia();
     }
+
+    OnClickListener selectMode = new OnClickListener() {
+        
+        @Override
+        public void onClick(View v) {
+            if (v.getId() == R.id.mode_car) {
+                getActivity().findViewById(R.id.mode_car).setSelected(true);
+                getActivity().findViewById(R.id.mode_rail).setSelected(false);
+                ((TextView) getActivity().findViewById(R.id.mode_car_text))
+                    .setTextColor(getResources().getColor(R.color.dark_green));
+                ((TextView) getActivity().findViewById(R.id.mode_rail_text))
+                    .setTextColor(getResources().getColor(R.color.white));
+            } else {
+                getActivity().findViewById(R.id.mode_car).setSelected(false);
+                getActivity().findViewById(R.id.mode_rail).setSelected(true);
+                ((TextView) getActivity().findViewById(R.id.mode_car_text))
+                    .setTextColor(getResources().getColor(R.color.white));
+                ((TextView) getActivity().findViewById(R.id.mode_rail_text))
+                    .setTextColor(getResources().getColor(R.color.dark_green));
+            }
+        }
+    };
 
     OnClickListener pickPlace = new OnClickListener() {
         
