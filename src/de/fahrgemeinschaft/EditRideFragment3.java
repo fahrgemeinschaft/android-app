@@ -54,7 +54,7 @@ public class EditRideFragment3 extends SherlockFragment {
 
     static class VisibilityView extends ImageButton implements OnClickListener {
 
-        private int state = R.attr.state_visible_for_nobody; // default
+        private int state = R.attr.state_visible_for_anybody; // default
 
         public VisibilityView(Context context, AttributeSet attrs) {
             super(context, attrs);
@@ -70,7 +70,7 @@ public class EditRideFragment3 extends SherlockFragment {
                 
                 @Override
                 public void onClick(DialogInterface dialog, int item) {
-                    state = R.attr.state_visible_for_nobody + item;
+                    state = R.attr.state_visible_for_anybody + item;
                 }
             }).show();
         }

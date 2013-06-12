@@ -14,23 +14,23 @@
     <EditText
         android:id="@+id/text"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/xlarge"
+        android:layout_height="@dimen/large_icn"
         android:gravity="left|center_vertical"
         android:layout_gravity="left|center_vertical"
         android:background="@drawable/btn_white"
         android:layout_marginLeft="@dimen/small"
-        android:layout_marginRight="@dimen/three_times_small_plus_xlarge"
+        android:layout_marginRight="@dimen/small"
         android:paddingLeft="16dp"
         android:singleLine="true"
         android:textSize="28sp" />
 
     <view
         android:id="@+id/icon"
-        android:layout_height="@dimen/xlarge"
-        android:layout_width="@dimen/xlarge"
+        android:layout_height="@dimen/large_icn"
+        android:layout_width="@dimen/large_icn"
         android:layout_marginRight="@dimen/small"
         android:layout_gravity="right|center_vertical"
-        android:src="@drawable/ic_launcher"
+        android:src="@drawable/icn_contact_email"
         android:background="@drawable/btn_visibility"
         class="de.fahrgemeinschaft.EditRideFragment3$VisibilityView" />
 
