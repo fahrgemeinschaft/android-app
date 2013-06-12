@@ -27,6 +27,13 @@
     <string name="contact">Kontakt</string>
     <string name="seats">Sitzplätze</string>
 
+    <string-array name="visibility">
+        <item name="nobody">nicht sichtbar</item>
+        <item name="anybody">öffentlich sichtbar</item>
+        <item name="members">sichtbar für Mitglieder</item>
+        <item name="request">sichtbar auf Anfrage</item>
+    </string-array>
+
     <string name="login">Login</string>
     <string name="email">Email</string>
     <string name="passwd">Passwort</string>

@@ -7,13 +7,15 @@
 
 package de.fahrgemeinschaft;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -42,9 +44,10 @@ public class EditRideFragment3 extends SherlockFragment {
         land = (EditText) v.findViewById(R.id.landline).findViewById(R.id.text);
         mobile = (EditText) v.findViewById(R.id.mobile).findViewById(R.id.text);
         plate = (EditText) v.findViewById(R.id.plate).findViewById(R.id.text);
-        email.setImeOptions(EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-        land.setImeOptions(EditorInfo.TYPE_CLASS_PHONE);
-        mobile.setImeOptions(EditorInfo.TYPE_CLASS_PHONE);
+        email.setInputType(InputType.TYPE_CLASS_TEXT |
+                InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        land.setInputType(InputType.TYPE_CLASS_PHONE);
+        mobile.setInputType(InputType.TYPE_CLASS_PHONE);
     }
 
 
@@ -60,9 +63,16 @@ public class EditRideFragment3 extends SherlockFragment {
 
         @Override
         public void onClick(View v) {
-            state++; // simply choose next state
-            if (state > R.attr.state_visible_upon_request)
-                state = R.attr.state_visible_for_nobody;
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("foo");
+            builder.setItems(R.array
+                    .visibility, new DialogInterface.OnClickListener() {
+                
+                @Override
+                public void onClick(DialogInterface dialog, int item) {
+                    state = R.attr.state_visible_for_nobody + item;
+                }
+            }).show();
         }
 
         @Override
