@@ -40,6 +40,8 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
     public void onViewCreated(View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
         
+        v.findViewById(R.id.mode_car).setOnClickListener(this);
+        v.findViewById(R.id.mode_rail).setOnClickListener(this);
         route = (LinearLayout) v.findViewById(R.id.route);
         seats = (LinearLayout) v.findViewById(R.id.seats);
         v.findViewById(R.id.seats_zero).setOnClickListener(this);
