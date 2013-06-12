@@ -10,7 +10,66 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    
+    <LinearLayout
+        android:id="@+id/mode"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp" >
+
+        <FrameLayout 
+            android:id="@+id/mode_car"
+            android:layout_height="match_parent"
+            android:background="@drawable/btn_day"
+            android:layout_gravity="left"
+            android:layout_marginRight="4dp"
+            android:layout_weight="1" >
+            
+            <ImageView
+                android:id="@+id/mode_car_image"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/icn_goby_car" />
+            
+            <TextView 
+                android:id="@+id/mode_car_text"
+                android:textColor="#FFFFFF"
+                android:layout_gravity="center_vertical"
+                android:textSize="18dp"
+                android:layout_marginLeft="70dp"
+                android:textStyle="bold"
+                android:text="per Auto" />
+            
+        </FrameLayout>
+        
+        <FrameLayout 
+            android:id="@+id/mode_rail"
+            android:layout_height="match_parent"
+            android:background="@drawable/btn_day"
+            android:layout_gravity="left"
+            android:layout_marginLeft="4dp"
+            android:layout_weight="1" >
+            
+            <ImageView
+                android:id="@+id/mode_rail_image"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/icn_goby_train" />
+            
+            <TextView 
+                android:id="@+id/mode_rail_text"
+                android:textColor="#FFFFFF"
+                android:layout_gravity="center_vertical"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_marginLeft="70dp"
+                android:text="per Zug" />
+            
+        </FrameLayout>
+        
+    </LinearLayout>
     
     <LinearLayout
         android:id="@+id/seats"
