@@ -30,7 +30,13 @@
                 android:name="de.fahrgemeinschaft.EditRideFragment2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-        
+
+            <fragment
+                android:id="@+id/fragment3"
+                android:name="de.fahrgemeinschaft.EditRideFragment3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
             <ImageButton
                 android:id="@+id/done"
                 android:layout_width="match_parent"

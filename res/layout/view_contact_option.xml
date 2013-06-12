@@ -7,26 +7,31 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/small"
+    android:paddingTop="@dimen/small" >
 
-    <Button
+    <EditText
         android:id="@+id/text"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="@dimen/xlarge"
         android:gravity="left|center_vertical"
         android:layout_gravity="left|center_vertical"
         android:background="@drawable/btn_white"
-        android:layout_marginRight="55dp"
+        android:layout_marginLeft="@dimen/small"
+        android:layout_marginRight="@dimen/three_times_small_plus_xlarge"
         android:paddingLeft="16dp"
         android:singleLine="true"
         android:textSize="28sp" />
 
-    <ImageButton
+    <view
         android:id="@+id/icon"
-        android:layout_height="55dp"
-        android:layout_width="55dp"
+        android:layout_height="@dimen/xlarge"
+        android:layout_width="@dimen/xlarge"
+        android:layout_marginRight="@dimen/small"
         android:layout_gravity="right|center_vertical"
-        android:background="@drawable/btn_white"
-        android:src="@drawable/icn_dropdown" />
+        android:src="@drawable/icn_dropdown"
+        android:background="@drawable/btn_visibility"
+        class="de.fahrgemeinschaft.EditRideFragment3$VisibilityView" />
 
 </FrameLayout>

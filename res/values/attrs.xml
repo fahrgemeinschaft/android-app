@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Fahrgemeinschaft / Ridesharing App
+  Copyright (c) 2013 by it's authors.
+  Some rights reserved. See LICENSE.. 
+-->
+
+<resources>
+
+    <declare-styleable name="VisibilityState">
+        <attr name="state_visible_for_nobody" format="boolean"/>
+        <attr name="state_visible_for_anybody" format="boolean"/>
+        <attr name="state_visible_for_members" format="boolean"/>
+        <attr name="state_visible_upon_request" format="boolean"/>
+    </declare-styleable>
+
+</resources>

@@ -13,6 +13,7 @@
     
     <dimen name="small">5dp</dimen>
     <dimen name="medium">8dp</dimen>
-    <dimen name="xlarge">48dp</dimen>
+    <dimen name="xlarge">60dp</dimen>
 
+    <dimen name="three_times_small_plus_xlarge">75dp</dimen>
 </resources>

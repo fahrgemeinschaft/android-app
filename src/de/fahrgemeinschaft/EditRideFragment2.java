@@ -21,7 +21,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -57,7 +56,6 @@ public class EditRideFragment2 extends SherlockFragment
             TextView day = makeDayButton(getActivity());
             day.setText(weekDays[i].substring(0, 2));
             recurrence.addView(day);
-            System.out.println(weekDays[i]);
         }
     }
 
