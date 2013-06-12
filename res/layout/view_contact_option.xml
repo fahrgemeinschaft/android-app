@@ -30,7 +30,7 @@
         android:layout_width="@dimen/xlarge"
         android:layout_marginRight="@dimen/small"
         android:layout_gravity="right|center_vertical"
-        android:src="@drawable/icn_dropdown"
+        android:src="@drawable/ic_launcher"
         android:background="@drawable/btn_visibility"
         class="de.fahrgemeinschaft.EditRideFragment3$VisibilityView" />
 

@@ -22,6 +22,8 @@
     <string name="publish">Publish</string>
 
     <string name="price">Price</string>
+    <string name="mode_car">by Car</string>
+    <string name="mode_rail">by Train</string>
     
     <string name="my_rides">My Rides</string>
     <string name="settings">Settings</string>

@@ -18,6 +18,8 @@
     <string name="publish" >Fahrt Eintragen</string>
 
     <string name="price">Preis</string>
+    <string name="mode_car">per Auto</string>
+    <string name="mode_rail">per Zug</string>
     
     <string name="profile">Profil</string>
     <string name="settings">Einstellungen</string>

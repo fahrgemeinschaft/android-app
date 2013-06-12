@@ -18,17 +18,17 @@
         layout="@layout/view_contact_option" />
 
     <include
-        android:id="@+id/email"
+        android:id="@+id/landline"
         android:layout_width="match_parent"
         layout="@layout/view_contact_option" />
 
     <include
-        android:id="@+id/email"
+        android:id="@+id/mobile"
         android:layout_width="match_parent"
         layout="@layout/view_contact_option" />
 
     <include
-        android:id="@+id/email"
+        android:id="@+id/plate"
         android:layout_width="match_parent"
         layout="@layout/view_contact_option" />
 

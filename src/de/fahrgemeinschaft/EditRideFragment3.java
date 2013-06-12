@@ -10,19 +10,25 @@ package de.fahrgemeinschaft;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-public class EditRideFragment3 extends SherlockFragment 
-        implements OnClickListener {
+public class EditRideFragment3 extends SherlockFragment {
 
-    private static final String TAG = "Fahrgemeinschaft";
+
+    private EditText email;
+    private EditText land;
+    private EditText mobile;
+    private EditText plate;
+
+
 
     @Override
     public View onCreateView(final LayoutInflater lI, ViewGroup p, Bundle b) {
@@ -32,17 +38,20 @@ public class EditRideFragment3 extends SherlockFragment
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
-    }
-
-    @Override
-    public void onClick(View v) {
+        email = (EditText) v.findViewById(R.id.email).findViewById(R.id.text);
+        land = (EditText) v.findViewById(R.id.landline).findViewById(R.id.text);
+        mobile = (EditText) v.findViewById(R.id.mobile).findViewById(R.id.text);
+        plate = (EditText) v.findViewById(R.id.plate).findViewById(R.id.text);
+        email.setImeOptions(EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        land.setImeOptions(EditorInfo.TYPE_CLASS_PHONE);
+        mobile.setImeOptions(EditorInfo.TYPE_CLASS_PHONE);
     }
 
 
 
     static class VisibilityView extends ImageButton implements OnClickListener {
 
-        private int visibility_state = R.attr.state_visible_for_nobody;
+        private int state = R.attr.state_visible_for_nobody; // default
 
         public VisibilityView(Context context, AttributeSet attrs) {
             super(context, attrs);
@@ -51,16 +60,15 @@ public class EditRideFragment3 extends SherlockFragment
 
         @Override
         public void onClick(View v) {
-            visibility_state++; // simply next state
-            if (visibility_state > R.attr.state_visible_upon_request)
-                visibility_state = R.attr.state_visible_for_nobody;
-            refreshDrawableState();
+            state++; // simply choose next state
+            if (state > R.attr.state_visible_upon_request)
+                state = R.attr.state_visible_for_nobody;
         }
 
         @Override
         public int[] onCreateDrawableState(int size) {
             final int[] drawableState = super.onCreateDrawableState(size + 1);
-            mergeDrawableStates(drawableState, new int[] { visibility_state });
+            mergeDrawableStates(drawableState, new int[] { state });
             return drawableState;
         }
     }

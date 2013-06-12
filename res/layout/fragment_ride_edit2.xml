@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:background="@color/medium_green"
         android:orientation="vertical"
-        android:layout_marginTop="11dp"
+        android:layout_marginTop="@dimen/medium"
         android:padding="@dimen/small" >
 
         <FrameLayout
@@ -73,7 +73,7 @@
         android:id="@+id/recurrence_text"
         android:layout_width="match_parent"
         android:height="12dp"
-        android:layout_marginTop="11dp"
+        android:layout_marginTop="@dimen/large"
         android:paddingTop="8dp"
         android:gravity="bottom"
         android:paddingLeft="11dp"
@@ -95,7 +95,7 @@
         android:layout_height="match_parent"
         android:background="@color/medium_green"
         android:orientation="vertical"
-        android:layout_marginTop="11dp"
+        android:layout_marginTop="@dimen/large"
         android:padding="@dimen/small" >
 
         <FrameLayout
