@@ -48,6 +48,9 @@ public class EditRideFragment3 extends SherlockFragment {
                 InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         land.setInputType(InputType.TYPE_CLASS_PHONE);
         mobile.setInputType(InputType.TYPE_CLASS_PHONE);
+        
+        ((VisibilityView) v.findViewById(R.id.email).findViewById(R.id.text))
+            .setImageResource(R.drawable.ic_mail);
     }
 
 
