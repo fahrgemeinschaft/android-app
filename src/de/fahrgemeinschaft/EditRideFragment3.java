@@ -49,8 +49,14 @@ public class EditRideFragment3 extends SherlockFragment {
         land.setInputType(InputType.TYPE_CLASS_PHONE);
         mobile.setInputType(InputType.TYPE_CLASS_PHONE);
         
-        ((VisibilityView) v.findViewById(R.id.email).findViewById(R.id.text))
-            .setImageResource(R.drawable.ic_mail);
+        ((VisibilityView) v.findViewById(R.id.email).findViewById(R.id.icon))
+            .setImageResource(R.drawable.icn_contact_email);
+        ((VisibilityView) v.findViewById(R.id.landline).findViewById(R.id.icon))
+            .setImageResource(R.drawable.icn_contact_phone);
+        ((VisibilityView) v.findViewById(R.id.mobile).findViewById(R.id.icon))
+            .setImageResource(R.drawable.icn_contact_handy);
+        ((VisibilityView) v.findViewById(R.id.plate).findViewById(R.id.icon))
+            .setImageResource(R.drawable.icn_contact_kfz);
     }
 
 
