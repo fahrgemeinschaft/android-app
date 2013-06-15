@@ -16,6 +16,7 @@
     <string name="tomorrow">morgen</string>
     <string name="after_tomorrow">übermorgen</string>
     <string name="publish" >Fahrt Eintragen</string>
+    <string name="search">suchen</string>
 
     <string name="price">Preis</string>
     <string name="mode_car">per Auto</string>

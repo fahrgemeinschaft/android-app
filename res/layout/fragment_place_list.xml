@@ -14,11 +14,13 @@
     <EditText
         android:id="@+id/autocomplete_text"
         android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:hint="search"
-        android:textSize="35dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/search"
+        android:textSize="35sp"
         android:singleLine="true"
         android:layout_marginTop="21dp"
+        android:padding="8dp"
+        android:background="@color/opacity_white"
         android:visibility="gone" />
 
     <ListView
@@ -41,12 +43,11 @@
 
     <ImageButton
         android:id="@+id/toggle"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
         android:layout_alignParentRight="true"
-        android:layout_alignBottom="@android:id/list"
-        android:layout_marginBottom="21dp"
-        android:background="@drawable/btn_black"
+        android:layout_alignTop="@id/autocomplete_text"
+        android:background="@drawable/btn_white"
         android:src="@drawable/ic_menu_search" />
 
 </RelativeLayout>
