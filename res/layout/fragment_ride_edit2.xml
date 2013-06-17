@@ -103,7 +103,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/small" >
 
-            <Button
+            <EditText
                 android:id="@+id/btn_pick_price"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"

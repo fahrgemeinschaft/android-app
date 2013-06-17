@@ -74,7 +74,7 @@
     <LinearLayout
         android:id="@+id/seats"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="55dp"
         android:background="@color/medium_green"
         android:orientation="horizontal"
         android:padding="@dimen/small" >

@@ -11,7 +11,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     
-    <dimen name="small">5dp</dimen>
+    <dimen name="small">2dp</dimen> <!-- 5dp -->
     <dimen name="medium">8dp</dimen>
     <dimen name="large">16dp</dimen>
     <dimen name="large_icn">56dp</dimen>
