@@ -34,11 +34,13 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.calciumion.widget.BasePagerAdapter;
 
+import de.fahrgemeinschaft.EditRideFragment3.VisibilityView;
+
 public class RideDetailsFragment extends SherlockFragment {
 
     private static final String TAG = "Fahrgemeinschaft";
-    private static final SimpleDateFormat day = new SimpleDateFormat("EEE", Locale.GERMANY);
-    private static final SimpleDateFormat date = new SimpleDateFormat("dd.MM", Locale.GERMANY);
+    private static final SimpleDateFormat day = new SimpleDateFormat("EE", Locale.GERMANY);
+    private static final SimpleDateFormat date = new SimpleDateFormat("dd.MM.", Locale.GERMANY);
     private static SimpleDateFormat time = new SimpleDateFormat("HH:mm", Locale.GERMANY);
     private ViewPager pager;
     private Cursor cursor;
@@ -91,7 +93,17 @@ public class RideDetailsFragment extends SherlockFragment {
                 view.time.setText(time.format(timestamp));
 
                 view.price.setText("" + (cursor.getInt(9) / 100));
+                int free_seats = Integer.parseInt(cursor.getString(10));
+                Log.d(TAG, "free seats: " + free_seats);
                 view.seats.setText(cursor.getString(10));
+//                switch(free_seats){
+//                case 0:
+//                	((VisibilityView) v.findViewById(R.id.seats_icon)
+//                			.findViewById(R.id.seats_icon))
+//                            .setImageResource(R.drawable.icn_seats_full);
+//                }
+//                view.seats_icon
+//                    .setImageResource(R.drawable.icn_seats_1);
                 view.details.setText(cursor.getString(8));
 
                 getActivity().getSupportLoaderManager()
