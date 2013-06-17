@@ -73,7 +73,7 @@ public class EditRideFragment3 extends SherlockFragment {
         @Override
         public void onClick(View v) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setTitle("foo");
+            builder.setTitle("sichtbarkeit");
             builder.setItems(R.array
                     .visibility, new DialogInterface.OnClickListener() {
                 
