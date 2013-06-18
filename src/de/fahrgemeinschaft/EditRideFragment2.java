@@ -140,7 +140,7 @@ public class EditRideFragment2 extends SherlockFragment
         Calendar cal = Calendar.getInstance();
         int today = cal.get(Calendar.DAY_OF_YEAR);
         if (dayOfYear == -1 || dayOfYear == today)
-        	date_button.setText(getString(R.string.now));
+        	date_button.setText(getString(R.string.today));
         else if (dayOfYear == today + 1)
         	date_button.setText(getString(R.string.tomorrow));
         else if (dayOfYear == today + 2)

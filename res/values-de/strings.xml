@@ -11,6 +11,7 @@
     <string name="when">wann</string>
     <string name="date">Datum</string>
     <string name="time">Zeit</string>
+    <string name="today">heute</string>
     <string name="now">demnächst</string>
     <string name="ready">Fertig</string>
     <string name="tomorrow">morgen</string>
