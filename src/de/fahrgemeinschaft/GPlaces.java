@@ -36,7 +36,7 @@ public class GPlaces extends Connector {
     @Override
     public void resolvePlace(Place place, Context ctx) {
         String uri = "https://maps.googleapis.com/maps/api/place/details/json"
-                + "?sensor=true&reference=" + place.get("gplace:id", ctx);
+                + "?sensor=true&reference=" + place.get("gplace:id");
         Log.d(TAG, uri);
         String jsonResult = httpGet(uri + "&language=de&key=" + API_KEY);
         try {

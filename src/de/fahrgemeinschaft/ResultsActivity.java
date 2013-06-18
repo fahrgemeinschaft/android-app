@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import org.teleportr.ConnectorService;
 import org.teleportr.Ride;
+import org.teleportr.Ride.COLUMNS;
 
 import android.content.ComponentName;
 import android.content.Intent;
@@ -127,10 +128,12 @@ public class ResultsActivity extends SherlockFragmentActivity
         Intent web = new Intent(Intent.ACTION_VIEW, Uri.parse(
                 "http://www.fahrgemeinschaft.de/tripdetails.php?trip="
                         + c.getString(12))).setClass(this, WebActivity.class);
+        String route = c.getString(COLUMNS.FROM_NAME)
+                + " -> " + c.getString(COLUMNS.TO_NAME);
         Intent contact = new Intent(Intent.ACTION_INSERT, Contacts.CONTENT_URI);
-        contact.putExtra(Insert.NAME, c.getString(1) + " -> " + c.getString(3));
+        contact.putExtra(Insert.NAME, route);
         ArrayList<Intent> intents = new ArrayList<Intent>();
-        String[] who = c.getString(7).split(";");
+        String[] who = c.getString(COLUMNS.WHO).split(";");
         for (int i = 0; i < who.length; i++) {
             String[] split = who[i].split("=");
             if (split.length > 1) {
@@ -142,8 +145,7 @@ public class ResultsActivity extends SherlockFragmentActivity
                     Intent call = labeledIntent(callIntent(value),
                             R.drawable.ic_call, "Call " + value);
                     if (call != null) intents.add(call);
-                    Intent sms = labeledIntent(smsIntent(value,
-                            c.getString(1) + " -> " + c.getString(3)),
+                    Intent sms = labeledIntent(smsIntent(value, route),
                             R.drawable.ic_sms, "SMS " + value);
                     if (sms != null) intents.add(sms);
                 } else if (split[0].equals("landline") 
@@ -155,8 +157,7 @@ public class ResultsActivity extends SherlockFragmentActivity
                 } else if (split[0].equals("mail")
                         && split[1].startsWith("1")) {
                     contact.putExtra(Insert.EMAIL, value);
-                    Intent mail = labeledIntent(mailIntent(value,
-                            c.getString(1) + " --> " + c.getString(3)),
+                    Intent mail = labeledIntent(mailIntent(value, route),
                             R.drawable.ic_mail, "Mail " + value);
                     if (mail != null) intents.add(mail);
                 }

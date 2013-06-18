@@ -7,6 +7,8 @@
 
 package de.fahrgemeinschaft;
 
+import org.teleportr.Ride.COLUMNS;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -84,27 +86,25 @@ public class RideDetailsFragment extends SherlockFragment {
 
                 cursor.moveToPosition((Integer) position);
 
-                view.from_place.setText(cursor.getString(2));
-                view.to_place.setText(cursor.getString(4));
+                view.from_place.setText(cursor.getString(COLUMNS.FROM_ADDRESS));
+                view.to_place.setText(cursor.getString(COLUMNS.TO_ADDRESS));
 
-                Date timestamp = new Date(cursor.getLong(5));
+                Date timestamp = new Date(cursor.getLong(COLUMNS.DEPARTURE));
                 view.day.setText(day.format(timestamp));
                 view.date.setText(date.format(timestamp));
                 view.time.setText(time.format(timestamp));
 
-                view.price.setText("" + (cursor.getInt(9) / 100));
-                int free_seats = Integer.parseInt(cursor.getString(10));
-                Log.d(TAG, "free seats: " + free_seats);
-                view.seats.setText(cursor.getString(10));
-//                switch(free_seats){
+                view.price.setText("" + (cursor.getInt(COLUMNS.PRICE) / 100));
+                view.seats.setText(cursor.getString(COLUMNS.SEATS));
+//                switch(cursor.getInt(COLUMNS.SEATS)){
 //                case 0:
-//                	((VisibilityView) v.findViewById(R.id.seats_icon)
-//                			.findViewById(R.id.seats_icon))
+//                    ((VisibilityView) v.findViewById(R.id.seats_icon)
+//                            .findViewById(R.id.seats_icon))
 //                            .setImageResource(R.drawable.icn_seats_full);
 //                }
 //                view.seats_icon
 //                    .setImageResource(R.drawable.icn_seats_1);
-                view.details.setText(cursor.getString(8));
+                view.details.setText(cursor.getString(COLUMNS.DETAILS));
 
                 getActivity().getSupportLoaderManager()
                     .initLoader((int) cursor.getLong(0), null, view);
@@ -180,14 +180,14 @@ public class RideDetailsFragment extends SherlockFragment {
                 FrameLayout view = (FrameLayout)
                         LayoutInflater.from(getContext())
                         .inflate(R.layout.view_place_bubble, null, false);
-                ((TextView) view.getChildAt(1)).setText("- " + c.getString(2));
+                ((TextView) view.getChildAt(1)).setText("- " + c.getString(COLUMNS.TO_NAME));
                 ((ImageView) view.getChildAt(0))
                         .setImageResource(R.drawable.shape_via);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                         LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
                 view.setLayoutParams(lp);
                 content.addView(view, i);
-                Log.d(TAG, c.getString(1) + " --> " + c.getString(3));
+                Log.d(TAG, c.getString(COLUMNS.FROM_NAME) + " --> " + c.getString(COLUMNS.TO_NAME));
             }
         }
 

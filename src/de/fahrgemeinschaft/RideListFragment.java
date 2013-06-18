@@ -7,6 +7,8 @@
 
 package de.fahrgemeinschaft;
 
+import org.teleportr.Ride.COLUMNS;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -67,27 +69,27 @@ public class RideListFragment extends SherlockListFragment
 
                 RideView v = (RideView) view;
 
-                v.from_place.setText(ride.getString(1));
-                split = ride.getString(2).split(",");
+                v.from_place.setText(ride.getString(COLUMNS.FROM_NAME));
+                split = ride.getString(COLUMNS.FROM_ADDRESS).split(",");
                 if (split.length > 1)
                     v.from_city.setText(split[1]);
                 else
-                    v.from_city.setText(ride.getString(2));
+                    v.from_city.setText(ride.getString(COLUMNS.FROM_ADDRESS));
 
-                v.to_place.setText(ride.getString(3));
-                split = ride.getString(4).split(",");
+                v.to_place.setText(ride.getString(COLUMNS.TO_NAME));
+                split = ride.getString(COLUMNS.TO_ADDRESS).split(",");
                 if (split.length > 1)
                     v.to_city.setText(split[1]);
                 else
-                    v.to_city.setText(ride.getString(4));
+                    v.to_city.setText(ride.getString(COLUMNS.TO_ADDRESS));
 
-                Date timestamp = new Date(ride.getLong(5));
+                Date timestamp = new Date(ride.getLong(COLUMNS.DEPARTURE));
                 v.day.setText(day.format(timestamp));
                 v.date.setText(date.format(timestamp) + ".");
                 v.time.setText(time.format(timestamp));
 
-                v.price.setText(ride.getInt(9) / 100 + "€");
-                v.seats.setText(ride.getLong(10) + "");
+                v.price.setText(ride.getInt(COLUMNS.PRICE) / 100 + "€");
+                v.seats.setText(ride.getLong(COLUMNS.SEATS) + "");
                 
                 if (ride.getPosition() % 2 == 0) {
                     v.setBackgroundColor(getResources().getColor(
@@ -164,7 +166,7 @@ public class RideListFragment extends SherlockListFragment
     public Loader<Cursor> onCreateLoader(int id, Bundle b) {
         System.out.println("query jobs");
         return new CursorLoader(getActivity(), Uri.parse(
-                "content://" + getActivity().getPackageName() + "/jobs/rides"),
+                "content://" + getActivity().getPackageName() + "/jobs/search"),
                 null, null, null, null);
     }
 
