@@ -7,6 +7,8 @@
 
 package de.fahrgemeinschaft;
 
+import org.teleportr.Ride;
+
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -23,10 +25,8 @@ import com.actionbarsherlock.view.MenuItem;
 public class EditRideActivity extends SherlockFragmentActivity
         implements LoaderCallbacks<Cursor> {
 
-    private static final String TAG = "Results";
-    protected static final int RIDE = -1;
-    private Uri uri;
-    int selected;
+    private static final String TAG = "RideEdit";
+    private Ride ride;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,23 +34,37 @@ public class EditRideActivity extends SherlockFragmentActivity
         Log.d(TAG, "on create activity");
         setContentView(R.layout.activity_ride_edit);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        list = (RideListFragment) getSupportFragmentManager()
-//                .findFragmentById(R.id.rides);
 
-        uri = getIntent().getData();
-//        getSupportLoaderManager().initLoader(RIDE, null, this);
         if (savedInstanceState != null) {
-            selected = savedInstanceState.getInt("selected");
+            ride = savedInstanceState.getParcelable("ride");
+            initFragments();
+        } else if (getIntent().getData()!=null) {
+            getSupportLoaderManager().initLoader(0, null, this);
         }
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle arg1) {
+    	Uri uri = getIntent().getData();
         return new CursorLoader(this, uri, null, null, null, null);
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor rides) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        cursor.moveToFirst();
+        ride = new Ride(cursor, this);
+        initFragments();
+    }
+
+    private void initFragments() {
+        EditRideFragment1 f1 = (EditRideFragment1) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment1);
+        EditRideFragment2 f2 = (EditRideFragment2) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment2);
+        EditRideFragment3 f3 = (EditRideFragment3) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment3);
+        f1.setRide(ride);
+        f2.setRide(ride);
     }
 
     @Override
@@ -60,7 +74,7 @@ public class EditRideActivity extends SherlockFragmentActivity
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt("selected", selected);
+        outState.putParcelable("ride", ride);
         super.onSaveInstanceState(outState);
     }
 

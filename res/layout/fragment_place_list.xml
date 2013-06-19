@@ -21,7 +21,8 @@
         android:layout_marginTop="21dp"
         android:padding="8dp"
         android:background="@color/opacity_white"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:layout_marginBottom="@dimen/medium" />
 
     <ListView
         android:id="@android:id/list"
@@ -29,7 +30,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/autocomplete_text"
         android:cacheColorHint="#00000000"
-        android:dividerHeight="0dp"
+        android:dividerHeight="@dimen/medium"
         android:divider="#00000000"
         android:listSelector="@drawable/list_selector" />
 

@@ -7,6 +7,12 @@
 
 package de.fahrgemeinschaft;
 
+import java.util.List;
+
+import org.teleportr.Place;
+import org.teleportr.Ride;
+import org.teleportr.Ride.Mode;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -30,6 +36,8 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
     private static final String TAG = "Fahrgemeinschaft";
     private LinearLayout seats;
     private LinearLayout route;
+    private Button from;
+    private Button to;
 
     @Override
     public View onCreateView(final LayoutInflater lI, ViewGroup p, Bundle b) {
@@ -50,41 +58,85 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
         v.findViewById(R.id.seats_three).setOnClickListener(this);
         v.findViewById(R.id.seats_many).setOnClickListener(this);
         
-        Button from = (Button) v.findViewById(R.id.from).findViewById(R.id.text);
-        from.setText(R.string.from);
+        from = (Button) v.findViewById(R.id.from).findViewById(R.id.text);
         from.setOnClickListener(autocompletePlace);
         v.findViewById(R.id.from).findViewById(R.id.icon)
             .setOnClickListener(pickPlace);
         
-        Button to = (Button) v.findViewById(R.id.to).findViewById(R.id.text);
-        to.setText(R.string.to);
+        to = (Button) v.findViewById(R.id.to).findViewById(R.id.text);
         to.setOnClickListener(autocompletePlace);
         v.findViewById(R.id.to).findViewById(R.id.icon)
             .setOnClickListener(pickPlace);
-        addVia();
+    }
+
+    public void setRide(Ride ride) {
+        this.ride = ride;
+        Log.d(TAG, ride.getFromId()+ "");
+        from.setText(ride.getFrom().getName());
+        to.setText(ride.getTo().getName());
+        setVias(ride.getVias());
+        setMode(ride.getMode());
+    }
+
+    private void setMode(Mode mode) {
+        ride.mode(mode);
+        switch(mode) {
+        case CAR:
+            getActivity().findViewById(R.id.mode_car).setSelected(true);
+            getActivity().findViewById(R.id.mode_rail).setSelected(false);
+            ((TextView) getActivity().findViewById(R.id.mode_car_text))
+            .setTextColor(getResources().getColor(R.color.dark_green));
+            ((TextView) getActivity().findViewById(R.id.mode_rail_text))
+            .setTextColor(getResources().getColor(R.color.white));
+            break;
+        case TRAIN:
+            getActivity().findViewById(R.id.mode_car).setSelected(false);
+            getActivity().findViewById(R.id.mode_rail).setSelected(true);
+            ((TextView) getActivity().findViewById(R.id.mode_car_text))
+            .setTextColor(getResources().getColor(R.color.white));
+            ((TextView) getActivity().findViewById(R.id.mode_rail_text))
+            .setTextColor(getResources().getColor(R.color.dark_green));
+            break;
+        }
     }
 
     OnClickListener selectMode = new OnClickListener() {
         
         @Override
         public void onClick(View v) {
-            if (v.getId() == R.id.mode_car) {
-                getActivity().findViewById(R.id.mode_car).setSelected(true);
-                getActivity().findViewById(R.id.mode_rail).setSelected(false);
-                ((TextView) getActivity().findViewById(R.id.mode_car_text))
-                    .setTextColor(getResources().getColor(R.color.dark_green));
-                ((TextView) getActivity().findViewById(R.id.mode_rail_text))
-                    .setTextColor(getResources().getColor(R.color.white));
-            } else {
-                getActivity().findViewById(R.id.mode_car).setSelected(false);
-                getActivity().findViewById(R.id.mode_rail).setSelected(true);
-                ((TextView) getActivity().findViewById(R.id.mode_car_text))
-                    .setTextColor(getResources().getColor(R.color.white));
-                ((TextView) getActivity().findViewById(R.id.mode_rail_text))
-                    .setTextColor(getResources().getColor(R.color.dark_green));
+            switch (v.getId()) {
+            case R.id.mode_car:
+                setMode(Mode.CAR);
+                break;
+            case R.id.mode_rail:
+                setMode(Mode.TRAIN);
+                break;
             }
         }
     };
+
+    private void setVias(List<Place> vias) {
+        route.removeViews(1, route.getChildCount() - 2);
+        ride.removeVias();
+        for (int i = 0; i < vias.size(); i++) {
+            ride.via(vias.get(i).id);
+            addVia(vias.get(i));
+            ImageButton icon = (ImageButton)
+                    route.getChildAt(i + 1)
+                    .findViewById(R.id.icon);
+            icon.setImageResource(R.drawable.icn_close);
+            icon.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    List<Place> old_vias = ride.getVias();
+                    old_vias.remove(route.indexOfChild((View) v.getParent()) - 1);
+                    setVias(old_vias);
+                }
+            });
+        }
+        addVia(null);
+    }
 
     OnClickListener pickPlace = new OnClickListener() {
         
@@ -106,6 +158,7 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
                     route.indexOfChild((View) v.getParent()));
         }
     };
+	private Ride ride;
 
     @Override
     public void onActivityResult(final int i, int res, final Intent intent) {
@@ -113,41 +166,35 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
             Log.d(TAG, i + "selected " + intent.getData());
             Cursor place = getActivity().getContentResolver()
                     .query(intent.getData(), null, null, null, null);
-            if (place.getCount() > 0) {
-                place.moveToFirst();
-                Button b = (Button) route.getChildAt(i).findViewById(R.id.text);
-                if (i == route.getChildCount() - 2) {
-                    addVia();
-                }
-                b.setText(place.getString(2));
-            }
+            place.moveToFirst();
+            
             if (i == 0) {
                 Log.d(TAG, "from " + intent.getDataString());
+                from.setText(place.getString(2));
+                ride.from(place.getInt(0));
             } else if (i == route.getChildCount() - 1 ) {
                 Log.d(TAG, "to " + intent.getDataString());
+                to.setText(place.getString(2));
+                ride.to(place.getInt(0));
             } else {
                 Log.d(TAG, "via " + intent.getDataString());
-                ImageButton icon = (ImageButton) route
-                        .getChildAt(i).findViewById(R.id.icon);
-                icon.setImageResource(R.drawable.icn_close);
-                icon.setOnClickListener(new OnClickListener() {
-                    
-                    @Override
-                    public void onClick(View v) {
-                        route.removeViewAt(
-                                route.indexOfChild(
-                                        (View) v.getParent()));
-                    }
-                });
+                List<Place> vias = ride.getVias();
+                
+                if (i == route.getChildCount() - 2) { // new via?
+                    vias.add(new Place(place.getInt(0)).name(place.getString(2)));
+                } else {
+                    vias.get(i + 1).name(place.getString(2)).id = place.getInt(0);
+                }
+                setVias(vias);
             }
         }
     }
 
-    private void addVia() {
+    private void addVia(Place place) {
         View btn = getLayoutInflater(null)
                 .inflate(R.layout.place_pick_button, null, false);
         ((TextView) btn.findViewById(R.id.text))
-        .setText(getString(R.string.via));
+                .setText(getString(R.string.via));
         LayoutParams lp = new LayoutParams(
                 LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         lp.topMargin = getResources().getDimensionPixelSize(R.dimen.small);
@@ -158,6 +205,9 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
         btn.findViewById(R.id.text).setOnClickListener(autocompletePlace);
         btn.findViewById(R.id.icon).setOnClickListener(pickPlace);
         route.addView(btn, route.getChildCount() - 1);
+        if (place != null) {
+            ((Button) btn.findViewById(R.id.text)).setText(place.getName());
+        }
     }
 
 
@@ -168,4 +218,5 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
         }
         v.setSelected(true);
     }
+
 }

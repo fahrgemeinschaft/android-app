@@ -12,7 +12,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="62dp"
-        android:layout_marginTop="@dimen/medium"
         android:background="@color/opacity_white" >
 
         <ImageView

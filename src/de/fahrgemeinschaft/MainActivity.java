@@ -32,6 +32,7 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -134,10 +135,21 @@ public class MainActivity extends SherlockFragmentActivity
                                 + "?from_id=" + from_id
                                 + "&to_id=" + to_id
                                 + "&dep=" + dep)));
-            }
+            } else Toast.makeText(this, " ä ä ä", Toast.LENGTH_SHORT).show();
             break;
         case R.id.btn_selberfahren:
-            startActivity(new Intent(this, EditRideActivity.class));
+            if (from_id != 0 && to_id != 0) {
+                Uri uri = new Ride()
+                    .type(Ride.OFFER)
+                    .from(from_id)
+                    .to(to_id)
+                    .dep(dep)
+                    .seats(3)
+                    .mode(Ride.Mode.CAR)
+                    .arr(new Date(System.currentTimeMillis() + 2*24*3600*1000))
+                .store(this);
+                startActivity(new Intent(Intent.ACTION_EDIT, uri));
+            } else Toast.makeText(this, " ä ä ä", Toast.LENGTH_SHORT).show();
         }
     }
 
