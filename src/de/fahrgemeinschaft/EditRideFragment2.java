@@ -115,8 +115,8 @@ public class EditRideFragment2 extends SherlockFragment
             int day = c.get(Calendar.DAY_OF_MONTH);
             DatePickerDialog d = new DatePickerDialog(
                     getActivity(), this, year, month, day);
-            d.setButton(DatePickerDialog.BUTTON_POSITIVE, getString(R.string.ready),
-                    (android.content.DialogInterface.OnClickListener) null); //java!
+//            d.setButton(DatePickerDialog.BUTTON_POSITIVE, getString(R.string.ready),
+//                    (android.content.DialogInterface.OnClickListener) null); //java!
             d.show();
             break;
         case R.id.btn_pick_time:
@@ -125,8 +125,8 @@ public class EditRideFragment2 extends SherlockFragment
             int hour = c.get(Calendar.HOUR_OF_DAY);
             TimePickerDialog t = new TimePickerDialog(
                     getActivity(), this, hour, min, true);
-            t.setButton(DatePickerDialog.BUTTON_POSITIVE, getString(R.string.ready),
-                    (android.content.DialogInterface.OnClickListener) null); //java!
+//            t.setButton(DatePickerDialog.BUTTON_POSITIVE, getString(R.string.ready),
+//                    (android.content.DialogInterface.OnClickListener) null); //java!
             t.show();
             break;
 

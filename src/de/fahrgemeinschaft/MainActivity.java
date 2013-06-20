@@ -160,8 +160,8 @@ public class MainActivity extends SherlockFragmentActivity
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
         DatePickerDialog d = new DatePickerDialog(this, this, year, month, day);
-        d.setButton(DatePickerDialog.BUTTON_POSITIVE, getString(R.string.ready),
-                (android.content.DialogInterface.OnClickListener) null);
+//        d.setButton(DatePickerDialog.BUTTON_POSITIVE, getString(R.string.ready),
+//                (android.content.DialogInterface.OnClickListener) null);
         d.show();
     }
 

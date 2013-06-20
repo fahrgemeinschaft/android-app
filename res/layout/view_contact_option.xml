@@ -31,7 +31,7 @@
         android:layout_marginRight="@dimen/small"
         android:layout_gravity="right|center_vertical"
         android:src="@drawable/icn_contact_email"
-        android:background="@drawable/btn_contact_option"
+        android:background="@drawable/btn_white"
         class="de.fahrgemeinschaft.EditRideFragment3$VisibilityView" />
 
 </FrameLayout>
