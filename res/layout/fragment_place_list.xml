@@ -22,7 +22,8 @@
         android:padding="8dp"
         android:background="@color/opacity_white"
         android:visibility="gone"
-        android:layout_marginBottom="@dimen/medium" />
+        android:layout_marginBottom="@dimen/medium"
+        android:textColor="@color/darker_green" />
 
     <ListView
         android:id="@android:id/list"
