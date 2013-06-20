@@ -31,14 +31,15 @@
         <TextView
             android:id="@+id/time"
             style="@style/dark.Large.Bold"
-            android:gravity="center"
+            android:layout_gravity="left"
             android:layout_weight="1"
             android:layout_height="match_parent" />
 
         <TextView
             android:id="@+id/price"
             style="@style/dark.Large.Bold"
-            android:gravity="left"
+            android:layout_gravity="right"
+            android:layout_weight="1"
             android:layout_height="match_parent" />
 
         <TextView
@@ -46,13 +47,6 @@
             style="@style/light.Large"
             android:layout_height="match_parent"
             android:text="€" />
-
-        <TextView
-            android:id="@+id/seats"
-            style="@style/dark.Large.Bold"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="right" />
 
         <ImageView
             android:id="@+id/seats_icon"

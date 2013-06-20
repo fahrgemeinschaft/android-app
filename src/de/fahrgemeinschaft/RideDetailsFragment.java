@@ -95,15 +95,28 @@ public class RideDetailsFragment extends SherlockFragment {
                 view.time.setText(time.format(timestamp));
 
                 view.price.setText("" + (cursor.getInt(COLUMNS.PRICE) / 100));
-                view.seats.setText(cursor.getString(COLUMNS.SEATS));
-//                switch(cursor.getInt(COLUMNS.SEATS)){
-//                case 0:
-//                    ((VisibilityView) v.findViewById(R.id.seats_icon)
-//                            .findViewById(R.id.seats_icon))
-//                            .setImageResource(R.drawable.icn_seats_full);
-//                }
-//                view.seats_icon
-//                    .setImageResource(R.drawable.icn_seats_1);
+                switch(cursor.getInt(COLUMNS.SEATS)){
+                case 0:
+                    ((ImageView) v.findViewById(R.id.seats_icon))
+                            .setImageResource(R.drawable.icn_seats_full);
+                    break;
+                case 1:
+                    ((ImageView) v.findViewById(R.id.seats_icon))
+                            .setImageResource(R.drawable.icn_seats_1);
+                    break;
+                case 2:
+                    ((ImageView) v.findViewById(R.id.seats_icon))
+                            .setImageResource(R.drawable.icn_seats_2);
+                    break;
+                case 3:
+                    ((ImageView) v.findViewById(R.id.seats_icon))
+                            .setImageResource(R.drawable.icn_seats_3);
+                    break;
+                default:
+                    ((ImageView) v.findViewById(R.id.seats_icon))
+                            .setImageResource(R.drawable.icn_seats_many);
+                    break;
+                }
                 view.details.setText(cursor.getString(COLUMNS.DETAILS));
 
                 getActivity().getSupportLoaderManager()
@@ -136,7 +149,6 @@ public class RideDetailsFragment extends SherlockFragment {
 
         TextView from_place;
         TextView to_place;
-        TextView seats;
         TextView price;
         TextView day;
         TextView date;
@@ -156,7 +168,6 @@ public class RideDetailsFragment extends SherlockFragment {
             FrameLayout to = (FrameLayout) findViewById(R.id.to_place);
             to_place = (TextView) to.getChildAt(1);
             ((ImageView)to.getChildAt(0)).setImageResource(R.drawable.shape_to);
-            seats = (TextView) findViewById(R.id.seats);
             price = (TextView) findViewById(R.id.price);
             day = (TextView) findViewById(R.id.day);
             date = (TextView) findViewById(R.id.date);
