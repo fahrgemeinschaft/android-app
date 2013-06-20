@@ -39,7 +39,7 @@ public class RideListFragment extends SherlockListFragment
 
     private static final String TAG = "Fahrgemeinschaft";
     private static final SimpleDateFormat day = new SimpleDateFormat("EEE", Locale.GERMANY);
-    private static final SimpleDateFormat date = new SimpleDateFormat("dd.MM", Locale.GERMANY);
+    private static final SimpleDateFormat date = new SimpleDateFormat("dd.MM.", Locale.GERMANY);
     private static SimpleDateFormat time = new SimpleDateFormat("HH:mm", Locale.GERMANY);
     private boolean spin;
     private View wheel;
@@ -85,7 +85,7 @@ public class RideListFragment extends SherlockListFragment
 
                 Date timestamp = new Date(ride.getLong(COLUMNS.DEPARTURE));
                 v.day.setText(day.format(timestamp));
-                v.date.setText(date.format(timestamp) + ".");
+                v.date.setText(date.format(timestamp));
                 v.time.setText(time.format(timestamp));
 
                 v.price.setText(ride.getInt(COLUMNS.PRICE) / 100 + "€");

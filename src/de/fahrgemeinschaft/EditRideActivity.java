@@ -9,21 +9,28 @@ package de.fahrgemeinschaft;
 
 import org.teleportr.Ride;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.RemoteViews;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 public class EditRideActivity extends SherlockFragmentActivity
-        implements LoaderCallbacks<Cursor> {
+        implements LoaderCallbacks<Cursor>, OnClickListener {
 
     private static final String TAG = "RideEdit";
     private Ride ride;
@@ -38,9 +45,10 @@ public class EditRideActivity extends SherlockFragmentActivity
         if (savedInstanceState != null) {
             ride = savedInstanceState.getParcelable("ride");
             initFragments();
-        } else if (getIntent().getData()!=null) {
+        } else if (getIntent().getData() != null) {
             getSupportLoaderManager().initLoader(0, null, this);
         }
+        findViewById(R.id.publish).setOnClickListener(this);
     }
 
     @Override
@@ -103,6 +111,28 @@ public class EditRideActivity extends SherlockFragmentActivity
         default:
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        RemoteViews layout = new RemoteViews(getPackageName(),
+                R.layout.place_pick_button);
+        Intent i = new Intent(Intent.ACTION_EDIT, getIntent().getData());
+        layout.setOnClickPendingIntent(R.id.text,
+                PendingIntent.getActivity(this, 21, i, 0));
+        layout.setOnClickPendingIntent(R.id.icon,
+                PendingIntent.getActivity(this, 25, i
+                        .putExtra("count_down_seats", true), 0));
+        Notification notify = new NotificationCompat.Builder(this)
+            .setContentIntent(PendingIntent.getActivity(this, 42,
+                    new Intent(Intent.ACTION_EDIT, getIntent().getData()), 0))
+            .setSmallIcon(R.drawable.ic_launcher)
+            .setContentTitle("foo")
+            .setContentText("bar")
+            .setContent(layout)
+            .build();
+        ((NotificationManager) getSystemService(NOTIFICATION_SERVICE))
+            .notify(42, notify);
     }
 
 }

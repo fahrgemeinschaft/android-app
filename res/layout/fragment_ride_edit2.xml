@@ -107,11 +107,13 @@
                 android:id="@+id/btn_pick_price"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
+                android:selectAllOnFocus="true"
                 android:background="@drawable/btn_white"
                 android:gravity="left|center_vertical"
                 android:paddingLeft="16dp"
                 android:singleLine="true"
-                android:text="@string/price"
+                android:hint="@string/price"
+                android:inputType="numberDecimal"
                 android:textSize="28sp" />
 
             <ImageButton

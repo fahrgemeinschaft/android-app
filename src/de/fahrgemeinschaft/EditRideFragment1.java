@@ -28,6 +28,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
@@ -76,9 +77,17 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
         to.setText(ride.getTo().getName());
         setVias(ride.getVias());
         setMode(ride.getMode());
+        if (getActivity().getIntent().hasExtra("count_down_seats")) {
+            Toast.makeText(getActivity(), "Sitzplätze runter gezählt auf "
+                    + (ride.getSeats() - 1) , Toast.LENGTH_SHORT).show();
+            setSeats(ride.getSeats() - 1);
+            ride.store(getActivity());
+        } else {
+            setSeats(ride.getSeats());
+        }
     }
 
-    private void setMode(Mode mode) {
+        private void setMode(Mode mode) {
         ride.mode(mode);
         switch(mode) {
         case CAR:
@@ -211,12 +220,17 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
     }
 
 
-    @Override
-    public void onClick(View v) {
+    private void setSeats(int s) {
         for (int i = 0; i < seats.getChildCount(); i++) {
             seats.getChildAt(i).setSelected(false);
         }
-        v.setSelected(true);
+        seats.getChildAt(s).setSelected(true);
+        ride.seats(s);
+    }
+
+    @Override
+    public void onClick(View v) {
+        setSeats(seats.indexOfChild(v));
     }
 
 }

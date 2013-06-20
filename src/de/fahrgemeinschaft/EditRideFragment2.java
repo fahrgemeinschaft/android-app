@@ -24,6 +24,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
@@ -59,11 +60,24 @@ public class EditRideFragment2 extends SherlockFragment
         v.findViewById(R.id.btn_pick_time).setOnClickListener(this);
         v.findViewById(R.id.ic_pick_time).setOnClickListener(this);
         
-        //mo
         date_button = (Button) v.findViewById(R.id.btn_pick_date);
         time_button = (Button) v.findViewById(R.id.btn_pick_time);
-        price = (EditText) v.findViewById(R.id.btn_pick_price)
-        		.findViewById(R.id.text);
+        price = (EditText) v.findViewById(R.id.btn_pick_price);
+        price.setOnFocusChangeListener(new OnFocusChangeListener() {
+            
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    price.setText("");
+                } else {
+                    String p = price.getText().toString();
+                    if (p.matches("\\d+\\.?\\d*"))
+                        setPrice((int) Double.valueOf(p).doubleValue() * 100);
+                    else
+                        setPrice(ride.getPrice());
+                }
+            }
+        });
         
         String[] weekDays = new DateFormatSymbols().getShortWeekdays();
         recurrence = (LinearLayout) v.findViewById(R.id.recurrence);
@@ -75,9 +89,19 @@ public class EditRideFragment2 extends SherlockFragment
         }
     }
 
+    protected void setPrice(int p) {
+        if (p != 0) {
+            price.setText((p / 100) + " €");
+        } else {
+            price.setText("");
+        }
+        ride.price(p);
+    }
+
     public void setRide(Ride ride) {
-    	this.ride = ride;
-    	setDateButtonText(ride.getDep());
+        this.ride = ride;
+        setPrice(ride.getPrice());
+        setDateButtonText(ride.getDep());
     }
     
     @Override
