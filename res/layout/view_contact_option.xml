@@ -22,7 +22,7 @@
         android:layout_marginRight="@dimen/small"
         android:paddingLeft="16dp"
         android:singleLine="true"
-        android:textSize="28sp" />
+        style="@style/place_pick_btn" />
 
     <view
         android:id="@+id/icon"

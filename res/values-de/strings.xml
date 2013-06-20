@@ -20,8 +20,8 @@
     <string name="search">suchen</string>
 
     <string name="price">Preis</string>
-    <string name="mode_car">per Auto</string>
-    <string name="mode_rail">per Zug</string>
+    <string name="mode_car">Auto</string>
+    <string name="mode_rail">Zug</string>
     
     <string name="profile">Profil</string>
     <string name="settings">Einstellungen</string>

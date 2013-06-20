@@ -32,7 +32,7 @@
                 android:paddingLeft="16dp"
                 android:singleLine="true"
                 android:text="@string/date"
-                android:textSize="28sp" />
+                style="@style/place_pick_btn" />
 
             <ImageButton
                 android:id="@+id/ic_pick_date"
@@ -57,7 +57,7 @@
                 android:paddingLeft="16dp"
                 android:singleLine="true"
                 android:text="@string/time"
-                android:textSize="28sp" />
+                style="@style/place_pick_btn" />
 
             <ImageButton
                 android:id="@+id/ic_pick_time"
@@ -65,7 +65,7 @@
                 android:layout_height="55dp"
                 android:layout_gravity="right|center_vertical"
                 android:background="@drawable/btn_white"
-                android:src="@drawable/icn_time" />
+                android:src="@drawable/icn_timepicker" />
         </FrameLayout>
     </LinearLayout>
     
@@ -114,7 +114,7 @@
                 android:singleLine="true"
                 android:hint="@string/price"
                 android:inputType="numberDecimal"
-                android:textSize="28sp" />
+                style="@style/place_pick_btn" />
 
             <ImageButton
                 android:id="@+id/ic_pick_price"

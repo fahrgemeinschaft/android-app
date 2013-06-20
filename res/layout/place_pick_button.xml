@@ -12,18 +12,18 @@
     <Button
         android:id="@+id/text"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="@dimen/large_icn"
         android:gravity="left|center_vertical"
         android:layout_gravity="left|center_vertical"
         android:background="@drawable/btn_white"
         android:paddingLeft="16dp"
         android:singleLine="true"
-        android:textSize="28sp" />
+        style="@style/place_pick_btn" />
 
     <ImageButton
         android:id="@+id/icon"
-        android:layout_height="55dp"
-        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
         android:layout_gravity="right|center_vertical"
         android:background="@drawable/btn_white"
         android:src="@drawable/icn_dropdown" />

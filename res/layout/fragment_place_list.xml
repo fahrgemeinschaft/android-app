@@ -51,6 +51,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@id/autocomplete_text"
         android:background="@drawable/btn_white"
-        android:src="@drawable/ic_menu_search" />
+        android:src="@drawable/icn_search" />
 
 </RelativeLayout>
