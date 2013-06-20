@@ -83,10 +83,16 @@ public class EditRideFragment2 extends SherlockFragment
         recurrence = (LinearLayout) v.findViewById(R.id.recurrence);
         LayoutParams layoutParams = dayButtonlayoutParams();
         for (int i = 1; i < weekDays.length; i++) {
-            TextView day = makeDayButton(getActivity());
+            TextView day = makeRecurringDayButton(getActivity());
             day.setText(weekDays[i].substring(0, 2));
             recurrence.addView(day);
         }
+    }
+
+    public void setRide(Ride ride) {
+        this.ride = ride;
+        setPrice(ride.getPrice());
+        setDeparture(ride.getDep());
     }
 
     protected void setPrice(int p) {
@@ -96,12 +102,6 @@ public class EditRideFragment2 extends SherlockFragment
             price.setText("");
         }
         ride.price(p);
-    }
-
-    public void setRide(Ride ride) {
-        this.ride = ride;
-        setPrice(ride.getPrice());
-        setDateButtonText(ride.getDep());
     }
     
     @Override
@@ -135,6 +135,24 @@ public class EditRideFragment2 extends SherlockFragment
         }
     }
 
+    private void setDeparture(long timestamp) {
+        Calendar cal = Calendar.getInstance();
+        int today = cal.get(Calendar.DAY_OF_YEAR);
+        cal.setTimeInMillis(timestamp);
+        if (cal.get(Calendar.DAY_OF_YEAR) == today)
+            date_button.setText(getString(R.string.today));
+        else if (cal.get(Calendar.DAY_OF_YEAR) == today + 1)
+            date_button.setText(getString(R.string.tomorrow));
+        else if (cal.get(Calendar.DAY_OF_YEAR) == today + 2)
+            date_button.setText(getString(R.string.after_tomorrow));
+        else
+            date_button.setText(new SimpleDateFormat("dd. MMM yyyy",
+                    Locale.GERMANY).format(timestamp));
+        time_button.setText(new SimpleDateFormat("HH:mm",
+                Locale.GERMANY).format(timestamp));
+        ride.dep(timestamp);
+    }
+    
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
         Calendar cal = Calendar.getInstance();
@@ -142,19 +160,21 @@ public class EditRideFragment2 extends SherlockFragment
         cal.set(Calendar.YEAR, year);
         cal.set(Calendar.MONTH, month);
         cal.set(Calendar.DAY_OF_MONTH, day);
-        Long dep = cal.getTime().getTime();
-        setDateButtonText(dep);
-        ride.dep(dep);
+        setDeparture(cal.getTime().getTime());
     }
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        Toast.makeText(getActivity(), "TIME changed", 300).show();
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(ride.getDep());
+        cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        cal.set(Calendar.MINUTE, minute);
+        setDeparture(cal.getTime().getTime());
     }
 
 
 
-    private TextView makeDayButton(Context ctx) {
+    private TextView makeRecurringDayButton(Context ctx) {
         TextView day = new TextView(ctx);
         day.setOnClickListener(toggleSelectedState);
         day.setLayoutParams(dayButtonlayoutParams());
@@ -173,18 +193,6 @@ public class EditRideFragment2 extends SherlockFragment
     };
 
     public void setDateButtonText(long timestamp) {
-        Calendar cal = Calendar.getInstance();
-        int today = cal.get(Calendar.DAY_OF_YEAR);
-        cal.setTimeInMillis(timestamp);
-        if (cal.get(Calendar.DAY_OF_YEAR) == today)
-        	date_button.setText(getString(R.string.today));
-        else if (cal.get(Calendar.DAY_OF_YEAR) == today + 1)
-        	date_button.setText(getString(R.string.tomorrow));
-        else if (cal.get(Calendar.DAY_OF_YEAR) == today + 2)
-        	date_button.setText(getString(R.string.after_tomorrow));
-        else
-        	date_button.setText(new SimpleDateFormat("dd. MMM yyyy",
-                    Locale.GERMANY).format(timestamp));
     }
     
     private LayoutParams dayButtonlayoutParams() {
