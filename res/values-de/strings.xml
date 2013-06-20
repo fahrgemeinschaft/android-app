@@ -29,11 +29,12 @@
     <string name="contact">Kontakt</string>
     <string name="seats">Sitzplätze</string>
 
+    <string name="visibility">Sichtbarkeit</string>
     <string-array name="visibility">
-        <item name="nobody">nicht sichtbar</item>
         <item name="anybody">öffentlich sichtbar</item>
         <item name="members">sichtbar für Mitglieder</item>
         <item name="request">sichtbar auf Anfrage</item>
+        <item name="nobody">nicht sichtbar</item>
     </string-array>
 
     <string name="login">Login</string>

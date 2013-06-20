@@ -34,11 +34,12 @@
     <string name="contact">Contact</string>
     <string name="seats">Seats</string>
 
+    <string name="visibility">Visibility</string>
     <string-array name="visibility">
-        <item name="nobody">not visible</item>
         <item name="anybody">publicly visible</item>
         <item name="members">visible for members</item>
         <item name="request">visible upon request</item>
+        <item name="nobody">not visible</item>
     </string-array>
 
     <string name="login">Login</string>
