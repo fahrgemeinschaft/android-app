@@ -21,7 +21,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="3dp"
             android:background="#00000000"
-            android:src="@drawable/ic_pin" />
+            android:src="@drawable/icn_pin" />
 
         <TextView
             android:id="@+id/place_name"
@@ -33,7 +33,8 @@
             android:background="#00000000"
             android:singleLine="true"
             android:textSize="21sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/darker_green" />
 
         <TextView
             android:id="@+id/place_address"
@@ -44,7 +45,8 @@
             android:layout_toRightOf="@+id/place_type"
             android:background="#00000000"
             android:singleLine="true"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            android:textColor="@color/darker_green" />
     </RelativeLayout>
 
 </FrameLayout>

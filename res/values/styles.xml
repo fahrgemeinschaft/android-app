@@ -98,18 +98,17 @@
         <item name="android:textStyle">bold</item>
     </style>
     
-    <style name="white_button_text">
+    <style name="place_pick_btn">
         <item name="android:textSize">28sp</item>
-    </style>
-    
-    <style name="white_button_text">
-        <item name="android:textSize">28sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/darker_green</item>
     </style>
     
     <color name="light_green_translucent">#EEBBDF53</color>
     <color name="light_green">#BBDF53</color>
     <color name="medium_green">#839C3A</color>
     <color name="dark_green">#5D6F29</color>
+    <color name="darker_green">#525F26</color>
     <color name="opacity_white">#BBFFFFFF</color>
     <color name="opacity_black">#99000000</color>
     <color name="white">#FFFFFF</color>

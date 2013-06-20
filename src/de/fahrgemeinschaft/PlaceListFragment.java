@@ -94,10 +94,10 @@ public class PlaceListFragment extends ListFragment
         if (search_field.getVisibility() == View.GONE) {
             search_field.setVisibility(View.VISIBLE);
             search_field.requestFocus();
-            toggle.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
+            toggle.setImageResource(R.drawable.icn_close);
         } else {
             search_field.setVisibility(View.GONE);
-            toggle.setImageResource(android.R.drawable.ic_menu_search);
+            toggle.setImageResource(R.drawable.icn_search);
             if (getListView().getAdapter().getCount() == 0)
                 getActivity().finish();
         }

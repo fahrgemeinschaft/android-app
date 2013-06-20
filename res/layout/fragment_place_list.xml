@@ -22,7 +22,8 @@
         android:padding="8dp"
         android:background="@color/opacity_white"
         android:visibility="gone"
-        android:layout_marginBottom="@dimen/medium" />
+        android:layout_marginBottom="@dimen/medium"
+        android:textColor="@color/darker_green" />
 
     <ListView
         android:id="@android:id/list"
@@ -51,6 +52,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@id/autocomplete_text"
         android:background="@drawable/btn_white"
-        android:src="@drawable/ic_menu_search" />
+        android:src="@drawable/icn_search" />
 
 </RelativeLayout>

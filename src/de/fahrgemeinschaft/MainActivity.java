@@ -218,7 +218,6 @@ public class MainActivity extends SherlockFragmentActivity
             animatePulse(from_btn);
             from_id = place.getInt(0);
             from_btn.setText(place.getString(2));
-            from_btn.setTextAppearance(this, R.style.white_button_text);
         }
         place.close();
     }
@@ -230,7 +229,6 @@ public class MainActivity extends SherlockFragmentActivity
             animatePulse(to_btn);
             to_id = place.getInt(0);
             to_btn.setText(place.getString(2));
-            to_btn.setTextAppearance(this, R.style.white_button_text);
         }
         place.close();
     }
