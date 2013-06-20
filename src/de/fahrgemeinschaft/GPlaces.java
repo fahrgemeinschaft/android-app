@@ -115,9 +115,14 @@ public class GPlaces extends Connector {
                     JSONObject json = predsJsonArray.getJSONObject(i);
                     String address = json.get("description").toString();
                     String[] split = address.split(", ");
-                    if (split.length > 1 && !already.contains(split[0])) {
+                    String name = null;
+                    if (split.length > 2)
+                        name = split[0] + " " + split[1];
+                    else if (split.length > 1)
+                        name = split[0];
+                    if (name != null && !already.contains(name)) {
                         gPlaces.addRow(new String[] { "" + i,
-                                "", split[0], address,
+                                "", name, address,
                                 json.getString("reference") });
                     }
                 }

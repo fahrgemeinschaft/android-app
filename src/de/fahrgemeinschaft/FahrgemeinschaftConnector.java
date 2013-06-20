@@ -124,11 +124,16 @@ public class FahrgemeinschaftConnector extends Connector {
 
     private Place parsePlace(JSONObject json) throws JSONException {
         String[] split = json.getString("Address").split(", ");
+        String name = "";
+        if (split.length > 2)
+            name = split[0] + " " + split[1];
+        else if (split.length > 1)
+            name = split[0];
         return new Place(
                     Double.parseDouble(json.getString("Latitude")),
                     Double.parseDouble(json.getString("Longitude")))
                 .address(json.getString("Address"))
-                .name((split.length > 0)? split[0] : "");
+                .name(name);
     }
 
     private Date parseTimestamp(JSONObject json) throws JSONException {
