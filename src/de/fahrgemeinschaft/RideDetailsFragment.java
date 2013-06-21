@@ -98,23 +98,23 @@ public class RideDetailsFragment extends SherlockFragment {
                 switch(cursor.getInt(COLUMNS.SEATS)){
                 case 0:
                     ((ImageView) v.findViewById(R.id.seats_icon))
-                            .setImageResource(R.drawable.icn_seats_full);
+                            .setImageResource(R.drawable.icn_seats_white_full);
                     break;
                 case 1:
                     ((ImageView) v.findViewById(R.id.seats_icon))
-                            .setImageResource(R.drawable.icn_seats_1);
+                            .setImageResource(R.drawable.icn_seats_white_1);
                     break;
                 case 2:
                     ((ImageView) v.findViewById(R.id.seats_icon))
-                            .setImageResource(R.drawable.icn_seats_2);
+                            .setImageResource(R.drawable.icn_seats_white_2);
                     break;
                 case 3:
                     ((ImageView) v.findViewById(R.id.seats_icon))
-                            .setImageResource(R.drawable.icn_seats_3);
+                            .setImageResource(R.drawable.icn_seats_white_3);
                     break;
                 default:
                     ((ImageView) v.findViewById(R.id.seats_icon))
-                            .setImageResource(R.drawable.icn_seats_many);
+                            .setImageResource(R.drawable.icn_seats_white_many);
                     break;
                 }
                 view.details.setText(cursor.getString(COLUMNS.DETAILS));

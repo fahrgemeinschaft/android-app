@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -89,14 +90,35 @@ public class RideListFragment extends SherlockListFragment
                 v.time.setText(time.format(timestamp));
 
                 v.price.setText(ride.getInt(COLUMNS.PRICE) / 100 + "€");
-                v.seats.setText(ride.getLong(COLUMNS.SEATS) + "");
+                switch(ride.getInt(COLUMNS.SEATS)){
+                case 0:
+                    ((ImageView) v.findViewById(R.id.seats_icon))
+                            .setImageResource(R.drawable.icn_seats_white_full);
+                    break;
+                case 1:
+                    ((ImageView) v.findViewById(R.id.seats_icon))
+                            .setImageResource(R.drawable.icn_seats_white_1);
+                    break;
+                case 2:
+                    ((ImageView) v.findViewById(R.id.seats_icon))
+                            .setImageResource(R.drawable.icn_seats_white_2);
+                    break;
+                case 3:
+                    ((ImageView) v.findViewById(R.id.seats_icon))
+                            .setImageResource(R.drawable.icn_seats_white_3);
+                    break;
+                default:
+                    ((ImageView) v.findViewById(R.id.seats_icon))
+                            .setImageResource(R.drawable.icn_seats_white_many);
+                    break;
+                }
                 
                 if (ride.getPosition() % 2 == 0) {
                     v.setBackgroundColor(getResources().getColor(
-                            R.color.medium_green));
+                            R.color.light_green));
                 } else {
                     v.setBackgroundColor(getResources().getColor(
-                            R.color.light_green));
+                            R.color.almost_medium_green));
                 }
             }
 

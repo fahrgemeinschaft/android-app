@@ -24,12 +24,6 @@
         android:width="175dp"
         style="@style/dark.Bold"
     />
-    <View 
-        android:layout_width="0dp"
-        android:layout_height="21dp"
-        android:layout_marginLeft="165dp"
-        android:background="@color/opacity_white"
-    />
 
     <TextView
         android:id="@+id/to_city"
@@ -106,8 +100,8 @@
         android:id="@+id/seats_icon"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginRight="0dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="0dp"
         android:src="@drawable/ic_seats"
     />
     <TextView

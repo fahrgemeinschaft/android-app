@@ -67,7 +67,7 @@
 
     <style name="light" parent="@android:style/TextAppearance">
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">#DDEFA9</item>
+        <item name="android:textColor">#EBF5CC</item>
     </style>
     <style name="light.Large" parent="@style/light">
         <item name="android:textSize">23sp</item>
@@ -107,6 +107,7 @@
     <color name="light_green_translucent">#EEBBDF53</color>
     <color name="light_green">#BBDF53</color>
     <color name="medium_green">#839C3A</color>
+    <color name="almost_medium_green">#ACCD4C</color>
     <color name="dark_green">#5D6F29</color>
     <color name="darker_green">#525F26</color>
     <color name="opacity_white">#BBFFFFFF</color>

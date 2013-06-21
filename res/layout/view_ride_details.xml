@@ -14,7 +14,7 @@
     <LinearLayout
         android:id="@+id/row"
         android:layout_width="match_parent"
-        android:layout_height="30sp"
+        android:layout_height="30dp"
         android:orientation="horizontal"
         android:background="@color/medium_green" >
 
@@ -39,13 +39,13 @@
             android:id="@+id/price"
             style="@style/dark.Large.Bold"
             android:layout_gravity="right"
-            android:layout_weight="1"
             android:layout_height="match_parent" />
 
         <TextView
             android:id="@+id/currency"
             style="@style/light.Large"
             android:layout_height="match_parent"
+            android:paddingRight="3dp"
             android:text="€" />
 
         <ImageView
