@@ -30,13 +30,13 @@ import android.content.Context;
 
 public class FahrgemeinschaftConnector extends Connector {
 
-    private String startDate;
-
     public FahrgemeinschaftConnector(Context ctx) {
         super(ctx);
     }
 
-    private static final String APIKEY = "API-KEY"; 
+    private String startDate;
+
+    static final String APIKEY = "API-KEY"; 
     static final SimpleDateFormat fulldf = new SimpleDateFormat("yyyyMMddHHmm", Locale.GERMAN);
     static final SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd", Locale.GERMAN);
 
@@ -81,19 +81,19 @@ public class FahrgemeinschaftConnector extends Connector {
     }
 
     private Ride parseRide(JSONObject json)  throws JSONException {
-        StringBuffer who = new StringBuffer();
+
+        Ride ride = new Ride().type(Ride.OFFER);
+        ride.who(json.getString("IDuser"));
         JSONObject p = json.getJSONObject("Privacy");
         String value = json.getString("Contactmail");
         if (!value.equals("") && !value.equals("null"))
-            who.append(";mail=").append(p.getInt("Email")).append(value);
+            ride.set("mail", p.getInt("Email") + value);
         value = json.getString("Contactmobile");
-        if (!value.equals(""))
-            who.append(";mobile=").append(p.getInt("Mobile")).append(value);
+        if (!value.equals("") && !value.equals("null"))
+            ride.set("mobile", p.getInt("Mobile") + value);
         value = json.getString("Contactlandline");
-        if (!value.equals(""))
-            who.append(";landline=").append(p.getInt("Landline")).append(value);
-
-        Ride ride = new Ride().type(Ride.OFFER).who(who.toString());
+        if (!value.equals("") && !value.equals("null"))
+            ride.set("landline", p.getInt("Landline") + value);
         ride.details(json.getString("Description"));
         ride.ref(json.getString("TripID"));
         ride.seats(json.getLong("Places"));
@@ -124,16 +124,11 @@ public class FahrgemeinschaftConnector extends Connector {
 
     private Place parsePlace(JSONObject json) throws JSONException {
         String[] split = json.getString("Address").split(", ");
-        String name = "";
-        if (split.length > 2)
-            name = split[0] + " " + split[1];
-        else if (split.length > 1)
-            name = split[0];
         return new Place(
                     Double.parseDouble(json.getString("Latitude")),
                     Double.parseDouble(json.getString("Longitude")))
                 .address(json.getString("Address"))
-                .name(name);
+                .name((split.length > 0)? split[0] : "");
     }
 
     private Date parseTimestamp(JSONObject json) throws JSONException {

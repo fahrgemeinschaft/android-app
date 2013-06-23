@@ -7,19 +7,26 @@
 
 package de.fahrgemeinschaft;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.teleportr.Ride.COLUMNS;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.util.LruCache;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
@@ -34,23 +41,62 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Request.Method;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.Response.Listener;
+import com.android.volley.ResponseDelivery;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.ImageLoader.ImageCache;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.toolbox.Volley;
 import com.calciumion.widget.BasePagerAdapter;
 
 import de.fahrgemeinschaft.EditRideFragment3.VisibilityView;
 
-public class RideDetailsFragment extends SherlockFragment {
+public class RideDetailsFragment extends SherlockFragment
+        implements Response.ErrorListener {
 
-    private static final String TAG = "Fahrgemeinschaft";
-    private static final SimpleDateFormat day = new SimpleDateFormat("EE", Locale.GERMANY);
-    private static final SimpleDateFormat date = new SimpleDateFormat("dd.MM.", Locale.GERMANY);
-    private static SimpleDateFormat time = new SimpleDateFormat("HH:mm", Locale.GERMANY);
+    private static final String TAG = "Details";
+    private static final SimpleDateFormat day =
+            new SimpleDateFormat("EE", Locale.GERMANY);
+    private static final SimpleDateFormat date =
+            new SimpleDateFormat("dd.MM.", Locale.GERMANY);
+    private static SimpleDateFormat time =
+            new SimpleDateFormat("HH:mm", Locale.GERMANY);
     private ViewPager pager;
     private Cursor cursor;
+    private RequestQueue queue;
+    private static ImageLoader imageLoader;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        
+        final LruCache<String, Bitmap> mImageCache =
+                new LruCache<String, Bitmap>(20);
+
+        ImageCache imageCache = new ImageCache() {
+            @Override
+            public void putBitmap(String key, Bitmap value) {
+                mImageCache.put(key, value);
+            }
+
+            @Override
+            public Bitmap getBitmap(String key) {
+                return mImageCache.get(key);
+            }
+        };
+
+        queue = Volley.newRequestQueue(getActivity());
+        imageLoader = new ImageLoader(queue, imageCache);
+        queue.start();
     }
 
     @Override
@@ -81,11 +127,14 @@ public class RideDetailsFragment extends SherlockFragment {
                             .inflate(R.layout.view_ride_details, null, false);
                 }
                 RideView view = (RideView) v;
-                if (view.content.getChildCount() > 3)
-                    view.content.removeViews(1, view.content.getChildCount() - 3);
+                
+                if (view.content.getChildCount() > 4)
+                    view.content.removeViews(1, view.content.getChildCount()-4);
 
                 cursor.moveToPosition((Integer) position);
 
+                view.userId = cursor.getString(COLUMNS.WHO);
+                view.name.setText("");
                 view.from_place.setText(cursor.getString(COLUMNS.FROM_ADDRESS));
                 view.to_place.setText(cursor.getString(COLUMNS.TO_ADDRESS));
 
@@ -121,6 +170,12 @@ public class RideDetailsFragment extends SherlockFragment {
 
                 getActivity().getSupportLoaderManager()
                     .initLoader((int) cursor.getLong(0), null, view);
+                
+                view.avatar.setImageResource(R.drawable.ic_launcher);
+                
+                queue.add(new ProfileRequest(cursor.getString(COLUMNS.WHO),
+                        view, RideDetailsFragment.this));
+                
                 return view;
             }
             
@@ -145,7 +200,8 @@ public class RideDetailsFragment extends SherlockFragment {
         pager.setOnPageChangeListener((OnPageChangeListener) getActivity());
     }
 
-    static class RideView extends RelativeLayout implements LoaderCallbacks<Cursor>{
+    static class RideView extends RelativeLayout
+        implements LoaderCallbacks<Cursor>, Response.Listener<JSONObject> {
 
         TextView from_place;
         TextView to_place;
@@ -155,6 +211,9 @@ public class RideDetailsFragment extends SherlockFragment {
         TextView time;
         TextView details;
         LinearLayout content;
+        ImageView avatar;
+        String userId;
+        TextView name;
 
         public RideView(Context context, AttributeSet attrs) {
             super(context, attrs);
@@ -174,6 +233,8 @@ public class RideDetailsFragment extends SherlockFragment {
             time = (TextView) findViewById(R.id.time);
             details = (TextView) findViewById(R.id.details);
             content = (LinearLayout) findViewById(R.id.content);
+            avatar = (ImageView)findViewById(R.id.avatar);
+            name = (TextView) findViewById(R.id.driver_name);
         }
         @Override
         public Loader<Cursor> onCreateLoader(int ride_id, Bundle b) {
@@ -191,14 +252,16 @@ public class RideDetailsFragment extends SherlockFragment {
                 FrameLayout view = (FrameLayout)
                         LayoutInflater.from(getContext())
                         .inflate(R.layout.view_place_bubble, null, false);
-                ((TextView) view.getChildAt(1)).setText("- " + c.getString(COLUMNS.FROM_NAME));
+                ((TextView) view.getChildAt(1))
+                        .setText("- " + c.getString(COLUMNS.FROM_NAME));
                 ((ImageView) view.getChildAt(0))
                         .setImageResource(R.drawable.shape_via);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                         LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
                 view.setLayoutParams(lp);
                 content.addView(view, i);
-                Log.d(TAG, c.getString(COLUMNS.FROM_NAME) + " --> " + c.getString(COLUMNS.TO_NAME));
+                Log.d(TAG, c.getString(COLUMNS.FROM_NAME)
+                        + " --> " + c.getString(COLUMNS.TO_NAME));
             }
         }
 
@@ -206,7 +269,59 @@ public class RideDetailsFragment extends SherlockFragment {
         public void onLoaderReset(Loader<Cursor> l) {
             Log.d(TAG, "loader " + l.getId() + "reset.");
         }
+
+        @Override
+        public void onResponse(JSONObject json) {
+            try {
+              JSONObject user = json.getJSONObject("user");
+              Log.d(TAG, "profile downloaded " + user.get("UserID"));
+              if (user.getString("UserID").equals(userId)) {
+                  JSONArray kvp = user.getJSONArray("KeyValuePairs");
+                  name.setText(kvp.getJSONObject(1).getString("Value") + " " 
+                          + kvp.getJSONObject(2).getString("Value"));
+//                  Log.d(TAG, kvp.toString());
+                  if (!user.isNull("AvatarPhoto")) {
+                      JSONObject photo = user.getJSONObject("AvatarPhoto");
+                      String id = photo.getString("PhotoID");
+                      String path = photo.getString("PathTo");
+                      String url = "http://service.fahrgemeinschaft.de//"
+                              + "ugc/pa/" + path +"/"+ id + "_small.jpg";
+                      imageLoader.get(url, ImageLoader.getImageListener(avatar,
+                              R.drawable.ic_loading, R.drawable.ic_launcher_fab));
+                  }
+              }
+          } catch (JSONException e) {
+              e.printStackTrace();
+          }
+        }
     }
 
+    @Override
+    public void onErrorResponse(VolleyError err) {
+        Log.d(TAG, err.toString());
+        err.printStackTrace();
+    }
+
+    static class ProfileRequest extends JsonObjectRequest { 
+
+        private static HashMap<String, String> headers;
+
+        static {
+            headers = new HashMap<String, String>();  
+            headers.put("apikey", FahrgemeinschaftConnector.APIKEY);  
+        }
+
+        public ProfileRequest( String userid,
+                Listener<JSONObject> listener, ErrorListener errorListener) {
+            super(Method.GET, "http://service.fahrgemeinschaft.de/user/"
+                + userid, null, listener, errorListener);
+            setShouldCache(Boolean.TRUE);
+        }
+
+        @Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            return headers;
+        };
+    }
 
 }

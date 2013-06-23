@@ -99,7 +99,7 @@ public class ResultsActivity extends SherlockFragmentActivity
     public void onListItemClick(int position) {
         Cursor cursor = ((CursorAdapter)list.getListView().getAdapter()).getCursor();
         if (position == cursor.getCount()) {
-            Log.d(TAG, " search later than " +query_ride.getArr());
+            Log.d(TAG, " search later than " + query_ride.getArr());
             query_ride.arr(query_ride.getArr() + 2*24*3600*1000);
             search_uri = query_ride.store(this);
             list.startSpinningWheel();
