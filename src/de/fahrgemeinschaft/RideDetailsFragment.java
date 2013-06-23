@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -32,10 +34,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
+import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -138,6 +143,7 @@ public class RideDetailsFragment extends SherlockFragment
 
                 view.userId = cursor.getString(COLUMNS.WHO);
                 view.name.setText("");
+                view.url = null;
                 view.from_place.setText(cursor.getString(COLUMNS.FROM_ADDRESS));
                 view.to_place.setText(cursor.getString(COLUMNS.TO_ADDRESS));
 
@@ -218,6 +224,7 @@ public class RideDetailsFragment extends SherlockFragment
         ImageView avatar;
         String userId;
         TextView name;
+        private String url;
 
         public RideView(Context context, AttributeSet attrs) {
             super(context, attrs);
@@ -239,7 +246,45 @@ public class RideDetailsFragment extends SherlockFragment
             content = (LinearLayout) findViewById(R.id.content);
             avatar = (ImageView)findViewById(R.id.avatar);
             name = (TextView) findViewById(R.id.driver_name);
+            
+            
+            avatar.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    if (url != null)
+                        new ImageDialog(getContext()).show();
+                }
+            });
         }
+
+        class ImageDialog extends Dialog implements OnClickListener {
+            
+            public ImageDialog(Context context) {
+                super(context, android.R.style
+                        .Theme_Translucent_NoTitleBar_Fullscreen);
+            }
+
+            @Override
+            protected void onCreate(Bundle savedInstanceState) {
+                ImageView image = new ImageView(getContext());
+                image.setImageResource(R.drawable.ic_call);
+                imageLoader.get(url, ImageLoader.getImageListener(image,
+                              R.drawable.ic_loading, R.drawable.ic_launcher_fab));
+                setContentView(image);
+                ScaleAnimation s = new ScaleAnimation(0.3f, 1, 0.3f, 1);
+                s.setDuration(300);
+                s.setFillAfter(true);
+                image.startAnimation(s);
+                image.setOnClickListener(this);
+            }
+
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            };
+        }
+
         @Override
         public Loader<Cursor> onCreateLoader(int ride_id, Bundle b) {
             Log.d(TAG, "loading subrides for ride " + ride_id);
@@ -288,7 +333,7 @@ public class RideDetailsFragment extends SherlockFragment
                       JSONObject photo = user.getJSONObject("AvatarPhoto");
                       String id = photo.getString("PhotoID");
                       String path = photo.getString("PathTo");
-                      String url = "http://service.fahrgemeinschaft.de//"
+                      url = "http://service.fahrgemeinschaft.de//"
                               + "ugc/pa/" + path +"/"+ id + "_small.jpg";
                       imageLoader.get(url, ImageLoader.getImageListener(avatar,
                               R.drawable.ic_loading, R.drawable.ic_launcher_fab));

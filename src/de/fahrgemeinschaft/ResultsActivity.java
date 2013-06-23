@@ -55,7 +55,7 @@ public class ResultsActivity extends SherlockFragmentActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "on create activity");
+        setTitle("");
         setContentView(R.layout.activity_results);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         list = (RideListFragment) getSupportFragmentManager()

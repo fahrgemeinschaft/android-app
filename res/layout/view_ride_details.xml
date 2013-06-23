@@ -91,22 +91,23 @@
                 layout="@layout/view_place_bubble"
                 android:layout_width="match_parent" />
             
-            <FrameLayout 
+            <LinearLayout 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/dark_green"
+                android:background="@color/medium_green"
                 android:padding="@dimen/small"
+                android:orientation="horizontal"
                 android:layout_marginTop="@dimen/small" >
                 <ImageView
                     android:id="@+id/avatar"
-                    android:layout_width="@dimen/xlarge"
-                    android:layout_height="@dimen/xlarge"
+                    android:layout_width="@dimen/xxlarge"
+                    android:layout_height="@dimen/xxlarge"
                     android:src="@drawable/ic_launcher"
-                    android:background="@color/opacity_white" />
+                    android:background="@color/medium_green" />
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/xlarge"
-                    android:layout_marginLeft="@dimen/small_plus_xlarge"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/small"
                     android:background="@color/almost_medium_green" >
                     <TextView 
                         android:id="@+id/driver_name"
@@ -115,7 +116,7 @@
                         android:padding="@dimen/small"
                         style="@style/dark.Large.Bold" />
                 </LinearLayout>
-            </FrameLayout>
+            </LinearLayout>
             
             <TextView
                 android:id="@+id/details"
