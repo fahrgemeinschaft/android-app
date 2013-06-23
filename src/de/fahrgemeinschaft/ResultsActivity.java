@@ -133,35 +133,33 @@ public class ResultsActivity extends SherlockFragmentActivity
         Intent contact = new Intent(Intent.ACTION_INSERT, Contacts.CONTENT_URI);
         contact.putExtra(Insert.NAME, route);
         ArrayList<Intent> intents = new ArrayList<Intent>();
-        String[] who = c.getString(COLUMNS.WHO).split(";");
-        for (int i = 0; i < who.length; i++) {
-            String[] split = who[i].split("=");
-            if (split.length > 1) {
-                System.out.println(split[1]);
-                String value = split[1].substring(1);
-                if (split[0].equals("mobile") && split[1].startsWith("1")) {
-                    System.out.println(value);
-                    contact.putExtra(Insert.PHONE, value);
-                    Intent call = labeledIntent(callIntent(value),
-                            R.drawable.ic_call, "Call " + value);
-                    if (call != null) intents.add(call);
-                    Intent sms = labeledIntent(smsIntent(value, route),
-                            R.drawable.ic_sms, "SMS " + value);
-                    if (sms != null) intents.add(sms);
-                } else if (split[0].equals("landline") 
-                        && split[1].startsWith("1")) {
-                    contact.putExtra(Insert.SECONDARY_PHONE, value);
-                    Intent call = labeledIntent(callIntent(value),
-                            R.drawable.ic_dial, "Call " + value);
-                    if (call != null) intents.add(call);
-                } else if (split[0].equals("mail")
-                        && split[1].startsWith("1")) {
-                    contact.putExtra(Insert.EMAIL, value);
-                    Intent mail = labeledIntent(mailIntent(value, route),
-                            R.drawable.ic_mail, "Mail " + value);
-                    if (mail != null) intents.add(mail);
-                }
-            }
+        String dingens = Ride.get("mobile", c.getString(COLUMNS.DETAILS));
+        if (dingens != null && dingens.startsWith("1")) {
+            System.out.println(dingens);
+            dingens = dingens.substring(1);
+            contact.putExtra(Insert.PHONE, dingens);
+            Intent call = labeledIntent(callIntent(dingens),
+                    R.drawable.ic_call, dingens);
+            if (call != null) intents.add(call);
+            Intent sms = labeledIntent(smsIntent(dingens, route),
+                    R.drawable.ic_sms, dingens);
+            if (sms != null) intents.add(sms);
+        }
+        dingens = Ride.get("landline", c.getString(COLUMNS.DETAILS));
+        if (dingens != null && dingens.startsWith("1")) {
+            dingens = dingens.substring(1);
+            contact.putExtra(Insert.SECONDARY_PHONE, dingens);
+            Intent call = labeledIntent(callIntent(dingens),
+                    R.drawable.ic_dial, dingens);
+            if (call != null) intents.add(call);
+        }
+        dingens = Ride.get("mail", c.getString(COLUMNS.DETAILS));
+        if (dingens != null && dingens.startsWith("1")) {
+            dingens = dingens.substring(1);
+            contact.putExtra(Insert.EMAIL, dingens);
+            Intent mail = labeledIntent(mailIntent(dingens, route),
+                    R.drawable.ic_mail, dingens);
+            if (mail != null) intents.add(mail);
         }
         if (intents.size() == 0) {
             Toast.makeText(this, "private", Toast.LENGTH_SHORT).show();

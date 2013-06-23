@@ -82,9 +82,9 @@ public class MainActivity extends SherlockFragmentActivity
             setDateButtonText(savedInstanceState.getLong("dep"), -1);
         }
         setTitle("");
-        startActivity(new Intent(Intent.ACTION_VIEW,
-                Uri.parse("content://" + getPackageName() + "/rides" +
-                        "?from_id=1&to_id=2")));
+//        startActivity(new Intent(Intent.ACTION_VIEW,
+//                Uri.parse("content://" + getPackageName() + "/rides" +
+//                        "?from_id=1&to_id=2")));
     }
 
     @Override
