@@ -102,7 +102,7 @@
                     android:id="@+id/avatar"
                     android:layout_width="@dimen/xxlarge"
                     android:layout_height="@dimen/xxlarge"
-                    android:src="@drawable/ic_launcher"
+                    android:src="@drawable/icn_view_user"
                     android:background="@color/medium_green" />
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -122,7 +122,7 @@
                 android:id="@+id/details"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/small"
-                android:background="@color/medium_green"
+                android:background="@color/almost_medium_green"
                 android:padding="@dimen/medium"
                 android:singleLine="false"
                 android:textColor="@color/opacity_black" />

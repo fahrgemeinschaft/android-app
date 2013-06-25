@@ -118,7 +118,7 @@ public class RideListFragment extends SherlockListFragment
                             R.color.light_green));
                 } else {
                     v.setBackgroundColor(getResources().getColor(
-                            R.color.almost_medium_green));
+                            R.color.medium_green));
                 }
             }
 

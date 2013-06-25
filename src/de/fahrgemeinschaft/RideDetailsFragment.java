@@ -181,7 +181,7 @@ public class RideDetailsFragment extends SherlockFragment
                 getActivity().getSupportLoaderManager()
                     .initLoader((int) cursor.getLong(0), null, view);
                 
-                view.avatar.setImageResource(R.drawable.ic_launcher);
+                view.avatar.setImageResource(R.drawable.icn_view_user);
                 
                 queue.add(new ProfileRequest(cursor.getString(COLUMNS.WHO),
                         view, RideDetailsFragment.this));
@@ -261,17 +261,16 @@ public class RideDetailsFragment extends SherlockFragment
         class ImageDialog extends Dialog implements OnClickListener {
             
             public ImageDialog(Context context) {
-                super(context, android.R.style
-                        .Theme_Translucent_NoTitleBar_Fullscreen);
+                super(context, R.style.ProfilePictureFullscreen);
             }
 
             @Override
             protected void onCreate(Bundle savedInstanceState) {
-                ImageView image = new ImageView(getContext());
+                setContentView(R.layout.view_image);
+                ImageView image = (ImageView) findViewById(R.id.image_large);
                 image.setImageResource(R.drawable.ic_call);
                 imageLoader.get(url, ImageLoader.getImageListener(image,
-                              R.drawable.ic_loading, R.drawable.ic_launcher_fab));
-                setContentView(image);
+                              R.drawable.ic_loading, R.drawable.icn_view_none));
                 ScaleAnimation s = new ScaleAnimation(0.3f, 1, 0.3f, 1);
                 s.setDuration(300);
                 s.setFillAfter(true);
@@ -334,9 +333,9 @@ public class RideDetailsFragment extends SherlockFragment
                       String id = photo.getString("PhotoID");
                       String path = photo.getString("PathTo");
                       url = "http://service.fahrgemeinschaft.de//"
-                              + "ugc/pa/" + path +"/"+ id + "_small.jpg";
+                              + "ugc/pa/" + path +"/"+ id + "_big.jpg";
                       imageLoader.get(url, ImageLoader.getImageListener(avatar,
-                              R.drawable.ic_loading, R.drawable.ic_launcher_fab));
+                              R.drawable.ic_loading, R.drawable.icn_view_none));
                   }
               }
           } catch (JSONException e) {

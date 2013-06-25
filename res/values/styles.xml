@@ -46,6 +46,12 @@
         <item name="android:windowBackground">@color/light_green_translucent</item>
     </style>
 
+    <style name="ProfilePictureFullscreen" parent="AppBaseTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/light_green_translucent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
     <style name="ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse">
         <item name="background">@color/dark_green</item>
     </style>
