@@ -17,12 +17,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:label="FG"
+        android:label=""
         android:icon="@drawable/ic_launcher"
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
-            android:label="FG" >
+            android:label="Fahrgemeinschaft" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -41,7 +41,7 @@
         </activity>
         <activity
             android:name=".ResultsActivity"
-            android:label="FG" >
+            android:label="" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -52,7 +52,7 @@
         </activity>
         <activity
             android:name=".EditRideActivity"
-            android:label="FG" >
+            android:label="" >
             <intent-filter>
                 <action android:name="android.intent.action.INSERT" />
                 <category android:name="android.intent.category.DEFAULT" />
