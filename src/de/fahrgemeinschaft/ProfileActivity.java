@@ -14,6 +14,9 @@ import android.preference.Preference.OnPreferenceChangeListener;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
+
 public class ProfileActivity extends SherlockPreferenceActivity {
 
     @Override
@@ -44,6 +47,8 @@ public class ProfileActivity extends SherlockPreferenceActivity {
                     @Override
                     public boolean onPreferenceChange(Preference p, Object o) {
                         String word = "";
+                        Crouton.makeText(ProfileActivity.this, "logging in...",
+                                Style.INFO).show();
                         for (int i = 0; i < o.toString().length(); i++) {
                             word += "*";
                         }
