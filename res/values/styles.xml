@@ -103,13 +103,19 @@
         <item name="android:textSize">23sp</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
+
     <style name="place_pick_btn">
         <item name="android:textSize">28sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/darker_green</item>
     </style>
-    
+
+    <style name="comment_text_box">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/darker_green</item>
+    </style>
+
     <color name="light_green_translucent">#EEBBDF53</color>
     <color name="light_green">#BBDF53</color>
     <color name="medium_green">#839C3A</color>

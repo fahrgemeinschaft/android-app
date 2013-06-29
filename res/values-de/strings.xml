@@ -19,9 +19,10 @@
     <string name="publish" >Fahrt Eintragen</string>
     <string name="search">suchen</string>
 
-    <string name="price">Preis</string>
     <string name="mode_car">Auto</string>
     <string name="mode_rail">Zug</string>
+    <string name="price">Preis</string>
+    <string name="comment">Anmerkungen zur Fahrt</string>
     
     <string name="profile">Profil</string>
     <string name="settings">Einstellungen</string>
