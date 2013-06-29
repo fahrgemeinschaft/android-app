@@ -76,6 +76,13 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="ProfileActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MANAGE_NETWORK_USAGE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity android:name="WebActivity" />
 
             <!-- teleportR Android Library -->

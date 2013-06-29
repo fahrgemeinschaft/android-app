@@ -281,6 +281,9 @@ public class MainActivity extends SherlockFragmentActivity
         case R.id.settings:
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
+        case R.id.profile:
+            startActivity(new Intent(this, ProfileActivity.class));
+            return true;
         case android.R.id.home:
             getSupportFragmentManager().beginTransaction()
             .replace(R.id.layout, new AboutFragment())
