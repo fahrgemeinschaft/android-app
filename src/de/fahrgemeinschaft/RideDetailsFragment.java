@@ -7,19 +7,18 @@
 
 package de.fahrgemeinschaft;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.teleportr.Ride;
-import org.teleportr.Ride.COLUMNS;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import android.annotation.SuppressLint;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.teleportr.Ride;
+import org.teleportr.Ride.COLUMNS;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.database.Cursor;
@@ -34,13 +33,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
-import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -50,22 +47,16 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
 import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
-import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
-import com.android.volley.ResponseDelivery;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageLoader.ImageCache;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 import com.calciumion.widget.BasePagerAdapter;
-
-import de.fahrgemeinschaft.EditRideFragment3.VisibilityView;
 
 public class RideDetailsFragment extends SherlockFragment
         implements Response.ErrorListener {
@@ -78,8 +69,9 @@ public class RideDetailsFragment extends SherlockFragment
     private static SimpleDateFormat time =
             new SimpleDateFormat("HH:mm", Locale.GERMANY);
     private ViewPager pager;
-    private Cursor cursor;
     private RequestQueue queue;
+    private Cursor cursor;
+    private int selected;
     private static ImageLoader imageLoader;
 
     @Override
@@ -138,7 +130,6 @@ public class RideDetailsFragment extends SherlockFragment
                 
                 if (view.content.getChildCount() > 4)
                     view.content.removeViews(1, view.content.getChildCount()-4);
-
                 cursor.moveToPosition((Integer) position);
 
                 view.userId = cursor.getString(COLUMNS.WHO);
@@ -188,7 +179,7 @@ public class RideDetailsFragment extends SherlockFragment
                 
                 return view;
             }
-            
+
             @Override
             protected Object getItem(int position) {
                 return position;
@@ -196,19 +187,29 @@ public class RideDetailsFragment extends SherlockFragment
         });
     }
 
-    public void setCursor(Cursor cursor) {
+    public void swapCursor(Cursor cursor) {
         Log.d(TAG, "change cursor");
         this.cursor = cursor;
         if (pager != null)
             pager.getAdapter().notifyDataSetChanged();
     }
 
+    public void setSelection(int position) {
+        selected = position;
+    }
+
+    public int getSelection() {
+        return selected;
+    }
+
     @Override
     public void onResume() {
         super.onResume();
-        pager.setCurrentItem(((ResultsActivity) getActivity()).selected);
+        pager.setCurrentItem(selected);
         pager.setOnPageChangeListener((OnPageChangeListener) getActivity());
     }
+
+
 
     static class RideView extends RelativeLayout
         implements LoaderCallbacks<Cursor>, Response.Listener<JSONObject> {
@@ -308,8 +309,6 @@ public class RideDetailsFragment extends SherlockFragment
                         LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
                 view.setLayoutParams(lp);
                 content.addView(view, i);
-                Log.d(TAG, c.getString(COLUMNS.FROM_NAME)
-                        + " --> " + c.getString(COLUMNS.TO_NAME));
             }
         }
 
@@ -409,5 +408,4 @@ public class RideDetailsFragment extends SherlockFragment
 
         return entry;
     }
-    
 }

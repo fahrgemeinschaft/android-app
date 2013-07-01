@@ -5,12 +5,12 @@
   Some rights reserved. See LICENSE.. 
 -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" >
-
     <ListView
         android:id="@android:id/list"
         android:drawSelectorOnTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:listSelector="@drawable/list_selector"
+        android:background="@color/light_green_translucent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
     />
-
-</RelativeLayout>

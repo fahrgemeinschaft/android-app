@@ -28,12 +28,6 @@ public abstract class EndlessSpinningZebraListFragment extends SherlockListFragm
     private View wheel;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-    }
-
-    @Override
     public View onCreateView(final LayoutInflater lI, ViewGroup p, Bundle b) {
         return lI.inflate(R.layout.fragment_ride_list, p, false);
     }

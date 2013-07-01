@@ -1,7 +1,7 @@
 /**
  * Fahrgemeinschaft / Ridesharing App
  * Copyright (c) 2013 by it's authors.
- * Some rights reserved. See LICENSE.. 
+ * Some rights reserved. See LICENSE..
  *
  */
 
@@ -53,7 +53,7 @@ public class EditRideActivity extends SherlockFragmentActivity
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle arg1) {
-    	Uri uri = getIntent().getData();
+        Uri uri = getIntent().getData();
         return new CursorLoader(this, uri, null, null, null, null);
     }
 
