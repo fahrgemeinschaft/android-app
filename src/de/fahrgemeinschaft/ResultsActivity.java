@@ -11,9 +11,11 @@ import org.teleportr.ConnectorService;
 import org.teleportr.Ride;
 
 import android.content.Intent;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
@@ -51,6 +53,16 @@ public class ResultsActivity extends SherlockFragmentActivity implements
         myrides = new RideListFragment();
         query = new Ride(getIntent().getData());
         getSupportLoaderManager().initLoader(RESULTS, null, this);
+        getContentResolver().registerContentObserver(Uri.parse(
+                    "content://" + getPackageName() + "/jobs/search"), false,
+                    new ContentObserver(new Handler()) {
+                @Override
+                public void onChange(boolean selfChange) {
+                    System.out.println("CHANGE " + selfChange);
+                    getSupportLoaderManager()
+                        .restartLoader(SERVICE, null, ResultsActivity.this);
+                }
+        });
     }
 
     @Override
@@ -83,13 +95,14 @@ public class ResultsActivity extends SherlockFragmentActivity implements
         case RESULTS:
             list.swapCursor(cursor);
             details.swapCursor(cursor);
-            getSupportLoaderManager().restartLoader(SERVICE, null, this);
             break;
         case SERVICE: // background search jobs
             if (cursor.getCount() != 0) {
+                System.out.println("START   SPINNING");
                 list.startSpinning();
                 //TODO visualize ...
             } else {
+                System.out.println("STOP   SPINNING");
                 list.stopSpinning();
             }
         }
@@ -110,7 +123,6 @@ public class ResultsActivity extends SherlockFragmentActivity implements
     @Override
     public void onSpinningWheelClick() {
         query.arr(query.getArr() + 2 * 24 * 3600 * 1000).store(this);
-        getSupportLoaderManager().restartLoader(SERVICE, null, this);
         startService(new Intent(this, ConnectorService.class)
                 .setAction(ConnectorService.SEARCH));
     }

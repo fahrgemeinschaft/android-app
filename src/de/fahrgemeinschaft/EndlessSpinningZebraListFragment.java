@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 
@@ -64,6 +65,7 @@ public abstract class EndlessSpinningZebraListFragment extends SherlockListFragm
                     if (v == null) {
                         v = getLayoutInflater(null).inflate(
                                 R.layout.loading, parent, false);
+                        wheel = v.findViewById(R.id.progress);
                         if (spinning) startSpinning();
                         else stopSpinning();
                     }
@@ -94,7 +96,6 @@ public abstract class EndlessSpinningZebraListFragment extends SherlockListFragm
 
 
     public void startSpinning() {
-        wheel = getListView().findViewById(R.id.progress);
         if (wheel != null) {
             final RotateAnimation rotateAnimation = new RotateAnimation(
                     0f, 360f, Animation.RELATIVE_TO_SELF,
@@ -103,12 +104,13 @@ public abstract class EndlessSpinningZebraListFragment extends SherlockListFragm
             rotateAnimation.setRepeatMode(Animation.RESTART);
             rotateAnimation.setRepeatCount(Animation.INFINITE);
             wheel.startAnimation(rotateAnimation);
-        }
+        } else Toast.makeText(getActivity(), "NO wheel!", 3000).show();
         spinning = true;
     }
 
     public void stopSpinning() {
         if (wheel != null) wheel.clearAnimation();
+        else Toast.makeText(getActivity(), "NO wheel!", 3000).show();
         spinning = false;
     }
 
