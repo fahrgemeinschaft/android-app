@@ -1,20 +1,20 @@
 /**
  * Fahrgemeinschaft / Ridesharing App
  * Copyright (c) 2013 by it's authors.
- * Some rights reserved. See LICENSE.. 
+ * Some rights reserved. See LICENSE..
  *
  */
 
 package de.fahrgemeinschaft;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -36,12 +36,31 @@ public class FahrgemeinschaftConnector extends Connector {
 
     private String startDate;
 
-    static final String APIKEY = "API-KEY"; 
+    public String endpoint =  "http://service.fahrgemeinschaft.de";
+
+    static final String APIKEY = "API-KEY";
     static final SimpleDateFormat fulldf = new SimpleDateFormat("yyyyMMddHHmm", Locale.GERMAN);
     static final SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd", Locale.GERMAN);
 
     @Override
-    public long getRides(Place from, Place to, Date dep, Date arr) {
+    public String authenticate() throws Exception {
+        HttpURLConnection post = (HttpURLConnection)
+                new URL(endpoint + "/session").openConnection();
+        post.setRequestProperty("apikey", APIKEY);
+        post.setDoOutput(true);
+        post.getOutputStream().write((
+                "{\"Email\": \"" + get("username")
+                + "\", \"Password\": \"" + get("password")
+                + "\"}").getBytes());
+        post.getOutputStream().close();
+        JSONObject json = loadJson(post);
+        JSONObject auth = json.getJSONObject("auth");
+        set("user", auth.getString("IDuser"));
+        return auth.getString("AuthKey");
+    }
+
+    @Override
+    public long search(Place from, Place to, Date dep, Date arr) {
         
         startDate = df.format(dep);
 
@@ -52,30 +71,39 @@ public class FahrgemeinschaftConnector extends Connector {
             from_json.put("Latitude", "" + from.getLat());
             from_json.put("Startdate", df.format(dep));
             from_json.put("Reoccur", JSONObject.NULL);
-            from_json.put("ToleranceRadius", getSetting("radius_from"));
+            from_json.put("ToleranceRadius", get("radius_from"));
             // place.put("Starttime", JSONObject.NULL);
 
             to_json.put("Longitude", "" + to.getLng());
             to_json.put("Latitude", "" + to.getLat());
-            to_json.put("ToleranceRadius", getSetting("radius_to"));
+            to_json.put("ToleranceRadius", get("radius_to"));
             // place.put("ToleranceDays", "3");
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        JSONObject json = loadJson("http://service.fahrgemeinschaft.de/trip?"
-                + "searchOrigin=" + from_json + "&searchDestination=" + to_json);
-        if (json != null) {
-            try {
+        try {
+            HttpURLConnection conn = (HttpURLConnection) new URL(endpoint
+                             + "/trip?searchOrigin=" + from_json
+                            + "&searchDestination=" + to_json).openConnection();
+            conn.setRequestProperty("apikey", APIKEY);
+            JSONObject json = loadJson(conn);
+            if (json != null) {
                 JSONArray results = json.getJSONArray("results");
                 System.out.println("FOUND " + results.length() + " rides");
-                
+
                 for (int i = 0; i < results.length(); i++) {
                     store(parseRide(results.getJSONObject(i)));
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         return dep.getTime() + 24 * 3600 * 1000;
     }
@@ -152,35 +180,49 @@ public class FahrgemeinschaftConnector extends Connector {
         }
     }
 
-    JSONObject loadJson(String url) {
-        System.out.println(url);
-        HttpURLConnection conn = null;
-        StringBuilder result = new StringBuilder();
-        try {
-            conn = (HttpURLConnection) new URL(url).openConnection();
-            conn.setRequestProperty("apikey", APIKEY);
-            InputStreamReader in = new InputStreamReader(
-                    new BufferedInputStream(conn.getInputStream()));
-            int read;
-            char[] buff = new char[1024];
-            while ((read = in.read(buff)) != -1) {
-                result.append(buff, 0, read);
-            }
-            return new JSONObject(result.toString());
-        } catch (JSONException e) {
-            System.out.println("json error");
-        } catch (MalformedURLException e) {
-            System.out.println("url error ");
-        } catch (IOException e) {
-            System.out.println("io error");
-        } finally {
-            if (conn != null) {
-                conn.disconnect();
-            }
+    @Override
+    public int publish(Ride offer) throws Exception {
+        JSONObject json = new JSONObject();
+        json.put("Triptype", "offer");
+        json.put("IDuser", get("user"));
+        ArrayList<JSONObject> routings = new ArrayList<JSONObject>();
+        routings.add(routing(offer.getFrom(), offer.getTo()));
+        for (Ride sub : offer.getSubrides()) {
+            routing(offer.getFrom(), sub.getTo());
         }
-        return null;
+        json.put("Routings", new JSONArray(routings));
+        json.put("Reoccur", new JSONArray());
+        json.put("Privacy", new JSONArray());
+        System.out.println(json);
+        HttpURLConnection post = (HttpURLConnection)
+                new URL(endpoint + "/trip").openConnection();
+        post.setRequestProperty("authkey", getAuth());
+        post.setRequestProperty("apikey", APIKEY);
+        post.setDoOutput(true);
+        OutputStreamWriter out = new OutputStreamWriter(post.getOutputStream());
+        out.write(json.toString());
+        JSONObject response = loadJson(post);
+        System.out.println(response);
+
+        return 0;
     }
 
+    private JSONObject routing(Place from, Place to) throws JSONException {
+        JSONObject route = new JSONObject();
+        route.put("Origin", place(from));
+        route.put("Destination", place(to));
+        return route;
+    }
+
+    private JSONObject place(Place from) throws JSONException {
+        JSONObject place = new JSONObject();
+        place.put("Latitude", from.getLat());
+        place.put("Longitude", from.getLng());
+        place.put("Address", from.getAddress());
+        place.put("CountryName", "Deutschland");
+        place.put("CountryCode", "DE");
+        return place;
+    }
 }
 
 // "Triptype": "offer",
