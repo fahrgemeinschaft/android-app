@@ -7,8 +7,13 @@
 
 package de.fahrgemeinschaft;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.HashSet;
 
 import org.json.JSONArray;
@@ -16,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.teleportr.Connector;
 import org.teleportr.Place;
+import org.teleportr.Ride;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -60,7 +66,22 @@ public class GPlaces extends Connector {
 
 
 
-    static public class AutocompleteLoader extends AsyncTaskLoader<Cursor> {
+    static String httpGet(String url) {
+        try {
+            HttpURLConnection get = (HttpURLConnection)
+                    new URL(url).openConnection();
+            return loadString(get);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
+    public static class AutocompleteLoader extends AsyncTaskLoader<Cursor> {
 
         private Cursor places;
         private String text;
@@ -136,6 +157,22 @@ public class GPlaces extends Connector {
             }
             return places;
         }
+    }
+
+
+
+    @Override
+    public long search(Place from, Place to, Date dep, Date arr) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+
+
+    @Override
+    public int publish(Ride offer) throws Exception {
+        // TODO Auto-generated method stub
+        return 0;
     }
 
 

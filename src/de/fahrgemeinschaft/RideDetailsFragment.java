@@ -188,7 +188,6 @@ public class RideDetailsFragment extends SherlockFragment
     }
 
     public void swapCursor(Cursor cursor) {
-        Log.d(TAG, "change cursor");
         this.cursor = cursor;
         if (pager != null)
             pager.getAdapter().notifyDataSetChanged();
