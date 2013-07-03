@@ -7,6 +7,7 @@
 
 package de.fahrgemeinschaft;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -42,6 +43,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.android.volley.AuthFailureError;
@@ -64,6 +66,12 @@ public class RideDetailsFragment extends SherlockFragment
     private static final String TAG = "Details";
     private static final SimpleDateFormat day =
             new SimpleDateFormat("EE", Locale.GERMANY);
+    private static final SimpleDateFormat lrdate =
+            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.GERMANY);
+    private static final SimpleDateFormat lwdate =
+            new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
+    private static final SimpleDateFormat lwhdate =
+            new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMANY);
     private static final SimpleDateFormat date =
             new SimpleDateFormat("dd.MM.", Locale.GERMANY);
     private static SimpleDateFormat time =
@@ -226,6 +234,7 @@ public class RideDetailsFragment extends SherlockFragment
         TextView name;
         private String url;
         TextView reg_date;
+        TextView last_login;
 
         public RideView(Context context, AttributeSet attrs) {
             super(context, attrs);
@@ -248,7 +257,7 @@ public class RideDetailsFragment extends SherlockFragment
             avatar = (ImageView)findViewById(R.id.avatar);
             name = (TextView) findViewById(R.id.driver_name);
             reg_date = (TextView) findViewById(R.id.driver_registration_date);
-            
+            last_login = (TextView) findViewById(R.id.driver_active_date);
             
             avatar.setOnClickListener(new OnClickListener() {
 
@@ -322,13 +331,15 @@ public class RideDetailsFragment extends SherlockFragment
         public void onResponse(JSONObject json) {
             try {
               JSONObject user = json.getJSONObject("user");
-              Log.d(TAG, user.toString());
               Log.d(TAG, "profile downloaded " + user.get("UserID"));
               if (user.getString("UserID").equals(userId)) {
                   JSONArray kvp = user.getJSONArray("KeyValuePairs");
                   name.setText(kvp.getJSONObject(1).getString("Value") + " " 
                           + kvp.getJSONObject(2).getString("Value"));
-//                  reg_date.setText(user.getJSONObject("RegistrationDate").get("RegistrationDate"));
+                  Date since = lrdate.parse(user.getString("RegistrationDate"));
+                  Date logon = lrdate.parse(user.getString("LastvisitDate"));
+                  reg_date.setText("Dabei seit: " + lwdate.format(since));
+                  last_login.setText("Letzter Login: " + lwhdate.format(logon));
 //                  JSONArray rgd = user.getJSONArray("RegistrationDate");
 //                  reg_date.setText(user.getJSONArray("").getString("Value") + " " 
 //                          + kvp.getJSONObject(2).getString("Value"));
@@ -345,7 +356,10 @@ public class RideDetailsFragment extends SherlockFragment
               }
           } catch (JSONException e) {
               e.printStackTrace();
-          }
+          } catch (ParseException e) {
+            Toast.makeText(getContext(), e.getMessage(), 300).show();
+            e.printStackTrace();
+        }
         }
     }
 
