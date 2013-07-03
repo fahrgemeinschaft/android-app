@@ -103,7 +103,7 @@ public abstract class EndlessSpinningZebraListFragment extends SherlockListFragm
 
     
     public void startSpinning() {
-        if (!spinning) {
+        if (!spinning && getView() != null) {
             wheel = getView().findViewById(R.id.progress);
             wheel.post(new Runnable() {
                 
@@ -126,7 +126,7 @@ public abstract class EndlessSpinningZebraListFragment extends SherlockListFragm
                     spinning = false;
                 }
             });
-        } else Toast.makeText(getActivity(), "NO wheel!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public interface ListFragmentCallback {
