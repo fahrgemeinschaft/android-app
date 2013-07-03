@@ -76,7 +76,7 @@ public abstract class EndlessSpinningZebraListFragment extends SherlockListFragm
                             R.color.medium_green));
                 } else {
                     v.setBackgroundColor(getResources().getColor(
-                            R.color.light_green));
+                            R.color.almost_medium_green));
                 }
                 return v;
             }

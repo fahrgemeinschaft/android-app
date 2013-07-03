@@ -88,13 +88,12 @@
         android:layout_alignParentBottom="true"
         style="@style/light.Large"
     />
-    <View 
-        android:layout_width="0dp"
-        android:layout_height="26dp"
-        android:layout_marginLeft="5dp"
+    <TextView 
+        android:layout_marginLeft="2dp"
         android:layout_toRightOf="@id/currency"
         android:layout_alignParentBottom="true"
-        android:background="@color/opacity_white"
+        style="@style/light.Large.Bold"
+        android:text="€"
     />
     <ImageView
         android:id="@+id/seats_icon"

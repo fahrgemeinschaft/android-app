@@ -61,7 +61,7 @@ public class RideListFragment extends EndlessSpinningZebraListFragment
         v.date.setText(date.format(timestamp));
         v.time.setText(time.format(timestamp));
 
-        v.price.setText(ride.getInt(COLUMNS.PRICE) / 100 + "€");
+        v.price.setText(ride.getInt(COLUMNS.PRICE) / 100 + "");
         switch(ride.getInt(COLUMNS.SEATS)){
         case 0:
             v.seats.setImageResource(R.drawable.icn_seats_white_full); break;
