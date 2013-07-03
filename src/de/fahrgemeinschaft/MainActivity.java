@@ -7,7 +7,7 @@
 
 package de.fahrgemeinschaft;
 
-import java.text.SimpleDateFormat; 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -18,7 +18,6 @@ import org.teleportr.Ride;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -82,9 +81,9 @@ public class MainActivity extends SherlockFragmentActivity
             setDateButtonText(savedInstanceState.getLong("dep"), -1);
         }
         setTitle("");
-        startActivity(new Intent(Intent.ACTION_VIEW,
-                Uri.parse("content://" + getPackageName() + "/rides" +
-                        "?from_id=1&to_id=2")));
+//        startActivity(new Intent(Intent.ACTION_VIEW,
+//                Uri.parse("content://" + getPackageName() + "/rides" +
+//                        "?from_id=1&to_id=2")));
     }
 
     @Override

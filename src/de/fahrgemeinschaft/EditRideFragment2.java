@@ -1,7 +1,7 @@
 /**
  * Fahrgemeinschaft / Ridesharing App
  * Copyright (c) 2013 by it's authors.
- * Some rights reserved. See LICENSE.. 
+ * Some rights reserved. See LICENSE..
  *
  */
 
@@ -26,21 +26,19 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
 public class EditRideFragment2 extends SherlockFragment 
         implements OnClickListener, OnDateSetListener, OnTimeSetListener {
 
-    private static final String TAG = "Fahrgemeinschaft";
     private LinearLayout recurrence;
     private Button date_button;
     private Button time_button;
@@ -81,7 +79,6 @@ public class EditRideFragment2 extends SherlockFragment
         
         String[] weekDays = new DateFormatSymbols().getShortWeekdays();
         recurrence = (LinearLayout) v.findViewById(R.id.recurrence);
-        LayoutParams layoutParams = dayButtonlayoutParams();
         for (int i = 1; i < weekDays.length; i++) {
             TextView day = makeRecurringDayButton(getActivity());
             day.setText(weekDays[i].substring(0, 2));
