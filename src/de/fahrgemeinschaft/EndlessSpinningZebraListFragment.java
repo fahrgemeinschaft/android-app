@@ -103,31 +103,17 @@ public abstract class EndlessSpinningZebraListFragment extends SherlockListFragm
 
     
     public void startSpinning() {
-        if (!spinning && getView() != null) {
             wheel = getView().findViewById(R.id.progress);
-            if (wheel != null) {
-                wheel.post(new Runnable() {
-                    
-                    @Override
-                    public void run() {
-                        wheel.startAnimation(rotate);
-                        spinning = true;
-                    }
-                });
+            if (!spinning && wheel != null) {
+                wheel.startAnimation(rotate);
+                spinning = true;
             }
-        }
     }
 
     public void stopSpinning() {
         if (wheel != null) {
-            wheel.post(new Runnable() {
-                
-                @Override
-                public void run() {
-                    wheel.clearAnimation();
-                    spinning = false;
-                }
-            });
+            wheel.clearAnimation();
+            spinning = false;
         }
     }
 

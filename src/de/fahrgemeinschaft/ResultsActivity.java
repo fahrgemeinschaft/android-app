@@ -17,6 +17,7 @@ import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -28,6 +29,8 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.fahrgemeinschaft.EndlessSpinningZebraListFragment.ListFragmentCallback;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class ResultsActivity extends SherlockFragmentActivity
        implements ServiceConnection, BackgroundListener,
@@ -41,6 +44,7 @@ public class ResultsActivity extends SherlockFragmentActivity
     public RideListFragment results;
     public RideListFragment myrides;
     private Ride query;
+    private Handler handler;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,8 +57,8 @@ public class ResultsActivity extends SherlockFragmentActivity
         details = new RideDetailsFragment();
         myrides = new RideListFragment();
         query = new Ride(getIntent().getData());
-        
         results.load(getIntent().getData());
+        handler = new Handler();
     }
 
     @Override
@@ -69,14 +73,21 @@ public class ResultsActivity extends SherlockFragmentActivity
     }
 
     @Override
-    public void on(String what, final short how) {
-        switch (how) {
-        case ConnectorService.BackgroundListener.START:
-            results.startSpinning();
-            break;
-        case ConnectorService.BackgroundListener.PAUSE:
-            results.stopSpinning();
-        }
+    public void on(final String msg, final short what) {
+        handler.post(new Runnable() {
+
+            @Override
+            public void run() {
+                Crouton.makeText(ResultsActivity.this, msg, Style.INFO).show();
+                switch (what) {
+                case ConnectorService.START:
+                    results.startSpinning();
+                    break;
+                case ConnectorService.PAUSE:
+                    results.stopSpinning();
+                }
+            }
+        });
     }
 
     @Override
