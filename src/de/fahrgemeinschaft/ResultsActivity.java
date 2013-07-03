@@ -55,7 +55,6 @@ public class ResultsActivity extends SherlockFragmentActivity
         query = new Ride(getIntent().getData());
         
         results.load(getIntent().getData());
-        
     }
 
     @Override
@@ -73,11 +72,9 @@ public class ResultsActivity extends SherlockFragmentActivity
     public void on(String what, final short how) {
         switch (how) {
         case ConnectorService.BackgroundListener.START:
-            System.out.println("START   SPINNING");
             results.startSpinning();
             break;
         case ConnectorService.BackgroundListener.PAUSE:
-            System.out.println("STOP   SPINNING");
             results.stopSpinning();
         }
     }
@@ -173,6 +170,4 @@ public class ResultsActivity extends SherlockFragmentActivity
 
     @Override
     public void onPageScrolled(int arg0, float arg1, int arg2) {}
-
-
 }
