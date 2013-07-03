@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 
@@ -103,11 +102,11 @@ public abstract class EndlessSpinningZebraListFragment extends SherlockListFragm
 
     
     public void startSpinning() {
+        if (!spinning && getView() != null) {
             wheel = getView().findViewById(R.id.progress);
-            if (!spinning && wheel != null) {
-                wheel.startAnimation(rotate);
-                spinning = true;
-            }
+            if (wheel != null) wheel.startAnimation(rotate);
+        }
+        spinning = true;
     }
 
     public void stopSpinning() {
