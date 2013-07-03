@@ -113,8 +113,14 @@
                         android:id="@+id/driver_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/small"
+                        android:paddingLeft="@dimen/small"
                         style="@style/dark.Large.Bold" />
+                    <TextView 
+                        android:id="@+id/driver_registration_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/small"
+                        style="@style/dark" />
                 </LinearLayout>
             </LinearLayout>
             
