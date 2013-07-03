@@ -81,6 +81,10 @@
     <style name="light.Small" parent="@style/light">
         <item name="android:textSize">12sp</item>
     </style>
+    <style name="light.MediumSmall" parent="@style/light">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/dark_green</item>
+    </style>
     <style name="light.Bold" parent="@style/light">
         <item name="android:textStyle">bold</item>
     </style>
@@ -92,6 +96,10 @@
         <item name="android:textColor">#384219</item>
         <item name="android:paddingLeft">3dp</item>
         <item name="android:textSize">18sp</item>
+    </style>
+    <style name="dark.MediumLarge" parent="@style/dark">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
     <style name="dark.Large" parent="@style/dark">
         <item name="android:textSize">23sp</item>
