@@ -225,6 +225,7 @@ public class RideDetailsFragment extends SherlockFragment
         String userId;
         TextView name;
         private String url;
+        TextView reg_date;
 
         public RideView(Context context, AttributeSet attrs) {
             super(context, attrs);
@@ -246,6 +247,7 @@ public class RideDetailsFragment extends SherlockFragment
             content = (LinearLayout) findViewById(R.id.content);
             avatar = (ImageView)findViewById(R.id.avatar);
             name = (TextView) findViewById(R.id.driver_name);
+            reg_date = (TextView) findViewById(R.id.driver_registration_date);
             
             
             avatar.setOnClickListener(new OnClickListener() {
@@ -320,11 +322,16 @@ public class RideDetailsFragment extends SherlockFragment
         public void onResponse(JSONObject json) {
             try {
               JSONObject user = json.getJSONObject("user");
+              Log.d(TAG, user.toString());
               Log.d(TAG, "profile downloaded " + user.get("UserID"));
               if (user.getString("UserID").equals(userId)) {
                   JSONArray kvp = user.getJSONArray("KeyValuePairs");
                   name.setText(kvp.getJSONObject(1).getString("Value") + " " 
                           + kvp.getJSONObject(2).getString("Value"));
+//                  reg_date.setText(user.getJSONObject("RegistrationDate").get("RegistrationDate"));
+//                  JSONArray rgd = user.getJSONArray("RegistrationDate");
+//                  reg_date.setText(user.getJSONArray("").getString("Value") + " " 
+//                          + kvp.getJSONObject(2).getString("Value"));
 //                  Log.d(TAG, kvp.toString());
                   if (!user.isNull("AvatarPhoto")) {
                       JSONObject photo = user.getJSONObject("AvatarPhoto");
