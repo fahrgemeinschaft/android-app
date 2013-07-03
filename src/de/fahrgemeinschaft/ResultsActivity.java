@@ -28,18 +28,16 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-import de.fahrgemeinschaft.EndlessSpinningZebraListFragment.ListItemClicker;
+import de.fahrgemeinschaft.EndlessSpinningZebraListFragment.ListFragmentCallback;
 
 public class ResultsActivity extends SherlockFragmentActivity implements
-        LoaderCallbacks<Cursor>, ListItemClicker, OnPageChangeListener {
+        LoaderCallbacks<Cursor>, ListFragmentCallback, OnPageChangeListener {
 
-    private static final int RESULTS = 1;
-    private static final int MYRIDES = 2;
-    private static final int SERVICE = 3;
     public RideDetailsFragment details;
     public RideListFragment myrides;
-    public RideListFragment list;
+    public RideListFragment results;
     private Ride query;
+    private Uri jobs;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,64 +45,50 @@ public class ResultsActivity extends SherlockFragmentActivity implements
         setTitle("");
         setContentView(R.layout.activity_results);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        list = (RideListFragment) getSupportFragmentManager()
+        results = (RideListFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.rides);
         details = new RideDetailsFragment();
         myrides = new RideListFragment();
         query = new Ride(getIntent().getData());
-        getSupportLoaderManager().initLoader(RESULTS, null, this);
-        getContentResolver().registerContentObserver(Uri.parse(
-                    "content://" + getPackageName() + "/jobs/search"), false,
-                    new ContentObserver(new Handler()) {
-                @Override
-                public void onChange(boolean selfChange) {
-                    System.out.println("CHANGE " + selfChange);
-                    getSupportLoaderManager()
-                        .restartLoader(SERVICE, null, ResultsActivity.this);
-                }
+        
+        results.load(getIntent().getData());
+        
+        jobs = Uri.parse("content://" + getPackageName() + "/jobs/search");
+        getContentResolver().registerContentObserver(jobs, false,
+                new ContentObserver(new Handler()) {
+                    @Override
+                    public void onChange(boolean selfChange) {
+                        System.out.println("CHANGE " + selfChange);
+                        getSupportLoaderManager()
+                            .restartLoader(0, null, ResultsActivity.this);
+                    }
         });
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle arg1) {
-        switch (id) {
-        case RESULTS:
-            Uri uri = getIntent().getData();
-            System.out.println("query rides:   " + uri);
-            return new CursorLoader(this, uri, null, null, null, null);
-        case MYRIDES:
-            System.out.println("query my rides");
-            return new CursorLoader(this, Uri.parse(
-                    "content://" + getPackageName() + "/myrides"),
-                    null, null, null, null);
-        case SERVICE:
-            return new CursorLoader(this, Uri.parse(
-                    "content://" + getPackageName() + "/jobs/search"),
-                    null, null, null, null);
-        }
-        return null;
+        return new CursorLoader(this, jobs, null, null, null, null);
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        switch (loader.getId()) {
-        case MYRIDES:
-            setTitle("My Rides");
-            myrides.swapCursor(cursor);
-            break;
-        case RESULTS:
-            list.swapCursor(cursor);
+    public void onLoadFinished(Loader<Cursor> l, Cursor jobs) {
+        if (jobs.getCount() != 0) {
+            System.out.println("START   SPINNING");
+            results.startSpinning();
+            //TODO visualize ...
+        } else {
+            System.out.println("STOP   SPINNING");
+            results.stopSpinning();
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Fragment fragment, Cursor cursor) {
+        switch (fragment.getId()) {
+        case R.id.rides:
+            setTitle("Results");
             details.swapCursor(cursor);
             break;
-        case SERVICE: // background search jobs
-            if (cursor.getCount() != 0) {
-                System.out.println("START   SPINNING");
-                list.startSpinning();
-                //TODO visualize ...
-            } else {
-                System.out.println("STOP   SPINNING");
-                list.stopSpinning();
-            }
         }
     }
 
@@ -116,7 +100,7 @@ public class ResultsActivity extends SherlockFragmentActivity implements
 
     @Override
     public void onPageSelected(final int position) {
-        list.getListView().setSelection(position);
+        results.getListView().setSelection(position);
         details.setSelection(position);
     }
 
@@ -129,7 +113,7 @@ public class ResultsActivity extends SherlockFragmentActivity implements
 
 
     public void contact(View v) {
-        Cursor cursor = ((CursorAdapter) list.getListAdapter()).getCursor();
+        Cursor cursor = ((CursorAdapter) results.getListAdapter()).getCursor();
         cursor.moveToPosition(details.getSelection());
         Util.openContactOptionsChooserDialog(this, cursor);
     }
@@ -147,7 +131,6 @@ public class ResultsActivity extends SherlockFragmentActivity implements
         switch (item.getItemId()) {
         case R.id.my_rides:
             showFragment(myrides);
-            getSupportLoaderManager().initLoader(MYRIDES, null, this);
             return true;
         case R.id.settings:
             startActivity(new Intent(this, SettingsActivity.class));
@@ -187,5 +170,4 @@ public class ResultsActivity extends SherlockFragmentActivity implements
 
     @Override
     public void onPageScrolled(int arg0, float arg1, int arg2) {}
-
 }
