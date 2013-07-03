@@ -126,7 +126,7 @@
         android:layout_marginBottom="0dp"
         android:background="@drawable/btn_dark_green"
         android:src="@drawable/btn_suchen" />
-    
+
     <ImageButton
         android:id="@+id/btn_selberfahren"
         android:layout_width="140dp"
