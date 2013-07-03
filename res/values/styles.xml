@@ -133,6 +133,12 @@
     <color name="opacity_white">#BBFFFFFF</color>
     <color name="opacity_black">#99000000</color>
     <color name="white">#FFFFFF</color>
+
+    <color name="btn_mitfahren_selected">#85925D</color>
+    <color name="btn_mitfahren_pressed">#AEB794</color>
+
+    <color name="btn_selberfahren_selected">#A1B46A</color>
+    <color name="btn_selberfahren_pressed">#C1CE9D</color>
     
     <dimen name="smallprint">6sp</dimen>
 </resources>
