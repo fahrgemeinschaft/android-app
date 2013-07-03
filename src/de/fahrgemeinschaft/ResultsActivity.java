@@ -8,18 +8,17 @@
 package de.fahrgemeinschaft;
 
 import org.teleportr.ConnectorService;
+import org.teleportr.ConnectorService.BackgroundListener;
 import org.teleportr.Ride;
 
+import android.content.ComponentName;
 import android.content.Intent;
-import android.database.ContentObserver;
+import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.IBinder;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.CursorAdapter;
 import android.view.View;
@@ -30,14 +29,18 @@ import com.actionbarsherlock.view.MenuItem;
 
 import de.fahrgemeinschaft.EndlessSpinningZebraListFragment.ListFragmentCallback;
 
-public class ResultsActivity extends SherlockFragmentActivity implements
-        LoaderCallbacks<Cursor>, ListFragmentCallback, OnPageChangeListener {
+public class ResultsActivity extends SherlockFragmentActivity
+       implements ServiceConnection, BackgroundListener,
+           ListFragmentCallback, OnPageChangeListener {
 
+    public static final Uri MY_RIDES_URI =
+            Uri.parse("content://de.fahrgemeinschaft/myrides");
+    public static final Uri BG_JOBS_URI =
+            Uri.parse("content://de.fahrgemeinschaft/jobs/search");
     public RideDetailsFragment details;
-    public RideListFragment myrides;
     public RideListFragment results;
+    public RideListFragment myrides;
     private Ride query;
-    private Uri jobs;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,32 +55,26 @@ public class ResultsActivity extends SherlockFragmentActivity implements
         query = new Ride(getIntent().getData());
         
         results.load(getIntent().getData());
-        
-        jobs = Uri.parse("content://" + getPackageName() + "/jobs/search");
-        getContentResolver().registerContentObserver(jobs, false,
-                new ContentObserver(new Handler()) {
-                    @Override
-                    public void onChange(boolean selfChange) {
-                        System.out.println("CHANGE " + selfChange);
-                        getSupportLoaderManager()
-                            .restartLoader(0, null, ResultsActivity.this);
-                    }
-        });
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle arg1) {
-        return new CursorLoader(this, jobs, null, null, null, null);
+    protected void onStart() {
+        bindService(new Intent(this, ConnectorService.class), this, 0);
+        super.onStart();
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> l, Cursor jobs) {
-        if (jobs.getCount() != 0) {
-            System.out.println("START   SPINNING");
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        ((ConnectorService.Bind) service).getService().register(this);
+    }
+
+    @Override
+    public void on(String what, final short how) {
+        switch (how) {
+        case ConnectorService.BackgroundListener.START:
             results.startSpinning();
-            //TODO visualize ...
-        } else {
-            System.out.println("STOP   SPINNING");
+            break;
+        case ConnectorService.BackgroundListener.PAUSE:
             results.stopSpinning();
         }
     }
@@ -143,9 +140,6 @@ public class ResultsActivity extends SherlockFragmentActivity implements
             if (getSupportFragmentManager().getBackStackEntryCount() > 0)
                 getSupportFragmentManager().popBackStack();
             else finish();
-//            Intent intent = new Intent(this, MainActivity.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            startActivity(intent);
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -163,7 +157,13 @@ public class ResultsActivity extends SherlockFragmentActivity implements
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> arg0) {}
+    protected void onPause() {
+        unbindService(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {}
 
     @Override
     public void onPageScrollStateChanged(int arg0) {}

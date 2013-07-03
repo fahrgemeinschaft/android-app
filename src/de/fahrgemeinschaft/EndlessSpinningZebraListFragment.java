@@ -28,6 +28,7 @@ public abstract class EndlessSpinningZebraListFragment extends SherlockListFragm
 
     private boolean spinning;
     private View wheel;
+    private RotateAnimation rotate;
 
     @Override
     public View onCreateView(final LayoutInflater lI, ViewGroup p, Bundle b) {
@@ -59,19 +60,18 @@ public abstract class EndlessSpinningZebraListFragment extends SherlockListFragm
             }
 
             @Override
-            public View getView(int pos, View v, ViewGroup parent) {
-                if (pos < getCount() - 1)
-                    v = super.getView(pos, v, parent);
+            public View getView(int position, View v, ViewGroup parent) {
+                if (position < getCount() - 1)
+                    v = super.getView(position, v, parent);
                 else {
                     if (v == null) {
                         v = getLayoutInflater(null).inflate(
                                 R.layout.loading, parent, false);
-                        wheel = v.findViewById(R.id.progress);
                         if (spinning) startSpinning();
                         else stopSpinning();
                     }
                 }
-                if (pos % 2 == 0) {
+                if (position % 2 == 0) {
                     v.setBackgroundColor(getResources().getColor(
                             R.color.medium_green));
                 } else {
@@ -93,26 +93,40 @@ public abstract class EndlessSpinningZebraListFragment extends SherlockListFragm
                 bindListItemView(view, ride);
             }
         });
+        rotate = new RotateAnimation(
+                0f, 360f, Animation.RELATIVE_TO_SELF,
+                0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        rotate.setDuration(600);
+        rotate.setRepeatMode(Animation.RESTART);
+        rotate.setRepeatCount(Animation.INFINITE);
     }
 
-
+    
     public void startSpinning() {
-        if (wheel != null) {
-            final RotateAnimation rotateAnimation = new RotateAnimation(
-                    0f, 360f, Animation.RELATIVE_TO_SELF,
-                    0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-            rotateAnimation.setDuration(600);
-            rotateAnimation.setRepeatMode(Animation.RESTART);
-            rotateAnimation.setRepeatCount(Animation.INFINITE);
-            wheel.startAnimation(rotateAnimation);
-        } else Toast.makeText(getActivity(), "NO wheel!", 3000).show();
-        spinning = true;
+        if (!spinning) {
+            wheel = getView().findViewById(R.id.progress);
+            wheel.post(new Runnable() {
+                
+                @Override
+                public void run() {
+                    wheel.startAnimation(rotate);
+                    spinning = true;
+                }
+            });
+        }
     }
 
     public void stopSpinning() {
-        if (wheel != null) wheel.clearAnimation();
-        else Toast.makeText(getActivity(), "NO wheel!", 3000).show();
-        spinning = false;
+        if (wheel != null) {
+            wheel.post(new Runnable() {
+                
+                @Override
+                public void run() {
+                    wheel.clearAnimation();
+                    spinning = false;
+                }
+            });
+        } else Toast.makeText(getActivity(), "NO wheel!", Toast.LENGTH_SHORT).show();
     }
 
     public interface ListFragmentCallback {
