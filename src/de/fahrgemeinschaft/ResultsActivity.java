@@ -91,7 +91,7 @@ public class ResultsActivity extends SherlockFragmentActivity
 
     @Override
     public void onListItemClick(int position) {
-        onPageSelected(position);
+        details.setSelection(position);
         showFragment(details);
     }
 
