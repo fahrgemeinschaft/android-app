@@ -10,6 +10,7 @@ package de.fahrgemeinschaft;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -114,7 +115,8 @@ public abstract class EndlessSpinningZebraListFragment extends SherlockListFragm
         spinning = false;
     }
 
-    public interface ListItemClicker {
+    public interface ListFragmentCallback {
+        public void onLoadFinished(Fragment fragment, Cursor cursor);
         public void onListItemClick(int position);
         public void onSpinningWheelClick();
     }
@@ -124,9 +126,9 @@ public abstract class EndlessSpinningZebraListFragment extends SherlockListFragm
         super.onListItemClick(l, v, position, id);
         Cursor c = ((CursorAdapter) getListView().getAdapter()).getCursor();
         if (position != c.getCount()) {
-            ((ListItemClicker) getActivity()).onListItemClick(position);
+            ((ListFragmentCallback) getActivity()).onListItemClick(position);
         } else {
-            ((ListItemClicker) getActivity()).onSpinningWheelClick();
+            ((ListFragmentCallback) getActivity()).onSpinningWheelClick();
         }
     }
 }
