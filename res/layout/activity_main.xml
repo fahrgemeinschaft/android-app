@@ -117,24 +117,30 @@
         android:layout_marginBottom="20dp"
         android:src="@drawable/logo_fahrgemeinschaft" />
 
-    <ImageButton
-        android:id="@+id/btn_mitfahren"
-        android:layout_width="140dp"
-        android:layout_height="80dp"
-        android:layout_alignLeft="@+id/btn_autocomplete_to"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="0dp"
-        android:background="@drawable/btn_dark_green"
-        android:src="@drawable/btn_suchen" />
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true" >
 
-    <ImageButton
-        android:id="@+id/btn_selberfahren"
-        android:layout_width="140dp"
-        android:layout_height="80dp"
-        android:layout_alignRight="@+id/btn_pick_to"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="0dp"
-        android:background="@drawable/btn_medium_green"
-        android:src="@drawable/btn_anbieten" />
+        <ImageButton
+            android:id="@+id/btn_mitfahren"
+            android:layout_width="140dp"
+            android:layout_weight="1"
+            android:layout_height="80dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginRight="@dimen/medium"
+            android:background="@drawable/btn_dark_green"
+            android:src="@drawable/btn_suchen" />
 
+        <ImageButton
+            android:id="@+id/btn_selberfahren"
+            android:layout_width="140dp"
+            android:layout_weight="1"
+            android:layout_height="80dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="@dimen/medium"
+            android:background="@drawable/btn_medium_green"
+            android:src="@drawable/btn_anbieten" />
+
+    </LinearLayout>
 </RelativeLayout>
