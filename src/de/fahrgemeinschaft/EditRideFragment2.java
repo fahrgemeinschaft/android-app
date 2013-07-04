@@ -79,11 +79,14 @@ public class EditRideFragment2 extends SherlockFragment
         
         String[] weekDays = new DateFormatSymbols().getShortWeekdays();
         recurrence = (LinearLayout) v.findViewById(R.id.recurrence);
-        for (int i = 1; i < weekDays.length; i++) {
+        for (int i = 2; i < weekDays.length; i++) {
             TextView day = makeRecurringDayButton(getActivity());
             day.setText(weekDays[i].substring(0, 2));
             recurrence.addView(day);
         }
+        TextView day = makeRecurringDayButton(getActivity());
+        day.setText(weekDays[1].substring(0, 2));
+        recurrence.addView(day);
     }
 
     public void setRide(Ride ride) {
@@ -176,7 +179,7 @@ public class EditRideFragment2 extends SherlockFragment
         day.setOnClickListener(toggleSelectedState);
         day.setLayoutParams(dayButtonlayoutParams());
         day.setTextAppearance(getActivity(), R.style.dark_Bold);
-        day.setBackgroundResource(R.drawable.btn_day);
+        day.setBackgroundResource(R.drawable.btn_night);
         day.setGravity(Gravity.CENTER);
         return day;
     }
@@ -196,10 +199,6 @@ public class EditRideFragment2 extends SherlockFragment
         LayoutParams lp = new LayoutParams(0, LayoutParams.MATCH_PARENT);
         int margin = getActivity().getResources() // dips
                 .getDimensionPixelSize(R.dimen.small);
-        lp.leftMargin = margin;
-        lp.rightMargin = margin;
-        lp.topMargin = margin;
-        lp.bottomMargin = margin;
         lp.weight = 1;
         return lp;
     }
