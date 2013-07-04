@@ -9,9 +9,14 @@ package de.fahrgemeinschaft;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +26,8 @@ import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 
-public abstract class EndlessSpinningZebraListFragment extends SherlockListFragment {
+public abstract class EndlessSpinningZebraListFragment
+    extends SherlockListFragment implements LoaderCallbacks<Cursor> {
 
     abstract void bindListItemView(View view, Cursor cursor);
 
@@ -38,6 +44,13 @@ public abstract class EndlessSpinningZebraListFragment extends SherlockListFragm
     private boolean spinning;
     private View wheel;
     private RotateAnimation rotate;
+    private Uri uri;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
     @Override
     public View onCreateView(final LayoutInflater lI, ViewGroup p, Bundle b) {
@@ -111,9 +124,30 @@ public abstract class EndlessSpinningZebraListFragment extends SherlockListFragm
         rotate.setDuration(600);
         rotate.setRepeatMode(Animation.RESTART);
         rotate.setRepeatCount(Animation.INFINITE);
+
+        if (uri != null) {
+            getLoaderManager().initLoader(0, null, this);
+        }
     }
 
+    public void load(Uri uri) {
+        this.uri = uri;
+        if (getActivity() != null)
+            getLoaderManager().initLoader(0, null, this);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle b) {
+        Log.d("DEBUG", "create loader " + uri);
+        return new CursorLoader(getActivity(), uri, null, null, null, null);
+    }
     
+    @Override
+    public void onLoadFinished(Loader<Cursor> arg0, Cursor rides) {
+        ((ListFragmentCallback) getActivity()).onLoadFinished(this, rides);
+        ((CursorAdapter) getListAdapter()).swapCursor(rides);
+    }
+
     public void startSpinning() {
         if (!spinning && getView() != null) {
             wheel = getView().findViewById(R.id.progress);
@@ -129,6 +163,10 @@ public abstract class EndlessSpinningZebraListFragment extends SherlockListFragm
         }
     }
 
+    @Override
+    public void onLoaderReset(Loader<Cursor> arg0) {
+        // TODO Auto-generated method stub
+    }
     public interface ListFragmentCallback {
         public void onLoadFinished(Fragment fragment, Cursor cursor);
         public void onListItemClick(int position);

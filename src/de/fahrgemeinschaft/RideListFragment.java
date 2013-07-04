@@ -15,20 +15,13 @@ import org.teleportr.Ride.COLUMNS;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class RideListFragment extends EndlessSpinningZebraListFragment
-            implements LoaderCallbacks<Cursor> {
+public class RideListFragment extends EndlessSpinningZebraListFragment {
 
     private static final SimpleDateFormat day =
             new SimpleDateFormat("EEE", Locale.GERMANY);
@@ -37,7 +30,6 @@ public class RideListFragment extends EndlessSpinningZebraListFragment
     private static SimpleDateFormat time =
             new SimpleDateFormat("HH:mm", Locale.GERMANY);
     private String[] split;
-    private Uri uri;
 
     @Override
     void bindListItemView(View view, Cursor ride) {
@@ -76,26 +68,7 @@ public class RideListFragment extends EndlessSpinningZebraListFragment
         }
     }
 
-    public void load(Uri uri) {
-        this.uri = uri;
-        getActivity().getSupportLoaderManager().initLoader(0, null, this);
-    }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-        return new CursorLoader(getActivity(), uri, null, null, null, null);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> arg0, Cursor rides) {
-        ((ListFragmentCallback) getActivity()).onLoadFinished(this, rides);
-        ((CursorAdapter) getListAdapter()).swapCursor(rides);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> arg0) {
-        // TODO Auto-generated method stub
-    }
 
 
 
