@@ -79,11 +79,14 @@ public class EditRideFragment2 extends SherlockFragment
         
         String[] weekDays = new DateFormatSymbols().getShortWeekdays();
         recurrence = (LinearLayout) v.findViewById(R.id.recurrence);
-        for (int i = 1; i < weekDays.length; i++) {
+        for (int i = 2; i < weekDays.length; i++) {
             TextView day = makeRecurringDayButton(getActivity());
             day.setText(weekDays[i].substring(0, 2));
             recurrence.addView(day);
         }
+        TextView day = makeRecurringDayButton(getActivity());
+        day.setText(weekDays[1].substring(0, 2));
+        recurrence.addView(day);
     }
 
     public void setRide(Ride ride) {
