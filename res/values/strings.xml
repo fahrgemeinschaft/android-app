@@ -86,4 +86,8 @@
     <string name="create_contact_desc">
         Save to Phonebook as contact option
     </string>
+    <string name="verbose">Debug Toasts</string>
+    <string name="verbose_desc">
+        Show what background service is doing
+    </string>
 </resources>

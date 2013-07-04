@@ -37,6 +37,11 @@
                 android:defaultValue="false"
                 android:title="@string/create_contact"
                 android:summary="@string/create_contact_desc" />
-           </PreferenceScreen>
+            <CheckBoxPreference
+                android:key="verbose"
+                android:defaultValue="false"
+                android:title="@string/verbose"
+                android:summary="@string/verbose_desc" />
+       </PreferenceScreen>
     </PreferenceCategory>
 </PreferenceScreen>

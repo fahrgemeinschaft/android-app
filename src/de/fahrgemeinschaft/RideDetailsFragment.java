@@ -78,7 +78,7 @@ public class RideDetailsFragment extends SherlockFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        
+
         final LruCache<String, Bitmap> mImageCache =
                 new LruCache<String, Bitmap>(20);
 
