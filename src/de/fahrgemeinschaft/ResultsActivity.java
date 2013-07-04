@@ -140,6 +140,7 @@ public class ResultsActivity extends SherlockFragmentActivity
         switch (item.getItemId()) {
         case R.id.my_rides:
             showFragment(myrides);
+            myrides.load(MY_RIDES_URI);
             return true;
         case R.id.settings:
             startActivity(new Intent(this, SettingsActivity.class));
