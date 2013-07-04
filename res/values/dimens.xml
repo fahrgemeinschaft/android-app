@@ -17,6 +17,8 @@
     <dimen name="xlarge">60dp</dimen>
     <dimen name="xxlarge">76dp</dimen>
 
+    <dimen name="chrome">0dp</dimen>
+
     <dimen name="small_plus_xlarge">64dp</dimen>
     <dimen name="three_times_small_plus_xlarge">72dp</dimen>
 </resources>

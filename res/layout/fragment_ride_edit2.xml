@@ -13,15 +13,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/medium_green"
         android:orientation="vertical"
-        android:layout_marginTop="@dimen/medium"
-        android:padding="@dimen/small" >
+        android:layout_marginTop="@dimen/medium" >
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/small" >
+            android:layout_marginTop="@dimen/small"
+            android:layout_marginBottom="@dimen/small" >
 
             <Button
                 android:id="@+id/btn_pick_date"
@@ -46,7 +45,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/small" >
+            android:layout_marginTop="@dimen/small" >
 
             <Button
                 android:id="@+id/btn_pick_time"
@@ -74,10 +73,7 @@
         android:layout_width="match_parent"
         android:height="12dp"
         android:layout_marginTop="@dimen/large"
-        android:paddingTop="8dp"
         android:gravity="bottom"
-        android:paddingLeft="11dp"
-        android:background="@color/medium_green"
         android:textColor="#FFFFFF"
         android:text="Regelmäßige Fahrt: jede Woche am" />
     
@@ -85,23 +81,18 @@
         android:id="@+id/recurrence"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:background="@color/medium_green"
-        android:orientation="horizontal"
-        android:padding="@dimen/small" >
+        android:orientation="horizontal" >
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/medium_green"
         android:orientation="vertical"
-        android:layout_marginTop="@dimen/large"
-        android:padding="@dimen/small" >
+        android:layout_marginTop="@dimen/large" >
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/small" >
+            android:layout_height="wrap_content" >
 
             <EditText
                 android:id="@+id/btn_pick_price"
