@@ -25,6 +25,16 @@ public abstract class EndlessSpinningZebraListFragment extends SherlockListFragm
 
     abstract void bindListItemView(View view, Cursor cursor);
 
+    private boolean spinningEnabled = true;
+
+    public boolean isSpinningEnabled() {
+        return spinningEnabled;
+    }
+
+    public void setSpinningEnabled(boolean spinningEnabled) {
+        this.spinningEnabled = spinningEnabled;
+    }
+
     private boolean spinning;
     private View wheel;
     private RotateAnimation rotate;
@@ -42,17 +52,20 @@ public abstract class EndlessSpinningZebraListFragment extends SherlockListFragm
 
             @Override
             public int getCount() {
-                return super.getCount() + 1;
+                if (spinningEnabled)
+                    return super.getCount() + 1;
+                else return super.getCount();
             }
 
             @Override
             public int getViewTypeCount() {
-                return 2;
+                if (spinningEnabled) return 2;
+                else return 1;
             }
 
             @Override
             public int getItemViewType(int position) {
-                if (position < getCount() - 1)
+                if (!spinningEnabled || position < getCount() - 1)
                     return 0;
                 else
                     return 1;
@@ -60,7 +73,7 @@ public abstract class EndlessSpinningZebraListFragment extends SherlockListFragm
 
             @Override
             public View getView(int position, View v, ViewGroup parent) {
-                if (position < getCount() - 1)
+                if (!spinningEnabled || position < getCount() - 1)
                     v = super.getView(position, v, parent);
                 else {
                     if (v == null) {

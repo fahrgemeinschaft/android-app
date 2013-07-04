@@ -56,6 +56,7 @@ public class ResultsActivity extends SherlockFragmentActivity
                 .findFragmentById(R.id.rides);
         details = new RideDetailsFragment();
         myrides = new RideListFragment();
+        myrides.setSpinningEnabled(false);
         query = new Ride(getIntent().getData());
         results.load(getIntent().getData());
         handler = new Handler();
