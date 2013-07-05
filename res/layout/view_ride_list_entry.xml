@@ -37,7 +37,16 @@
         android:layout_marginTop="-8dp"
         style="@style/dark.Bold"
     />
-    <View 
+    
+    <ImageView
+        android:id="@+id/ride_refresh"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/icn_ride_refresh"
+    />
+    <View
         android:id="@+id/line"
         android:layout_height="1dp"
         android:layout_marginLeft="5dp"
@@ -67,7 +76,7 @@
         android:layout_marginLeft="107dp"
         style="@style/dark.Large.Bold"
     />
-    <View 
+    <View
         android:layout_width="0dp"
         android:layout_height="26dp"
         android:layout_marginLeft="190dp"
@@ -88,7 +97,7 @@
         android:layout_alignParentBottom="true"
         style="@style/light.Large"
     />
-    <TextView 
+    <TextView
         android:layout_marginLeft="2dp"
         android:layout_toRightOf="@id/currency"
         android:layout_alignParentBottom="true"
@@ -109,7 +118,7 @@
         android:layout_alignParentBottom="true"
         style="@style/dark.Large.Bold"
     />
-    <View 
+    <View
         android:layout_height="0dp"
         android:layout_alignParentBottom="true"
         android:background="@android:color/white"
