@@ -19,6 +19,7 @@ import org.teleportr.Ride.COLUMNS;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -80,10 +81,10 @@ public class RideListFragment extends EndlessSpinningZebraListFragment
     }
 
     @Override
-    public void onResume() {
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
         getActivity().bindService(
-                new Intent(getActivity(), ConnectorService.class), this, 0);
-        super.onStart();
+                new Intent(activity, ConnectorService.class), this, 0);
     }
 
     @Override
@@ -106,10 +107,15 @@ public class RideListFragment extends EndlessSpinningZebraListFragment
     }
 
     @Override
-    public void onPause() {
+    public void onDetach() {
         getActivity().unbindService(this);
-        super.onPause();
+        super.onDetach();
     }
+
+    public void onDestroy() {
+        Crouton.clearCroutonsForActivity(getActivity());
+        super.onDestroy();
+      }
 
     @Override
     public void onServiceDisconnected(ComponentName name) {}
