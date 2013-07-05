@@ -27,6 +27,7 @@ public class AboutFragment extends SherlockFragment implements OnClickListener {
         v.findViewById(R.id.github).setOnClickListener(this);
         v.findViewById(R.id.version).setOnClickListener(this);
         v.findViewById(R.id.disclaimer).setOnClickListener(this);
+        v.findViewById(R.id.attribution).setOnClickListener(this);
         try {
             ((TextView)v.findViewById(R.id.version)).setText(
                     getActivity().getPackageManager().getPackageInfo(
@@ -51,6 +52,9 @@ public class AboutFragment extends SherlockFragment implements OnClickListener {
             break;
         case R.id.disclaimer:
             openBrowser("https://gnu.org/licenses/gpl.html");
+            break;
+        case R.id.attribution:
+            openBrowser("http://actionbarsherlock.com/");
             break;
         }
     }
