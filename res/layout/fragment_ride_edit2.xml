@@ -14,13 +14,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="@dimen/medium" >
+        android:layout_marginTop="@dimen/larger" >
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/small"
-            android:layout_marginBottom="@dimen/small" >
+            android:layout_height="wrap_content" >
 
             <Button
                 android:id="@+id/btn_pick_date"
@@ -45,7 +43,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/small" >
+            android:layout_marginTop="@dimen/medium" >
 
             <Button
                 android:id="@+id/btn_pick_time"
@@ -70,11 +68,14 @@
     
     <TextView 
         android:id="@+id/recurrence_text"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:height="12dp"
-        android:layout_marginTop="@dimen/large"
+        android:paddingLeft="@dimen/small"
+        android:paddingRight="@dimen/small"
+        android:layout_marginTop="@dimen/larger"
         android:gravity="bottom"
         android:textColor="#FFFFFF"
+        android:background="@color/medium_green"
         android:text="Regelmäßige Fahrt: jede Woche am" />
     
     <LinearLayout
@@ -88,7 +89,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="@dimen/large" >
+        android:layout_marginTop="@dimen/larger" >
 
         <FrameLayout
             android:layout_width="match_parent"

@@ -13,6 +13,7 @@
     <dimen name="small">4dp</dimen> <!-- 5dp -->
     <dimen name="medium">8dp</dimen>
     <dimen name="large">16dp</dimen>
+    <dimen name="larger">32dp</dimen>
     <dimen name="large_icn">56dp</dimen>
     <dimen name="xlarge">60dp</dimen>
     <dimen name="xxlarge">76dp</dimen>
