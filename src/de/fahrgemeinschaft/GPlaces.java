@@ -32,9 +32,6 @@ import android.util.Log;
 
 public class GPlaces extends Connector {
 
-    public GPlaces() {
-        super(null);
-    }
 
     private static final String API_KEY = "AIzaSyBefOGpJAYaylGWlUo0qqhATcJSECortuM";
     private static final String TAG = "gPlaces";

@@ -114,7 +114,6 @@ public class PlaceListFragment extends ListFragment
             uri = uri.buildUpon().encodedQuery(
                     ((from_id != null)? "from_id=" +from_id : "")
                     + "&q=" + text).build();
-            System.out.println(uri);
             return new CursorLoader(getActivity(), uri, null, null, null, null);
         case GPLACES:
             return new GPlaces.AutocompleteLoader(getActivity(),

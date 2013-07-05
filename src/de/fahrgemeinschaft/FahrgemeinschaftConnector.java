@@ -16,6 +16,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.json.JSONArray;
@@ -25,22 +26,19 @@ import org.teleportr.Connector;
 import org.teleportr.Place;
 import org.teleportr.Ride;
 
-import android.content.Context;
 
 
 public class FahrgemeinschaftConnector extends Connector {
-
-    public FahrgemeinschaftConnector(Context ctx) {
-        super(ctx);
-    }
 
     private String startDate;
 
     public String endpoint =  "http://service.fahrgemeinschaft.de";
 
     static final String APIKEY = "API-KEY";
-    static final SimpleDateFormat fulldf = new SimpleDateFormat("yyyyMMddHHmm", Locale.GERMAN);
-    static final SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd", Locale.GERMAN);
+    static final SimpleDateFormat fulldf =
+            new SimpleDateFormat("yyyyMMddHHmm", Locale.GERMAN);
+    static final SimpleDateFormat df =
+            new SimpleDateFormat("yyyyMMdd", Locale.GERMAN);
 
     @Override
     public String authenticate() throws Exception {
@@ -124,7 +122,7 @@ public class FahrgemeinschaftConnector extends Connector {
             ride.set("landline", p.getInt("Landline") + value);
         ride.details(json.getString("Description"));
         ride.ref(json.getString("TripID"));
-        ride.seats(json.getLong("Places"));
+        ride.seats(json.getInt("Places"));
         ride.dep(parseTimestamp(json));
 
         if (!json.isNull("Price")) {
@@ -161,18 +159,19 @@ public class FahrgemeinschaftConnector extends Connector {
 
     private Date parseTimestamp(JSONObject json) throws JSONException {
 //              new Date(Long.parseLong(ride.getString("Enterdate"));
-        String departure = "0000";
+        String departure = null;
         if (!json.isNull("Starttime")) {
             departure = json.getString("Starttime");
             if (departure.length() == 3)
                 departure = "0" + departure;
 //            departure = json.getString("Startdate") + departure;
-        } else {
-            System.out.println("no start time!");
         }
-        departure = startDate + departure;
+        if (departure.length() != 4) {
+            System.out.println("no start time!");
+            departure = "0000";
+        }
         try {
-            return fulldf.parse(departure);
+            return fulldf.parse(startDate + departure);
         } catch (ParseException e) {
             System.out.println("date/time parse error!");
             e.printStackTrace();
@@ -182,36 +181,64 @@ public class FahrgemeinschaftConnector extends Connector {
 
     @Override
     public int publish(Ride offer) throws Exception {
-        JSONObject json = new JSONObject();
-        json.put("Triptype", "offer");
-        json.put("IDuser", get("user"));
-        ArrayList<JSONObject> routings = new ArrayList<JSONObject>();
-        routings.add(routing(offer.getFrom(), offer.getTo()));
-        for (Ride sub : offer.getSubrides()) {
-            routing(offer.getFrom(), sub.getTo());
-        }
-        json.put("Routings", new JSONArray(routings));
-        json.put("Reoccur", new JSONArray());
-        json.put("Privacy", new JSONArray());
-        System.out.println(json);
         HttpURLConnection post = (HttpURLConnection)
                 new URL(endpoint + "/trip").openConnection();
+        post.setRequestMethod("POST");
         post.setRequestProperty("authkey", getAuth());
         post.setRequestProperty("apikey", APIKEY);
         post.setDoOutput(true);
+        JSONObject json = new JSONObject();
+        json.put("Triptype", "offer");
+        json.put("Smoker", "no");
+        json.put("Price", "0.00");
+        json.put("IDuser", get("user"));
+        json.put("ClientIP", "31.16.3.104");
+        json.put("Contactmail", "blablamail@gmx.net");
+        json.put("Contactmobile", "1234567");
+        json.put("Contactlandline", "56789");
+        json.put("Numberplate", "MX-123");
+        json.put("Privacy", new JSONObject(
+                "{ \"Name\": \"1\","
+                        + "\"Landline\": \"1\","
+                        + "\"Email\": \"1\","
+                        + "\"Mobile\": \"1\","
+                        + "\"NumberPlate\": \"1\" }"));
+        json.put("Places", String.valueOf(offer.getSeats()));
+        String dep = fulldf.format(offer.getDep());
+        json.put("Startdate", dep.subSequence(0, 8));
+        json.put("Starttime", dep.subSequence(8, 12));
+        json.put("Reoccur", new JSONObject(
+                "{ \"Saturday\": false,"
+                + "\"Monday\": false,"
+                + "\"Tuesday\": false,"
+                + "\"Wednesday\": false,"
+                + "\"Thursday\": false,"
+                + "\"Friday\": false,"
+                + "\"Sunday\": false }"));
+        json.put("Description", "foo bar");
+        ArrayList<JSONObject> routings = new ArrayList<JSONObject>();
+        List<Place> stops = offer.getPlaces();
+        int max = stops.size() - 1;
+        for (int dest = max; dest >= 0 ; dest--) {
+            for (int orig = 0; orig < dest; orig++) {
+                int idx = (orig == 0? (dest == max? 0 : dest) : - dest);
+                JSONObject route = new JSONObject();
+                route.put("RoutingIndex", idx);
+                route.put("Origin", place(stops.get(orig)));
+                route.put("Destination", place(stops.get(dest)));
+                routings.add(route);
+            }
+        }
+        json.put("Routings", new JSONArray(routings));
+        System.out.println(json);
         OutputStreamWriter out = new OutputStreamWriter(post.getOutputStream());
         out.write(json.toString());
+        out.flush();
+        out.close();
         JSONObject response = loadJson(post);
-        System.out.println(response);
+        System.out.println(response.getString("tripID"));
 
         return 0;
-    }
-
-    private JSONObject routing(Place from, Place to) throws JSONException {
-        JSONObject route = new JSONObject();
-        route.put("Origin", place(from));
-        route.put("Destination", place(to));
-        return route;
     }
 
     private JSONObject place(Place from) throws JSONException {
@@ -221,6 +248,12 @@ public class FahrgemeinschaftConnector extends Connector {
         place.put("Address", from.getAddress());
         place.put("CountryName", "Deutschland");
         place.put("CountryCode", "DE");
+        place.put("Placetype", "geo");
+        place.put("LatLonBox", new JSONObject(
+                "{ \"North\": null,"
+                + "\"East\": null,"
+                + "\"South\": null,"
+                + "\"West\": null }"));
         return place;
     }
 }
@@ -237,27 +270,10 @@ public class FahrgemeinschaftConnector extends Connector {
 // "Starttime": "1300",
 // "Contactmail": "wuac@me.com",
 // "Enterdate": "1366178563",
-// "IDuser": "29ae8215-223f-63f4-9982-39b9aca69556",
-// "Reoccur": {
-// "Saturday": false,
-// "Thursday": false,
-// "Monday": false,
-// "Tuesday": false,
-// "Wednesday": false,
-// "Friday": false,
-// "Sunday": false
-// },
 // "Deeplink": null,
 // "Places": "3",
 // "Prefgender": null,
 // "Price": "0",
-// "Privacy": {
-// "Name": "1",
-// "Landline": "1",
-// "Email": "1",
-// "Mobile": "1",
-// "NumberPlate": "1"
-// },
 // "Relevance": "10",
 // "Partnername": null,
 // "ClientIP": null,
