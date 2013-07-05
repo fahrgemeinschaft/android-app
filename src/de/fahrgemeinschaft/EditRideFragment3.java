@@ -31,6 +31,7 @@ public class EditRideFragment3 extends SherlockFragment {
     private EditText land;
     private EditText mobile;
     private EditText plate;
+    private EditText name;
 
 
 
@@ -46,6 +47,7 @@ public class EditRideFragment3 extends SherlockFragment {
         land = (EditText) v.findViewById(R.id.landline).findViewById(R.id.text);
         mobile = (EditText) v.findViewById(R.id.mobile).findViewById(R.id.text);
         plate = (EditText) v.findViewById(R.id.plate).findViewById(R.id.text);
+        name = (EditText) v.findViewById(R.id.name).findViewById(R.id.text);
         email.setInputType(InputType.TYPE_CLASS_TEXT |
                 InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         land.setInputType(InputType.TYPE_CLASS_PHONE);
@@ -59,9 +61,9 @@ public class EditRideFragment3 extends SherlockFragment {
             .setImageResource(R.drawable.icn_contact_handy);
         ((VisibilityView) v.findViewById(R.id.plate).findViewById(R.id.icon))
             .setImageResource(R.drawable.icn_contact_kfz);
+        ((VisibilityView) v.findViewById(R.id.name).findViewById(R.id.icon))
+        .setImageResource(R.drawable.icn_view_user);
     }
-
-
 
     static class VisibilityView extends ImageButton implements OnClickListener {
 

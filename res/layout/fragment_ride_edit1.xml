@@ -15,9 +15,9 @@
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:orientation="horizontal"
-        android:layout_marginBottom="8dp" >
+        android:layout_marginBottom="@dimen/medium" >
 
-        <FrameLayout 
+        <FrameLayout
             android:id="@+id/mode_car"
             android:layout_height="match_parent"
             android:background="@drawable/btn_day"
@@ -32,7 +32,7 @@
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/icn_goby_car" />
             
-            <TextView 
+            <TextView
                 android:id="@+id/mode_car_text"
                 android:textColor="#FFFFFF"
                 android:layout_gravity="center_vertical"
@@ -75,8 +75,7 @@
         android:id="@+id/seats"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:orientation="horizontal"
-        android:padding="@dimen/chrome" >
+        android:orientation="horizontal" >
 
         <ImageView
             android:id="@+id/seats_zero"
@@ -127,7 +126,7 @@
         android:id="@+id/route"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/large"
+        android:layout_marginTop="@dimen/larger"
         android:orientation="vertical" >
 
         <include

@@ -34,6 +34,12 @@
         android:id="@+id/plate"
         android:layout_width="match_parent"
         android:layout_marginTop="@dimen/small"
+        android:layout_marginBottom="@dimen/small"
         layout="@layout/view_contact_option" />
 
+    <include
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/small"
+        layout="@layout/view_contact_option" />
 </LinearLayout>
