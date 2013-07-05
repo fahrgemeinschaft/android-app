@@ -63,6 +63,11 @@ public class EditRideFragment3 extends SherlockFragment {
             .setImageResource(R.drawable.icn_contact_kfz);
         ((VisibilityView) v.findViewById(R.id.name).findViewById(R.id.icon))
         .setImageResource(R.drawable.icn_view_user);
+        email.setHint(getString(R.string.email_hint));
+        land.setHint(getString(R.string.landline_hint));
+        mobile.setHint(getString(R.string.mobile_hint));
+        plate.setHint(getString(R.string.plate_hint));
+        name.setHint(getString(R.string.name_hint));
     }
 
     static class VisibilityView extends ImageButton implements OnClickListener {
