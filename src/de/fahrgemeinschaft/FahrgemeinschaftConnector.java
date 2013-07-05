@@ -7,10 +7,8 @@
 
 package de.fahrgemeinschaft;
 
-import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -58,50 +56,36 @@ public class FahrgemeinschaftConnector extends Connector {
     }
 
     @Override
-    public long search(Place from, Place to, Date dep, Date arr) {
+    public long search(Place from, Place to, Date dep, Date arr) throws Exception {
         
         startDate = df.format(dep);
 
         JSONObject from_json = new JSONObject();
         JSONObject to_json = new JSONObject();
-        try {
-            from_json.put("Longitude", "" + from.getLng());
-            from_json.put("Latitude", "" + from.getLat());
-            from_json.put("Startdate", df.format(dep));
-            from_json.put("Reoccur", JSONObject.NULL);
-            from_json.put("ToleranceRadius", get("radius_from"));
-            // place.put("Starttime", JSONObject.NULL);
+        from_json.put("Longitude", "" + from.getLng());
+        from_json.put("Latitude", "" + from.getLat());
+        from_json.put("Startdate", df.format(dep));
+        from_json.put("Reoccur", JSONObject.NULL);
+        from_json.put("ToleranceRadius", get("radius_from"));
+        // place.put("Starttime", JSONObject.NULL);
 
-            to_json.put("Longitude", "" + to.getLng());
-            to_json.put("Latitude", "" + to.getLat());
-            to_json.put("ToleranceRadius", get("radius_to"));
-            // place.put("ToleranceDays", "3");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        to_json.put("Longitude", "" + to.getLng());
+        to_json.put("Latitude", "" + to.getLat());
+        to_json.put("ToleranceRadius", get("radius_to"));
+        // place.put("ToleranceDays", "3");
 
-        try {
-            HttpURLConnection conn = (HttpURLConnection) new URL(endpoint
-                             + "/trip?searchOrigin=" + from_json
-                            + "&searchDestination=" + to_json).openConnection();
-            conn.setRequestProperty("apikey", APIKEY);
-            JSONObject json = loadJson(conn);
-            if (json != null) {
-                JSONArray results = json.getJSONArray("results");
-                System.out.println("FOUND " + results.length() + " rides");
+        HttpURLConnection conn = (HttpURLConnection) new URL(endpoint
+                + "/trip?searchOrigin=" + from_json
+                + "&searchDestination=" + to_json).openConnection();
+        conn.setRequestProperty("apikey", APIKEY);
+        JSONObject json = loadJson(conn);
+        if (json != null) {
+            JSONArray results = json.getJSONArray("results");
+            System.out.println("FOUND " + results.length() + " rides");
 
-                for (int i = 0; i < results.length(); i++) {
-                    store(parseRide(results.getJSONObject(i)));
-                }
+            for (int i = 0; i < results.length(); i++) {
+                store(parseRide(results.getJSONObject(i)));
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
         return dep.getTime() + 24 * 3600 * 1000;
     }

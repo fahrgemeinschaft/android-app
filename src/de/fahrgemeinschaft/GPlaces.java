@@ -7,10 +7,8 @@
 
 package de.fahrgemeinschaft;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Date;
@@ -37,43 +35,30 @@ public class GPlaces extends Connector {
     private static final String TAG = "gPlaces";
 
     @Override
-    public void resolvePlace(Place place, Context ctx) {
+    public void resolvePlace(Place place, Context ctx) throws Exception {
         String uri = "https://maps.googleapis.com/maps/api/place/details/json"
                 + "?sensor=true&reference=" + place.get("gplace:id");
         Log.d(TAG, uri);
         String jsonResult = httpGet(uri + "&language=de&key=" + API_KEY);
-        try {
-            JSONObject result = new JSONObject(jsonResult)
-                    .getJSONObject("result");
-            JSONObject location = result.getJSONObject("geometry")
-                    .getJSONObject("location");
-            Log.d(TAG, location.toString());
-            
-            place.latlon(
-                    Double.parseDouble(location.getString("lat")),
-                    Double.parseDouble(location.getString("lng")))
-                    .address(result.getString("formatted_address"))
-                    .store(ctx);
-        } catch (JSONException e) {
-            Log.e(TAG, "Cannot process JSON results", e);
-        } catch (Exception e) {
-            Log.e(TAG, "no internet?", e);
-        }
+        JSONObject result = new JSONObject(jsonResult)
+        .getJSONObject("result");
+        JSONObject location = result.getJSONObject("geometry")
+                .getJSONObject("location");
+        Log.d(TAG, location.toString());
+
+        place.latlon(
+                Double.parseDouble(location.getString("lat")),
+                Double.parseDouble(location.getString("lng")))
+                .address(result.getString("formatted_address"))
+                .store(ctx);
     }
 
 
 
-    static String httpGet(String url) {
-        try {
-            HttpURLConnection get = (HttpURLConnection)
-                    new URL(url).openConnection();
-            return loadString(get);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    static String httpGet(String url) throws Exception {
+        HttpURLConnection get = (HttpURLConnection)
+                new URL(url).openConnection();
+        return loadString(get);
     }
 
 
