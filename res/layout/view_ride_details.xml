@@ -26,6 +26,7 @@
         <TextView
             android:id="@+id/date"
             style="@style/light.Large"
+            android:paddingLeft="3dp"
             android:layout_height="match_parent" />
 
         <TextView
