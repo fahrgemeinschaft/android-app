@@ -146,7 +146,4 @@ public class RideListFragment extends EndlessSpinningZebraListFragment
             time = (TextView) findViewById(R.id.time);
         }
     }
-
-
-
 }
