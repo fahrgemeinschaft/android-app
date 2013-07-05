@@ -9,6 +9,7 @@ package de.fahrgemeinschaft;
 
 import org.teleportr.ConnectorService;
 import org.teleportr.Ride;
+import org.teleportr.Ride.COLUMNS;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -57,11 +58,19 @@ public class ResultsActivity extends SherlockFragmentActivity
 
     @Override
     public void onLoadFinished(Fragment fragment, Cursor cursor) {
-        switch (fragment.getId()) {
-        case R.id.rides:
+        if (fragment.getId() == R.id.rides) {
             setTitle("Results");
             details.swapCursor(cursor);
-            break;
+            if (cursor.getCount() > 0) {
+                cursor.moveToLast();
+                long latest_dep = cursor.getLong(COLUMNS.DEPARTURE);
+                System.out.println(" already until " + latest_dep);
+                if (latest_dep > query.getArr()) // inc time window
+                    query.arr(cursor.getLong(COLUMNS.DEPARTURE));
+            }
+        } else {
+            setTitle("MyRides");
+            details.swapCursor(cursor);
         }
     }
 
@@ -79,6 +88,7 @@ public class ResultsActivity extends SherlockFragmentActivity
 
     @Override
     public void onSpinningWheelClick() {
+        System.out.println(" increase beyond " + query.getArr());
         query.arr(query.getArr() + 2 * 24 * 3600 * 1000).store(this);
         startService(new Intent(this, ConnectorService.class)
                 .setAction(ConnectorService.SEARCH));
