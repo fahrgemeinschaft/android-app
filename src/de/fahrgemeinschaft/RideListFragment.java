@@ -11,17 +11,28 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import org.teleportr.ConnectorService;
+import org.teleportr.ConnectorService.BackgroundListener;
+import org.teleportr.Place;
 import org.teleportr.Ride.COLUMNS;
 
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
+
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.database.Cursor;
+import android.os.IBinder;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class RideListFragment extends EndlessSpinningZebraListFragment {
+public class RideListFragment extends EndlessSpinningZebraListFragment
+        implements ServiceConnection, BackgroundListener {
 
     private static final SimpleDateFormat day =
             new SimpleDateFormat("EEE", Locale.GERMANY);
@@ -68,7 +79,40 @@ public class RideListFragment extends EndlessSpinningZebraListFragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        getActivity().bindService(
+                new Intent(getActivity(), ConnectorService.class), this, 0);
+        super.onStart();
+    }
 
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        ((ConnectorService.Bind) service).getService().register(this);
+    }
+
+    @Override
+    public void onBackgroundSearch(Place from, Place to, Date dep) {
+        if (getActivity() != null) {
+            if (from != null) {
+                Crouton.makeText(getActivity(), "searching " + date.format(dep)+" "
+                        + from.getName() +" -> "+ to.getName(), Style.INFO).show();
+                startSpinning();
+            } else {
+                Crouton.makeText(getActivity(), "Done", Style.INFO).show();
+                stopSpinning();
+            }
+        }
+    }
+
+    @Override
+    public void onPause() {
+        getActivity().unbindService(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {}
 
 
 

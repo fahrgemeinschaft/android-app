@@ -84,6 +84,7 @@ public class MainActivity extends SherlockFragmentActivity
 //        startActivity(new Intent(Intent.ACTION_VIEW,
 //                Uri.parse("content://" + getPackageName() + "/rides" +
 //                        "?from_id=1&to_id=2")));
+//        getContentResolver().delete(Uri.parse("content://de.fahrgemeinschaft/rides"), null, null);
     }
 
     @Override

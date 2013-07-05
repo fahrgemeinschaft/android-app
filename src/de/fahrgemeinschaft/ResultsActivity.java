@@ -8,17 +8,12 @@
 package de.fahrgemeinschaft;
 
 import org.teleportr.ConnectorService;
-import org.teleportr.ConnectorService.BackgroundListener;
 import org.teleportr.Ride;
 
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.CursorAdapter;
@@ -29,12 +24,9 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.fahrgemeinschaft.EndlessSpinningZebraListFragment.ListFragmentCallback;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class ResultsActivity extends SherlockFragmentActivity
-       implements ServiceConnection, BackgroundListener,
-           ListFragmentCallback, OnPageChangeListener {
+       implements ListFragmentCallback, OnPageChangeListener {
 
     public static final Uri MY_RIDES_URI =
             Uri.parse("content://de.fahrgemeinschaft/myrides");
@@ -44,7 +36,6 @@ public class ResultsActivity extends SherlockFragmentActivity
     public RideListFragment results;
     public RideListFragment myrides;
     private Ride query;
-    private Handler handler;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,37 +50,10 @@ public class ResultsActivity extends SherlockFragmentActivity
         myrides.setSpinningEnabled(false);
         query = new Ride(getIntent().getData());
         results.load(getIntent().getData());
-        handler = new Handler();
+
     }
 
-    @Override
-    protected void onStart() {
-        bindService(new Intent(this, ConnectorService.class), this, 0);
-        super.onStart();
-    }
-
-    @Override
-    public void onServiceConnected(ComponentName name, IBinder service) {
-        ((ConnectorService.Bind) service).getService().register(this);
-    }
-
-    @Override
-    public void on(final String msg, final short what) {
-        handler.post(new Runnable() {
-
-            @Override
-            public void run() {
-                Crouton.makeText(ResultsActivity.this, msg, Style.INFO).show();
-                switch (what) {
-                case ConnectorService.START:
-                    results.startSpinning();
-                    break;
-                case ConnectorService.PAUSE:
-                    results.stopSpinning();
-                }
-            }
-        });
-    }
+   
 
     @Override
     public void onLoadFinished(Fragment fragment, Cursor cursor) {
@@ -168,15 +132,6 @@ public class ResultsActivity extends SherlockFragmentActivity
             .addToBackStack(null)
         .commit();
     }
-
-    @Override
-    protected void onPause() {
-        unbindService(this);
-        super.onPause();
-    }
-
-    @Override
-    public void onServiceDisconnected(ComponentName name) {}
 
     @Override
     public void onPageScrollStateChanged(int arg0) {}
