@@ -26,7 +26,6 @@ public class SettingsActivity extends SherlockPreferenceActivity
     private SharedPreferences prefs;
 
     @Override
-    @SuppressWarnings("deprecation")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -48,6 +47,8 @@ public class SettingsActivity extends SherlockPreferenceActivity
                     "content://de.fahrgemeinschaft/rides"), null, null);
             startService(new Intent(this, ConnectorService.class)
                     .setAction(ConnectorService.SEARCH));
+            prefs.edit()
+                    .putLong("cleanup", System.currentTimeMillis()).commit();
         }
     }
 }

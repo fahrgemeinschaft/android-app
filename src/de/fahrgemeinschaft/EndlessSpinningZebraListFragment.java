@@ -138,7 +138,6 @@ public abstract class EndlessSpinningZebraListFragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle b) {
-        Log.d("DEBUG", "create loader " + uri);
         return new CursorLoader(getActivity(), uri, null, null, null, null);
     }
     
