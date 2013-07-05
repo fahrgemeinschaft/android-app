@@ -37,14 +37,23 @@
         android:layout_centerHorizontal="true"
         android:background="@color/opacity_white" />
 
+    <TextView
+        android:textSize="10.5sp"
+        android:id="@+id/attribution"
+        android:textColor="@color/medium_green"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="contains actionbarsherlock.com and teleportR.org" />
 
     <TextView
         android:id="@+id/disclaimer"
         style="@style/dark"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_above="@id/attribution"
         android:background="@color/dark_green"
         android:fontFamily="monospace"
         android:paddingTop="8dp"
@@ -61,7 +70,8 @@
 \nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 \nGNU General Public License for more details"
         android:textSize="@dimen/smallprint" />
-    <TextView 
+
+    <TextView
         android:textSize="10.5sp"
         android:id="@+id/copyright"
         android:textColor="@color/medium_green"
