@@ -14,6 +14,7 @@ import java.util.Locale;
 import org.teleportr.ConnectorService;
 import org.teleportr.ConnectorService.BackgroundListener;
 import org.teleportr.Place;
+import org.teleportr.Ride;
 import org.teleportr.Ride.COLUMNS;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
@@ -95,14 +96,30 @@ public class RideListFragment extends EndlessSpinningZebraListFragment
     @Override
     public void onBackgroundSearch(Place from, Place to, Date dep) {
         if (getActivity() != null) {
-            if (from != null) {
-                Crouton.makeText(getActivity(), "searching " + date.format(dep)+" "
-                        + from.getName() +" -> "+ to.getName(), Style.INFO).show();
-                startSpinning();
-            } else {
-                Crouton.makeText(getActivity(), "Done", Style.INFO).show();
-                stopSpinning();
-            }
+            Crouton.makeText(getActivity(), "searching " + date.format(dep)+" "
+                    + from.getName() +" -> "+ to.getName(), Style.INFO).show();
+            startSpinning();
+        }
+    }
+
+    @Override
+    public void onBackgroundSuccess(int numberOfRidesFound) {
+        if (getActivity() != null) {
+            Crouton.makeText(getActivity(),
+                    "Found " + numberOfRidesFound + " results", Style.CONFIRM)
+                    .show();
+            stopSpinning();
+        }
+    }
+
+    @Override
+    public void onBackgroundFail(String reason) {
+        if (getActivity() != null) {
+            Ride search_query = ((ResultsActivity) getActivity()).query;
+            search_query.arr(search_query.getArr() - 2 * 24 * 3600 * 1000);
+            Crouton.makeText(getActivity(),
+                    "Schwerer Ausnahmefehlär " + reason, Style.ALERT).show();
+            stopSpinning();
         }
     }
 

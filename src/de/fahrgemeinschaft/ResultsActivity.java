@@ -36,7 +36,7 @@ public class ResultsActivity extends SherlockFragmentActivity
     public RideDetailsFragment details;
     public RideListFragment results;
     public RideListFragment myrides;
-    private Ride query;
+    public Ride query;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
