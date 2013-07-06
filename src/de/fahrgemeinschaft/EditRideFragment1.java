@@ -201,7 +201,7 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
 
     private void addVia(Place place) {
         View btn = getLayoutInflater(null)
-                .inflate(R.layout.place_pick_button, null, false);
+                .inflate(R.layout.view_pick_place_button, null, false);
         ((TextView) btn.findViewById(R.id.text))
                 .setText(getString(R.string.via));
         LayoutParams lp = new LayoutParams(

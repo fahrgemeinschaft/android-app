@@ -9,7 +9,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <EditText
+    <Button
         android:id="@+id/text"
         android:layout_width="match_parent"
         android:layout_height="@dimen/large_icn"
@@ -20,13 +20,12 @@
         android:singleLine="true"
         style="@style/place_pick_btn" />
 
-    <view
+    <ImageButton
         android:id="@+id/icon"
-        android:layout_height="@dimen/large_icn"
-        android:layout_width="@dimen/large_icn"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
         android:layout_gravity="right|center_vertical"
-        android:src="@drawable/icn_contact_email"
         android:background="@drawable/btn_white"
-        class="de.fahrgemeinschaft.EditRideFragment3$VisibilityView" />
+        android:src="@drawable/icn_dropdown" />
 
 </FrameLayout>

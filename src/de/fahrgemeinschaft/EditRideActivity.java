@@ -116,7 +116,7 @@ public class EditRideActivity extends SherlockFragmentActivity
     @Override
     public void onClick(View v) {
         RemoteViews layout = new RemoteViews(getPackageName(),
-                R.layout.place_pick_button);
+                R.layout.view_pick_place_button);
         Intent i = new Intent(Intent.ACTION_EDIT, getIntent().getData());
         layout.setOnClickPendingIntent(R.id.text,
                 PendingIntent.getActivity(this, 21, i, 0));

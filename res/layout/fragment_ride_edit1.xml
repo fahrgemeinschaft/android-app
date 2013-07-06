@@ -133,13 +133,13 @@
             android:id="@+id/from"
             android:layout_width="match_parent"
             android:layout_marginBottom="@dimen/small"
-            layout="@layout/place_pick_button" />
+            layout="@layout/view_pick_place_button" />
 
         <include
             android:id="@+id/to"
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/small"
-            layout="@layout/place_pick_button" />
+            layout="@layout/view_pick_place_button" />
     </LinearLayout>
 
 </LinearLayout>
