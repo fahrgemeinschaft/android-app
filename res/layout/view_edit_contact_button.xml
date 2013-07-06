@@ -20,13 +20,11 @@
         android:singleLine="true"
         style="@style/place_pick_btn" />
 
-    <view
+    <ImageView
         android:id="@+id/icon"
-        android:layout_height="@dimen/large_icn"
         android:layout_width="@dimen/large_icn"
+        android:layout_height="@dimen/large_icn"
         android:layout_gravity="right|center_vertical"
-        android:src="@drawable/icn_contact_email"
-        android:background="@drawable/btn_white"
-        class="de.fahrgemeinschaft.EditRideFragment3$VisibilityView" />
+        android:background="@drawable/btn_white" />
 
 </FrameLayout>

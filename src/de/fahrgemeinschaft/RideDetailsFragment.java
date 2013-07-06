@@ -277,7 +277,7 @@ public class RideDetailsFragment extends SherlockFragment
 
             @Override
             protected void onCreate(Bundle savedInstanceState) {
-                setContentView(R.layout.view_image);
+                setContentView(R.layout.view_big_image);
                 ImageView image = (ImageView) findViewById(R.id.image_large);
                 image.setImageResource(R.drawable.ic_call);
                 imageLoader.get(url, ImageLoader.getImageListener(image,

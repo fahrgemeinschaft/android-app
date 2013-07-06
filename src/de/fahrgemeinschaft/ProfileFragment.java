@@ -7,6 +7,7 @@
 
 package de.fahrgemeinschaft;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -16,7 +17,15 @@ import android.view.ViewGroup;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
+
 public class ProfileFragment extends SherlockFragment implements OnClickListener {
+
+    private EditContactButton username;
+    private EditContactButton password;
+    private SharedPreferences prefs;
+
 
     @Override
     public View onCreateView(final LayoutInflater lI, ViewGroup p, Bundle b) {
@@ -25,19 +34,22 @@ public class ProfileFragment extends SherlockFragment implements OnClickListener
 
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
+        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        username = (EditContactButton) v.findViewById(R.id.username);
+        password = (EditContactButton) v.findViewById(R.id.password);
+        username.text.setText(prefs.getString("username", ""));
+        password.text.setText(prefs.getString("password", ""));
+        v.findViewById(R.id.login).setOnClickListener(this);
         super.onViewCreated(v, savedInstanceState);
-//        v.findViewById(R.id.blablabla).setOnClickListener(this);
     }
-
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-//        case R.id.blablabla:
-//            break;
-        }
-        PreferenceManager.getDefaultSharedPreferences(getActivity()).edit()
-        .putString("username", "Moritz").commit();
+        prefs.edit()
+            .putString("username", username.text.getText().toString())
+            .putString("password", password.text.getText().toString())
+        .commit();
+        Crouton.makeText(getActivity(), "stored", Style.INFO).show();
     }
 
 }
