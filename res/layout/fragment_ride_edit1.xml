@@ -15,9 +15,9 @@
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:orientation="horizontal"
-        android:layout_marginBottom="8dp" >
+        android:layout_marginBottom="@dimen/medium" >
 
-        <FrameLayout 
+        <FrameLayout
             android:id="@+id/mode_car"
             android:layout_height="match_parent"
             android:background="@drawable/btn_day"
@@ -32,7 +32,7 @@
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/icn_goby_car" />
             
-            <TextView 
+            <TextView
                 android:id="@+id/mode_car_text"
                 android:textColor="#FFFFFF"
                 android:layout_gravity="center_vertical"
@@ -75,16 +75,14 @@
         android:id="@+id/seats"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:background="@color/medium_green"
-        android:orientation="horizontal"
-        android:padding="@dimen/small" >
+        android:orientation="horizontal" >
 
         <ImageView
             android:id="@+id/seats_zero"
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/small"
+            android:layout_marginRight="@dimen/small"
             android:background="@drawable/btn_day"
             android:src="@drawable/icn_seats_full" />
         <ImageView
@@ -92,7 +90,8 @@
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/small"
+            android:layout_marginLeft="@dimen/small"
+            android:layout_marginRight="@dimen/small"
             android:background="@drawable/btn_day"
             android:src="@drawable/icn_seats_1" />
         <ImageView
@@ -100,7 +99,8 @@
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/small"
+            android:layout_marginLeft="@dimen/small"
+            android:layout_marginRight="@dimen/small"
             android:background="@drawable/btn_day"
             android:src="@drawable/icn_seats_2" />
         <ImageView
@@ -108,7 +108,8 @@
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/small"
+            android:layout_marginLeft="@dimen/small"
+            android:layout_marginRight="@dimen/small"
             android:background="@drawable/btn_day"
             android:src="@drawable/icn_seats_3" />
         <ImageView
@@ -116,7 +117,7 @@
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/small"
+            android:layout_marginLeft="@dimen/small"
             android:background="@drawable/btn_day"
             android:src="@drawable/icn_seats_many" />
     </LinearLayout>
@@ -125,21 +126,19 @@
         android:id="@+id/route"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/medium_green"
-        android:layout_marginTop="@dimen/large"
-        android:orientation="vertical"
-        android:padding="@dimen/small" >
+        android:layout_marginTop="@dimen/larger"
+        android:orientation="vertical" >
 
         <include
             android:id="@+id/from"
             android:layout_width="match_parent"
-            android:layout_margin="@dimen/small"
+            android:layout_marginBottom="@dimen/small"
             layout="@layout/place_pick_button" />
 
         <include
             android:id="@+id/to"
             android:layout_width="match_parent"
-            android:layout_margin="@dimen/small"
+            android:layout_marginTop="@dimen/small"
             layout="@layout/place_pick_button" />
     </LinearLayout>
 

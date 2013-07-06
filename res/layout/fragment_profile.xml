@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_green_translucent" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/txt_username"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:selectAllOnFocus="true"
+                android:background="@drawable/btn_white"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="16dp"
+                android:singleLine="true"
+                android:hint="@string/username"
+                android:inputType="textEmailAddress"
+                style="@style/place_pick_btn" />
+
+            <ImageButton
+                android:id="@+id/icn_username"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="right|center_vertical"
+                android:background="@drawable/btn_white"
+                android:src="@drawable/icn_contact_email" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium" >
+
+            <EditText
+                android:id="@+id/txt_password"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:selectAllOnFocus="true"
+                android:background="@drawable/btn_white"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="16dp"
+                android:singleLine="true"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                style="@style/place_pick_btn" />
+
+            <ImageButton
+                android:id="@+id/icn_password"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="right|center_vertical"
+                android:background="@drawable/btn_white"
+                android:src="@drawable/icn_password" />
+        </FrameLayout>
+        <ImageButton
+            android:id="@+id/btn_login"
+            android:layout_width="140dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="@dimen/medium"
+            android:layout_gravity="right"
+            android:background="@drawable/btn_medium_green"
+            android:src="@drawable/btn_anbieten" />
+    </LinearLayout>
+
+</RelativeLayout>

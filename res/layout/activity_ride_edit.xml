@@ -15,7 +15,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"            
+            android:layout_height="wrap_content"
             android:orientation="vertical" >
 
             <fragment
@@ -40,46 +40,40 @@
                 android:name="de.fahrgemeinschaft.EditRideFragment3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/large"
+                android:layout_marginTop="@dimen/larger"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/medium_green"
                 android:orientation="vertical"
-                android:layout_marginTop="@dimen/large"
-                android:padding="@dimen/medium"
+                android:layout_marginTop="@dimen/larger"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin" >
 
                 <EditText
                     android:id="@+id/comments"
                     android:layout_width="match_parent"
+                    android:minHeight="100dp"
                     android:background="@drawable/btn_white"
+                    android:gravity="top"
                     android:padding="16dp"
                     android:inputType="textMultiLine"
                     android:hint="@string/comment"
                     style="@style/comment_text_box" />
-
             </LinearLayout>
 
             <ImageButton
                 android:id="@+id/publish"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/medium"
+                android:layout_marginTop="@dimen/larger"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:src="@drawable/btn_veroeffentlichen"
                 android:background="@drawable/btn_medium_green"
-                android:layout_marginBottom="16dp" />
-        
+                android:layout_marginBottom="@dimen/large" />
         </LinearLayout>
-        
-        
-        
     </ScrollView>
-
 </FrameLayout>

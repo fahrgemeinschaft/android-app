@@ -8,28 +8,38 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/medium_green"
-    android:padding="@dimen/small"
     android:orientation="vertical" >
 
     <include
         android:id="@+id/email"
         android:layout_width="match_parent"
+        android:layout_marginBottom="@dimen/small"
         layout="@layout/view_contact_option" />
 
     <include
         android:id="@+id/landline"
         android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/small"
+        android:layout_marginBottom="@dimen/small"
         layout="@layout/view_contact_option" />
 
     <include
         android:id="@+id/mobile"
         android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/small"
+        android:layout_marginBottom="@dimen/small"
         layout="@layout/view_contact_option" />
 
     <include
         android:id="@+id/plate"
         android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/small"
+        android:layout_marginBottom="@dimen/small"
         layout="@layout/view_contact_option" />
 
+    <include
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/small"
+        layout="@layout/view_contact_option" />
 </LinearLayout>
