@@ -11,20 +11,36 @@
     android:orientation="vertical" >
 
     <de.fahrgemeinschaft.util.EditTextVisibilityButton
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/xlarge"
+        android:hint="@string/name_hint"
+        android:inputType="textPersonName"
+        android:src="@drawable/icn_view_user" />
+
+    <de.fahrgemeinschaft.util.EditTextVisibilityButton
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="@dimen/xlarge"
-        android:layout_marginBottom="@dimen/small"
+        android:layout_marginTop="@dimen/small"
         android:hint="@string/email_hint"
         android:inputType="textEmailAddress"
         android:src="@drawable/icn_contact_email" />
+
+    <de.fahrgemeinschaft.util.EditTextVisibilityButton
+        android:id="@+id/plate"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/xlarge"
+        android:layout_marginTop="@dimen/small"
+        android:hint="@string/plate_hint"
+        android:inputType="text"
+        android:src="@drawable/icn_contact_kfz" />
 
     <de.fahrgemeinschaft.util.EditTextVisibilityButton
         android:id="@+id/landline"
         android:layout_width="match_parent"
         android:layout_height="@dimen/xlarge"
         android:layout_marginTop="@dimen/small"
-        android:layout_marginBottom="@dimen/small"
         android:hint="@string/landline_hint"
         android:inputType="phone"
         android:src="@drawable/icn_contact_phone" />
@@ -34,29 +50,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/xlarge"
         android:layout_marginTop="@dimen/small"
-        android:layout_marginBottom="@dimen/small"
         android:hint="@string/mobile_hint"
         android:inputType="phone"
         android:src="@drawable/icn_contact_handy" />
-
-    <de.fahrgemeinschaft.util.EditTextVisibilityButton
-        android:id="@+id/plate"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/xlarge"
-        android:layout_marginTop="@dimen/small"
-        android:layout_marginBottom="@dimen/small"
-        android:hint="@string/plate_hint"
-        android:inputType="text"
-        android:src="@drawable/icn_contact_kfz" />
-
-    <de.fahrgemeinschaft.util.EditTextVisibilityButton
-        android:id="@+id/name"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/xlarge"
-        android:layout_marginTop="@dimen/small"
-        android:layout_marginBottom="@dimen/small"
-        android:hint="@string/name_hint"
-        android:inputType="textPersonName"
-        android:src="@drawable/icn_view_user" />
 
 </LinearLayout>

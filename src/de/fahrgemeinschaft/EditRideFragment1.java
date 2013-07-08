@@ -193,7 +193,7 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
         b.btn.setText(getString(R.string.via));
         LayoutParams lp = new LayoutParams(
                 LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-        lp.bottomMargin = getResources().getDimensionPixelSize(R.dimen.small);
+        lp.bottomMargin = getResources().getDimensionPixelSize(R.dimen.medium);
         lp.leftMargin = getResources().getDimensionPixelSize(R.dimen.xlarge);
         b.setLayoutParams(lp);
         b.icn.setImageResource(R.drawable.icn_dropdown);
