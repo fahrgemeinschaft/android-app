@@ -14,6 +14,7 @@
         android:gravity="left|center_vertical"
         android:layout_gravity="left|center_vertical"
         android:background="@drawable/btn_white"
+        android:imeOptions="flagNoExtractUi"
         android:paddingLeft="16dp"
         android:singleLine="true"
         style="@style/place_pick_btn" />
