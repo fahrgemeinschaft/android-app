@@ -1,19 +1,24 @@
-package de.fahrgemeinschaft;
+/**
+ * Fahrgemeinschaft / Ridesharing App
+ * Copyright (c) 2013 by it's authors.
+ * Some rights reserved. See LICENSE..
+ *
+ */
+
+package de.fahrgemeinschaft.util;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
-import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
+import de.fahrgemeinschaft.R;
 
-public class EditContactButton extends FrameLayout implements OnClickListener {
+public class EditTextVisibilityButton extends EditTextImageButton
+    implements OnClickListener {
 
     static final String android = "http://schemas.android.com/apk/res/android";
 
@@ -23,28 +28,16 @@ public class EditContactButton extends FrameLayout implements OnClickListener {
     public static final int REQUEST = 2;
     public static final int NONE = 3;
 
-    public EditText text;
-    public ImageView image;
     private int visibility;
     private int imageResId;
 
 
-    public EditContactButton(Context context, AttributeSet attrs) {
+    public EditTextVisibilityButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        View.inflate(getContext(), R.layout.view_edit_contact_button, this);
-        
-        text = (EditText) findViewById(R.id.text);
-        text.setHint(getContext().getString(attrs.getAttributeResourceValue(
-                android, "hint", R.string.app_name)));
-        text.setInputType((attrs.getAttributeIntValue(
-                android, "inputType", InputType.TYPE_CLASS_TEXT)));
-        
-        image = (ImageView) findViewById(R.id.icon);
         setImageResource(attrs.getAttributeResourceValue(
                 android, "src", R.drawable.icn_dropdown));
         image.setOnClickListener(this);
     }
-
 
     public void setImageResource(int resourceId) {
         imageResId = resourceId;

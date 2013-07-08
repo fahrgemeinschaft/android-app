@@ -1,9 +1,12 @@
-package de.fahrgemeinschaft;
+package de.fahrgemeinschaft.util;
 
 import java.util.ArrayList;
 
 import org.teleportr.Ride;
 import org.teleportr.Ride.COLUMNS;
+
+import de.fahrgemeinschaft.R;
+import de.fahrgemeinschaft.R.drawable;
 
 import android.content.ComponentName;
 import android.content.Context;

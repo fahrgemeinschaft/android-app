@@ -5,7 +5,7 @@
  *
  */
 
-package de.fahrgemeinschaft;
+package de.fahrgemeinschaft.util;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -16,7 +16,6 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +25,12 @@ import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 
-public abstract class EndlessSpinningZebraListFragment
+import de.fahrgemeinschaft.R;
+
+public abstract class SpinningZebraListFragment
     extends SherlockListFragment implements LoaderCallbacks<Cursor> {
 
-    abstract void bindListItemView(View view, Cursor cursor);
+    abstract public void bindListItemView(View view, Cursor cursor);
 
     private boolean spinningEnabled = true;
 
@@ -91,7 +92,7 @@ public abstract class EndlessSpinningZebraListFragment
                 else {
                     if (v == null) {
                         v = getLayoutInflater(null).inflate(
-                                R.layout.loading, parent, false);
+                                R.layout.view_spinning_wheel, parent, false);
                         if (spinning) startSpinning();
                         else stopSpinning();
                     }

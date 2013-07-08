@@ -5,9 +5,7 @@
   Some rights reserved. See LICENSE.. 
 -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <Button
         android:id="@+id/text"
@@ -26,6 +24,6 @@
         android:layout_width="wrap_content"
         android:layout_gravity="right|center_vertical"
         android:background="@drawable/btn_white"
-        android:src="@drawable/icn_dropdown" />
+        android:contentDescription="@string/app_name" />
 
-</FrameLayout>
+</merge>

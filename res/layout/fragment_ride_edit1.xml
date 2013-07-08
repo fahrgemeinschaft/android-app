@@ -14,63 +14,63 @@
         android:id="@+id/mode"
         android:layout_width="match_parent"
         android:layout_height="55dp"
+        android:layout_marginBottom="@dimen/medium"
         android:orientation="horizontal"
-        android:layout_marginBottom="@dimen/medium" >
+        android:baselineAligned="false">
 
         <FrameLayout
             android:id="@+id/mode_car"
             android:layout_height="match_parent"
-            android:background="@drawable/btn_day"
             android:layout_gravity="left"
             android:layout_marginRight="4dp"
-            android:layout_weight="1" >
-            
+            android:layout_weight="1"
+            android:background="@drawable/btn_day" >
+
             <ImageView
                 android:id="@+id/mode_car_image"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/icn_goby_car" />
-            
+                android:src="@drawable/icn_goby_car"
+                android:contentDescription="@string/mode_car"/>
+
             <TextView
                 android:id="@+id/mode_car_text"
-                android:textColor="#FFFFFF"
                 android:layout_gravity="center_vertical"
-                android:textSize="18sp"
                 android:layout_marginLeft="70dp"
-                android:textStyle="bold"
-                android:text="@string/mode_car" />
-            
+                android:text="@string/mode_car"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
         </FrameLayout>
-        
-        <FrameLayout 
+
+        <FrameLayout
             android:id="@+id/mode_rail"
             android:layout_height="match_parent"
-            android:background="@drawable/btn_day"
             android:layout_gravity="left"
             android:layout_marginLeft="4dp"
-            android:layout_weight="1" >
-            
+            android:layout_weight="1"
+            android:background="@drawable/btn_day" >
+
             <ImageView
                 android:id="@+id/mode_rail_image"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/icn_goby_train" />
-            
-            <TextView 
+                android:src="@drawable/icn_goby_train"
+                android:contentDescription="@string/mode_rail" />
+
+            <TextView
                 android:id="@+id/mode_rail_text"
-                android:textColor="#FFFFFF"
                 android:layout_gravity="center_vertical"
-                android:textSize="18sp"
-                android:textStyle="bold"
                 android:layout_marginLeft="70dp"
-                android:text="@string/mode_rail" />
-            
+                android:text="@string/mode_rail"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
         </FrameLayout>
-        
     </LinearLayout>
-    
+
     <LinearLayout
         android:id="@+id/seats"
         android:layout_width="match_parent"
@@ -79,47 +79,56 @@
 
         <ImageView
             android:id="@+id/seats_zero"
-            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/small"
+            android:layout_weight="1"
             android:background="@drawable/btn_day"
-            android:src="@drawable/icn_seats_full" />
+            android:src="@drawable/icn_seats_full"
+            android:contentDescription="@string/seats_full" />
+
         <ImageView
             android:id="@+id/seats_one"
-            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/small"
             android:layout_marginRight="@dimen/small"
+            android:layout_weight="1"
             android:background="@drawable/btn_day"
-            android:src="@drawable/icn_seats_1" />
+            android:src="@drawable/icn_seats_1"
+            android:contentDescription="@string/seats_1" />
+
         <ImageView
             android:id="@+id/seats_two"
-            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/small"
             android:layout_marginRight="@dimen/small"
+            android:layout_weight="1"
             android:background="@drawable/btn_day"
-            android:src="@drawable/icn_seats_2" />
+            android:src="@drawable/icn_seats_2"
+            android:contentDescription="@string/seats_2" />
+
         <ImageView
             android:id="@+id/seats_three"
-            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/small"
             android:layout_marginRight="@dimen/small"
+            android:layout_weight="1"
             android:background="@drawable/btn_day"
-            android:src="@drawable/icn_seats_3" />
+            android:src="@drawable/icn_seats_3"
+            android:contentDescription="@string/seats_3" />
+
         <ImageView
             android:id="@+id/seats_many"
-            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/small"
+            android:layout_weight="1"
             android:background="@drawable/btn_day"
-            android:src="@drawable/icn_seats_many" />
+            android:src="@drawable/icn_seats_many"
+            android:contentDescription="@string/seats_many" />
     </LinearLayout>
 
     <LinearLayout
@@ -129,17 +138,19 @@
         android:layout_marginTop="@dimen/larger"
         android:orientation="vertical" >
 
-        <include
+        <de.fahrgemeinschaft.util.ButtonImageButton
             android:id="@+id/from"
             android:layout_width="match_parent"
             android:layout_marginBottom="@dimen/small"
-            layout="@layout/view_pick_place_button" />
+            android:src="@drawable/icn_dropdown"
+            android:text="@string/from" />
 
-        <include
+        <de.fahrgemeinschaft.util.ButtonImageButton
             android:id="@+id/to"
             android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/small"
-            layout="@layout/view_pick_place_button" />
+            android:layout_marginBottom="@dimen/small"
+            android:src="@drawable/icn_dropdown"
+            android:text="@string/to" />
     </LinearLayout>
 
 </LinearLayout>
