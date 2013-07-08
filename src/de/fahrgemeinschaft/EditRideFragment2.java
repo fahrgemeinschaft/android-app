@@ -26,9 +26,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
@@ -36,14 +34,17 @@ import android.widget.TimePicker;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-public class EditRideFragment2 extends SherlockFragment 
-        implements OnClickListener, OnDateSetListener, OnTimeSetListener {
+import de.fahrgemeinschaft.util.ButtonImageButton;
+import de.fahrgemeinschaft.util.EditTextImageButton;
 
+public class EditRideFragment2 extends SherlockFragment 
+        implements OnDateSetListener, OnTimeSetListener {
+
+    private Ride ride; 
+    private ButtonImageButton date;
+    private ButtonImageButton time;
     private LinearLayout recurrence;
-    private Button date_button;
-    private Button time_button;
-    private EditText price;
-	private Ride ride; 
+    private EditTextImageButton price;
 
     @Override
     public View onCreateView(final LayoutInflater lI, ViewGroup p, Bundle b) {
@@ -53,40 +54,23 @@ public class EditRideFragment2 extends SherlockFragment
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
-        v.findViewById(R.id.btn_pick_date).setOnClickListener(this);
-        v.findViewById(R.id.ic_pick_date).setOnClickListener(this);
-        v.findViewById(R.id.btn_pick_time).setOnClickListener(this);
-        v.findViewById(R.id.ic_pick_time).setOnClickListener(this);
         
-        date_button = (Button) v.findViewById(R.id.btn_pick_date);
-        time_button = (Button) v.findViewById(R.id.btn_pick_time);
-        price = (EditText) v.findViewById(R.id.btn_pick_price);
-        price.setOnFocusChangeListener(new OnFocusChangeListener() {
-            
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    price.setText("");
-                } else {
-                    String p = price.getText().toString();
-                    if (p.matches("\\d+\\.?\\d*"))
-                        setPrice((int) Double.valueOf(p).doubleValue() * 100);
-                    else
-                        setPrice(ride.getPrice());
-                }
-            }
-        });
+        date = (ButtonImageButton) v.findViewById(R.id.date);
+        date.btn.setOnClickListener(pickDate);
+        date.icn.setOnClickListener(pickDate);
+        time = (ButtonImageButton) v.findViewById(R.id.time);
+        time.btn.setOnClickListener(pickTime);
+        time.icn.setOnClickListener(pickTime);
+        price = (EditTextImageButton) v.findViewById(R.id.price);
+        price.text.setOnFocusChangeListener(onPriceChange);
         
-        String[] weekDays = new DateFormatSymbols().getShortWeekdays();
         recurrence = (LinearLayout) v.findViewById(R.id.recurrence);
-        for (int i = 2; i < weekDays.length; i++) {
+        String[] weekDays = new DateFormatSymbols().getShortWeekdays();
+        for (int i = 2; i <= weekDays.length; i++) {
             TextView day = makeRecurringDayButton(getActivity());
-            day.setText(weekDays[i].substring(0, 2));
+            day.setText(weekDays[i < weekDays.length? i : 1].substring(0, 2));
             recurrence.addView(day);
         }
-        TextView day = makeRecurringDayButton(getActivity());
-        day.setText(weekDays[1].substring(0, 2));
-        recurrence.addView(day);
     }
 
     public void setRide(Ride ride) {
@@ -97,62 +81,74 @@ public class EditRideFragment2 extends SherlockFragment
 
     protected void setPrice(int p) {
         if (p != 0) {
-            price.setText((p / 100) + " €");
+            price.text.setText((p / 100) + " €");
         } else {
-            price.setText("");
+            price.text.setText("");
         }
         ride.price(p);
     }
-    
-    @Override
-    public void onClick(View v) {
-        final Calendar c = Calendar.getInstance();
-        switch (v.getId()) {
-        case R.id.btn_pick_date:
-        case R.id.ic_pick_date:
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-            DatePickerDialog d = new DatePickerDialog(
-                    getActivity(), this, year, month, day);
-//            d.setButton(DatePickerDialog.BUTTON_POSITIVE, getString(R.string.ready),
-//                    (android.content.DialogInterface.OnClickListener) null); //java!
-            d.show();
-            break;
-        case R.id.btn_pick_time:
-        case R.id.ic_pick_time:
-            int min = c.get(Calendar.MINUTE);
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            TimePickerDialog t = new TimePickerDialog(
-                    getActivity(), this, hour, min, true);
-//            t.setButton(DatePickerDialog.BUTTON_POSITIVE, getString(R.string.ready),
-//                    (android.content.DialogInterface.OnClickListener) null); //java!
-            t.show();
-            break;
 
-        default:
-            break;
+    OnFocusChangeListener onPriceChange = new OnFocusChangeListener() {
+        
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus) {
+                price.text.setText("");
+            } else {
+                String p = price.text.getText().toString();
+                if (p.matches("\\d+\\.?\\d*"))
+                    setPrice((int) Double.valueOf(p).doubleValue() * 100);
+                else
+                    setPrice(ride.getPrice());
+            }
         }
-    }
+    };
 
     private void setDeparture(long timestamp) {
         Calendar cal = Calendar.getInstance();
         int today = cal.get(Calendar.DAY_OF_YEAR);
         cal.setTimeInMillis(timestamp);
         if (cal.get(Calendar.DAY_OF_YEAR) == today)
-            date_button.setText(getString(R.string.today));
+            date.btn.setText(getString(R.string.today));
         else if (cal.get(Calendar.DAY_OF_YEAR) == today + 1)
-            date_button.setText(getString(R.string.tomorrow));
+            date.btn.setText(getString(R.string.tomorrow));
         else if (cal.get(Calendar.DAY_OF_YEAR) == today + 2)
-            date_button.setText(getString(R.string.after_tomorrow));
+            date.btn.setText(getString(R.string.after_tomorrow));
         else
-            date_button.setText(new SimpleDateFormat("dd. MMM yyyy",
+            date.btn.setText(new SimpleDateFormat("dd. MMM yyyy",
                     Locale.GERMANY).format(timestamp));
-        time_button.setText(new SimpleDateFormat("HH:mm",
+        time.btn.setText(new SimpleDateFormat("HH:mm",
                 Locale.GERMANY).format(timestamp));
         ride.dep(timestamp);
     }
-    
+
+    OnClickListener pickDate = new OnClickListener() {
+        
+        @Override
+        public void onClick(View v) {
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+            DatePickerDialog d = new DatePickerDialog(getActivity(),
+                    EditRideFragment2.this, year, month, day);
+            d.show();
+        }
+    };
+
+    OnClickListener pickTime = new OnClickListener() {
+        
+        @Override
+        public void onClick(View v) {
+            final Calendar c = Calendar.getInstance();
+            int min = c.get(Calendar.MINUTE);
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            TimePickerDialog t = new TimePickerDialog(getActivity(),
+                    EditRideFragment2.this, hour, min, true);
+            t.show();
+        }
+    };
+
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
         Calendar cal = Calendar.getInstance();
@@ -192,13 +188,8 @@ public class EditRideFragment2 extends SherlockFragment
         }
     };
 
-    public void setDateButtonText(long timestamp) {
-    }
-    
     private LayoutParams dayButtonlayoutParams() {
         LayoutParams lp = new LayoutParams(0, LayoutParams.MATCH_PARENT);
-        int margin = getActivity().getResources() // dips
-                .getDimensionPixelSize(R.dimen.small);
         lp.weight = 1;
         return lp;
     }

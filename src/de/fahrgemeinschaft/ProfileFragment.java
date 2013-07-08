@@ -17,13 +17,14 @@ import android.view.ViewGroup;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
+import de.fahrgemeinschaft.util.EditTextVisibilityButton;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class ProfileFragment extends SherlockFragment implements OnClickListener {
 
-    private EditContactButton username;
-    private EditContactButton password;
+    private EditTextVisibilityButton username;
+    private EditTextVisibilityButton password;
     private SharedPreferences prefs;
 
 
@@ -35,8 +36,8 @@ public class ProfileFragment extends SherlockFragment implements OnClickListener
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        username = (EditContactButton) v.findViewById(R.id.username);
-        password = (EditContactButton) v.findViewById(R.id.password);
+        username = (EditTextVisibilityButton) v.findViewById(R.id.username);
+        password = (EditTextVisibilityButton) v.findViewById(R.id.password);
         username.text.setText(prefs.getString("username", ""));
         password.text.setText(prefs.getString("password", ""));
         v.findViewById(R.id.login).setOnClickListener(this);

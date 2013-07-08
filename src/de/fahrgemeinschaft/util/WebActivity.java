@@ -5,7 +5,7 @@
  *
  */
 
-package de.fahrgemeinschaft;
+package de.fahrgemeinschaft.util;
 
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;

@@ -47,6 +47,9 @@ public class EditRideActivity extends SherlockFragmentActivity
             initFragments();
         } else if (getIntent().getData() != null) {
             getSupportLoaderManager().initLoader(0, null, this);
+        } else {
+            ride = new Ride();
+            initFragments();
         }
         findViewById(R.id.publish).setOnClickListener(this);
     }
@@ -116,7 +119,7 @@ public class EditRideActivity extends SherlockFragmentActivity
     @Override
     public void onClick(View v) {
         RemoteViews layout = new RemoteViews(getPackageName(),
-                R.layout.view_pick_place_button);
+                R.layout.btn_button_image);
         Intent i = new Intent(Intent.ACTION_EDIT, getIntent().getData());
         layout.setOnClickPendingIntent(R.id.text,
                 PendingIntent.getActivity(this, 21, i, 0));

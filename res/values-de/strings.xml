@@ -19,25 +19,32 @@
     <string name="publish" >Fahrt Eintragen</string>
     <string name="search">suchen</string>
 
+    <string name="profile">Profil</string>
+    <string name="settings">Einstellungen</string>
+
     <string name="mode_car">Auto</string>
     <string name="mode_rail">Zug</string>
     <string name="price">Preis</string>
     <string name="comment">Anmerkungen zur Fahrt</string>
-    
-    <string name="profile">Profil</string>
-    <string name="settings">Einstellungen</string>
 
     <string name="username">eMail</string>
     <string name="password">Passwort</string>
 
     <string name="contact">Kontakt</string>
     <string name="seats">Sitzplätze</string>
+    <string name="seats_full">keine Sitzplätze</string>
+    <string name="seats_1">ein Sitzplatz</string>
+    <string name="seats_2">zwei Sitzplätze</string>
+    <string name="seats_3">drei Sitzplätze</string>
+    <string name="seats_many">viele Sitzplätze</string>
+    
 
     <string name="email_hint">eMail Adresse</string>
     <string name="landline_hint">Festnetz Nummer</string>
     <string name="mobile_hint">Handy Nummer</string>
     <string name="plate_hint">Kennzeichen</string>
     <string name="name_hint">Nachname</string>
+    <string name="reccurence">Regelmäßige Fahrt: jede Woche am</string>
 
     <string name="visibility">Sichtbarkeit</string>
     <string-array name="visibility">

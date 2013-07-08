@@ -17,6 +17,7 @@ import org.teleportr.Place;
 import org.teleportr.Ride;
 import org.teleportr.Ride.COLUMNS;
 
+import de.fahrgemeinschaft.util.SpinningZebraListFragment;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -33,7 +34,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class RideListFragment extends EndlessSpinningZebraListFragment
+public class RideListFragment extends SpinningZebraListFragment
         implements ServiceConnection, BackgroundListener {
 
     private static final SimpleDateFormat day =
@@ -45,7 +46,7 @@ public class RideListFragment extends EndlessSpinningZebraListFragment
     private String[] split;
 
     @Override
-    void bindListItemView(View view, Cursor ride) {
+    public void bindListItemView(View view, Cursor ride) {
         RideView v = (RideView) view;
         v.from_place.setText(ride.getString(COLUMNS.FROM_NAME));
         split = ride.getString(COLUMNS.FROM_ADDRESS).split(",");

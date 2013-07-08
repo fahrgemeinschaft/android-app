@@ -24,7 +24,8 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-import de.fahrgemeinschaft.EndlessSpinningZebraListFragment.ListFragmentCallback;
+import de.fahrgemeinschaft.util.Util;
+import de.fahrgemeinschaft.util.SpinningZebraListFragment.ListFragmentCallback;
 
 public class ResultsActivity extends SherlockFragmentActivity
        implements ListFragmentCallback, OnPageChangeListener {

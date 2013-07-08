@@ -10,111 +10,46 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <LinearLayout
+    <de.fahrgemeinschaft.util.ButtonImageButton
+        android:id="@+id/date"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginTop="@dimen/larger" >
+        android:layout_marginBottom="@dimen/small"
+        android:layout_marginTop="@dimen/larger"
+        android:src="@drawable/icn_datepicker"
+        android:text="@string/date" />
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+    <de.fahrgemeinschaft.util.ButtonImageButton
+        android:id="@+id/time"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="@dimen/small"
+        android:src="@drawable/icn_timepicker"
+        android:text="@string/time" />
 
-            <Button
-                android:id="@+id/btn_pick_date"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:background="@drawable/btn_white"
-                android:gravity="left|center_vertical"
-                android:paddingLeft="16dp"
-                android:singleLine="true"
-                android:text="@string/date"
-                style="@style/place_pick_btn" />
-
-            <ImageButton
-                android:id="@+id/ic_pick_date"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_gravity="right|center_vertical"
-                android:background="@drawable/btn_white"
-                android:src="@drawable/icn_datepicker" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/medium" >
-
-            <Button
-                android:id="@+id/btn_pick_time"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:background="@drawable/btn_white"
-                android:gravity="left|center_vertical"
-                android:paddingLeft="16dp"
-                android:singleLine="true"
-                android:text="@string/time"
-                style="@style/place_pick_btn" />
-
-            <ImageButton
-                android:id="@+id/ic_pick_time"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_gravity="right|center_vertical"
-                android:background="@drawable/btn_white"
-                android:src="@drawable/icn_timepicker" />
-        </FrameLayout>
-    </LinearLayout>
-    
-    <TextView 
+    <TextView
         android:id="@+id/recurrence_text"
         android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/larger"
+        android:background="@color/medium_green"
+        android:gravity="bottom"
         android:height="12dp"
         android:paddingLeft="@dimen/small"
         android:paddingRight="@dimen/small"
-        android:layout_marginTop="@dimen/larger"
-        android:gravity="bottom"
-        android:textColor="#FFFFFF"
-        android:background="@color/medium_green"
-        android:text="Regelmäßige Fahrt: jede Woche am" />
-    
+        android:text="@string/reccurence"
+        android:textColor="#FFFFFF" />
+
     <LinearLayout
         android:id="@+id/recurrence"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="@dimen/xlarge"
         android:orientation="horizontal" >
     </LinearLayout>
 
-    <LinearLayout
+    <de.fahrgemeinschaft.util.EditTextImageButton
+        android:id="@+id/price"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginTop="@dimen/larger" >
+        android:layout_marginTop="@dimen/larger"
+        android:layout_marginBottom="@dimen/small"
+        android:src="@drawable/icn_pricepicker"
+        android:hint="@string/price" />
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <EditText
-                android:id="@+id/btn_pick_price"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:selectAllOnFocus="true"
-                android:background="@drawable/btn_white"
-                android:gravity="left|center_vertical"
-                android:paddingLeft="16dp"
-                android:singleLine="true"
-                android:hint="@string/price"
-                android:inputType="numberDecimal"
-                style="@style/place_pick_btn" />
-
-            <ImageButton
-                android:id="@+id/ic_pick_price"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_gravity="right|center_vertical"
-                android:background="@drawable/btn_white"
-                android:src="@drawable/icn_pricepicker" />
-        </FrameLayout>
-    </LinearLayout>
 </LinearLayout>

@@ -14,14 +14,16 @@ import android.view.ViewGroup;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
+import de.fahrgemeinschaft.util.EditTextVisibilityButton;
+
 public class EditRideFragment3 extends SherlockFragment {
 
 
-    private EditContactButton email;
-    private EditContactButton land;
-    private EditContactButton mobile;
-    private EditContactButton plate;
-    private EditContactButton name;
+    private EditTextVisibilityButton email;
+    private EditTextVisibilityButton land;
+    private EditTextVisibilityButton mobile;
+    private EditTextVisibilityButton plate;
+    private EditTextVisibilityButton name;
 
 
 
@@ -33,11 +35,11 @@ public class EditRideFragment3 extends SherlockFragment {
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
-        email = (EditContactButton) v.findViewById(R.id.email);
-        land = (EditContactButton) v.findViewById(R.id.landline);
-        mobile = (EditContactButton) v.findViewById(R.id.mobile);
-        plate = (EditContactButton) v.findViewById(R.id.plate);
-        name = (EditContactButton) v.findViewById(R.id.name);
+        email = (EditTextVisibilityButton) v.findViewById(R.id.email);
+        land = (EditTextVisibilityButton) v.findViewById(R.id.landline);
+        mobile = (EditTextVisibilityButton) v.findViewById(R.id.mobile);
+        plate = (EditTextVisibilityButton) v.findViewById(R.id.plate);
+        name = (EditTextVisibilityButton) v.findViewById(R.id.name);
     }
 
 }

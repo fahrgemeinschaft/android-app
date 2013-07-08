@@ -11,7 +11,7 @@
     android:background="@color/light_green_translucent"
     android:orientation="vertical" >
 
-    <de.fahrgemeinschaft.EditContactButton
+    <de.fahrgemeinschaft.util.EditTextImageButton
         android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="@dimen/xlarge"
@@ -19,7 +19,7 @@
         android:inputType="textEmailAddress"
         android:src="@drawable/icn_contact_email" />
 
-    <de.fahrgemeinschaft.EditContactButton
+    <de.fahrgemeinschaft.util.EditTextImageButton
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="@dimen/xlarge"
