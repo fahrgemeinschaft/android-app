@@ -1,272 +1,131 @@
 /**
  * Fahrgemeinschaft / Ridesharing App
  * Copyright (c) 2013 by it's authors.
- * Some rights reserved. See LICENSE.. 
+ * Some rights reserved. See LICENSE..
  *
  */
 
 package de.fahrgemeinschaft;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 import org.teleportr.ConnectorService;
 import org.teleportr.Ride;
+import org.teleportr.Ride.COLUMNS;
 
-import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
-import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v4.widget.CursorAdapter;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-public class MainActivity extends SherlockFragmentActivity
-        implements OnClickListener, OnDateSetListener {
+import de.fahrgemeinschaft.util.SpinningZebraListFragment.ListFragmentCallback;
+import de.fahrgemeinschaft.util.Util;
 
-    protected static final String TAG = "fahrgemeinschaft";
-    private static final int FROM = 42;
-    private static final int TO = 55;
-    private Button from_btn;
-    private Button to_btn;
-    private int from_id;
-    private int to_id;
-    private long dep;
-    private View selberfahren_btn;
-    private View mitfahren_btn;
-    private Button when_btn;
+public class MainActivity extends SherlockFragmentActivity
+       implements OnClickListener, ListFragmentCallback, OnPageChangeListener {
+
+    public static final Uri MY_RIDES_URI =
+            Uri.parse("content://de.fahrgemeinschaft/myrides");
+    public static final Uri BG_JOBS_URI =
+            Uri.parse("content://de.fahrgemeinschaft/jobs/search");
+    public RideDetailsFragment details;
+    public RideListFragment results;
+    public RideListFragment myrides;
+    public MainFragment main;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        PreferenceManager.setDefaultValues(this, R.xml.settings, false);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
-        from_btn = (Button) findViewById(R.id.btn_autocomplete_from);
-        to_btn = (Button) findViewById(R.id.btn_autocomplete_to);
-        when_btn = (Button) findViewById(R.id.btn_datepicker);
-        selberfahren_btn = findViewById(R.id.btn_selberfahren);
-        mitfahren_btn = findViewById(R.id.btn_mitfahren);
-
-        to_btn.setOnClickListener(this);
-        from_btn.setOnClickListener(this);
-        mitfahren_btn.setOnClickListener(this);
-        selberfahren_btn.setOnClickListener(this);
-        findViewById(R.id.btn_pick_to).setOnClickListener(this);
-        findViewById(R.id.btn_pick_from).setOnClickListener(this);
-
-        dep = System.currentTimeMillis();
-        if (savedInstanceState != null) {
-            setFromButtonText(Uri.parse("content://de.fahrgemeinschaft/places/"
-                    + savedInstanceState.getInt("from_id")));
-            setToButtonText(Uri.parse("content://de.fahrgemeinschaft/places/"
-                    + savedInstanceState.getInt("to_id")));
-            setDateButtonText(savedInstanceState.getLong("dep"), -1);
-        }
         setTitle("");
-//        startActivity(new Intent(Intent.ACTION_VIEW,
-//                Uri.parse("content://" + getPackageName() + "/rides" +
-//                        "?from_id=1&to_id=2")));
-//        getContentResolver().delete(Uri.parse("content://de.fahrgemeinschaft/rides"), null, null);
+        setContentView(R.layout.activity_main);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        PreferenceManager.setDefaultValues(this, R.xml.settings, false);
+        main = (MainFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.main);
+        results = new RideListFragment();
+        myrides = new RideListFragment();
+        myrides.setSpinningEnabled(false);
+        details = new RideDetailsFragment();
     }
+
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-        case R.id.btn_pick_from:
-            startActivityForResult(new Intent(Intent.ACTION_PICK,
-                    Uri.parse("content://de.fahrgemeinschaft/places")), FROM);
-            overridePendingTransition(R.anim.slide_in_left, R.anim.do_nix);
-            break;
-
-        case R.id.btn_pick_to:
-            startActivityForResult(new Intent(Intent.ACTION_PICK,
-                    Uri.parse("content://de.fahrgemeinschaft/places"
-                            + "?from_id=" + from_id)), TO);
-            overridePendingTransition(R.anim.slide_in_right, R.anim.do_nix);
-            break;
-
-        case R.id.btn_autocomplete_from:
-            startActivityForResult(new Intent(Intent.ACTION_PICK,
-                    Uri.parse("content://de.fahrgemeinschaft/places"))
-                .putExtra("show_textfield", true), FROM);
-            overridePendingTransition(R.anim.slide_in_left, R.anim.do_nix);
-            break;
-
-        case R.id.btn_autocomplete_to:
-            startActivityForResult(new Intent(Intent.ACTION_PICK,
-                    Uri.parse("content://de.fahrgemeinschaft/places"
-                            + "?from_id=" + from_id))
-                .putExtra("show_textfield", true), TO);
-            overridePendingTransition(R.anim.slide_in_right, R.anim.do_nix);
-            break;
-
-        case R.id.btn_mitfahren:
-            if (from_id != 0 && to_id != 0) {
-                new Ride()
-                    .type(Ride.SEARCH)
-                    .from(from_id)
-                    .to(to_id)
-                    .dep(dep)
-                    .arr(new Date(System.currentTimeMillis() + 2*24*3600*1000))
-                .store(this);
-                // Toast.makeText(this, "yay", 200).show();
-                startService(new Intent(this, ConnectorService.class)
-                        .setAction(ConnectorService.SEARCH));
-                startActivity(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("content://" + getPackageName() + "/rides"
-                                + "?from_id=" + from_id
-                                + "&to_id=" + to_id
-                                + "&dep=" + dep)));
-            } else Toast.makeText(this, " ä ä ä", Toast.LENGTH_SHORT).show();
-            break;
         case R.id.btn_selberfahren:
-            if (from_id != 0 && to_id != 0) {
-                Uri uri = new Ride()
-                    .type(Ride.OFFER)
-                    .from(from_id)
-                    .to(to_id)
-                    .dep(dep)
-                    .seats(3)
-                    .mode(Ride.Mode.CAR)
-                    .arr(new Date(System.currentTimeMillis() + 2*24*3600*1000))
+            Uri uri = main.ride.type(Ride.OFFER).mode(Ride.Mode.CAR).seats(3)
                 .store(this);
-                startActivity(new Intent(Intent.ACTION_EDIT, uri));
-            } else Toast.makeText(this, " ä ä ä", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(Intent.ACTION_EDIT, uri));
+            break;
+        case R.id.btn_mitfahren:
+            main.ride.type(Ride.SEARCH).arr(main.ride.getDep() +2*24*3600*1000)
+                .store(this);
+            startService(new Intent(this, ConnectorService.class)
+                .setAction(ConnectorService.SEARCH));
+            results.load(Uri.parse("content://de.fahrgemeinschaft/rides"
+                    + "?from_id=" + main.ride.getFromId()
+                    + "&to_id=" + main.ride.getToId()
+                    + "&dep=" + main.ride.getDep()));
+            showFragment(results);
+            break;
         }
-    }
-
-    public void showTimePickerDialog(View v) {
-        final Calendar c = Calendar.getInstance();
-        c.setTime(new Date(dep));
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-        DatePickerDialog d = new DatePickerDialog(this, this, year, month, day);
-//        d.setButton(DatePickerDialog.BUTTON_POSITIVE, getString(R.string.ready),
-//                (android.content.DialogInterface.OnClickListener) null);
-        d.show();
     }
 
     @Override
-    public void onDateSet(DatePicker picker, int year, int month, int day) {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, year);
-        cal.set(Calendar.MONTH, month);
-        cal.set(Calendar.DAY_OF_MONTH, day);
-        
-        // If day is today ignore the following
-           cal.set(Calendar.HOUR_OF_DAY, 00);
-           cal.set(Calendar.MINUTE, 00);
-           cal.set(Calendar.SECOND, 00);
-        // end
-        
-        dep = cal.getTime().getTime();
-        setDateButtonText(dep, cal.get(Calendar.DAY_OF_YEAR));
+    public void onLoadFinished(Fragment fragment, Cursor cursor) {
+        if (fragment.equals(results)) {
+            setTitle("Results");
+            details.swapCursor(cursor);
+            if (cursor.getCount() > 0) {
+                cursor.moveToLast();
+                long latest_dep = cursor.getLong(COLUMNS.DEPARTURE);
+                System.out.println(" already until " + latest_dep);
+                if (latest_dep > main.ride.getArr()) // inc time window
+                    main.ride.arr(cursor.getLong(COLUMNS.DEPARTURE));
+            }
+        } else {
+            setTitle("MyRides");
+            details.swapCursor(cursor);
+        }
     }
 
     @Override
-    protected void onActivityResult(int req, int res, final Intent intent) {
-        if (res == RESULT_OK) {
-            Log.d(TAG, "selected " + intent.getData());
-            switch (req) {
-            case FROM:
-                setFromButtonText(intent.getData());
-                break;
-            case TO:
-                setToButtonText(intent.getData());
-                break;
-            }
-        }
+    public void onListItemClick(int position) {
+        details.setSelection(position);
+        showFragment(details);
     }
 
-    public void setDateButtonText(long date, int dayOfYear) {
-        Calendar cal = Calendar.getInstance();
-        int today = cal.get(Calendar.DAY_OF_YEAR);
-        if (dayOfYear == -1 || dayOfYear == today)
-            when_btn.setText(getString(R.string.now));
-        else if (dayOfYear == today + 1)
-            when_btn.setText(getString(R.string.tomorrow));
-        else if (dayOfYear == today + 2)
-            when_btn.setText(getString(R.string.after_tomorrow));
-        else
-            when_btn.setText(new SimpleDateFormat("dd. MMM yyyy",
-                    Locale.GERMANY).format(date));
+    @Override
+    public void onPageSelected(final int position) {
+        results.getListView().setSelection(position);
+        details.setSelection(position);
     }
 
-    private void setFromButtonText(Uri uri) {
-        Cursor place = getContentResolver().query(uri, null, null, null, null);
-        if (place.getCount() > 0) {
-            place.moveToFirst();
-            animatePulse(from_btn);
-            from_id = place.getInt(0);
-            from_btn.setText(place.getString(2));
-        }
-        place.close();
+    @Override
+    public void onSpinningWheelClick() {
+        System.out.println(" increase beyond " + main.ride.getArr());
+        main.ride.arr(main.ride.getArr() + 2 * 24 * 3600 * 1000).store(this);
+        startService(new Intent(this, ConnectorService.class)
+                .setAction(ConnectorService.SEARCH));
     }
 
-    private void setToButtonText(Uri uri) {
-        Cursor place = getContentResolver().query(uri, null, null, null, null);
-        if (place.getCount() > 0) {
-            place.moveToFirst();
-            animatePulse(to_btn);
-            to_id = place.getInt(0);
-            to_btn.setText(place.getString(2));
-        }
-        place.close();
+
+    public void contact(View v) {
+        Cursor cursor = ((CursorAdapter) results.getListAdapter()).getCursor();
+        cursor.moveToPosition(details.getSelection());
+        Util.openContactOptionsChooserDialog(this, cursor);
     }
 
-    private void animatePulse(final View view) {
-        Animation fade_in = new AlphaAnimation(0.3f, 1f);
-        fade_in.setAnimationListener(new AnimationListener() {
-
-            @Override
-            public void onAnimationStart(Animation animation) {}
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {}
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                view.setBackgroundResource(android.R.color.white);
-                Animation fade_out = new AlphaAnimation(1f, 0.7f);
-                fade_out.setAnimationListener(new AnimationListener() {
-
-                    @Override
-                    public void onAnimationStart(Animation animation) {}
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {}
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        view.setBackgroundResource(R.drawable.btn_white);
-                    }
-                });
-                fade_out.setDuration(1400);
-                view.startAnimation(fade_out);
-            }
-        });
-        fade_in.setDuration(190);
-        view.startAnimation(fade_in);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -275,34 +134,43 @@ public class MainActivity extends SherlockFragmentActivity
     }
 
     @Override
-    @SuppressLint("SetJavaScriptEnabled")
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+        case R.id.my_rides:
+            showFragment(myrides);
+            myrides.load(MY_RIDES_URI);
+            return true;
         case R.id.settings:
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
         case R.id.profile:
             getSupportFragmentManager().beginTransaction()
-            .replace(R.id.layout, new ProfileFragment())
-            .addToBackStack("")
+                .replace(R.id.layout, new ProfileFragment())
+                .addToBackStack("")
             .commit();
             return true;
         case android.R.id.home:
-            getSupportFragmentManager().beginTransaction()
-            .replace(R.id.layout, new AboutFragment())
-            .addToBackStack("")
-            .commit();
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0)
+                getSupportFragmentManager().popBackStack();
+            else finish();
             return true;
-        default:
-            return super.onOptionsItemSelected(item);
         }
-    }
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("from_id", from_id);
-        outState.putInt("to_id", to_id);
-        outState.putLong("dep", dep);
+        return false;
     }
 
+    private void showFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+            .setCustomAnimations(
+                R.anim.slide_in_right, R.anim.do_nix,
+                R.anim.do_nix, R.anim.slide_out_right)
+            .replace(R.id.container, fragment, null)
+            .addToBackStack(null)
+        .commit();
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int arg0) {}
+
+    @Override
+    public void onPageScrolled(int arg0, float arg1, int arg2) {}
 }

@@ -116,7 +116,7 @@ public class RideListFragment extends SpinningZebraListFragment
     @Override
     public void onBackgroundFail(String reason) {
         if (getActivity() != null) {
-            Ride search_query = ((ResultsActivity) getActivity()).query;
+            Ride search_query = ((MainActivity) getActivity()).main.ride;
             search_query.arr(search_query.getArr() - 2 * 24 * 3600 * 1000);
             Crouton.makeText(getActivity(),
                     "Schwerer Ausnahmefehlär " + reason, Style.ALERT).show();

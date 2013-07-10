@@ -84,12 +84,6 @@ public class EditRideActivity extends SherlockFragmentActivity
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable("ride", ride);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getSupportMenuInflater().inflate(R.menu.action_bar, menu);
         return super.onCreateOptionsMenu(menu);
@@ -138,4 +132,9 @@ public class EditRideActivity extends SherlockFragmentActivity
             .notify(42, notify);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable("ride", ride);
+        super.onSaveInstanceState(outState);
+    }
 }

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Fahrgemeinschaft / Ridesharing App
+  Copyright (c) 2013 by it's authors.
+  Some rights reserved. See LICENSE.. 
+-->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:id="@+id/layout"
+    tools:context=".MainActivity" >
+
+    <Button
+        android:id="@+id/btn_autocomplete_from"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_above="@+id/btn_autocomplete_to"
+        android:layout_alignLeft="@+id/btn_autocomplete_to"
+        android:layout_marginBottom="21dp"
+        android:background="@drawable/btn_white"
+        android:singleLine="true"
+        android:text="@string/from"
+        style="@style/place_pick_btn" />
+
+    <ImageButton
+        android:id="@+id/btn_pick_from"
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btn_autocomplete_from"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/btn_autocomplete_from"
+        android:background="@drawable/btn_white"
+        android:src="@drawable/icn_dropdown"
+        android:contentDescription="@string/from" />
+
+    <Button
+        android:id="@+id/btn_autocomplete_to"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/btn_white"
+        android:text="@string/to"
+        android:singleLine="true"
+        style="@style/place_pick_btn" />
+    
+    <ImageButton
+        android:id="@+id/btn_pick_to"
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btn_autocomplete_to"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/btn_autocomplete_to"
+        android:background="@drawable/btn_white"
+        android:src="@drawable/icn_dropdown"
+        android:contentDescription="@string/to" />
+
+    <Button 
+        android:id="@+id/btn_pick_date"
+        android:gravity="left|center_vertical"
+        android:layout_below="@+id/btn_autocomplete_to"
+        android:layout_alignLeft="@+id/btn_autocomplete_to"
+        android:layout_marginTop="21dp"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@drawable/btn_white"
+        android:paddingLeft="16dp"
+        android:singleLine="true"
+        style="@style/place_pick_btn"
+        android:text="@string/when" />
+
+    <ImageButton
+        android:id="@+id/icn_pick_date"
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btn_pick_date"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/btn_pick_date"
+        android:background="@drawable/btn_white"
+        android:onClick="showTimePickerDialog"
+        android:src="@drawable/icn_datepicker"
+        android:contentDescription="@string/date" />
+
+    <ImageView
+        android:id="@+id/logo_fahrgemeinschaft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_autocomplete_from"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/logo_fahrgemeinschaft"
+        android:contentDescription="@string/app_name" />
+
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true" >
+
+        <ImageButton
+            android:id="@+id/btn_mitfahren"
+            android:layout_width="140dp"
+            android:layout_weight="1"
+            android:layout_height="80dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginRight="@dimen/medium"
+            android:background="@drawable/btn_dark_green"
+            android:src="@drawable/btn_suchen"
+            android:contentDescription="@string/search" />
+
+        <ImageButton
+            android:id="@+id/btn_selberfahren"
+            android:layout_width="140dp"
+            android:layout_weight="1"
+            android:layout_height="80dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="@dimen/medium"
+            android:background="@drawable/btn_medium_green"
+            android:src="@drawable/btn_anbieten"
+            android:contentDescription="@string/offer" />
+
+    </LinearLayout>
+</RelativeLayout>
