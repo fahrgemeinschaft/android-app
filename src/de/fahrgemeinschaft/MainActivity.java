@@ -7,8 +7,6 @@
 
 package de.fahrgemeinschaft;
 
-import java.util.Date;
-
 import org.teleportr.ConnectorService;
 import org.teleportr.Ride;
 import org.teleportr.Ride.COLUMNS;

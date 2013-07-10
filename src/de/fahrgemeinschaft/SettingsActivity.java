@@ -16,7 +16,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 
@@ -26,6 +25,7 @@ public class SettingsActivity extends SherlockPreferenceActivity
     private SharedPreferences prefs;
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -34,6 +34,7 @@ public class SettingsActivity extends SherlockPreferenceActivity
         prefs.registerOnSharedPreferenceChangeListener(this);
     }
 
+    @SuppressWarnings("deprecation")
     void setSummaries() {
         ListPreference list = (ListPreference) findPreference("refresh");
         list.setSummary(getResources().getString(

@@ -44,9 +44,9 @@
     <string name="seats_3">three seats</string>
     <string name="seats_many">many seats</string>
 
-    <string name="email_hint">eMail Address</string>
-    <string name="landline_hint">Landline Number</string>
-    <string name="mobile_hint">Mobile Number</string>
+    <string name="email_hint">eMail</string>
+    <string name="landline_hint">Landline</string>
+    <string name="mobile_hint">Mobile</string>
     <string name="plate_hint">Numberplate</string>
     <string name="name_hint">Surname</string>
     <string name="reccurence">recurring ride: every week at</string>
