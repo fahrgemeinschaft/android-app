@@ -45,7 +45,6 @@ public abstract class SpinningZebraListFragment
     }
 
     private RotateAnimation rotate;
-    private boolean spinning;
     protected View spinner;
     private Uri uri;
 
@@ -91,15 +90,7 @@ public abstract class SpinningZebraListFragment
             public View getView(int position, View v, ViewGroup parent) {
                 if (!spinningEnabled || position < getCount() - 1)
                     v = super.getView(position, v, parent);
-                else {
-                    if (v == null) v = getSpinner();
-                    if (spinning)
-                        getSpinner().findViewById(R.id.progress)
-                                .startAnimation(rotate);
-                    else
-                        getSpinner().findViewById(R.id.progress)
-                                .clearAnimation();
-                }
+                else if (v == null) v = getSpinner();
                 if (position % 2 == 0) {
                     v.setBackgroundColor(getResources().getColor(
                             R.color.medium_green));
@@ -155,13 +146,11 @@ public abstract class SpinningZebraListFragment
         getSpinner().findViewById(R.id.progress).startAnimation(rotate);
         ((TextView) spinner.findViewById(R.id.small)).setText(smallText);
         ((TextView) spinner.findViewById(R.id.large)).setText(bigText);
-        spinning = true;
     }
     
     public void stopSpinning(String smallText) {
         getSpinner().findViewById(R.id.progress).clearAnimation();
         ((TextView) spinner.findViewById(R.id.small)).setText(smallText);
-        spinning = false;
     }
 
     public View getSpinner() {
