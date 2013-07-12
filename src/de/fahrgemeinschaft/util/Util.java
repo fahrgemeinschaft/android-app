@@ -2,11 +2,10 @@ package de.fahrgemeinschaft.util;
 
 import java.util.ArrayList;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.teleportr.Ride;
 import org.teleportr.Ride.COLUMNS;
-
-import de.fahrgemeinschaft.R;
-import de.fahrgemeinschaft.R.drawable;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -20,6 +19,7 @@ import android.preference.PreferenceManager;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents.Insert;
 import android.widget.Toast;
+import de.fahrgemeinschaft.R;
 
 public class Util {
 
@@ -32,33 +32,39 @@ public class Util {
         Intent contact = new Intent(Intent.ACTION_INSERT, Contacts.CONTENT_URI);
         contact.putExtra(Insert.NAME, route);
         ArrayList<Intent> intents = new ArrayList<Intent>();
-        String dingens = Ride.get("mobile", c.getString(COLUMNS.DETAILS));
-        if (dingens != null && dingens.startsWith("1")) {
-            System.out.println(dingens);
-            dingens = dingens.substring(1);
-            contact.putExtra(Insert.PHONE, dingens);
-            Intent call = labeledIntent(callIntent(dingens),
-                    R.drawable.ic_call, dingens, ctx);
-            if (call != null) intents.add(call);
-            Intent sms = labeledIntent(smsIntent(dingens, route),
-                    R.drawable.ic_sms, dingens, ctx);
-            if (sms != null) intents.add(sms);
-        }
-        dingens = Ride.get("landline", c.getString(COLUMNS.DETAILS));
-        if (dingens != null && dingens.startsWith("1")) {
-            dingens = dingens.substring(1);
-            contact.putExtra(Insert.SECONDARY_PHONE, dingens);
-            Intent call = labeledIntent(callIntent(dingens),
-                    R.drawable.ic_dial, dingens, ctx);
-            if (call != null) intents.add(call);
-        }
-        dingens = Ride.get("mail", c.getString(COLUMNS.DETAILS));
-        if (dingens != null && dingens.startsWith("1")) {
-            dingens = dingens.substring(1);
-            contact.putExtra(Insert.EMAIL, dingens);
-            Intent mail = labeledIntent(mailIntent(dingens, route),
-                    R.drawable.ic_mail, dingens, ctx);
-            if (mail != null) intents.add(mail);
+        JSONObject details = Ride.getDetails(c);
+        String dingens;
+        try {
+            dingens = details.getString("mobile");
+            if (dingens != null && dingens.startsWith("1")) {
+                System.out.println(dingens);
+                dingens = dingens.substring(1);
+                contact.putExtra(Insert.PHONE, dingens);
+                Intent call = labeledIntent(callIntent(dingens),
+                        R.drawable.ic_call, dingens, ctx);
+                if (call != null) intents.add(call);
+                Intent sms = labeledIntent(smsIntent(dingens, route),
+                        R.drawable.ic_sms, dingens, ctx);
+                if (sms != null) intents.add(sms);
+            }
+            dingens = details.getString("landline");
+            if (dingens != null && dingens.startsWith("1")) {
+                dingens = dingens.substring(1);
+                contact.putExtra(Insert.SECONDARY_PHONE, dingens);
+                Intent call = labeledIntent(callIntent(dingens),
+                        R.drawable.ic_dial, dingens, ctx);
+                if (call != null) intents.add(call);
+            }
+            dingens = details.getString("mail");
+            if (dingens != null && dingens.startsWith("1")) {
+                dingens = dingens.substring(1);
+                contact.putExtra(Insert.EMAIL, dingens);
+                Intent mail = labeledIntent(mailIntent(dingens, route),
+                        R.drawable.ic_mail, dingens, ctx);
+                if (mail != null) intents.add(mail);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
         if (intents.size() == 0) {
             Toast.makeText(ctx, "private", Toast.LENGTH_SHORT).show();

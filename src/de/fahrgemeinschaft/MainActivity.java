@@ -140,10 +140,7 @@ public class MainActivity extends SherlockFragmentActivity
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
         case R.id.profile:
-            getSupportFragmentManager().beginTransaction()
-                .replace(R.id.layout, new ProfileFragment())
-                .addToBackStack("")
-            .commit();
+            showFragment(new ProfileFragment());
             return true;
         case android.R.id.home:
             if (getSupportFragmentManager().getBackStackEntryCount() > 0)
@@ -159,7 +156,7 @@ public class MainActivity extends SherlockFragmentActivity
             .setCustomAnimations(
                 R.anim.slide_in_right, R.anim.do_nix,
                 R.anim.do_nix, R.anim.slide_out_right)
-            .replace(R.id.container, fragment, null)
+            .add(R.id.container, fragment, null)
             .addToBackStack(null)
         .commit();
     }

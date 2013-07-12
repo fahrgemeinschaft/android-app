@@ -142,14 +142,19 @@ public abstract class SpinningZebraListFragment
     }
 
     public void startSpinning(String smallText, String bigText) {
-        getSpinner().findViewById(R.id.progress).startAnimation(rotate);
-        ((TextView) spinner.findViewById(R.id.small)).setText(smallText);
-        ((TextView) spinner.findViewById(R.id.large)).setText(bigText);
+        if (getActivity() != null) {
+            getSpinner().findViewById(R.id.progress).startAnimation(rotate);
+            ((TextView) spinner.findViewById(R.id.small)).setText(smallText);
+            ((TextView) spinner.findViewById(R.id.large)).setText(bigText);
+        }
     }
     
     public void stopSpinning(String smallText) {
-        getSpinner().findViewById(R.id.progress).clearAnimation();
-        ((TextView) spinner.findViewById(R.id.small)).setText(smallText);
+        if (getActivity() != null) {
+            getSpinner().findViewById(R.id.progress).clearAnimation();
+            ((TextView) spinner.findViewById(R.id.small)).setText(smallText);
+            ((TextView) spinner.findViewById(R.id.large)).setText("");
+        }
     }
 
     public View getSpinner() {

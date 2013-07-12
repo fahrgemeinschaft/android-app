@@ -43,7 +43,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.android.volley.AuthFailureError;
@@ -115,9 +114,7 @@ public class RideDetailsFragment extends SherlockFragment
     @Override
     public void onViewCreated(View layout, Bundle savedInstanceState) {
         super.onViewCreated(layout, savedInstanceState);
-        Log.d(TAG, "on create detail view " + savedInstanceState);
         pager = (ViewPager) layout.findViewById(R.id.pager);
-        
         pager.setAdapter(new BasePagerAdapter() {
             
             @Override
@@ -174,8 +171,13 @@ public class RideDetailsFragment extends SherlockFragment
                             .setImageResource(R.drawable.icn_seats_white_many);
                     break;
                 }
-                view.details.setText(Ride.get("details",
-                        cursor.getString(COLUMNS.DETAILS)));
+                try {
+                    System.out.println("foo" + cursor.getString(COLUMNS.DETAILS));
+                    view.details.setText(
+                            Ride.getDetails(cursor).getString("comment"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
                 getActivity().getSupportLoaderManager()
                     .initLoader((int) cursor.getLong(0), null, view);
@@ -357,9 +359,8 @@ public class RideDetailsFragment extends SherlockFragment
           } catch (JSONException e) {
               e.printStackTrace();
           } catch (ParseException e) {
-            Toast.makeText(getContext(), e.getMessage(), 300).show();
-            e.printStackTrace();
-        }
+              e.printStackTrace();
+          }
         }
     }
 
