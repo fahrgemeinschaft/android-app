@@ -24,7 +24,6 @@ import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.os.IBinder;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -95,7 +94,6 @@ public class RideListFragment extends SpinningZebraListFragment
 
     @Override
     public void onBackgroundSearch(Ride query) {
-        Log.d("FOO", "on background SEARCH");
         startSpinning(getString(R.string.searching),
                 day.format(query.getDep()) + " "
                 + date.format(query.getDep()));
@@ -103,7 +101,6 @@ public class RideListFragment extends SpinningZebraListFragment
 
     @Override
     public void onBackgroundSuccess(Ride query, int numberOfRidesFound) {
-        Log.d("FOO", "on background SUCCESS");
         if (numberOfRidesFound == 0) {
             if (getActivity() != null) {
                 Crouton.makeText(getActivity(), 
@@ -113,12 +110,11 @@ public class RideListFragment extends SpinningZebraListFragment
             }
             stopSpinning(getString(R.string.nothing));
         }
-        stopSpinning("click for weida");
+        stopSpinning("click for weida..");
     }
 
     @Override
     public void onBackgroundFail(Ride query, String reason) {
-        Log.d("FOO", "on background FAIL");
         if (getActivity() != null) {
             Crouton.makeText(getActivity(), 
                     reason + " while "

@@ -87,7 +87,6 @@ public class MainActivity extends SherlockFragmentActivity
             if (cursor.getCount() > 0) {
                 cursor.moveToLast();
                 long latest_dep = cursor.getLong(COLUMNS.DEPARTURE);
-                System.out.println(" already until " + latest_dep);
                 if (latest_dep > main.ride.getArr()) // inc time window
                     main.ride.arr(cursor.getLong(COLUMNS.DEPARTURE));
             }
@@ -95,6 +94,13 @@ public class MainActivity extends SherlockFragmentActivity
             setTitle("MyRides");
             details.swapCursor(cursor);
         }
+    }
+
+    @Override
+    public void onSpinningWheelClick() {
+        main.ride.arr(main.ride.getArr() + 2 * 24 * 3600 * 1000).store(this);
+        startService(new Intent(this, ConnectorService.class)
+        .setAction(ConnectorService.SEARCH));
     }
 
     @Override
@@ -107,13 +113,6 @@ public class MainActivity extends SherlockFragmentActivity
     public void onPageSelected(final int position) {
         results.getListView().setSelection(position);
         details.setSelection(position);
-    }
-
-    @Override
-    public void onSpinningWheelClick() {
-        main.ride.arr(main.ride.getArr() + 2 * 24 * 3600 * 1000).store(this);
-        startService(new Intent(this, ConnectorService.class)
-                .setAction(ConnectorService.SEARCH));
     }
 
 

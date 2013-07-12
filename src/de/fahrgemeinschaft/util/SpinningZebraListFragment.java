@@ -16,7 +16,6 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -156,11 +155,9 @@ public abstract class SpinningZebraListFragment
     public View getSpinner() {
         if (spinner == null) {
             if (getView() != null) {
-                Log.d("FOO", "finding SPINNER");
                 spinner = getView().findViewById(R.id.spinner);
             }
             if (spinner == null) {
-                Log.d("FOO", "creating SPINNER ???");
                 spinner = getLayoutInflater(null).inflate(
                         R.layout.view_spinning_wheel, null, false);
             }
