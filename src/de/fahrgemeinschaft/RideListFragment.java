@@ -13,13 +13,8 @@ import java.util.Locale;
 
 import org.teleportr.ConnectorService;
 import org.teleportr.ConnectorService.BackgroundListener;
-import org.teleportr.Place;
 import org.teleportr.Ride;
 import org.teleportr.Ride.COLUMNS;
-
-import de.fahrgemeinschaft.util.SpinningZebraListFragment;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -29,10 +24,14 @@ import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.os.IBinder;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import de.fahrgemeinschaft.util.SpinningZebraListFragment;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class RideListFragment extends SpinningZebraListFragment
         implements ServiceConnection, BackgroundListener {
@@ -95,33 +94,38 @@ public class RideListFragment extends SpinningZebraListFragment
     }
 
     @Override
-    public void onBackgroundSearch(Place from, Place to, Date dep) {
-        if (getActivity() != null) {
-            Crouton.makeText(getActivity(), "searching " + date.format(dep)+" "
-                    + from.getName() +" -> "+ to.getName(), Style.INFO).show();
-            startSpinning();
-        }
+    public void onBackgroundSearch(Ride query) {
+        Log.d("FOO", "on background SEARCH");
+        startSpinning(getString(R.string.searching),
+                day.format(query.getDep()) + " "
+                + date.format(query.getDep()));
     }
 
     @Override
-    public void onBackgroundSuccess(int numberOfRidesFound) {
-        if (getActivity() != null) {
-            Crouton.makeText(getActivity(),
-                    "Found " + numberOfRidesFound + " results", Style.CONFIRM)
-                    .show();
-            stopSpinning();
+    public void onBackgroundSuccess(Ride query, int numberOfRidesFound) {
+        Log.d("FOO", "on background SUCCESS");
+        if (numberOfRidesFound == 0) {
+            if (getActivity() != null) {
+                Crouton.makeText(getActivity(), 
+                        getString(R.string.nothing) + " "
+                        + day.format(query.getDep()) + " "
+                        + date.format(query.getDep()), Style.INFO).show();
+            }
+            stopSpinning(getString(R.string.nothing));
         }
+        stopSpinning("click for weida");
     }
 
     @Override
-    public void onBackgroundFail(String reason) {
+    public void onBackgroundFail(Ride query, String reason) {
+        Log.d("FOO", "on background FAIL");
         if (getActivity() != null) {
-            Ride search_query = ((MainActivity) getActivity()).main.ride;
-            search_query.arr(search_query.getArr() - 2 * 24 * 3600 * 1000);
-            Crouton.makeText(getActivity(),
-                    "Schwerer Ausnahmefehlär " + reason, Style.ALERT).show();
-            stopSpinning();
+            Crouton.makeText(getActivity(), 
+                    reason + " while "
+                    + day.format(query.getDep()) + " "
+                    + date.format(query.getDep()), Style.ALERT).show();
         }
+        stopSpinning(reason);
     }
 
     @Override

@@ -16,12 +16,14 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 
@@ -42,9 +44,9 @@ public abstract class SpinningZebraListFragment
         this.spinningEnabled = spinningEnabled;
     }
 
-    private boolean spinning;
-    private View wheel;
     private RotateAnimation rotate;
+    private boolean spinning;
+    protected View spinner;
     private Uri uri;
 
     @Override
@@ -90,12 +92,13 @@ public abstract class SpinningZebraListFragment
                 if (!spinningEnabled || position < getCount() - 1)
                     v = super.getView(position, v, parent);
                 else {
-                    if (v == null) {
-                        v = getLayoutInflater(null).inflate(
-                                R.layout.view_spinning_wheel, parent, false);
-                        if (spinning) startSpinning();
-                        else stopSpinning();
-                    }
+                    if (v == null) v = getSpinner();
+                    if (spinning)
+                        getSpinner().findViewById(R.id.progress)
+                                .startAnimation(rotate);
+                    else
+                        getSpinner().findViewById(R.id.progress)
+                                .clearAnimation();
                 }
                 if (position % 2 == 0) {
                     v.setBackgroundColor(getResources().getColor(
@@ -148,29 +151,32 @@ public abstract class SpinningZebraListFragment
         ((CursorAdapter) getListAdapter()).swapCursor(rides);
     }
 
-    public void startSpinning() {
-        if (!spinning && getView() != null) {
-            wheel = getView().findViewById(R.id.progress);
-            if (wheel != null) wheel.startAnimation(rotate);
-        }
+    public void startSpinning(String smallText, String bigText) {
+        getSpinner().findViewById(R.id.progress).startAnimation(rotate);
+        ((TextView) spinner.findViewById(R.id.small)).setText(smallText);
+        ((TextView) spinner.findViewById(R.id.large)).setText(bigText);
         spinning = true;
     }
+    
+    public void stopSpinning(String smallText) {
+        getSpinner().findViewById(R.id.progress).clearAnimation();
+        ((TextView) spinner.findViewById(R.id.small)).setText(smallText);
+        spinning = false;
+    }
 
-    public void stopSpinning() {
-        if (wheel != null) {
-            wheel.clearAnimation();
-            spinning = false;
+    public View getSpinner() {
+        if (spinner == null) {
+            if (getView() != null) {
+                Log.d("FOO", "finding SPINNER");
+                spinner = getView().findViewById(R.id.spinner);
+            }
+            if (spinner == null) {
+                Log.d("FOO", "creating SPINNER ???");
+                spinner = getLayoutInflater(null).inflate(
+                        R.layout.view_spinning_wheel, null, false);
+            }
         }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> arg0) {
-        // TODO Auto-generated method stub
-    }
-    public interface ListFragmentCallback {
-        public void onLoadFinished(Fragment fragment, Cursor cursor);
-        public void onListItemClick(int position);
-        public void onSpinningWheelClick();
+        return spinner;
     }
 
     @Override
@@ -183,4 +189,13 @@ public abstract class SpinningZebraListFragment
             ((ListFragmentCallback) getActivity()).onSpinningWheelClick();
         }
     }
+
+    public interface ListFragmentCallback {
+        public void onLoadFinished(Fragment fragment, Cursor cursor);
+        public void onListItemClick(int position);
+        public void onSpinningWheelClick();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> arg0) {}
 }

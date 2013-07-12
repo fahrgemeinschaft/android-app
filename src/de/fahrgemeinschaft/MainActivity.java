@@ -111,7 +111,6 @@ public class MainActivity extends SherlockFragmentActivity
 
     @Override
     public void onSpinningWheelClick() {
-        System.out.println(" increase beyond " + main.ride.getArr());
         main.ride.arr(main.ride.getArr() + 2 * 24 * 3600 * 1000).store(this);
         startService(new Intent(this, ConnectorService.class)
                 .setAction(ConnectorService.SEARCH));
