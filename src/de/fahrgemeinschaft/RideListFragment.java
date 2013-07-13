@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import de.fahrgemeinschaft.util.SpinningZebraListFragment;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -116,10 +117,14 @@ public class RideListFragment extends SpinningZebraListFragment
     public void onBackgroundSuccess(Ride query, int numberOfRidesFound) {
         if (onScreen) {
             if (numberOfRidesFound == 0) {
-                Crouton.makeText(getActivity(), 
+//                Crouton.makeText(getActivity(), 
+//                        getString(R.string.nothing) + " "
+//                        + day.format(query.getDep()) + " "
+//                        + date.format(query.getDep()), Style.INFO).show();
+                Toast.makeText(getActivity(), 
                         getString(R.string.nothing) + " "
-                        + day.format(query.getDep()) + " "
-                        + date.format(query.getDep()), Style.INFO).show();
+                                + day.format(query.getDep()) + " "
+                                + date.format(query.getDep()), 300).show();
             }
             stopSpinning("click for weida..");
         }
@@ -141,7 +146,7 @@ public class RideListFragment extends SpinningZebraListFragment
     @Override
     public void onDetach() {
         System.out.println("detach ride list");
-        Crouton.cancelAllCroutons();
+//        Crouton.cancelAllCroutons();
         getActivity().unbindService(this);
         super.onDetach();
     }
