@@ -23,9 +23,11 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.os.IBinder;
+import android.support.v4.widget.CursorAdapter;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import de.fahrgemeinschaft.util.SpinningZebraListFragment;
@@ -42,6 +44,7 @@ public class RideListFragment extends SpinningZebraListFragment
     private static SimpleDateFormat time =
             new SimpleDateFormat("HH:mm", Locale.GERMANY);
     private String[] split;
+    private long currently_searching_date;
 
     @Override
     public void bindListItemView(View view, Cursor ride) {
@@ -78,6 +81,14 @@ public class RideListFragment extends SpinningZebraListFragment
         default:
             v.seats.setImageResource(R.drawable.icn_seats_white_many); break;
         }
+        long delta = ride.getLong(COLUMNS.DEPARTURE) - currently_searching_date;
+//        System.out.println("DELTA " + delta / 3600000);
+        if (delta > 0 && delta < 24*3600000) {
+            System.out.println("is refreshing ");
+            v.loading.setVisibility(View.VISIBLE);
+        } else {
+            v.loading.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -94,23 +105,29 @@ public class RideListFragment extends SpinningZebraListFragment
 
     @Override
     public void onBackgroundSearch(Ride query) {
-        startSpinning(getString(R.string.searching),
-                day.format(query.getDep()) + " "
-                + date.format(query.getDep()));
+        System.out.println("bg search ");
+        if (getActivity() != null && getView() != null) {
+            startSpinning(getString(R.string.searching),
+                    day.format(query.getDep()) + " "
+                            + date.format(query.getDep()));
+            currently_searching_date = query.getDep();
+            ((CursorAdapter) getListAdapter()).notifyDataSetChanged();
+        }
     }
 
     @Override
     public void onBackgroundSuccess(Ride query, int numberOfRidesFound) {
-        if (numberOfRidesFound == 0) {
-            if (getActivity() != null) {
+        System.out.println("bg success ");
+        if (getActivity() != null && getView() != null) {
+            if (numberOfRidesFound == 0) {
                 Crouton.makeText(getActivity(), 
                         getString(R.string.nothing) + " "
                         + day.format(query.getDep()) + " "
                         + date.format(query.getDep()), Style.INFO).show();
             }
-            stopSpinning(getString(R.string.nothing));
+            stopSpinning("click for weida..");
         }
-        stopSpinning("click for weida..");
+        currently_searching_date = 0;
     }
 
     @Override
@@ -122,6 +139,7 @@ public class RideListFragment extends SpinningZebraListFragment
                     + date.format(query.getDep()), Style.ALERT).show();
         }
         stopSpinning(reason);
+        currently_searching_date = 0;
     }
 
     @Override
@@ -142,15 +160,16 @@ public class RideListFragment extends SpinningZebraListFragment
 
     static class RideView extends RelativeLayout {
 
-        TextView from_city;
         TextView from_place;
-        TextView to_city;
+        TextView from_city;
         TextView to_place;
+        TextView to_city;
         ImageView seats;
         TextView price;
-        TextView day;
         TextView date;
         TextView time;
+        TextView day;
+        ProgressBar loading;
 
         public RideView(Context context, AttributeSet attrs) {
             super(context, attrs);
@@ -159,15 +178,16 @@ public class RideListFragment extends SpinningZebraListFragment
         @Override
         protected void onFinishInflate() {
             super.onFinishInflate();
-            from_city = (TextView) findViewById(R.id.from_city);
             from_place = (TextView) findViewById(R.id.from_place);
-            to_city = (TextView) findViewById(R.id.to_city);
+            from_city = (TextView) findViewById(R.id.from_city);
             to_place = (TextView) findViewById(R.id.to_place);
-            seats = (ImageView) findViewById(R.id.seats_icon);
+            to_city = (TextView) findViewById(R.id.to_city);
+            seats = (ImageView) findViewById(R.id.seats);
             price = (TextView) findViewById(R.id.price);
-            day = (TextView) findViewById(R.id.day);
             date = (TextView) findViewById(R.id.date);
             time = (TextView) findViewById(R.id.time);
+            day = (TextView) findViewById(R.id.day);
+            loading = (ProgressBar) findViewById(R.id.loading);
         }
     }
 }
