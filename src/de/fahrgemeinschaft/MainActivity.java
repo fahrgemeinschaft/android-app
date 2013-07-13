@@ -7,6 +7,11 @@
 
 package de.fahrgemeinschaft;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 import org.teleportr.ConnectorService;
 import org.teleportr.Ride;
 import org.teleportr.Ride.COLUMNS;
@@ -87,8 +92,18 @@ public class MainActivity extends SherlockFragmentActivity
             if (cursor.getCount() > 0) {
                 cursor.moveToLast();
                 long latest_dep = cursor.getLong(COLUMNS.DEPARTURE);
-                if (latest_dep > main.ride.getArr()) // inc time window
-                    main.ride.arr(cursor.getLong(COLUMNS.DEPARTURE));
+                System.out.println("ALREADY in CACHE until "
+                        + new SimpleDateFormat("dd.MM. HH:mm", Locale.GERMANY)
+                                .format(new Date(latest_dep)));
+                if (latest_dep > main.ride.getArr()) {// inc time window
+                    System.out.println("INC timewindow!");
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTimeInMillis(latest_dep);
+                    cal.set(Calendar.HOUR_OF_DAY, 0);
+                    cal.set(Calendar.MINUTE, 0);
+                    cal.set(Calendar.SECOND, 0);
+                    main.ride.arr(cal.getTimeInMillis()).store(this);
+                }
             }
         } else {
             setTitle("MyRides");
@@ -98,9 +113,13 @@ public class MainActivity extends SherlockFragmentActivity
 
     @Override
     public void onSpinningWheelClick() {
+        System.out.println("arr: " + new SimpleDateFormat("dd.MM. HH:mm", Locale.GERMANY)
+            .format(new Date(main.ride.getArr())));
         main.ride.arr(main.ride.getArr() + 2 * 24 * 3600 * 1000).store(this);
+        System.out.println("arr after: " + new SimpleDateFormat("dd.MM. HH:mm", Locale.GERMANY)
+            .format(new Date(main.ride.getArr())));
         startService(new Intent(this, ConnectorService.class)
-        .setAction(ConnectorService.SEARCH));
+            .setAction(ConnectorService.SEARCH));
     }
 
     @Override

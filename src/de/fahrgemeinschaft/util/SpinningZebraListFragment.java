@@ -7,6 +7,7 @@
 
 package de.fahrgemeinschaft.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -46,6 +47,10 @@ public abstract class SpinningZebraListFragment
     private RotateAnimation rotate;
     protected View spinner;
     private Uri uri;
+    public boolean onScreen;
+    private String smallText;
+    private String largeText;
+    private boolean spinning;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,7 +94,19 @@ public abstract class SpinningZebraListFragment
             public View getView(int position, View v, ViewGroup parent) {
                 if (!spinningEnabled || position < getCount() - 1)
                     v = super.getView(position, v, parent);
-                else if (v == null) v = getSpinner();
+                else {
+                    if (v == null) {
+                        v = getLayoutInflater(null).inflate(
+                                R.layout.view_spinning_wheel, parent, false);
+                    }
+                    ((TextView) v.findViewById(R.id.small)).setText(smallText);
+                    ((TextView) v.findViewById(R.id.large)).setText(largeText);
+                    if (spinning && onScreen) {
+                        v.findViewById(R.id.progress).startAnimation(rotate);
+                    } else if (onScreen) {
+                        v.findViewById(R.id.progress).clearAnimation();
+                    }
+                }
                 if (position % 2 == 0) {
                     v.setBackgroundColor(getResources().getColor(
                             R.color.medium_green));
@@ -122,6 +139,7 @@ public abstract class SpinningZebraListFragment
         if (uri != null) {
             getLoaderManager().initLoader(0, null, this);
         }
+        stopSpinning("click here");
     }
 
     public void load(Uri uri) {
@@ -141,34 +159,22 @@ public abstract class SpinningZebraListFragment
         ((CursorAdapter) getListAdapter()).swapCursor(rides);
     }
 
-    public void startSpinning(String smallText, String bigText) {
-        if (getActivity() != null) {
-            getSpinner().findViewById(R.id.progress).startAnimation(rotate);
-            ((TextView) spinner.findViewById(R.id.small)).setText(smallText);
-            ((TextView) spinner.findViewById(R.id.large)).setText(bigText);
+    public void startSpinning(String smallText, String largeText) {
+        this.smallText = smallText;
+        this.largeText = largeText;
+        spinning = true;
+        if (onScreen) {
+            System.out.println("notify dataset changed");
+            ((CursorAdapter) getListAdapter()).notifyDataSetChanged();
         }
     }
     
     public void stopSpinning(String smallText) {
-        if (getActivity() != null) {
-            getSpinner().findViewById(R.id.progress).clearAnimation();
-            ((TextView) spinner.findViewById(R.id.small)).setText(smallText);
-            ((TextView) spinner.findViewById(R.id.large)).setText("");
-        }
+        this.smallText = smallText;
+        this.largeText = "";
+        spinning = false;
     }
 
-    public View getSpinner() {
-        if (spinner == null) {
-            if (getView() != null) {
-                spinner = getView().findViewById(R.id.spinner);
-            }
-            if (spinner == null) {
-                spinner = getLayoutInflater(null).inflate(
-                        R.layout.view_spinning_wheel, null, false);
-            }
-        }
-        return spinner;
-    }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
@@ -179,6 +185,19 @@ public abstract class SpinningZebraListFragment
         } else {
             ((ListFragmentCallback) getActivity()).onSpinningWheelClick();
         }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        onScreen = true;
+        super.onAttach(activity);
+    }
+
+    @Override
+    public void onDetach() {
+        System.out.println("detach spinning zebra");
+        onScreen = false;
+        super.onDetach();
     }
 
     public interface ListFragmentCallback {

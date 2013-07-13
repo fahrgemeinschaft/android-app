@@ -23,7 +23,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.os.IBinder;
-import android.support.v4.widget.CursorAdapter;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -105,20 +104,17 @@ public class RideListFragment extends SpinningZebraListFragment
 
     @Override
     public void onBackgroundSearch(Ride query) {
-        System.out.println("bg search ");
-        if (getActivity() != null && getView() != null) {
+        if (onScreen) {
             startSpinning(getString(R.string.searching),
                     day.format(query.getDep()) + " "
                             + date.format(query.getDep()));
             currently_searching_date = query.getDep();
-            ((CursorAdapter) getListAdapter()).notifyDataSetChanged();
         }
     }
 
     @Override
     public void onBackgroundSuccess(Ride query, int numberOfRidesFound) {
-        System.out.println("bg success ");
-        if (getActivity() != null && getView() != null) {
+        if (onScreen) {
             if (numberOfRidesFound == 0) {
                 Crouton.makeText(getActivity(), 
                         getString(R.string.nothing) + " "
@@ -132,26 +128,23 @@ public class RideListFragment extends SpinningZebraListFragment
 
     @Override
     public void onBackgroundFail(Ride query, String reason) {
-        if (getActivity() != null) {
+        if (onScreen) {
             Crouton.makeText(getActivity(), 
                     reason + " while "
                     + day.format(query.getDep()) + " "
                     + date.format(query.getDep()), Style.ALERT).show();
+            stopSpinning(reason);
         }
-        stopSpinning(reason);
         currently_searching_date = 0;
     }
 
     @Override
     public void onDetach() {
+        System.out.println("detach ride list");
+        Crouton.cancelAllCroutons();
         getActivity().unbindService(this);
         super.onDetach();
     }
-
-    public void onDestroy() {
-        Crouton.clearCroutonsForActivity(getActivity());
-        super.onDestroy();
-      }
 
     @Override
     public void onServiceDisconnected(ComponentName name) {}

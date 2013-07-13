@@ -37,14 +37,14 @@
         android:layout_marginTop="-8dp"
         style="@style/dark.Bold"
     />
-    
-    <ImageView
-        android:id="@+id/ride_refresh"
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="@dimen/large"
+        android:layout_height="@dimen/large"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
-        android:src="@drawable/icn_ride_refresh"
     />
     <View
         android:id="@+id/line"
@@ -83,7 +83,6 @@
         android:layout_alignParentBottom="true"
         android:background="@color/opacity_white"
     />
-
     <TextView
         android:id="@+id/price"
         android:layout_marginLeft="190dp"
@@ -102,21 +101,16 @@
         android:layout_toRightOf="@id/currency"
         android:layout_alignParentBottom="true"
         style="@style/light.Large.Bold"
-        android:text="€"
+        android:text="@string/currency"
     />
     <ImageView
-        android:id="@+id/seats_icon"
+        android:id="@+id/seats"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="5dp"
         android:layout_marginBottom="0dp"
         android:src="@drawable/ic_seats"
-    />
-    <TextView
-        android:id="@+id/seats"
-        android:layout_toLeftOf="@id/seats_icon"
-        android:layout_alignParentBottom="true"
-        style="@style/dark.Large.Bold"
+        android:contentDescription="@string/seats"
     />
     <View
         android:layout_height="0dp"
