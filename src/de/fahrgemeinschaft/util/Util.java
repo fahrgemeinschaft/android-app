@@ -26,7 +26,8 @@ public class Util {
     public static void openContactOptionsChooserDialog(Context ctx, Cursor c) {
         Intent web = new Intent(Intent.ACTION_VIEW, Uri.parse(
                 "http://www.fahrgemeinschaft.de/tripdetails.php?trip="
-                        + c.getString(12))).setClass(ctx, WebActivity.class);
+                        + c.getString(COLUMNS.REF)))
+                .setClass(ctx, WebActivity.class);
         String route = c.getString(COLUMNS.FROM_NAME)
                 + " -> " + c.getString(COLUMNS.TO_NAME);
         Intent contact = new Intent(Intent.ACTION_INSERT, Contacts.CONTENT_URI);
