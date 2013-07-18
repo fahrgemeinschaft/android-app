@@ -170,7 +170,9 @@ public class MainActivity extends SherlockFragmentActivity
         case android.R.id.home:
             if (getSupportFragmentManager().getBackStackEntryCount() > 0)
                 getSupportFragmentManager().popBackStack();
-            else finish();
+            else {
+                showFragment(new AboutFragment());
+            }
             return true;
         }
         return false;
