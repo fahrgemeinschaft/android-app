@@ -18,6 +18,7 @@ import android.preference.ListPreference;
 import android.preference.PreferenceManager;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import com.actionbarsherlock.view.MenuItem;
 
 public class SettingsActivity extends SherlockPreferenceActivity
         implements OnSharedPreferenceChangeListener {
@@ -51,5 +52,11 @@ public class SettingsActivity extends SherlockPreferenceActivity
             prefs.edit()
                     .putLong("cleanup", System.currentTimeMillis()).commit();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        finish();
+        return true;
     }
 }
