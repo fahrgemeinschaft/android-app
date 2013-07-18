@@ -62,8 +62,10 @@ public class EditRideActivity extends SherlockFragmentActivity
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        cursor.moveToFirst();
-        ride = new Ride(cursor, this);
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            ride = new Ride(cursor, this);
+        }
         initFragments();
     }
 
@@ -74,8 +76,10 @@ public class EditRideActivity extends SherlockFragmentActivity
                 .findFragmentById(R.id.fragment2);
         EditRideFragment3 f3 = (EditRideFragment3) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment3);
-        f1.setRide(ride);
-        f2.setRide(ride);
+        if (ride != null) {
+            f1.setRide(ride);
+            f2.setRide(ride);
+        }
     }
 
     @Override
