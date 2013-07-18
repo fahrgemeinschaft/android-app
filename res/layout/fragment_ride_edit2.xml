@@ -36,12 +36,11 @@
         android:text="@string/reccurence"
         android:textColor="#FFFFFF" />
 
-    <LinearLayout
-        android:id="@+id/recurrence"
+    <de.fahrgemeinschaft.util.ReoccuringWeekDaysView
+        android:id="@+id/reoccur"
         android:layout_width="match_parent"
         android:layout_height="@dimen/xlarge"
-        android:orientation="horizontal" >
-    </LinearLayout>
+        android:orientation="horizontal" />
 
     <de.fahrgemeinschaft.util.EditTextImageButton
         android:id="@+id/price"

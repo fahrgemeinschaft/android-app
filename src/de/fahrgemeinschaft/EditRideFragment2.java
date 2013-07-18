@@ -7,7 +7,6 @@
 
 package de.fahrgemeinschaft;
 
-import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -18,24 +17,20 @@ import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
-import android.content.Context;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
 import de.fahrgemeinschaft.util.ButtonImageButton;
 import de.fahrgemeinschaft.util.EditTextImageButton;
+import de.fahrgemeinschaft.util.ReoccuringWeekDaysView;
 
 public class EditRideFragment2 extends SherlockFragment 
         implements OnDateSetListener, OnTimeSetListener {
@@ -43,7 +38,7 @@ public class EditRideFragment2 extends SherlockFragment
     private Ride ride; 
     private ButtonImageButton date;
     private ButtonImageButton time;
-    private LinearLayout recurrence;
+    private ReoccuringWeekDaysView reoccur;
     private EditTextImageButton price;
 
     @Override
@@ -63,20 +58,15 @@ public class EditRideFragment2 extends SherlockFragment
         time.icn.setOnClickListener(pickTime);
         price = (EditTextImageButton) v.findViewById(R.id.price);
         price.text.setOnFocusChangeListener(onPriceChange);
-        
-        recurrence = (LinearLayout) v.findViewById(R.id.recurrence);
-        String[] weekDays = new DateFormatSymbols().getShortWeekdays();
-        for (int i = 2; i <= weekDays.length; i++) {
-            TextView day = makeRecurringDayButton(getActivity());
-            day.setText(weekDays[i < weekDays.length? i : 1].substring(0, 2));
-            recurrence.addView(day);
-        }
+        reoccur = (ReoccuringWeekDaysView) v.findViewById(R.id.reoccur);
     }
 
     public void setRide(Ride ride) {
         this.ride = ride;
+        System.out.println("fragment 2 set ride");
         setPrice(ride.getPrice());
         setDeparture(ride.getDep());
+        reoccur.setDays(ride.getDetails());
     }
 
     protected void setPrice(int p) {
@@ -167,31 +157,4 @@ public class EditRideFragment2 extends SherlockFragment
         cal.set(Calendar.MINUTE, minute);
         setDeparture(cal.getTime().getTime());
     }
-
-
-
-    private TextView makeRecurringDayButton(Context ctx) {
-        TextView day = new TextView(ctx);
-        day.setOnClickListener(toggleSelectedState);
-        day.setLayoutParams(dayButtonlayoutParams());
-        day.setTextAppearance(getActivity(), R.style.dark_Bold);
-        day.setBackgroundResource(R.drawable.btn_night);
-        day.setGravity(Gravity.CENTER);
-        return day;
-    }
-
-    OnClickListener toggleSelectedState = new OnClickListener() {
-        
-        @Override
-        public void onClick(View v) {
-            v.setSelected(!v.isSelected());
-        }
-    };
-
-    private LayoutParams dayButtonlayoutParams() {
-        LayoutParams lp = new LayoutParams(0, LayoutParams.MATCH_PARENT);
-        lp.weight = 1;
-        return lp;
-    }
-
 }
