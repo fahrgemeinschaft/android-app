@@ -30,7 +30,7 @@ public class SettingsActivity extends SherlockPreferenceActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
+        getSupportActionBar().setHomeButtonEnabled(true);
         addPreferencesFromResource(R.xml.settings);
         prefs.registerOnSharedPreferenceChangeListener(this);
     }

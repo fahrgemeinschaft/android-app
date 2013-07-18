@@ -63,6 +63,7 @@ public class MainFragment extends SherlockFragment
 
         if (savedInstanceState != null) {
             ride = savedInstanceState.getParcelable("ride");
+            ride.setContext(getActivity());
             from.setText(ride.getFrom().getName());
             to.setText(ride.getTo().getName());
             setDateButtonText(ride.getDep());

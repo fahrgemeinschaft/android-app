@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.os.IBinder;
+import android.support.v4.widget.CursorAdapter;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -110,6 +111,7 @@ public class RideListFragment extends SpinningZebraListFragment
                     day.format(query.getDep()) + " "
                             + date.format(query.getDep()));
             currently_searching_date = query.getDep();
+            ((CursorAdapter)getListAdapter()).notifyDataSetChanged();
         }
     }
 
@@ -124,7 +126,8 @@ public class RideListFragment extends SpinningZebraListFragment
                 Toast.makeText(getActivity(), 
                         getString(R.string.nothing) + " "
                                 + day.format(query.getDep()) + " "
-                                + date.format(query.getDep()), 300).show();
+                                + date.format(query.getDep()),
+                                Toast.LENGTH_SHORT).show();
             }
             stopSpinning("click for weida..");
         }
