@@ -26,6 +26,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.CursorAdapter;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -64,6 +65,11 @@ public class MainActivity extends SherlockFragmentActivity
 
     @Override
     public void onClick(View v) {
+        if (main.ride.getFrom() == null || main.ride.getTo() == null) {
+            Toast.makeText(this, getString(R.string.uncomplete),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
         switch (v.getId()) {
         case R.id.btn_selberfahren:
             Uri uri = main.ride.type(Ride.OFFER).mode(Ride.Mode.CAR).seats(3)
