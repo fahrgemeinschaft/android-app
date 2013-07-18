@@ -93,7 +93,7 @@ public class MainActivity extends SherlockFragmentActivity
     @Override
     public void onLoadFinished(Fragment fragment, Cursor cursor) {
         if (fragment.equals(results)) {
-            setTitle("Results");
+            setTitle(R.string.results);
             details.swapCursor(cursor);
             if (cursor.getCount() > 0) {
                 cursor.moveToLast();
@@ -112,7 +112,7 @@ public class MainActivity extends SherlockFragmentActivity
                 }
             }
         } else {
-            setTitle("MyRides");
+            setTitle(R.string.my_rides);
             details.swapCursor(cursor);
         }
     }

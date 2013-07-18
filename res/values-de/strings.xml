@@ -20,7 +20,11 @@
     <string name="uncomplete">unvollständig</string>
     <string name="search">suchen</string>
     <string name="offer">anbieten</string>
-
+     <string name="uncomplete">uncomplete</string>
+    <string name="searching">suche für</string>
+    <string name="nothing">nixda gefunden für</string>
+    <string name="results">Suchergebnisse</string>
+    <string name="my_rides">Meine Fahrten</string>
     <string name="profile">Profil</string>
     <string name="settings">Einstellungen</string>
 

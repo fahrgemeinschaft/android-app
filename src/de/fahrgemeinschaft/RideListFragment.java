@@ -145,6 +145,7 @@ public class RideListFragment extends SpinningZebraListFragment
 
     @Override
     public void onDetach() {
+        getActivity().setTitle("");
         System.out.println("detach ride list");
 //        Crouton.cancelAllCroutons();
         getActivity().unbindService(this);
