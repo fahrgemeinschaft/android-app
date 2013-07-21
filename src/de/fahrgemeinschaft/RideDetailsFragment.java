@@ -183,6 +183,8 @@ public class RideDetailsFragment extends SherlockFragment
                     .initLoader((int) cursor.getLong(0), null, view);
                 
                 view.avatar.setImageResource(R.drawable.icn_view_user);
+                view.last_login.setText("");
+                view.reg_date.setText("");
                 
                 queue.add(new ProfileRequest(cursor.getString(COLUMNS.WHO),
                         view, RideDetailsFragment.this));
@@ -340,8 +342,10 @@ public class RideDetailsFragment extends SherlockFragment
                           + kvp.getJSONObject(2).getString("Value"));
                   Date since = lrdate.parse(user.getString("RegistrationDate"));
                   Date logon = lrdate.parse(user.getString("LastvisitDate"));
-                  reg_date.setText("Dabei seit: " + lwdate.format(since));
-                  last_login.setText("Letzter Login: " + lwhdate.format(logon));
+                  reg_date.setText(getContext().getString(
+                          R.string.member_since, lwdate.format(since)));
+                  last_login.setText(getContext().getString(
+                          R.string.last_login, lwhdate.format(logon)));
 //                  JSONArray rgd = user.getJSONArray("RegistrationDate");
 //                  reg_date.setText(user.getJSONArray("").getString("Value") + " " 
 //                          + kvp.getJSONObject(2).getString("Value"));

@@ -54,6 +54,8 @@
     <string name="plate_hint">Numberplate</string>
     <string name="name_hint">Surname</string>
     <string name="reccurence">recurring ride: every week at</string>
+    <string name="member_since">Member since %1$s</string>
+    <string name="last_login">Last login %1$s</string>
 
     <string name="visibility">Visibility</string>
     <string-array name="visibility">
