@@ -33,7 +33,7 @@ public class EditRideActivity extends SherlockFragmentActivity
         implements LoaderCallbacks<Cursor>, OnClickListener {
 
     private static final String TAG = "RideEdit";
-    private Ride ride;
+    public Ride ride;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +47,7 @@ public class EditRideActivity extends SherlockFragmentActivity
             initFragments();
         } else if (getIntent().getData() != null) {
             getSupportLoaderManager().initLoader(0, null, this);
+            ride = new Ride();
         } else {
             ride = new Ride();
             initFragments();

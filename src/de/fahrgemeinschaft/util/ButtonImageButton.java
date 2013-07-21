@@ -22,6 +22,8 @@ public class ButtonImageButton extends FrameLayout {
     public Button btn;
     public ImageButton icn;
 
+    private int ID = Integer.MAX_VALUE;
+
 
     public ButtonImageButton(Context ctx) {
         super(ctx);
@@ -32,6 +34,7 @@ public class ButtonImageButton extends FrameLayout {
         View.inflate(getContext(), R.layout.btn_button_image, this);
         icn = (ImageButton) findViewById(R.id.icon);
         btn = (Button) findViewById(R.id.text);
+        btn.setId(ID--);
     }
 
     public ButtonImageButton(Context context, AttributeSet attrs) {

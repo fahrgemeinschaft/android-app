@@ -44,5 +44,4 @@ public class EditTextImageButton extends FrameLayout {
                 android, "hint", R.string.app_name))));
     }
 
-
 }

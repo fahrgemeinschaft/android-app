@@ -23,6 +23,10 @@ import de.fahrgemeinschaft.R;
 
 public class Util {
 
+    private static final String EMAIL = "EMail";
+    private static final String MOBILE = "Mobile";
+    private static final String LANDLINE = "Landline";
+
     public static void openContactOptionsChooserDialog(Context ctx, Cursor c) {
         Intent web = new Intent(Intent.ACTION_VIEW, Uri.parse(
                 "http://www.fahrgemeinschaft.de/tripdetails.php?trip="
@@ -36,10 +40,9 @@ public class Util {
         JSONObject details = Ride.getDetails(c);
         String dingens;
         try {
-            dingens = details.getString("mobile");
-            if (dingens != null && dingens.startsWith("1")) {
-                System.out.println(dingens);
-                dingens = dingens.substring(1);
+            JSONObject privacy = details.getJSONObject("privacy");
+            dingens = details.getString(MOBILE);
+            if (dingens != null && privacy.getInt(MOBILE) == 1) {
                 contact.putExtra(Insert.PHONE, dingens);
                 Intent call = labeledIntent(callIntent(dingens),
                         R.drawable.ic_call, dingens, ctx);
@@ -48,16 +51,16 @@ public class Util {
                         R.drawable.ic_sms, dingens, ctx);
                 if (sms != null) intents.add(sms);
             }
-            dingens = details.getString("landline");
-            if (dingens != null && dingens.startsWith("1")) {
+            dingens = details.getString(LANDLINE);
+            if (dingens != null && privacy.getInt(LANDLINE) == 1) {
                 dingens = dingens.substring(1);
                 contact.putExtra(Insert.SECONDARY_PHONE, dingens);
                 Intent call = labeledIntent(callIntent(dingens),
                         R.drawable.ic_dial, dingens, ctx);
                 if (call != null) intents.add(call);
             }
-            dingens = details.getString("mail");
-            if (dingens != null && dingens.startsWith("1")) {
+            dingens = details.getString(EMAIL);
+            if (dingens != null && privacy.getInt(EMAIL) == 1) {
                 dingens = dingens.substring(1);
                 contact.putExtra(Insert.EMAIL, dingens);
                 Intent mail = labeledIntent(mailIntent(dingens, route),

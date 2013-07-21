@@ -63,7 +63,6 @@ public class EditRideFragment2 extends SherlockFragment
 
     public void setRide(Ride ride) {
         this.ride = ride;
-        System.out.println("fragment 2 set ride");
         setPrice(ride.getPrice());
         setDeparture(ride.getDep());
         reoccur.setDays(ride.getDetails());

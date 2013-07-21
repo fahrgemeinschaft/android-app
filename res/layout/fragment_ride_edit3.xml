@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/xlarge"
         android:hint="@string/name_hint"
-        android:inputType="textPersonName"
+        android:inputType="textCapWords"
         android:src="@drawable/icn_view_user" />
 
     <de.fahrgemeinschaft.util.EditTextVisibilityButton
@@ -33,7 +33,7 @@
         android:layout_height="@dimen/xlarge"
         android:layout_marginTop="@dimen/small"
         android:hint="@string/plate_hint"
-        android:inputType="text"
+        android:inputType="textCapCharacters"
         android:src="@drawable/icn_contact_kfz" />
 
     <de.fahrgemeinschaft.util.EditTextVisibilityButton
