@@ -34,7 +34,8 @@
             style="@style/dark.Large.Bold"
             android:layout_gravity="left"
             android:layout_weight="1"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_width="0dp" />
 
         <TextView
             android:id="@+id/price"
@@ -47,7 +48,7 @@
             style="@style/light.Large"
             android:layout_height="match_parent"
             android:paddingRight="3dp"
-            android:text="€" />
+            android:text="@string/currency" />
 
         <ImageView
             android:id="@+id/seats_icon"
@@ -106,7 +107,8 @@
                     android:layout_gravity="top|center_horizontal"
                     android:scaleType="centerInside"
                     android:src="@drawable/icn_view_user"
-                    android:background="@color/medium_green" />
+                    android:background="@color/medium_green"
+                    android:contentDescription="@string/username" />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -142,6 +144,14 @@
                 android:padding="@dimen/medium"
                 android:singleLine="false"
                 android:textColor="@color/opacity_black" />
+
+            <de.fahrgemeinschaft.util.ReoccuringWeekDaysView
+                android:id="@+id/reoccur"
+                android:clickable="false"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/xlarge"
+                android:orientation="horizontal" />
+
         </LinearLayout>
     </ScrollView>
 </view>

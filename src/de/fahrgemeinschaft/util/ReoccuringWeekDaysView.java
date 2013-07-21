@@ -17,13 +17,18 @@ import android.widget.TextView;
 
 public class ReoccuringWeekDaysView extends LinearLayout {
 
+    static final String android = "http://schemas.android.com/apk/res/android";
+
     public static final String[] DAYS = new String[] { "Monday", "Tuesday",
         "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
     };
     private JSONObject details;
 
+    private boolean clickable;
+
     public ReoccuringWeekDaysView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        clickable = attrs.getAttributeBooleanValue(android, "clickable", true);
         String[] weekDays = new DateFormatSymbols().getShortWeekdays();
         for (int i = 2; i <= weekDays.length; i++) {
             TextView day = makeRecurringDayButton(getContext());
@@ -38,16 +43,21 @@ public class ReoccuringWeekDaysView extends LinearLayout {
             JSONObject days = details.getJSONObject("reoccur");
             for (int i = 0; i < 7; i++) {
                 getChildAt(i).setSelected(days.getBoolean(DAYS[i]));
-                System.out.println("set " + i + days.getBoolean(DAYS[i]));
             }
         } catch (JSONException e) {
             e.printStackTrace();
+            clear();
         }
+    }
+
+    public void clear() {
+        for (int i = 0; i < 7; i++) getChildAt(i).setSelected(false);
     }
 
     private TextView makeRecurringDayButton(Context ctx) {
         TextView day = new TextView(ctx);
-        day.setOnClickListener(toggleSelectedState);
+        if (clickable)
+            day.setOnClickListener(toggleSelectedState);
         LayoutParams lp = new LayoutParams(0, LayoutParams.MATCH_PARENT);
         lp.weight = 1;
         day.setLayoutParams(lp);

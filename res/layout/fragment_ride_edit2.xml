@@ -38,6 +38,7 @@
 
     <de.fahrgemeinschaft.util.ReoccuringWeekDaysView
         android:id="@+id/reoccur"
+        android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="@dimen/xlarge"
         android:orientation="horizontal" />

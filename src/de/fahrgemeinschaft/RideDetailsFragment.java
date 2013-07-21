@@ -59,6 +59,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.calciumion.widget.BasePagerAdapter;
 
+import de.fahrgemeinschaft.util.ReoccuringWeekDaysView;
+
 public class RideDetailsFragment extends SherlockFragment
         implements Response.ErrorListener {
 
@@ -147,6 +149,7 @@ public class RideDetailsFragment extends SherlockFragment
                 view.day.setText(day.format(timestamp));
                 view.date.setText(date.format(timestamp));
                 view.time.setText(time.format(timestamp));
+                view.reoccur.setDays(Ride.getDetails(cursor));
 
                 view.price.setText("" + (cursor.getInt(COLUMNS.PRICE) / 100));
                 switch(cursor.getInt(COLUMNS.SEATS)){
@@ -188,7 +191,6 @@ public class RideDetailsFragment extends SherlockFragment
                 
                 queue.add(new ProfileRequest(cursor.getString(COLUMNS.WHO),
                         view, RideDetailsFragment.this));
-                
                 return view;
             }
 
@@ -239,6 +241,7 @@ public class RideDetailsFragment extends SherlockFragment
         private String url;
         TextView reg_date;
         TextView last_login;
+        ReoccuringWeekDaysView reoccur;
 
         public RideView(Context context, AttributeSet attrs) {
             super(context, attrs);
@@ -262,6 +265,7 @@ public class RideDetailsFragment extends SherlockFragment
             name = (TextView) findViewById(R.id.driver_name);
             reg_date = (TextView) findViewById(R.id.driver_registration_date);
             last_login = (TextView) findViewById(R.id.driver_active_date);
+            reoccur = (ReoccuringWeekDaysView) findViewById(R.id.reoccur);
             
             avatar.setOnClickListener(new OnClickListener() {
 
