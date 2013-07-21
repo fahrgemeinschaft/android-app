@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import org.teleportr.Place;
 import org.teleportr.Ride;
 
 import android.app.Activity;
@@ -64,8 +65,12 @@ public class MainFragment extends SherlockFragment
         if (savedInstanceState != null) {
             ride = savedInstanceState.getParcelable("ride");
             ride.setContext(getActivity());
-            from.setText(ride.getFrom().getName());
-            to.setText(ride.getTo().getName());
+            Place place = ride.getFrom();
+            if (place != null)
+                from.setText(place.getName());
+            place = ride.getTo();
+            if (place != null)
+                to.setText(place.getName());
             setDateButtonText(ride.getDep());
         } else {
             ride = new Ride(getActivity());
