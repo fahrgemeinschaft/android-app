@@ -22,10 +22,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.IBinder;
 import android.support.v4.widget.CursorAdapter;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -92,6 +94,16 @@ public class RideListFragment extends SpinningZebraListFragment
         }
         if (ride.getString(COLUMNS.WHO).equals("")) {
             view.findViewById(R.id.stub).setVisibility(View.VISIBLE);
+            final Uri edit_uri = Uri.parse(
+                    "content://de.fahrgemeinschaft/rides/" + ride.getLong(0));
+            view.findViewById(R.id.edit).setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getActivity(),
+                            EditRideActivity.class).setData(edit_uri));
+                }
+            });
         } else {
             view.findViewById(R.id.stub).setVisibility(View.GONE);
         }

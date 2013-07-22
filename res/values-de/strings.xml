@@ -29,6 +29,7 @@
     <string name="settings">Einstellungen</string>
     <string name="decrease_seats">Sitzplätze -1</string>
     <string name="edit">Bearbeiten</string>
+    <string name="stored">gespeichert</string>
 
     <string name="mode_car">Auto</string>
     <string name="mode_rail">Zug</string>

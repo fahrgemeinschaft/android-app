@@ -196,7 +196,7 @@ public class MainActivity extends SherlockFragmentActivity
             .setCustomAnimations(
                 R.anim.slide_in_right, R.anim.do_nix,
                 R.anim.do_nix, R.anim.slide_out_right)
-            .add(R.id.container, fragment, null)
+            .replace(R.id.container, fragment, null)
             .addToBackStack(null)
         .commit();
     }

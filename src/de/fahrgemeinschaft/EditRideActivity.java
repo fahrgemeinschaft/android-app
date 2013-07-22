@@ -16,9 +16,9 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -30,7 +30,6 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 public class EditRideActivity extends SherlockFragmentActivity
         implements LoaderCallbacks<Cursor>, OnClickListener {
 
-    private static final String TAG = "RideEdit";
     public Ride ride;
 
     @Override
@@ -44,8 +43,9 @@ public class EditRideActivity extends SherlockFragmentActivity
             ride.setContext(this);
         } else {
             ride = new Ride(this).type(Ride.OFFER);
-            if (getIntent().getData() != null)
+            if (getIntent().getData() != null) {
                 getSupportLoaderManager().initLoader(0, null, this);
+            }
         }
         initFragments();
         findViewById(R.id.publish).setOnClickListener(this);
@@ -82,7 +82,6 @@ public class EditRideActivity extends SherlockFragmentActivity
 
     @Override
     public void onLoaderReset(Loader<Cursor> arg0) {
-        Log.d(TAG, "onLoaderReset");
     }
 
     @Override
@@ -116,10 +115,16 @@ public class EditRideActivity extends SherlockFragmentActivity
 
     @Override
     public void onClick(View v) {
-        if (ride.getFrom() == null || ride.getTo() == null)
+        if (ride.getFrom() == null || ride.getTo() == null) {
             Crouton.makeText(this, getString(R.string.uncomplete), Style.INFO)
                 .show();
-        else ride.marked().store(this);
+        } else {
+            Toast.makeText(this, getString(R.string.stored), Toast.LENGTH_SHORT)
+                .show();
+            ride.marked().store(this);
+            startActivity(new Intent(this, MainActivity.class)
+                .setData(MainActivity.MY_RIDES_URI));
+        }
     }
 
     @Override
