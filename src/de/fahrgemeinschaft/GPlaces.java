@@ -152,9 +152,8 @@ public class GPlaces extends Connector {
 
 
     @Override
-    public int publish(Ride offer) throws Exception {
-        // TODO Auto-generated method stub
-        return 0;
+    public String publish(Ride offer) throws Exception {
+        return null;
     }
 
 

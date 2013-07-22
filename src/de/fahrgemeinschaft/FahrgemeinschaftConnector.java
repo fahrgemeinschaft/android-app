@@ -186,16 +186,24 @@ public class FahrgemeinschaftConnector extends Connector {
     }
 
     @Override
-    public int publish(Ride offer) throws Exception {
-        HttpURLConnection post = (HttpURLConnection)
-                new URL(endpoint + "/trip").openConnection();
-        post.setRequestMethod("POST");
+    public String publish(Ride offer) throws Exception {
+        HttpURLConnection post;
+        if (offer.getRef() == null) {
+            post = (HttpURLConnection) new URL(endpoint + "/trip")
+                .openConnection();
+            post.setRequestMethod("POST");
+        } else {
+            post = (HttpURLConnection) new URL(endpoint + "/trip/id/"
+                    + offer.getRef()).openConnection();
+            post.setRequestMethod("PUT");
+        }
         post.setRequestProperty("authkey", getAuth());
         post.setRequestProperty("apikey", APIKEY);
         post.setDoOutput(true);
         JSONObject json = new JSONObject();
 //        json.put("Smoker", "no");
         json.put("Triptype", "offer");
+        json.put("TripID", offer.getRef());
         json.put("IDuser", get("user"));
         json.put("Places", offer.getSeats());
         json.put("Price", offer.getPrice() / 100);
@@ -206,9 +214,11 @@ public class FahrgemeinschaftConnector extends Connector {
         String dep = fulldf.format(offer.getDep());
         json.put("Startdate", dep.subSequence(0, 8));
         json.put("Starttime", dep.subSequence(8, 12));
-        json.put("Description", offer.get("comment"));
-        json.put("Privacy", offer.getDetails().getJSONObject("privacy"));
-        json.put("Reoccur", offer.getDetails().getJSONObject("reoccur"));
+        json.put("Description", offer.get("Comment"));
+        if (!offer.getDetails().isNull("Privacy"))
+            json.put("Privacy", offer.getDetails().getJSONObject("Privacy"));
+        if (!offer.getDetails().isNull("Reoccur"))
+            json.put("Reoccur", offer.getDetails().getJSONObject("Reoccur"));
         ArrayList<JSONObject> routings = new ArrayList<JSONObject>();
         List<Place> stops = offer.getPlaces();
         int max = stops.size() - 1;
@@ -229,8 +239,9 @@ public class FahrgemeinschaftConnector extends Connector {
         out.flush();
         out.close();
         JSONObject response = loadJson(post);
-        System.out.println(response.getString("tripID"));
-        return 0;
+        if (!response.isNull("tripID")) {
+            return response.getString("tripID");
+        } else return null;
     }
 
     private JSONObject place(Place from) throws JSONException {
