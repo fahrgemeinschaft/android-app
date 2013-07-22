@@ -117,24 +117,7 @@ public class EditRideActivity extends SherlockFragmentActivity
 
     @Override
     public void onClick(View v) {
-        RemoteViews layout = new RemoteViews(getPackageName(),
-                R.layout.btn_button_image);
-        Intent i = new Intent(Intent.ACTION_EDIT, getIntent().getData());
-        layout.setOnClickPendingIntent(R.id.text,
-                PendingIntent.getActivity(this, 21, i, 0));
-        layout.setOnClickPendingIntent(R.id.icon,
-                PendingIntent.getActivity(this, 25, i
-                        .putExtra("count_down_seats", true), 0));
-        Notification notify = new NotificationCompat.Builder(this)
-            .setContentIntent(PendingIntent.getActivity(this, 42,
-                    new Intent(Intent.ACTION_EDIT, getIntent().getData()), 0))
-            .setSmallIcon(R.drawable.ic_launcher)
-            .setContentTitle("foo")
-            .setContentText("bar")
-            .setContent(layout)
-            .build();
-        ((NotificationManager) getSystemService(NOTIFICATION_SERVICE))
-            .notify(42, notify);
+
     }
 
     @Override
