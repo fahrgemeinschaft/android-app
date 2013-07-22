@@ -7,6 +7,9 @@
 
 package de.fahrgemeinschaft;
 
+import org.teleportr.ConnectorService;
+
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -18,7 +21,6 @@ import android.view.ViewGroup;
 import com.actionbarsherlock.app.SherlockFragment;
 
 import de.fahrgemeinschaft.util.EditTextImageButton;
-import de.fahrgemeinschaft.util.EditTextPrivacyButton;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -31,6 +33,8 @@ public class ProfileFragment extends SherlockFragment implements OnClickListener
 
     @Override
     public View onCreateView(final LayoutInflater lI, ViewGroup p, Bundle b) {
+        getActivity().startService(
+                new Intent(getActivity(), ConnectorService.class));
         return lI.inflate(R.layout.fragment_profile, p, false);
     }
 
@@ -39,7 +43,7 @@ public class ProfileFragment extends SherlockFragment implements OnClickListener
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         username = (EditTextImageButton) v.findViewById(R.id.username);
         password = (EditTextImageButton) v.findViewById(R.id.password);
-        username.text.setText(prefs.getString("username", ""));
+        username.text.setText(prefs.getString("EMail", ""));
         password.text.setText(prefs.getString("password", ""));
         v.findViewById(R.id.login).setOnClickListener(this);
         super.onViewCreated(v, savedInstanceState);
@@ -48,7 +52,7 @@ public class ProfileFragment extends SherlockFragment implements OnClickListener
     @Override
     public void onClick(View v) {
         prefs.edit()
-            .putString("username", username.text.getText().toString())
+            .putString("EMail", username.text.getText().toString())
             .putString("password", password.text.getText().toString())
         .commit();
         Crouton.makeText(getActivity(), "stored", Style.INFO).show();

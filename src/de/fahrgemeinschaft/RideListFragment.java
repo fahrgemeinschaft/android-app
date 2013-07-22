@@ -84,10 +84,9 @@ public class RideListFragment extends SpinningZebraListFragment
         default:
             v.seats.setImageResource(R.drawable.icn_seats_white_many); break;
         }
-        long delta = ride.getLong(COLUMNS.DEPARTURE) - currently_searching_date;
+        long dif = ride.getLong(COLUMNS.DEPARTURE) - currently_searching_date;
 //        System.out.println("DELTA " + delta / 3600000);
-        if (delta > 0 && delta < 24*3600000) {
-            System.out.println("is refreshing ");
+        if (ride.getShort(COLUMNS.DIRTY) == 1 || dif > 0 && dif < 24*3600000) {
             v.loading.setVisibility(View.VISIBLE);
         } else {
             v.loading.setVisibility(View.GONE);

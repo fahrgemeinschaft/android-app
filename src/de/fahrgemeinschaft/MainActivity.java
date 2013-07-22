@@ -71,6 +71,8 @@ public class MainActivity extends SherlockFragmentActivity
 
     private void handleIntent(Uri uri) {
         if (uri != null && uri.equals(MY_RIDES_URI)) {
+            startService(new Intent(this, ConnectorService.class)
+                    .setAction(ConnectorService.PUBLISH));
             myrides.load(MY_RIDES_URI);
             showFragment(myrides);
         }
@@ -171,8 +173,7 @@ public class MainActivity extends SherlockFragmentActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.my_rides:
-            showFragment(myrides);
-            myrides.load(MY_RIDES_URI);
+            handleIntent(MY_RIDES_URI);
             return true;
         case R.id.settings:
             startActivity(new Intent(this, SettingsActivity.class));

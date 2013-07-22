@@ -7,6 +7,7 @@
 
 package de.fahrgemeinschaft;
 
+import org.teleportr.ConnectorService;
 import org.teleportr.Ride;
 
 import android.content.Intent;
@@ -18,6 +19,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -77,6 +79,7 @@ public class EditRideActivity extends SherlockFragmentActivity
             f1.setRide(ride);
             f2.setRide(ride);
             f3.setRide(ride);
+            ((EditText)findViewById(R.id.comment)).setText(ride.get("Comment"));
         }
     }
 
@@ -119,16 +122,22 @@ public class EditRideActivity extends SherlockFragmentActivity
             Crouton.makeText(this, getString(R.string.uncomplete), Style.INFO)
                 .show();
         } else {
-            Toast.makeText(this, getString(R.string.stored), Toast.LENGTH_SHORT)
-                .show();
+            ride.set("Comment", ((EditText) findViewById(
+                    R.id.comment)).getText().toString());
             ride.marked().store(this);
+            startService(new Intent(this, ConnectorService.class)
+                    .setAction(ConnectorService.PUBLISH));
             startActivity(new Intent(this, MainActivity.class)
-                .setData(MainActivity.MY_RIDES_URI));
+                    .setData(MainActivity.MY_RIDES_URI));
+            Toast.makeText(this, getString(R.string.stored), Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        ride.set("Comment", ((EditText) findViewById(
+                R.id.comment)).getText().toString());
         outState.putParcelable("ride", ride);
         super.onSaveInstanceState(outState);
     }

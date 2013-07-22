@@ -53,7 +53,7 @@
                 android:layout_marginRight="@dimen/activity_horizontal_margin" >
 
                 <EditText
-                    android:id="@+id/comments"
+                    android:id="@+id/comment"
                     android:layout_width="match_parent"
                     android:minHeight="100dp"
                     android:background="@drawable/btn_white"

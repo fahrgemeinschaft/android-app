@@ -48,7 +48,7 @@ public class FahrgemeinschaftConnector extends Connector {
         post.setRequestProperty("apikey", APIKEY);
         post.setDoOutput(true);
         post.getOutputStream().write((
-                "{\"Email\": \"" + get("username")
+                "{\"Email\": \"" + get("EMail")
                 + "\", \"Password\": \"" + get("password")
                 + "\"}").getBytes());
         post.getOutputStream().close();
@@ -222,6 +222,7 @@ public class FahrgemeinschaftConnector extends Connector {
         ArrayList<JSONObject> routings = new ArrayList<JSONObject>();
         List<Place> stops = offer.getPlaces();
         int max = stops.size() - 1;
+        System.out.println(max);
         for (int dest = max; dest >= 0 ; dest--) {
             for (int orig = 0; orig < dest; orig++) {
                 int idx = (orig == 0? (dest == max? 0 : dest) : - dest);
@@ -241,7 +242,7 @@ public class FahrgemeinschaftConnector extends Connector {
         JSONObject response = loadJson(post);
         if (!response.isNull("tripID")) {
             return response.getString("tripID");
-        } else return null;
+        } else return offer.getRef();
     }
 
     private JSONObject place(Place from) throws JSONException {
