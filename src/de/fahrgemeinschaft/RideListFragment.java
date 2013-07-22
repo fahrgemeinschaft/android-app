@@ -90,6 +90,11 @@ public class RideListFragment extends SpinningZebraListFragment
         } else {
             v.loading.setVisibility(View.GONE);
         }
+        if (ride.getString(COLUMNS.WHO).equals("")) {
+            view.findViewById(R.id.stub).setVisibility(View.VISIBLE);
+        } else {
+            view.findViewById(R.id.stub).setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -149,7 +154,6 @@ public class RideListFragment extends SpinningZebraListFragment
     @Override
     public void onDetach() {
         getActivity().setTitle("");
-        System.out.println("detach ride list");
 //        Crouton.cancelAllCroutons();
         getActivity().unbindService(this);
         super.onDetach();

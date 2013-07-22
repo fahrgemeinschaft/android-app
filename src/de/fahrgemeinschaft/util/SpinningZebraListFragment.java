@@ -195,7 +195,6 @@ public abstract class SpinningZebraListFragment
 
     @Override
     public void onDetach() {
-        System.out.println("detach spinning zebra");
         onScreen = false;
         super.onDetach();
     }

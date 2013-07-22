@@ -6,10 +6,11 @@
 -->
 
 <view xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:layout_height="wrap_content"
     class="de.fahrgemeinschaft.RideListFragment$RideView"
     android:layout_marginRight="5dp"
     >
+
     <TextView
         android:id="@+id/from_city"
         android:width="175dp"
@@ -57,7 +58,7 @@
     />
     <TextView
         android:id="@+id/day"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/line"
         android:layout_marginBottom="1dp"
         android:layout_marginLeft="5dp"
         style="@style/dark.Large"
@@ -65,13 +66,13 @@
     <TextView
         android:id="@+id/date"
         android:layout_toRightOf="@id/day"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/line"
         android:layout_marginBottom="1dp"
         style="@style/light.Large"
     />
     <TextView
         android:id="@+id/time"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/line"
         android:layout_marginBottom="0dp"
         android:layout_marginLeft="107dp"
         style="@style/dark.Large.Bold"
@@ -80,33 +81,33 @@
         android:layout_width="0dp"
         android:layout_height="26dp"
         android:layout_marginLeft="190dp"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/line"
         android:background="@color/opacity_white"
     />
     <TextView
         android:id="@+id/price"
         android:layout_marginLeft="190dp"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/line"
         android:layout_marginBottom="0dp"
         style="@style/dark.Large.Bold"
     />
     <TextView
         android:id="@+id/currency"
         android:layout_toRightOf="@id/price"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/line"
         style="@style/light.Large"
     />
     <TextView
         android:layout_marginLeft="2dp"
         android:layout_toRightOf="@id/currency"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/line"
         style="@style/light.Large.Bold"
         android:text="@string/currency"
     />
     <ImageView
         android:id="@+id/seats"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/line"
         android:layout_marginRight="5dp"
         android:layout_marginBottom="0dp"
         android:src="@drawable/ic_seats"
@@ -114,8 +115,16 @@
     />
     <View
         android:layout_height="0dp"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/line"
         android:background="@android:color/white"
     />
 
+    <ViewStub
+        android:id="@+id/stub"
+        android:inflatedId="@+id/stub"
+        android:layout="@layout/two_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/seats"
+    />
 </view>
