@@ -60,8 +60,21 @@ public class MainActivity extends SherlockFragmentActivity
         myrides = new RideListFragment();
         myrides.setSpinningEnabled(false);
         details = new RideDetailsFragment();
+        handleIntent(getIntent().getData());
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIntent(intent.getData());
+    }
+
+    private void handleIntent(Uri uri) {
+        if (uri != null && uri.equals(MY_RIDES_URI)) {
+            myrides.load(MY_RIDES_URI);
+            showFragment(myrides);
+        }
+    }
 
     @Override
     public void onClick(View v) {

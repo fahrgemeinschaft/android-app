@@ -7,7 +7,6 @@
 
 package de.fahrgemeinschaft;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -364,9 +363,7 @@ public class RideDetailsFragment extends SherlockFragment
                               R.drawable.ic_loading, R.drawable.icn_view_none));
                   }
               }
-          } catch (JSONException e) {
-              e.printStackTrace();
-          } catch (ParseException e) {
+          } catch (Exception e) {
               e.printStackTrace();
           }
         }

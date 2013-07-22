@@ -42,13 +42,12 @@ public class EditRideActivity extends SherlockFragmentActivity
         if (savedInstanceState != null) {
             ride = savedInstanceState.getParcelable("ride");
             ride.setContext(this);
-            initFragments();
-        } else if (getIntent().getData() != null) {
-            getSupportLoaderManager().initLoader(0, null, this);
         } else {
             ride = new Ride(this).type(Ride.OFFER);
-            initFragments();
+            if (getIntent().getData() != null)
+                getSupportLoaderManager().initLoader(0, null, this);
         }
+        initFragments();
         findViewById(R.id.publish).setOnClickListener(this);
     }
 
@@ -95,6 +94,10 @@ public class EditRideActivity extends SherlockFragmentActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+        case R.id.my_rides:
+            startActivity(new Intent(this, MainActivity.class)
+                .setData(MainActivity.MY_RIDES_URI));
+            break;
         case R.id.settings:
             startActivity(new Intent(this, SettingsActivity.class));
             break;
