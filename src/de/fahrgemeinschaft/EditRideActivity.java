@@ -113,7 +113,10 @@ public class EditRideActivity extends SherlockFragmentActivity
 
     @Override
     public void onClick(View v) {
-
+        if (ride.getFrom() == null || ride.getTo() == null)
+            Crouton.makeText(this, getString(R.string.uncomplete), Style.INFO)
+                .show();
+        else ride.marked().store(this);
     }
 
     @Override
