@@ -141,9 +141,6 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
         
         @Override
         public void onClick(View v) {
-            System.out.println(from.getId());
-            System.out.println(((ButtonImageButton) v.getParent()).getId());
-            System.out.println(route.indexOfChild((View) v.getParent()));
             startActivityForResult(new Intent(Intent.ACTION_PICK,
                     Uri.parse("content://de.fahrgemeinschaft/places")),
                     route.indexOfChild((View) v.getParent()));

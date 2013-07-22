@@ -9,25 +9,23 @@ package de.fahrgemeinschaft;
 
 import org.teleportr.Ride;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.RemoteViews;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class EditRideActivity extends SherlockFragmentActivity
         implements LoaderCallbacks<Cursor>, OnClickListener {
@@ -43,12 +41,12 @@ public class EditRideActivity extends SherlockFragmentActivity
 
         if (savedInstanceState != null) {
             ride = savedInstanceState.getParcelable("ride");
+            ride.setContext(this);
             initFragments();
         } else if (getIntent().getData() != null) {
             getSupportLoaderManager().initLoader(0, null, this);
-            ride = new Ride();
         } else {
-            ride = new Ride();
+            ride = new Ride(this).type(Ride.OFFER);
             initFragments();
         }
         findViewById(R.id.publish).setOnClickListener(this);
@@ -99,20 +97,18 @@ public class EditRideActivity extends SherlockFragmentActivity
         switch (item.getItemId()) {
         case R.id.settings:
             startActivity(new Intent(this, SettingsActivity.class));
-            return true;
+            break;
         case R.id.profile:
             startActivity(new Intent(this, SettingsActivity.class)
                     .putExtra("profile", true));
-            return true;
+            break;
         case android.R.id.home:
             if (getSupportFragmentManager().getBackStackEntryCount() > 0)
                 getSupportFragmentManager().popBackStack();
-            else finish();
-            return true;
-        
-        default:
-            return super.onOptionsItemSelected(item);
+            else startActivity(new Intent(this, MainActivity.class));
+            break;
         }
+        return true;
     }
 
     @Override
