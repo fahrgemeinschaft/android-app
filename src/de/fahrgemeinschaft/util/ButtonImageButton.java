@@ -22,7 +22,7 @@ public class ButtonImageButton extends FrameLayout {
     public Button btn;
     public ImageButton icn;
 
-    private int ID = Integer.MAX_VALUE;
+    private static int ID = Integer.MAX_VALUE;
 
 
     public ButtonImageButton(Context ctx) {
@@ -35,6 +35,7 @@ public class ButtonImageButton extends FrameLayout {
         icn = (ImageButton) findViewById(R.id.icon);
         btn = (Button) findViewById(R.id.text);
         btn.setId(ID--);
+        icn.setId(ID--);
     }
 
     public ButtonImageButton(Context context, AttributeSet attrs) {

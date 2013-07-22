@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import com.actionbarsherlock.app.SherlockFragment;
 
 import de.fahrgemeinschaft.util.EditTextImageButton;
-import de.fahrgemeinschaft.util.EditTextVisibilityButton;
+import de.fahrgemeinschaft.util.EditTextPrivacyButton;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 

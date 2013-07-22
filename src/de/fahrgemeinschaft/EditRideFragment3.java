@@ -8,91 +8,116 @@
 package de.fahrgemeinschaft;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.teleportr.Ride;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-import de.fahrgemeinschaft.util.EditTextVisibilityButton;
+import de.fahrgemeinschaft.util.EditTextImageButton.TextListener;
+import de.fahrgemeinschaft.util.EditTextPrivacyButton;
+import de.fahrgemeinschaft.util.EditTextPrivacyButton.PrivacyListener;
 
 public class EditRideFragment3 extends SherlockFragment
-        implements OnFocusChangeListener {
+                implements TextListener, PrivacyListener {
 
 
-    private static final String MAIL = "mail";
-    private static final String PLATE = "plate";
-    private static final String MOBILE = "mobile";
-    private static final String LANDLINE = "landline";
-    private EditTextVisibilityButton email;
-    private EditTextVisibilityButton land;
-    private EditTextVisibilityButton mobile;
-    private EditTextVisibilityButton plate;
-    private EditTextVisibilityButton name;
+    private static final String EMAIL = "EMail";
+    private static final String PLATE = "NumberPlate";
+    private static final String MOBILE = "Mobile";
+    private static final String LANDLINE = "Landline";
+    private EditTextPrivacyButton email;
+    private EditTextPrivacyButton land;
+    private EditTextPrivacyButton mobile;
+    private EditTextPrivacyButton plate;
+    private EditTextPrivacyButton name;
+    private SharedPreferences prefs;
 
 
 
     @Override
     public View onCreateView(final LayoutInflater lI, ViewGroup p, Bundle b) {
+        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         return lI.inflate(R.layout.fragment_ride_edit3, p, false);
     }
 
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
-        email = (EditTextVisibilityButton) v.findViewById(R.id.email);
-        land = (EditTextVisibilityButton) v.findViewById(R.id.landline);
-        mobile = (EditTextVisibilityButton) v.findViewById(R.id.mobile);
-        plate = (EditTextVisibilityButton) v.findViewById(R.id.plate);
-        name = (EditTextVisibilityButton) v.findViewById(R.id.name);
-
-        email.text.setOnFocusChangeListener(this);
-        land.text.setOnFocusChangeListener(this);
-        mobile.text.setOnFocusChangeListener(this);
-        plate.text.setOnFocusChangeListener(this);
+        email = (EditTextPrivacyButton) v.findViewById(R.id.email);
+        land = (EditTextPrivacyButton) v.findViewById(R.id.landline);
+        mobile = (EditTextPrivacyButton) v.findViewById(R.id.mobile);
+        plate = (EditTextPrivacyButton) v.findViewById(R.id.plate);
+        name = (EditTextPrivacyButton) v.findViewById(R.id.name);
+        email.setTextListener(EMAIL, this);
+        mobile.setTextListener(MOBILE, this);
+        land.setTextListener(LANDLINE, this);
+        plate.setTextListener(PLATE, this);
+        email.setPrivacyListener(EMAIL, this);
+        mobile.setPrivacyListener(MOBILE, this);
+        land.setPrivacyListener(LANDLINE, this);
+        plate.setPrivacyListener(PLATE, this);
     }
 
     @Override
     public void onViewStateRestored(Bundle savedInstanceState) {
+        setRide(((EditRideActivity)getActivity()).ride);
         super.onViewStateRestored(savedInstanceState);
+    }
+
+    public void setRide(Ride ride) {
         try {
-            Ride ride = ((EditRideActivity)getActivity()).ride;
-            email.text.setText(ride.getDetails().getString(MAIL));
-            email.text.setText(ride.getDetails().getString(MAIL));
-            land.text.setText(ride.getDetails().getString(LANDLINE));
-            mobile.text.setText(ride.getDetails().getString(MOBILE));
-            plate.text.setText(ride.getDetails().getString(PLATE));
+            JSONObject d = ride.getDetails();
+            if (!d.isNull(EMAIL)) email.text.setText(d.getString(EMAIL));
+            else email.text.setText(prefs.getString(EMAIL, ""));
+            if (!d.isNull(LANDLINE)) land.text.setText(d.getString(LANDLINE));
+            else land.text.setText(prefs.getString(LANDLINE, ""));
+            if (!d.isNull(MOBILE)) mobile.text.setText(d.getString(MOBILE));
+            else mobile.text.setText(prefs.getString(MOBILE, ""));
+            if (!d.isNull(PLATE)) plate.text.setText(d.getString(PLATE));
+            else plate.text.setText(prefs.getString(PLATE, ""));
+
+            if (d.isNull("Privacy")) d.put("Privacy", new JSONObject());
+            JSONObject p = d.getJSONObject("Privacy");
+            if (!p.isNull(EMAIL)) email.setPrivacy(p.getInt(EMAIL));
+            else email.setPrivacy(EditTextPrivacyButton.ANYONE);
+            if (!p.isNull(LANDLINE)) land.setPrivacy(p.getInt(LANDLINE));
+            else land.setPrivacy(EditTextPrivacyButton.ANYONE);
+            if (!p.isNull(MOBILE)) mobile.setPrivacy(p.getInt(MOBILE));
+            else mobile.setPrivacy(EditTextPrivacyButton.ANYONE);
+            if (!p.isNull(PLATE)) plate.setPrivacy(p.getInt(PLATE));
+            else plate.setPrivacy(EditTextPrivacyButton.ANYONE);
         } catch (JSONException e) {
+            e.printStackTrace();
             //TODO what?
         }
     }
 
     @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        if (!hasFocus) {
-            try {
-                Ride ride = ((EditRideActivity)getActivity()).ride;
-                if (v.getParent().equals(email)) {
-                    ride.getDetails().put(MAIL,
-                            ((EditText) v).getText().toString());
-                } else if (v.getParent().equals(land)) {
-                    ride.getDetails().put(LANDLINE,
-                            ((EditText) v).getText().toString());
-                } else if (v.getParent().equals(mobile)) {
-                    ride.getDetails().put(MOBILE,
-                            ((EditText) v).getText().toString());
-                } else if (v.getParent().equals(plate)) {
-                    ride.getDetails().put(PLATE,
-                            ((EditText) v).getText().toString());
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+    public void onTextChange(String key, String text) {
+        Ride ride = ((EditRideActivity)getActivity()).ride;
+        try {
+            ride.getDetails().put(key, text);
+            if (prefs.getString(key, null) == null)
+                prefs.edit().putString(key, text).commit();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onPrivacyChange(String key, int visibility) {
+        try {
+            ((EditRideActivity)getActivity()).ride.getDetails()
+                .getJSONObject("Privacy").put(key, visibility);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }

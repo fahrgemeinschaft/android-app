@@ -17,8 +17,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import de.fahrgemeinschaft.R;
 
-public class EditTextVisibilityButton extends EditTextImageButton
-    implements OnClickListener {
+public class EditTextPrivacyButton extends EditTextImageButton
+                implements OnClickListener {
 
     static final String android = "http://schemas.android.com/apk/res/android";
 
@@ -28,11 +28,12 @@ public class EditTextVisibilityButton extends EditTextImageButton
     public static final int REQUEST = 2;
     public static final int NONE = 3;
 
-    private int visibility;
+    private int privacy;
     private int imageResId;
+    private PrivacyListener privacyListener;
 
 
-    public EditTextVisibilityButton(Context context, AttributeSet attrs) {
+    public EditTextPrivacyButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         setImageResource(attrs.getAttributeResourceValue(
                 android, "src", R.drawable.icn_dropdown));
@@ -41,16 +42,16 @@ public class EditTextVisibilityButton extends EditTextImageButton
 
     public void setImageResource(int resourceId) {
         imageResId = resourceId;
-        setVisibility(visibility);
+        setVisibility(privacy);
     }
 
-    public int getVisibility() {
-        return visibility;
+    public int getPrivacy() {
+        return privacy;
     }
 
-    public void setVisibility(int visibility) {
-        this.visibility = visibility;
-        switch (visibility) {
+    public void setPrivacy(int privacy) {
+        this.privacy = privacy;
+        switch (privacy) {
         case ANYONE:
             text.setEnabled(true);
             drawIcons(R.drawable.icn_visibility_anyone);
@@ -79,7 +80,9 @@ public class EditTextVisibilityButton extends EditTextImageButton
             
             @Override   // must match @array/visibility in strings.xml
             public void onClick(DialogInterface dialog, int visibility) {
-                setVisibility(visibility);
+                setPrivacy(visibility);
+                if (privacyListener != null)
+                    privacyListener.onPrivacyChange(key, visibility);
             }
         }).show();
     }
@@ -89,5 +92,14 @@ public class EditTextVisibilityButton extends EditTextImageButton
                 getResources().getDrawable(imageResId),
                 getResources().getDrawable(resId)
         }));
+    }
+
+    public void setPrivacyListener(String key, PrivacyListener listener) {
+        this.privacyListener = listener;
+        this.key = key;
+    }
+
+    public interface PrivacyListener {
+        public void onPrivacyChange(String key, int visibility);
     }
 }

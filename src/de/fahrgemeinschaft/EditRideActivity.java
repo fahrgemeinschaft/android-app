@@ -38,7 +38,6 @@ public class EditRideActivity extends SherlockFragmentActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "on create activity");
         setContentView(R.layout.activity_ride_edit);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -80,6 +79,7 @@ public class EditRideActivity extends SherlockFragmentActivity
         if (ride != null) {
             f1.setRide(ride);
             f2.setRide(ride);
+            f3.setRide(ride);
         }
     }
 

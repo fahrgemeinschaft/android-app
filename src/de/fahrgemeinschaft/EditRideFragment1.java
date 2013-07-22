@@ -71,9 +71,10 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
 
     public void setRide(Ride ride) {
         this.ride = ride;
-        Log.d(TAG, ride.getFromId()+ "");
-        from.btn.setText(ride.getFrom().getName());
-        to.btn.setText(ride.getTo().getName());
+        if (ride.getFrom() != null)
+            from.btn.setText(ride.getFrom().getName());
+        if (ride.getTo() != null)
+            to.btn.setText(ride.getTo().getName());
         setVias(ride.getVias());
         setMode(ride.getMode());
         setSeats(ride.getSeats());
