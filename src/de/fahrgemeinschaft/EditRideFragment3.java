@@ -27,7 +27,6 @@ import de.fahrgemeinschaft.util.EditTextPrivacyButton.PrivacyListener;
 public class EditRideFragment3 extends SherlockFragment
                 implements TextListener, PrivacyListener {
 
-
     private static final String EMAIL = "EMail";
     private static final String PLATE = "NumberPlate";
     private static final String MOBILE = "Mobile";
@@ -85,18 +84,24 @@ public class EditRideFragment3 extends SherlockFragment
 
             if (d.isNull("Privacy")) d.put("Privacy", new JSONObject());
             JSONObject p = d.getJSONObject("Privacy");
-            if (!p.isNull(EMAIL)) email.setPrivacy(p.getInt(EMAIL));
-            else email.setPrivacy(EditTextPrivacyButton.ANYONE);
+            if (!p.isNull("Email")) email.setPrivacy(p.getInt("Email")); // 'm'
+            else setPublic(email, p, "Email");
             if (!p.isNull(LANDLINE)) land.setPrivacy(p.getInt(LANDLINE));
-            else land.setPrivacy(EditTextPrivacyButton.ANYONE);
+            else setPublic(land, p, LANDLINE);
             if (!p.isNull(MOBILE)) mobile.setPrivacy(p.getInt(MOBILE));
-            else mobile.setPrivacy(EditTextPrivacyButton.ANYONE);
+            else setPublic(mobile, p, MOBILE);
             if (!p.isNull(PLATE)) plate.setPrivacy(p.getInt(PLATE));
-            else plate.setPrivacy(EditTextPrivacyButton.ANYONE);
+            else setPublic(plate, p, PLATE);
         } catch (JSONException e) {
             e.printStackTrace();
             //TODO what?
         }
+    }
+
+    private void setPublic(EditTextPrivacyButton btn, JSONObject p, String key)
+            throws JSONException {
+        btn.setPrivacy(1);
+        p.put(key, 1);
     }
 
     @Override
@@ -104,18 +109,17 @@ public class EditRideFragment3 extends SherlockFragment
         Ride ride = ((EditRideActivity)getActivity()).ride;
         try {
             ride.getDetails().put(key, text);
-            if (prefs.getString(key, null) == null)
-                prefs.edit().putString(key, text).commit();
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void onPrivacyChange(String key, int visibility) {
+    public void onPrivacyChange(String key, int privacy) {
         try {
+            if (key.equals(EMAIL)) key = "Email"; // lowcase 'm'
             ((EditRideActivity)getActivity()).ride.getDetails()
-                .getJSONObject("Privacy").put(key, visibility);
+                .getJSONObject("Privacy").put(key, privacy);
         } catch (JSONException e) {
             e.printStackTrace();
         }

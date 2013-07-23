@@ -44,7 +44,7 @@ public class ReoccuringWeekDaysView extends LinearLayout {
             for (int i = 0; i < 7; i++) {
                 getChildAt(i).setSelected(days.getBoolean(DAYS[i]));
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             clear();
         }
     }

@@ -22,11 +22,6 @@ public class EditTextPrivacyButton extends EditTextImageButton
 
     static final String android = "http://schemas.android.com/apk/res/android";
 
-    // index order must match @array/visibility in strings.xml
-    public static final int ANYONE = 0;
-    public static final int MEMBERS = 1;
-    public static final int REQUEST = 2;
-    public static final int NONE = 3;
 
     private int privacy;
     private int imageResId;
@@ -52,19 +47,19 @@ public class EditTextPrivacyButton extends EditTextImageButton
     public void setPrivacy(int privacy) {
         this.privacy = privacy;
         switch (privacy) {
-        case ANYONE:
+        case 1:
             text.setEnabled(true);
             drawIcons(R.drawable.icn_visibility_anyone);
             break;
-        case MEMBERS:
+        case 4:
             text.setEnabled(true);
             drawIcons(R.drawable.icn_visibility_members);
             break;
-        case REQUEST:
+        case 0:
             text.setEnabled(true);
             drawIcons(R.drawable.icn_visibility_request);
             break;
-        case NONE:
+        case 5:
             text.setEnabled(false);
             drawIcons(R.drawable.icn_visibility_none);
             break;
@@ -79,10 +74,23 @@ public class EditTextPrivacyButton extends EditTextImageButton
                 new DialogInterface.OnClickListener() {
             
             @Override   // must match @array/visibility in strings.xml
-            public void onClick(DialogInterface dialog, int visibility) {
-                setPrivacy(visibility);
+            public void onClick(DialogInterface dialog, int click_idx) {
+                switch (click_idx) {
+                case 0: // anyone
+                    setPrivacy(1);
+                    break;
+                case 1: // members
+                    setPrivacy(4);
+                    break;
+                case 2: // request
+                    setPrivacy(0);
+                    break;
+                case 3: // none
+                    setPrivacy(5);
+                    break;
+                }
                 if (privacyListener != null)
-                    privacyListener.onPrivacyChange(key, visibility);
+                    privacyListener.onPrivacyChange(key, privacy);
             }
         }).show();
     }

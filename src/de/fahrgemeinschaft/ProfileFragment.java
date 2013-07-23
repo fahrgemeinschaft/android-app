@@ -43,10 +43,10 @@ public class ProfileFragment extends SherlockFragment implements OnClickListener
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         username = (EditTextImageButton) v.findViewById(R.id.username);
         password = (EditTextImageButton) v.findViewById(R.id.password);
-        username.text.setText(prefs.getString("EMail", ""));
-        password.text.setText(prefs.getString("password", ""));
         v.findViewById(R.id.login).setOnClickListener(this);
         super.onViewCreated(v, savedInstanceState);
+        username.text.setText(prefs.getString("EMail", ""));
+        password.text.setText(prefs.getString("password", ""));
     }
 
     @Override
@@ -54,8 +54,10 @@ public class ProfileFragment extends SherlockFragment implements OnClickListener
         prefs.edit()
             .putString("EMail", username.text.getText().toString())
             .putString("password", password.text.getText().toString())
+            .remove("auth")
         .commit();
         Crouton.makeText(getActivity(), "stored", Style.INFO).show();
+        getActivity().getSupportFragmentManager().popBackStack();
     }
 
 }

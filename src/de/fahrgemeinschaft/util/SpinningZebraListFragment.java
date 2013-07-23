@@ -10,12 +10,7 @@ package de.fahrgemeinschaft.util;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,8 +24,7 @@ import com.actionbarsherlock.app.SherlockListFragment;
 
 import de.fahrgemeinschaft.R;
 
-public abstract class SpinningZebraListFragment
-    extends SherlockListFragment implements LoaderCallbacks<Cursor> {
+public abstract class SpinningZebraListFragment extends SherlockListFragment {
 
     abstract public void bindListItemView(View view, Cursor cursor);
 
@@ -46,11 +40,11 @@ public abstract class SpinningZebraListFragment
 
     private RotateAnimation rotate;
     protected View spinner;
-    private Uri uri;
     public boolean onScreen;
     private String smallText;
     private String largeText;
     private boolean spinning;
+    private Cursor cursor;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -136,35 +130,29 @@ public abstract class SpinningZebraListFragment
         rotate.setRepeatMode(Animation.RESTART);
         rotate.setRepeatCount(Animation.INFINITE);
 
-        if (uri != null) {
-            getLoaderManager().initLoader(0, null, this);
-        }
         stopSpinning("click here");
+        
+        System.out.println("on view");
+        if (cursor != null && !cursor.isClosed()) {
+            System.out.println("swapped");
+            ((CursorAdapter) getListAdapter()).swapCursor(cursor);
+        }
     }
 
-    public void load(Uri uri) {
-        this.uri = uri;
-        if (getActivity() != null)
-            getLoaderManager().initLoader(0, null, this);
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle b) {
-        return new CursorLoader(getActivity(), uri, null, null, null, null);
-    }
-    
-    @Override
-    public void onLoadFinished(Loader<Cursor> arg0, Cursor rides) {
-        ((ListFragmentCallback) getActivity()).onLoadFinished(this, rides);
-        ((CursorAdapter) getListAdapter()).swapCursor(rides);
+    public void swapCursor(Cursor cursor) {
+        this.cursor = cursor;
+        if (getActivity() != null) {
+            System.out.println("swapped");
+            ((CursorAdapter) getListAdapter()).swapCursor(cursor);
+            cursor = null;
+        }
     }
 
     public void startSpinning(String smallText, String largeText) {
         this.smallText = smallText;
         this.largeText = largeText;
         spinning = true;
-        if (onScreen) {
-            System.out.println("notify dataset changed");
+        if (cursor != null && !cursor.isClosed()) {
             ((CursorAdapter) getListAdapter()).notifyDataSetChanged();
         }
     }
@@ -200,11 +188,7 @@ public abstract class SpinningZebraListFragment
     }
 
     public interface ListFragmentCallback {
-        public void onLoadFinished(Fragment fragment, Cursor cursor);
         public void onListItemClick(int position);
         public void onSpinningWheelClick();
     }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> arg0) {}
 }

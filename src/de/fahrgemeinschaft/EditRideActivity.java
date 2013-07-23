@@ -11,9 +11,11 @@ import org.teleportr.ConnectorService;
 import org.teleportr.Ride;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -26,6 +28,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
+import de.fahrgemeinschaft.util.EditTextPrivacyButton;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -124,7 +127,14 @@ public class EditRideActivity extends SherlockFragmentActivity
         } else {
             ride.set("Comment", ((EditText) findViewById(
                     R.id.comment)).getText().toString());
-            ride.marked().store(this);
+            SharedPreferences prefs = PreferenceManager
+                    .getDefaultSharedPreferences(this);
+            if (!prefs.contains("EMail")) {
+                prefs.edit().putString("EMail", ((EditTextPrivacyButton)
+                        findViewById(R.id.email)).text.getText().toString())
+                        .commit();
+            }
+            ride.marked().dirty().store(this);
             startService(new Intent(this, ConnectorService.class)
                     .setAction(ConnectorService.PUBLISH));
             startActivity(new Intent(this, MainActivity.class)

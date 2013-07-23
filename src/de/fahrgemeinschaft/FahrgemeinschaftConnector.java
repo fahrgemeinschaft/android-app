@@ -222,7 +222,6 @@ public class FahrgemeinschaftConnector extends Connector {
         ArrayList<JSONObject> routings = new ArrayList<JSONObject>();
         List<Place> stops = offer.getPlaces();
         int max = stops.size() - 1;
-        System.out.println(max);
         for (int dest = max; dest >= 0 ; dest--) {
             for (int orig = 0; orig < dest; orig++) {
                 int idx = (orig == 0? (dest == max? 0 : dest) : - dest);

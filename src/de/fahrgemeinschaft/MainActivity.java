@@ -22,6 +22,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.CursorAdapter;
 import android.view.View;
@@ -36,7 +40,8 @@ import de.fahrgemeinschaft.util.SpinningZebraListFragment.ListFragmentCallback;
 import de.fahrgemeinschaft.util.Util;
 
 public class MainActivity extends SherlockFragmentActivity
-       implements OnClickListener, ListFragmentCallback, OnPageChangeListener {
+       implements OnClickListener, ListFragmentCallback,
+       LoaderCallbacks<Cursor>, OnPageChangeListener {
 
     public static final Uri MY_RIDES_URI =
             Uri.parse("content://de.fahrgemeinschaft/myrides");
@@ -44,7 +49,6 @@ public class MainActivity extends SherlockFragmentActivity
             Uri.parse("content://de.fahrgemeinschaft/jobs/search");
     public RideDetailsFragment details;
     public RideListFragment results;
-    public RideListFragment myrides;
     public MainFragment main;
 
     @Override
@@ -56,10 +60,10 @@ public class MainActivity extends SherlockFragmentActivity
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
         main = (MainFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.main);
-        results = new RideListFragment();
-        myrides = new RideListFragment();
-        myrides.setSpinningEnabled(false);
-        details = new RideDetailsFragment();
+        if (results == null)
+            results = new RideListFragment();
+        if (details == null)
+            details = new RideDetailsFragment();
         handleIntent(getIntent().getData());
     }
 
@@ -70,11 +74,20 @@ public class MainActivity extends SherlockFragmentActivity
     }
 
     private void handleIntent(Uri uri) {
-        if (uri != null && uri.equals(MY_RIDES_URI)) {
-            startService(new Intent(this, ConnectorService.class)
-                    .setAction(ConnectorService.PUBLISH));
-            myrides.load(MY_RIDES_URI);
-            showFragment(myrides);
+        System.out.println("intent " + uri);
+        if (uri != null) {
+            setIntent(getIntent().setData(uri));
+            getSupportLoaderManager().restartLoader(0, null, this);
+            if (uri.equals(MY_RIDES_URI)) {
+                setTitle(R.string.my_rides);
+                startService(new Intent(this, ConnectorService.class)
+                        .setAction(ConnectorService.PUBLISH));
+                results.setSpinningEnabled(false);
+                showFragment(results);
+            } else if (uri.getLastPathSegment().equals("rides")) {
+                results.setSpinningEnabled(true);
+                setTitle(R.string.results);
+            }
         }
     }
 
@@ -85,50 +98,55 @@ public class MainActivity extends SherlockFragmentActivity
                     Toast.LENGTH_SHORT).show();
             return;
         }
+        Ride r = main.ride;
         switch (v.getId()) {
         case R.id.btn_selberfahren:
-            Uri uri = main.ride.type(Ride.OFFER).mode(Ride.Mode.CAR).seats(3)
-                .store(this);
+            long now = System.currentTimeMillis();
+            Uri uri = r.type(Ride.OFFER)
+                    .dep(r.getDep() < now? now + 3600000 : r.getDep())
+                    .mode(Ride.Mode.CAR).seats(3).store(this);
             startActivity(new Intent(Intent.ACTION_EDIT, uri));
             break;
         case R.id.btn_mitfahren:
-            main.ride.type(Ride.SEARCH).arr(main.ride.getDep() +2*24*3600*1000)
+            r.type(Ride.SEARCH).arr(r.getDep() +2*24*3600*1000)
                 .store(this);
             startService(new Intent(this, ConnectorService.class)
                 .setAction(ConnectorService.SEARCH));
-            results.load(Uri.parse("content://de.fahrgemeinschaft/rides"
-                    + "?from_id=" + main.ride.getFromId()
-                    + "&to_id=" + main.ride.getToId()
-                    + "&dep=" + main.ride.getDep()));
+            setIntent(getIntent().setData(Uri.parse("content://de.fahrgemeinschaft/rides"
+                    + "?from_id=" + r.getFromId()
+                    + "&to_id=" + r.getToId()
+                    + "&dep=" + r.getDep())));
+            handleIntent(getIntent().getData());
             showFragment(results);
             break;
         }
     }
 
     @Override
-    public void onLoadFinished(Fragment fragment, Cursor cursor) {
-        if (fragment.equals(results)) {
-            setTitle(R.string.results);
-            details.swapCursor(cursor);
-            if (cursor.getCount() > 0) {
-                cursor.moveToLast();
-                long latest_dep = cursor.getLong(COLUMNS.DEPARTURE);
-                System.out.println("ALREADY in CACHE until "
-                        + new SimpleDateFormat("dd.MM. HH:mm", Locale.GERMANY)
-                                .format(new Date(latest_dep)));
-                if (latest_dep > main.ride.getArr()) {// inc time window
-                    System.out.println("INC timewindow!");
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTimeInMillis(latest_dep);
-                    cal.set(Calendar.HOUR_OF_DAY, 0);
-                    cal.set(Calendar.MINUTE, 0);
-                    cal.set(Calendar.SECOND, 0);
-                    main.ride.arr(cal.getTimeInMillis()).store(this);
-                }
+    public Loader<Cursor> onCreateLoader(int id, Bundle b) {
+        return new CursorLoader(this,
+                getIntent().getData(), null, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> arg0, Cursor rides) {
+        System.out.println("swap cursors");
+        results.swapCursor(rides);
+        details.swapCursor(rides);
+        if (rides.getCount() > 0) {
+            rides.moveToLast();
+            long latest_dep = rides.getLong(COLUMNS.DEPARTURE);
+            System.out.println("ALREADY in CACHE until "
+                    + new SimpleDateFormat("dd.MM. HH:mm", Locale.GERMANY)
+                    .format(new Date(latest_dep)));
+            if (latest_dep > main.ride.getArr()) {// inc time window
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(latest_dep);
+                cal.set(Calendar.HOUR_OF_DAY, 0);
+                cal.set(Calendar.MINUTE, 0);
+                cal.set(Calendar.SECOND, 0);
+                main.ride.arr(cal.getTimeInMillis()).store(this);
             }
-        } else {
-            setTitle(R.string.my_rides);
-            details.swapCursor(cursor);
         }
     }
 
@@ -151,7 +169,7 @@ public class MainActivity extends SherlockFragmentActivity
 
     @Override
     public void onPageSelected(final int position) {
-        results.getListView().setSelection(position);
+//        results.getListView().setSelection(position);
         details.setSelection(position);
     }
 
@@ -193,14 +211,21 @@ public class MainActivity extends SherlockFragmentActivity
     }
 
     private void showFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction()
+        FragmentManager fm = getSupportFragmentManager();
+        if (!fragment.equals(results) && !fragment.equals(details))
+            fm.popBackStackImmediate();
+        fm.beginTransaction()
             .setCustomAnimations(
-                R.anim.slide_in_right, R.anim.do_nix,
-                R.anim.do_nix, R.anim.slide_out_right)
-            .replace(R.id.container, fragment, null)
-            .addToBackStack(null)
-        .commit();
+                    R.anim.slide_in_right, R.anim.do_nix,
+                    R.anim.do_nix, R.anim.slide_out_right)
+                .replace(R.id.container, fragment, null)
+                .addToBackStack(null)
+                .commit();
     }
+
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> arg0) {}
 
     @Override
     public void onPageScrollStateChanged(int arg0) {}

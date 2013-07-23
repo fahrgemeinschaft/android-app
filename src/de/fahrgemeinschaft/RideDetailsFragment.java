@@ -132,10 +132,11 @@ public class RideDetailsFragment extends SherlockFragment
                     v = getActivity().getLayoutInflater()
                             .inflate(R.layout.view_ride_details, null, false);
                 }
+                if (cursor.isClosed()) return v;
                 RideView view = (RideView) v;
                 
-                if (view.content.getChildCount() > 4)
-                    view.content.removeViews(1, view.content.getChildCount()-4);
+                if (view.content.getChildCount() > 5)
+                    view.content.removeViews(1, view.content.getChildCount()-5);
                 cursor.moveToPosition((Integer) position);
 
                 view.userId = cursor.getString(COLUMNS.WHO);

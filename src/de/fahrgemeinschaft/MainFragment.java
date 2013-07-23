@@ -74,7 +74,7 @@ public class MainFragment extends SherlockFragment
             setDateButtonText(ride.getDep());
         } else {
             ride = new Ride(getActivity());
-            ride.dep(new Date());
+            ride.dep(System.currentTimeMillis() - 3600000);
         }
     }
 
