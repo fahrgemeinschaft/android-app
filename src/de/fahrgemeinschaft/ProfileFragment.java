@@ -56,7 +56,7 @@ public class ProfileFragment extends SherlockFragment implements OnClickListener
             .putString("password", password.text.getText().toString())
             .remove("auth")
         .commit();
-        Crouton.makeText(getActivity(), "stored", Style.INFO).show();
+        Crouton.makeText(getActivity(), "Authentifiziere...", Style.INFO).show();
         getActivity().getSupportFragmentManager().popBackStack();
     }
 
