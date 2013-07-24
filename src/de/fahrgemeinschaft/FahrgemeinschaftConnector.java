@@ -27,13 +27,12 @@ import org.teleportr.Place;
 import org.teleportr.Ride;
 
 
-
 public class FahrgemeinschaftConnector extends Connector {
 
 
     private String startDate;
 
-    public String endpoint =  "http://service.fahrgemeinschaft.de";
+    public String endpoint =  "http://test.service.fahrgemeinschaft.de";
 
     static final String APIKEY = "API-KEY";
     static final SimpleDateFormat fulldf =
