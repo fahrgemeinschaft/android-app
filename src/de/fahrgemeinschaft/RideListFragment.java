@@ -127,7 +127,7 @@ public class RideListFragment extends SpinningZebraListFragment
                     day.format(query.getDep()) + " "
                             + date.format(query.getDep()));
             currently_searching_date = query.getDep();
-            ((CursorAdapter)getListAdapter()).notifyDataSetChanged();
+//            ((CursorAdapter)getListAdapter()).notifyDataSetChanged();
         }
     }
 

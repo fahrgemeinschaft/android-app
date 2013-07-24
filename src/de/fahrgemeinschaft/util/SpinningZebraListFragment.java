@@ -46,11 +46,6 @@ public abstract class SpinningZebraListFragment extends SherlockListFragment {
     private boolean spinning;
     private Cursor cursor;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-    }
 
     @Override
     public View onCreateView(final LayoutInflater lI, ViewGroup p, Bundle b) {
@@ -129,22 +124,16 @@ public abstract class SpinningZebraListFragment extends SherlockListFragment {
         rotate.setDuration(600);
         rotate.setRepeatMode(Animation.RESTART);
         rotate.setRepeatCount(Animation.INFINITE);
-
         stopSpinning("click here");
-        
-        System.out.println("on view");
-        if (cursor != null && !cursor.isClosed()) {
-            System.out.println("swapped");
-            ((CursorAdapter) getListAdapter()).swapCursor(cursor);
-        }
+        swapCursor(cursor);
     }
 
     public void swapCursor(Cursor cursor) {
         this.cursor = cursor;
-        if (getActivity() != null) {
-            System.out.println("swapped");
+        if (getListAdapter() == null) System.out.println("NO Adapter");
+        if (getListAdapter() != null && cursor != null && !cursor.isClosed()) {
+            System.out.println("swap");
             ((CursorAdapter) getListAdapter()).swapCursor(cursor);
-            cursor = null;
         }
     }
 
@@ -152,7 +141,7 @@ public abstract class SpinningZebraListFragment extends SherlockListFragment {
         this.smallText = smallText;
         this.largeText = largeText;
         spinning = true;
-        if (cursor != null && !cursor.isClosed()) {
+        if (cursor != null && !cursor.isClosed() && getListAdapter() != null) {
             ((CursorAdapter) getListAdapter()).notifyDataSetChanged();
         }
     }

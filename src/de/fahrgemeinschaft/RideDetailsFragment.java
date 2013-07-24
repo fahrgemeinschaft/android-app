@@ -85,7 +85,6 @@ public class RideDetailsFragment extends SherlockFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
 
         final LruCache<String, Bitmap> mImageCache =
                 new LruCache<String, Bitmap>(20);
@@ -175,7 +174,6 @@ public class RideDetailsFragment extends SherlockFragment
                     break;
                 }
                 try {
-                    System.out.println("foo" + cursor.getString(COLUMNS.DETAILS));
                     view.details.setText(
                             Ride.getDetails(cursor).getString("comment"));
                 } catch (JSONException e) {

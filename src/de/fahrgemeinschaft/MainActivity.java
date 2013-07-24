@@ -47,6 +47,8 @@ public class MainActivity extends SherlockFragmentActivity
             Uri.parse("content://de.fahrgemeinschaft/myrides");
     public static final Uri BG_JOBS_URI =
             Uri.parse("content://de.fahrgemeinschaft/jobs/search");
+    private static final String DETAILS = "details";
+    private static final String RESULTS = "results";
     public RideDetailsFragment details;
     public RideListFragment results;
     public MainFragment main;
@@ -58,36 +60,38 @@ public class MainActivity extends SherlockFragmentActivity
         setContentView(R.layout.activity_main);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
-        main = (MainFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.main);
-        if (results == null)
-            results = new RideListFragment();
-        if (details == null)
-            details = new RideDetailsFragment();
-        handleIntent(getIntent().getData());
+        FragmentManager fm = getSupportFragmentManager();
+        main = (MainFragment) fm.findFragmentById(R.id.main);
+        results = (RideListFragment) fm.findFragmentByTag(RESULTS);
+        if (results == null) results = new RideListFragment();
+        details = (RideDetailsFragment) fm.findFragmentByTag(DETAILS);
+        if (details == null) details = new RideDetailsFragment();
+        if (getIntent().getData() != null) {
+            handleIntent(getIntent().getData());
+        }
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        handleIntent(intent.getData());
+        if (intent.getData() != null) {
+            handleIntent(intent.getData());
+            showFragment(results, RESULTS);
+        }
     }
 
     private void handleIntent(Uri uri) {
-        System.out.println("intent " + uri);
-        if (uri != null) {
+        if (!uri.equals(getIntent().getData())) {
             setIntent(getIntent().setData(uri));
-            getSupportLoaderManager().restartLoader(0, null, this);
-            if (uri.equals(MY_RIDES_URI)) {
-                setTitle(R.string.my_rides);
-                startService(new Intent(this, ConnectorService.class)
-                        .setAction(ConnectorService.PUBLISH));
-                results.setSpinningEnabled(false);
-                showFragment(results);
-            } else if (uri.getLastPathSegment().equals("rides")) {
-                results.setSpinningEnabled(true);
-                setTitle(R.string.results);
-            }
+            getSupportLoaderManager().destroyLoader(0);
+        }
+        getSupportLoaderManager().initLoader(0, null, this);
+        if (uri.getLastPathSegment().equals("rides")) {
+            setTitle(R.string.results);
+            results.setSpinningEnabled(true);
+        } else if (uri.equals(MY_RIDES_URI)) {
+            setTitle(R.string.my_rides);
+            results.setSpinningEnabled(false);
         }
     }
 
@@ -112,25 +116,26 @@ public class MainActivity extends SherlockFragmentActivity
                 .store(this);
             startService(new Intent(this, ConnectorService.class)
                 .setAction(ConnectorService.SEARCH));
-            setIntent(getIntent().setData(Uri.parse("content://de.fahrgemeinschaft/rides"
+            handleIntent(Uri.parse("content://de.fahrgemeinschaft/rides"
                     + "?from_id=" + r.getFromId()
                     + "&to_id=" + r.getToId()
-                    + "&dep=" + r.getDep())));
-            handleIntent(getIntent().getData());
-            showFragment(results);
+                    + "&dep=" + r.getDep()));
+            showFragment(results, RESULTS);
             break;
         }
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle b) {
-        return new CursorLoader(this,
-                getIntent().getData(), null, null, null, null);
+        Uri uri = getIntent().getData();
+        System.out.println("create loader " + id + " : " + uri);
+        if (uri != null)
+            return new CursorLoader(this, uri, null, null, null, null);
+        else return null;
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> arg0, Cursor rides) {
-        System.out.println("swap cursors");
+    public void onLoadFinished(Loader<Cursor> l, Cursor rides) {
         results.swapCursor(rides);
         details.swapCursor(rides);
         if (rides.getCount() > 0) {
@@ -164,11 +169,12 @@ public class MainActivity extends SherlockFragmentActivity
     @Override
     public void onListItemClick(int position) {
         details.setSelection(position);
-        showFragment(details);
+        showFragment(details, DETAILS);
     }
 
     @Override
     public void onPageSelected(final int position) {
+        System.out.println("selected " + position);
 //        results.getListView().setSelection(position);
         details.setSelection(position);
     }
@@ -192,40 +198,56 @@ public class MainActivity extends SherlockFragmentActivity
         switch (item.getItemId()) {
         case R.id.my_rides:
             handleIntent(MY_RIDES_URI);
+            showFragment(results, RESULTS);
+            startService(new Intent(this, ConnectorService.class)
+                .setAction(ConnectorService.PUBLISH));
             return true;
         case R.id.settings:
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
         case R.id.profile:
-            showFragment(new ProfileFragment());
+            showFragment(new ProfileFragment(), "profile");
             return true;
         case android.R.id.home:
             if (getSupportFragmentManager().getBackStackEntryCount() > 0)
                 getSupportFragmentManager().popBackStack();
             else {
-                showFragment(new AboutFragment());
+                showFragment(new AboutFragment(), "about");
             }
             return true;
         }
         return false;
     }
 
-    private void showFragment(Fragment fragment) {
+    private void showFragment(Fragment fragment, String name) {
+        System.out.println("show");
         FragmentManager fm = getSupportFragmentManager();
-        if (!fragment.equals(results) && !fragment.equals(details))
-            fm.popBackStackImmediate();
+        for (int i = fm.getBackStackEntryCount() - 1; i >= 0; i--) {
+            if (fm.getBackStackEntryAt(i).getName().equals(name)) {
+                System.out.println("fragment already on screen");
+                for (int j = fm.getBackStackEntryCount() - 1; j > i; j--) {
+                    fm.popBackStackImmediate();
+                }
+                return;
+            }
+        }
         fm.beginTransaction()
             .setCustomAnimations(
-                    R.anim.slide_in_right, R.anim.do_nix,
-                    R.anim.do_nix, R.anim.slide_out_right)
-                .replace(R.id.container, fragment, null)
-                .addToBackStack(null)
-                .commit();
+                R.anim.slide_in_right, R.anim.do_nix,
+                R.anim.do_nix, R.anim.slide_out_right)
+            .replace(R.id.container, fragment, name)
+            .addToBackStack(name)
+            .commit();
     }
 
 
     @Override
-    public void onLoaderReset(Loader<Cursor> arg0) {}
+    public void onLoaderReset(Loader<Cursor> loader) {
+        System.out.println("loader reset " + loader.getId());
+        results.swapCursor(null);
+        details.swapCursor(null);
+
+    }
 
     @Override
     public void onPageScrollStateChanged(int arg0) {}
