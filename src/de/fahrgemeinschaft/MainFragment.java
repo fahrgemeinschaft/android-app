@@ -145,13 +145,15 @@ public class MainFragment extends SherlockFragment
     public void setDateButtonText(long date) {
         Calendar cal = Calendar.getInstance();
         int today = cal.get(Calendar.DAY_OF_YEAR);
+        int year = cal.get(Calendar.YEAR);
         cal.setTimeInMillis(date);
+        int pickedYear = cal.get(Calendar.YEAR);
         int dayOfYear = cal.get(Calendar.DAY_OF_YEAR);
-        if (dayOfYear == -1 || dayOfYear == today)
+        if ((dayOfYear == -1 || dayOfYear == today) && year == pickedYear)
             when.setText(getString(R.string.now));
-        else if (dayOfYear == today + 1)
+        else if ((dayOfYear == today + 1) && year == pickedYear)
             when.setText(getString(R.string.tomorrow));
-        else if (dayOfYear == today + 2)
+        else if ((dayOfYear == today + 2) && year == pickedYear)
             when.setText(getString(R.string.after_tomorrow));
         else
             when.setText(new SimpleDateFormat("dd. MMM yyyy",
