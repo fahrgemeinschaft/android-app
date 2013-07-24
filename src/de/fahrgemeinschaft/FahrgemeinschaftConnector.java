@@ -7,10 +7,8 @@
 
 package de.fahrgemeinschaft;
 
-import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,6 +23,7 @@ import org.json.JSONObject;
 import org.teleportr.Connector;
 import org.teleportr.Place;
 import org.teleportr.Ride;
+
 
 
 public class FahrgemeinschaftConnector extends Connector {
@@ -59,31 +58,35 @@ public class FahrgemeinschaftConnector extends Connector {
 
     @Override
     public long search(Place from, Place to, Date dep, Date arr) throws Exception {
-        
-        startDate = df.format(dep);
 
-        JSONObject from_json = new JSONObject();
-        JSONObject to_json = new JSONObject();
-        try {
-            from_json.put("Longitude", "" + from.getLng());
-            from_json.put("Latitude", "" + from.getLat());
-            from_json.put("Startdate", df.format(dep));
-            from_json.put("Reoccur", JSONObject.NULL);
-            from_json.put("ToleranceRadius", get("radius_from"));
-            // place.put("Starttime", JSONObject.NULL);
-
-            to_json.put("Longitude", "" + to.getLng());
-            to_json.put("Latitude", "" + to.getLat());
-            to_json.put("ToleranceRadius", get("radius_to"));
-            // place.put("ToleranceDays", "3");
-        } catch (JSONException e) {
-            e.printStackTrace();
+        HttpURLConnection conn;
+        if (from == null && to == null && dep == null) {
+            conn = (HttpURLConnection) new URL(endpoint + "/trip").openConnection();
+            conn.setRequestProperty("authkey", getAuth());
+        } else {
+            JSONObject from_json = new JSONObject();
+            JSONObject to_json = new JSONObject();
+            startDate = df.format(dep);
+            try {
+                from_json.put("Longitude", "" + from.getLng());
+                from_json.put("Latitude", "" + from.getLat());
+                from_json.put("Startdate", df.format(dep));
+                from_json.put("Reoccur", JSONObject.NULL);
+                from_json.put("ToleranceRadius", get("radius_from"));
+                // place.put("Starttime", JSONObject.NULL);
+                
+                to_json.put("Longitude", "" + to.getLng());
+                to_json.put("Latitude", "" + to.getLat());
+                to_json.put("ToleranceRadius", get("radius_to"));
+                // place.put("ToleranceDays", "3");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            conn = (HttpURLConnection) new URL(endpoint
+                    + "/trip?searchOrigin=" + from_json
+                    + "&searchDestination=" + to_json).openConnection();
         }
-
         try {
-            HttpURLConnection conn = (HttpURLConnection) new URL(endpoint
-                             + "/trip?searchOrigin=" + from_json
-                            + "&searchDestination=" + to_json).openConnection();
             conn.setRequestProperty("apikey", APIKEY);
             JSONObject json = loadJson(conn);
             if (json != null) {
@@ -96,14 +99,10 @@ public class FahrgemeinschaftConnector extends Connector {
             }
         } catch (JSONException e) {
             e.printStackTrace();
-        } catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
-        return dep.getTime() + 24 * 3600 * 1000;
+        if (dep != null)
+            return dep.getTime() + 24 * 3600 * 1000;
+        else return 0;
     }
 
     private static final String EMAIL = "EMail";
@@ -114,7 +113,9 @@ public class FahrgemeinschaftConnector extends Connector {
     private Ride parseRide(JSONObject json)  throws JSONException {
 
         Ride ride = new Ride().type(Ride.OFFER);
-        ride.who(json.getString("IDuser"));
+        if (startDate != null)
+            ride.who(json.getString("IDuser"));
+        else ride.marked();
         String value = json.getString("Contactmail");
         if (!value.equals("") && !value.equals("null"))
             ride.set(EMAIL, value);
@@ -128,7 +129,7 @@ public class FahrgemeinschaftConnector extends Connector {
         if (!value.equals("") && !value.equals("null"))
             ride.set(PLATE, value);
         ride.getDetails().put("privacy", json.getJSONObject("Privacy"));
-        ride.set("comment", json.getString("Description"));
+        ride.set("Comment", json.getString("Description"));
         ride.ref(json.getString("TripID"));
         ride.seats(json.getInt("Places"));
         ride.dep(parseTimestamp(json));
@@ -173,10 +174,14 @@ public class FahrgemeinschaftConnector extends Connector {
             departure = json.getString("Starttime");
             if (departure.length() == 3)
                 departure = "0" + departure;
-//            departure = json.getString("Startdate") + departure;
+        }
+        if (startDate == null) {
+            departure = json.getString("Startdate") + departure;
+        } else {
+            departure = startDate + departure;
         }
         try {
-            return fulldf.parse(startDate + departure);
+            return fulldf.parse(departure);
         } catch (ParseException e) {
             System.out.println("date/time parse error!");
             e.printStackTrace();
