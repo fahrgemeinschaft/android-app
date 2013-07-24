@@ -175,7 +175,7 @@ public class RideDetailsFragment extends SherlockFragment
                 }
                 try {
                     view.details.setText(
-                            Ride.getDetails(cursor).getString("comment"));
+                            Ride.getDetails(cursor).getString("Comment"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

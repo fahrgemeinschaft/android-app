@@ -69,7 +69,6 @@ public class RideListFragment extends SpinningZebraListFragment
         v.day.setText(day.format(timestamp));
         v.date.setText(date.format(timestamp));
         v.time.setText(time.format(timestamp));
-
         v.price.setText(ride.getInt(COLUMNS.PRICE) / 100 + "");
         switch(ride.getInt(COLUMNS.SEATS)){
         case 0:
