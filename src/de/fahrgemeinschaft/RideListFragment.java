@@ -24,7 +24,6 @@ import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.IBinder;
-import android.support.v4.widget.CursorAdapter;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;

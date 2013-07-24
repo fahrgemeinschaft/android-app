@@ -69,6 +69,7 @@ public class MainActivity extends SherlockFragmentActivity
         if (getIntent().getData() != null) {
             handleIntent(getIntent().getData());
         }
+        if (fm.getBackStackEntryCount() == 0) setTitle("");
     }
 
     @Override
@@ -81,7 +82,7 @@ public class MainActivity extends SherlockFragmentActivity
     }
 
     private void handleIntent(Uri uri) {
-        if (!uri.equals(getIntent().getData())) {
+        if (getIntent().getData() != uri) {
             setIntent(getIntent().setData(uri));
             getSupportLoaderManager().destroyLoader(0);
         }
