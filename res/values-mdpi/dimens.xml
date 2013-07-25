@@ -7,6 +7,6 @@
 
 <resources>
 
-    <dimen name="smallprint">8sp</dimen>
+    <dimen name="smallprint">8.7sp</dimen>
 
 </resources>

@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/logo"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="-37dp"
+        android:layout_marginTop="-15dp"
         android:text="github.com/fahrgemeinschaft/android-app"
         android:textSize="14sp" />
 
