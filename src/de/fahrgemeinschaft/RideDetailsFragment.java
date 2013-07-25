@@ -25,12 +25,14 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.util.LruCache;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.GetChars;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -80,6 +82,7 @@ public class RideDetailsFragment extends SherlockFragment
     private RequestQueue queue;
     private Cursor cursor;
     private int selected;
+    private HashMap<String, String> headers;
     private static ImageLoader imageLoader;
 
     @Override
@@ -351,7 +354,7 @@ public class RideDetailsFragment extends SherlockFragment
 //                  JSONArray rgd = user.getJSONArray("RegistrationDate");
 //                  reg_date.setText(user.getJSONArray("").getString("Value") + " " 
 //                          + kvp.getJSONObject(2).getString("Value"));
-//                  Log.d(TAG, kvp.toString());
+//                  Log.d(TAG, json.toString());
                   if (!user.isNull("AvatarPhoto")) {
                       JSONObject photo = user.getJSONObject("AvatarPhoto");
                       String id = photo.getString("PhotoID");
@@ -374,14 +377,17 @@ public class RideDetailsFragment extends SherlockFragment
         err.printStackTrace();
     }
 
-    static class ProfileRequest extends JsonObjectRequest { 
-
-        private static HashMap<String, String> headers;
-
-        static {
+    public Map<String, String> headers() {
+        if (headers == null) {
             headers = new HashMap<String, String>();  
-            headers.put("apikey", FahrgemeinschaftConnector.APIKEY);  
+            headers.put("apikey", FahrgemeinschaftConnector.APIKEY);
+            headers.put("authkey", PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("auth",null));
+            System.out.println("FUUUUUUUUUUUUUUUUU---->" + PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("auth",null));
         }
+        return headers;
+    }
+
+    class ProfileRequest extends JsonObjectRequest { 
 
         public ProfileRequest( String userid,
                 Listener<JSONObject> listener, ErrorListener errorListener) {
@@ -392,14 +398,13 @@ public class RideDetailsFragment extends SherlockFragment
 
         @Override
         public Map<String, String> getHeaders() throws AuthFailureError {
-            return headers;
+            return headers();
         };
-        
+
         @Override
         protected Response<JSONObject> parseNetworkResponse(NetworkResponse res) {
             return Response.success(super.parseNetworkResponse(res).result,
                     parseIgnoreCacheHeaders(res));
-            
         }
     }
 

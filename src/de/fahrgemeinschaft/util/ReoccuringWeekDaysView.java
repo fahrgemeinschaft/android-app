@@ -10,6 +10,7 @@ import de.fahrgemeinschaft.R;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -40,10 +41,15 @@ public class ReoccuringWeekDaysView extends LinearLayout {
     public void setDays(JSONObject details) {
         this.details = details;
         try {
+            boolean reoccuring = false;
             JSONObject days = details.getJSONObject("reoccur");
             for (int i = 0; i < 7; i++) {
-                getChildAt(i).setSelected(days.getBoolean(DAYS[i]));
+                boolean selected = days.getBoolean(DAYS[i]);
+                getChildAt(i).setSelected(selected);
+                if (selected) reoccuring = true;
             }
+            if (reoccuring) setVisibility(VISIBLE);
+            else setVisibility(INVISIBLE);
         } catch (Exception e) {
             clear();
         }
