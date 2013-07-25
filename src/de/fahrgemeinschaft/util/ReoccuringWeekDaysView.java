@@ -36,7 +36,6 @@ public class ReoccuringWeekDaysView extends LinearLayout {
         }
     }
 
-
     public void setDays(JSONObject details) {
         this.details = details;
         try {
@@ -54,7 +53,7 @@ public class ReoccuringWeekDaysView extends LinearLayout {
     }
 
     private TextView makeRecurringDayButton(Context ctx) {
-        TextView day = new TextView(ctx);
+        TextView day = new UnScrollingTextView(ctx);
         if (clickable)
             day.setOnClickListener(toggleSelectedState);
         LayoutParams lp = new LayoutParams(0, LayoutParams.MATCH_PARENT);
@@ -74,6 +73,18 @@ public class ReoccuringWeekDaysView extends LinearLayout {
             updateDays();
         }
     };
+
+    static class UnScrollingTextView extends TextView {
+
+        public UnScrollingTextView(Context context) {
+            super(context);
+        }
+
+        @Override
+        public boolean canScrollHorizontally(int direction) {
+            return false;
+        }
+    }
 
     public void updateDays() {
         JSONObject days = new JSONObject();
