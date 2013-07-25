@@ -5,8 +5,6 @@ import java.text.DateFormatSymbols;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.fahrgemeinschaft.R;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -14,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import de.fahrgemeinschaft.R;
 
 
 public class ReoccuringWeekDaysView extends LinearLayout {
@@ -37,6 +36,7 @@ public class ReoccuringWeekDaysView extends LinearLayout {
             addView(day);
         }
     }
+
 
     public void setDays(JSONObject details) {
         this.details = details;
