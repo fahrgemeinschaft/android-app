@@ -14,17 +14,21 @@
     <EditText
         android:id="@+id/autocomplete_text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/large_icn"
         android:hint="@string/search"
-        android:textSize="35sp"
+        android:textSize="21sp"
+        android:textStyle="bold"
+        android:textColor="@color/darker_green"
         android:singleLine="true"
+        android:gravity="left|center_vertical"
+        android:layout_gravity="left|center_vertical"
         android:layout_marginTop="21dp"
-        android:padding="8dp"
+        android:paddingLeft="@dimen/large"
+        android:paddingRight="@dimen/xlarge"
         android:background="@color/opacity_white"
         android:visibility="gone"
         android:imeOptions="flagNoExtractUi"
-        android:layout_marginBottom="@dimen/medium"
-        android:textColor="@color/darker_green" />
+        android:layout_marginBottom="@dimen/medium" />
 
     <ListView
         android:id="@android:id/list"
@@ -41,15 +45,16 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_alignRight="@+id/autocomplete_text"
-        android:layout_marginRight="22.5dp"
-        android:layout_marginTop="22.5dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/autocomplete_text"
+        android:layout_marginRight="@dimen/xlarge"
+        android:layout_marginTop="13dp"
         android:visibility="gone" />
 
     <ImageButton
         android:id="@+id/toggle"
-        android:layout_width="62dp"
-        android:layout_height="62dp"
+        android:layout_width="@dimen/large_icn"
+        android:layout_height="@dimen/large_icn"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@id/autocomplete_text"
         android:background="@drawable/btn_white"
