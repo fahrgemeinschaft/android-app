@@ -40,6 +40,8 @@
 
     <string name="username">eMail</string>
     <string name="password">Passwort</string>
+    <string name="login">Einloggen</string>
+    <string name="register">Registrieren</string>
 
     <string name="contact">Kontakt</string>
     <string name="seats">Sitzplätze</string>

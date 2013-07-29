@@ -8,6 +8,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     android:background="@color/light_green_translucent"
     android:orientation="vertical" >
 
@@ -27,13 +31,22 @@
         android:inputType="textPassword"
         android:src="@drawable/icn_password" />
 
-    <ImageButton
+    <Button
         android:id="@+id/login"
         android:layout_width="140dp"
         android:layout_height="80dp"
         android:layout_gravity="right"
         android:layout_marginTop="@dimen/medium"
         android:background="@drawable/btn_medium_green"
-        android:src="@drawable/btn_anbieten" />
+        android:text="@string/login" />
+
+    <Button
+        android:id="@+id/register"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="@dimen/xlarge"
+        android:background="@drawable/btn_medium_green"
+        android:text="@string/register" />
 
 </LinearLayout>
