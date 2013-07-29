@@ -27,7 +27,8 @@
     <string name="my_rides">Meine Fahrten</string>
     <string name="profile">Profil</string>
     <string name="settings">Einstellungen</string>
-    <string name="decrease_seats">Sitzplätze -1</string>
+    <string name="decrease_seats">-1</string>
+    <string name="increase_seats">+1</string>
     <string name="edit">Bearbeiten</string>
     <string name="stored">gespeichert</string>
 

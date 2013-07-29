@@ -5,6 +5,14 @@
     android:orientation="horizontal" >
 
     <Button
+        android:id="@+id/increase_seats"
+        android:layout_margin="@dimen/medium"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/xlarge"
+        android:text="@string/increase_seats" />
+
+    <Button
         android:id="@+id/decrease_seats"
         android:layout_margin="@dimen/medium"
         android:layout_weight="1"
@@ -15,7 +23,7 @@
     <Button
         android:id="@+id/edit"
         android:layout_margin="@dimen/medium"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:layout_width="0dp"
         android:layout_height="@dimen/xlarge"
         android:text="@string/edit" />
