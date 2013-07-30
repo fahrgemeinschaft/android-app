@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Fahrgemeinschaft / Ridesharing App
+  Copyright (c) 2013 by it's authors.
+  Some rights reserved. See LICENSE..
+-->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <item
+        android:id="@+id/edit"
+        android:title="@string/edit"
+        android:icon="@drawable/ic_launcher"
+        android:alphabeticShortcut="e"
+        android:showAsAction="always|withText" />
+
+    <item
+        android:id="@+id/delete"
+        android:title="@string/delete"
+        android:icon="@drawable/ic_launcher"
+        android:showAsAction="ifRoom|withText" />
+
+    <item
+        android:id="@+id/duplicate"
+        android:title="@string/duplicate"
+        android:icon="@drawable/ic_launcher"
+        android:showAsAction="ifRoom|withText" />
+
+    <item
+        android:id="@+id/duplicate_retour"
+        android:title="@string/duplicate_retour"
+        android:icon="@drawable/ic_launcher"
+        android:showAsAction="never|withText" />
+</menu>

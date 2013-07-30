@@ -30,6 +30,9 @@
     <string name="decrease_seats">-</string>
     <string name="increase_seats">+</string>
     <string name="edit">Bearbeiten</string>
+    <string name="delete">Löschen</string>
+    <string name="duplicate">Duplizieren</string>
+    <string name="duplicate_retour">Duplizieren Retour</string>
     <string name="stored">gespeichert</string>
 
     <string name="mode_car">Auto</string>

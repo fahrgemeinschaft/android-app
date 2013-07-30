@@ -12,6 +12,7 @@
         android:layout_margin="@dimen/medium"
         android:text="@string/increase_seats"
         android:background="@drawable/btn_light_white"
+        android:focusable="false"
         style="@style/place_pick_btn" />
 
     <TextView 
@@ -34,6 +35,7 @@
         android:layout_margin="@dimen/medium"
         android:text="@string/decrease_seats"
         android:background="@drawable/btn_light_white"
+        android:focusable="false"
         style="@style/place_pick_btn" />
 
 </LinearLayout>
