@@ -113,7 +113,7 @@
     </style>
 
     <style name="place_pick_btn">
-        <item name="android:textSize">28sp</item>
+        <item name="android:textSize">21sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/darker_green</item>
     </style>
