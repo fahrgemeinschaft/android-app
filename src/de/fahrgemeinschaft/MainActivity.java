@@ -144,8 +144,8 @@ public class MainActivity extends SherlockFragmentActivity
             long latest_dep = rides.getLong(COLUMNS.DEPARTURE);
             System.out.println("ALREADY in CACHE until "
                     + new SimpleDateFormat("dd.MM. HH:mm", Locale.GERMANY)
-                    .format(new Date(latest_dep)));
-            if (latest_dep > main.ride.getArr()) {// inc time window
+                            .format(new Date(latest_dep)));
+            if (latest_dep - main.ride.getArr() > 24*3600000) {// inc window
                 Calendar cal = Calendar.getInstance();
                 cal.setTimeInMillis(latest_dep);
                 cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -221,11 +221,9 @@ public class MainActivity extends SherlockFragmentActivity
     }
 
     private void showFragment(Fragment fragment, String name) {
-        System.out.println("show");
         FragmentManager fm = getSupportFragmentManager();
         for (int i = fm.getBackStackEntryCount() - 1; i >= 0; i--) {
             if (fm.getBackStackEntryAt(i).getName().equals(name)) {
-                System.out.println("fragment already on screen");
                 for (int j = fm.getBackStackEntryCount() - 1; j > i; j--) {
                     fm.popBackStackImmediate();
                 }
@@ -240,6 +238,7 @@ public class MainActivity extends SherlockFragmentActivity
             .addToBackStack(name)
             .commit();
     }
+
 
 
     @Override
