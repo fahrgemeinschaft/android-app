@@ -93,7 +93,7 @@ public class RideListFragment extends SpinningZebraListFragment
             view.findViewById(R.id.stub).setVisibility(View.VISIBLE);
             final Uri edit_uri = Uri.parse(
                     "content://de.fahrgemeinschaft/rides/" + ride.getLong(0));
-            view.findViewById(R.id.edit).setOnClickListener(new OnClickListener() {
+            view.findViewById(R.id.decrease_seats).setOnClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View v) {

@@ -6,26 +6,34 @@
 
     <Button
         android:id="@+id/increase_seats"
-        android:layout_margin="@dimen/medium"
-        android:layout_weight="1"
-        android:layout_width="0dp"
         android:layout_height="@dimen/xlarge"
-        android:text="@string/increase_seats" />
+        android:layout_width="@dimen/xlarge"
+        android:layout_weight="1"
+        android:layout_margin="@dimen/medium"
+        android:text="@string/increase_seats"
+        android:background="@drawable/btn_light_white"
+        style="@style/place_pick_btn" />
+
+    <TextView 
+        android:id="@+id/seats_text"
+        android:layout_height="@dimen/xlarge"
+        android:layout_width="0dp"
+        android:layout_weight="8"
+        android:layout_margin="@dimen/medium"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="23sp"
+        android:text="@string/seats" />
 
     <Button
         android:id="@+id/decrease_seats"
-        android:layout_margin="@dimen/medium"
+        android:layout_height="@dimen/xlarge"
+        android:layout_width="@dimen/xlarge"
         android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/xlarge"
-        android:text="@string/decrease_seats" />
-
-    <Button
-        android:id="@+id/edit"
         android:layout_margin="@dimen/medium"
-        android:layout_weight="2"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/xlarge"
-        android:text="@string/edit" />
+        android:text="@string/decrease_seats"
+        android:background="@drawable/btn_light_white"
+        style="@style/place_pick_btn" />
 
 </LinearLayout>
