@@ -32,7 +32,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.util.LruCache;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.text.GetChars;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,6 +45,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
 import com.android.volley.NetworkResponse;
@@ -63,7 +65,7 @@ import com.calciumion.widget.BasePagerAdapter;
 import de.fahrgemeinschaft.util.ReoccuringWeekDaysView;
 
 public class RideDetailsFragment extends SherlockFragment
-        implements Response.ErrorListener {
+        implements Response.ErrorListener, OnPageChangeListener {
 
     private static final String TAG = "Details";
     private static final SimpleDateFormat day =
@@ -80,14 +82,16 @@ public class RideDetailsFragment extends SherlockFragment
             new SimpleDateFormat("HH:mm", Locale.GERMANY);
     private ViewPager pager;
     private RequestQueue queue;
-    private Cursor cursor;
+    public Cursor cursor;
     private int selected;
     private HashMap<String, String> headers;
+    private MenuItem edit;
     private static ImageLoader imageLoader;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         final LruCache<String, Bitmap> mImageCache =
                 new LruCache<String, Bitmap>(20);
@@ -185,7 +189,7 @@ public class RideDetailsFragment extends SherlockFragment
 
                 getActivity().getSupportLoaderManager()
                     .initLoader((int) cursor.getLong(0), null, view);
-                
+
                 view.avatar.setImageResource(R.drawable.icn_view_user);
                 view.last_login.setText("");
                 view.reg_date.setText("");
@@ -219,10 +223,9 @@ public class RideDetailsFragment extends SherlockFragment
     @Override
     public void onResume() {
         super.onResume();
+        pager.setOnPageChangeListener(this);
         pager.setCurrentItem(selected);
-        pager.setOnPageChangeListener((OnPageChangeListener) getActivity());
     }
-
 
 
     static class RideView extends RelativeLayout
@@ -372,6 +375,41 @@ public class RideDetailsFragment extends SherlockFragment
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        getSherlockActivity().getSupportMenuInflater()
+                .inflate(R.menu.ride_actions, menu);
+        edit = menu.findItem(R.id.edit);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        ((OnPageChangeListener) getActivity()).onPageSelected(position);
+        cursor.moveToPosition(position);
+        if (cursor.getString(COLUMNS.WHO).equals("")) {
+//          getSherlockActivity().startActionMode(new AnActionModeOfEpicProportions());
+          edit.setVisible(true);
+      } else {
+          edit.setVisible(false);
+//          getSherlockActivity().startActionMode(new AnActionModeOfEpicProportions());
+      }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.edit:
+            System.out.println("edit");
+            return true;
+        case R.id.duplicate:
+            System.out.println("duplicate");
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     public void onErrorResponse(VolleyError err) {
         Log.d(TAG, err.toString());
         err.printStackTrace();
@@ -382,7 +420,6 @@ public class RideDetailsFragment extends SherlockFragment
             headers = new HashMap<String, String>();  
             headers.put("apikey", FahrgemeinschaftConnector.APIKEY);
             headers.put("authkey", PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("auth",null));
-            System.out.println("FUUUUUUUUUUUUUUUUU---->" + PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("auth",null));
         }
         return headers;
     }
@@ -438,4 +475,11 @@ public class RideDetailsFragment extends SherlockFragment
 
         return entry;
     }
+
+    @Override
+    public void onPageScrollStateChanged(int arg0) {}
+
+    @Override
+    public void onPageScrolled(int arg0, float arg1, int arg2) {}
+
 }

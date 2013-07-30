@@ -169,8 +169,8 @@ public class MainActivity extends SherlockFragmentActivity
 
     @Override
     public void onListItemClick(int position) {
-        details.setSelection(position);
         showFragment(details, DETAILS);
+        details.setSelection(position);
     }
 
     @Override
@@ -216,8 +216,9 @@ public class MainActivity extends SherlockFragmentActivity
                 showFragment(new AboutFragment(), "about");
             }
             return true;
+        default:
+            return super.onOptionsItemSelected(item);
         }
-        return false;
     }
 
     private void showFragment(Fragment fragment, String name) {
