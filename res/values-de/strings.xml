@@ -20,7 +20,7 @@
     <string name="uncomplete">unvollständig</string>
     <string name="search">suchen</string>
     <string name="offer">anbieten</string>
-     <string name="uncomplete">uncomplete</string>
+    <string name="uncomplete">uncomplete</string>
     <string name="searching">suche für</string>
     <string name="nothing">nixda gefunden für</string>
     <string name="results">Suchergebnisse</string>
@@ -30,6 +30,7 @@
     <string name="decrease_seats">-</string>
     <string name="increase_seats">+</string>
     <string name="edit">Bearbeiten</string>
+    <string name="deactivate">Deaktivieren</string>
     <string name="delete">Löschen</string>
     <string name="duplicate">Duplizieren</string>
     <string name="duplicate_retour">Duplizieren Retour</string>
