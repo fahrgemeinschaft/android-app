@@ -12,165 +12,112 @@
 <body>
 <form action="http://test.fahrgemeinschaft.de/register.php" method="post" name="regform" id="regform" style="display:inline ">
 <h2>Registrierung</h2>
-<table cellpadding="2" cellspacing="0" align="center">
-   <tbody>
-      <tr>
-         <td class="col_left">
-            <div align="right">
-               Email-Adresse <img src="http://test.fahrgemeinschaft.de/gfx/ico/mail.gif" alt="" height="16" width="16" align="absmiddle">
-            </div>
-         </td>
-         <td class="col_right">
-            <input name="edtEmail" id="edtEmail" value="" size="40" tabindex="100" class="textField required email" type="text">
-         </td>
-      </tr>
-      <tr>
-         <td class="col_left">&nbsp;</td>
-         <td class="col_right">
-            <div class="f_9hint">
-               Die Email-Adresse muss gültig sein.<br>
-               Wir schicken dir eine Bestätigungs-Email nach der Anmeldung.
-            </div>
-         </td>
-      </tr>
-      <tr>
-         <td class="col_left">
-            <div align="right">
-               Email wiederholen <img src="http://test.fahrgemeinschaft.de/gfx/ico/mail.gif" alt="" height="16" width="16" align="absmiddle">
-            </div>
-         </td>
-         <td class="col_right">
-            <input name="edtEmail2" id="edtEmail2" value="" size="40" tabindex="100" class="textField required email" type="text">
-         </td>
-      </tr>
-      <tr>
-         <td class="col_left">
-            <div align="right">Passwort <img src="http://test.fahrgemeinschaft.de/gfx/ico/key.gif" alt="" height="16" width="16" align="absmiddle"></div>
-         </td>
-         <td class="col_right">
-            <input name="edtPassword" id="edtPassword" size="40" tabindex="110" class="textField required" minlength="5" type="password">
-         </td>
-      </tr>
-      <tr>
-         <td class="col_left">&nbsp;</td>
-         <td class="col_right">
-            <div class="f_9hint">
-               Mindestens 5 Zeichen.<br>
-               Verwende Sonderzeichen und Zahlen, um dein Passwort sicherer zu machen.
-            </div>
-         </td>
-      </tr>
-      <tr>
-         <td class="col_left">
-            <div align="right">
-               Vorname <img src="http://test.fahrgemeinschaft.de/gfx/ico/user.gif" alt="" height="16" width="16" align="absmiddle">
-            </div>
-         </td>
-         <td class="col_right">
-            <input name="edtFirstname" id="edtFirstname" value="" size="40" tabindex="120" class="textField required" minlength="3" type="text">
-         </td>
-      </tr>
-      <tr>
-         <td class="col_left">
-            <div align="right">
-               Nachname <img src="http://test.fahrgemeinschaft.de/gfx/ico/user.gif" alt="" height="16" width="16" align="absmiddle">
-            </div>
-         </td>
-         <td class="col_right">
-            <input name="edtLastname" id="edtLastname" size="40" value="" tabindex="130" class="privateField textField required" minlength="3" type="text">
-            <div id="img_lock"><img src="http://test.fahrgemeinschaft.de/gfx/ico/lock_mini.gif"></div>
-         </td>
-      </tr>
-      <tr>
-         <td class="col_left">&nbsp;</td>
-         <td class="col_right">
-            <div class="f_9hint">
-               Deine persönlichen Daten sind zu 100% gegen Missbrauch geschützt.<br>
-               Sie sind nur sichtbar nach expliziter Freigabe von dir.
-            </div>
-         </td>
-      </tr>
-      <tr>
-         <td class="col_left">
-            <div align="right">
-               Geschlecht <img src="http://test.fahrgemeinschaft.de/gfx/ico/w-m.gif" alt="" height="16" width="16" align="absmiddle">
-            </div>
-         </td>
-         <td class="col_right">
-            <div style="float: left; width: 50%;">
-               <input id="radF" name="radGender" style="width: 15px;" checked="checked" class="radio" value="f" tabindex="140" type="radio">
-               <label>Weiblich</label>
-            </div>
-            <div style="float: left;">
-               <input name="radGender" id="radM" style="width: 15px;" class="radio" tabindex="150" value="m" type="radio">
-               <label>Männlich</label>
-            </div>
-         </td>
-      </tr>
-      <tr>
-         <td class="col_left">
-            <div align="right">
-               Wohnort <img src="http://test.fahrgemeinschaft.de/gfx/ico/map.png" alt="" height="16" width="16" align="absmiddle">
-            </div>
-         </td>
-         <td class="col_right">
-            <input id="suggestPlace" class="suggestField required" autocomplete="off" tabindex="160" type="text">
-            <div id="country_list">
-               <select id="countryOrigin">
-                  <option value="DE" title="Deutschland">DE</option>
-                  <option value="AT" title="Österreich">AT</option>
-                  <option value="BE" title="Belgien">BE</option>
-                  <option value="BG" title="Bulgarien">BG</option>
-                  <option value="CH" title="Schweiz">CH</option>
-                  <option value="CY" title="Zypern">CY</option>
-                  <option value="CZ" title="Tschechische Republik">CZ</option>
-                  <option value="DK" title="Dänemark">DK</option>
-                  <option value="EE" title="Estland">EE</option>
-                  <option value="ES" title="Spanien">ES</option>
-                  <option value="FI" title="Finnland">FI</option>
-                  <option value="FR" title="Frankreich">FR</option>
-                  <option value="GR" title="Griechenland">GR</option>
-                  <option value="HR" title="Kroatien">HR</option>
-                  <option value="HU" title="Ungarn">HU</option>
-                  <option value="IE" title="Irland">IE</option>
-                  <option value="IS" title="Island">IS</option>
-                  <option value="IT" title="Italien">IT</option>
-                  <option value="LI" title="Liechtenstein">LI</option>
-                  <option value="LT" title="Litauen">LT</option>
-                  <option value="LU" title="Luxemburg">LU</option>
-                  <option value="LV" title="Lettland">LV</option>
-                  <option value="MT" title="Malta">MT</option>
-                  <option value="NL" title="Niederlande">NL</option>
-                  <option value="NO" title="Norwegen">NO</option>
-                  <option value="PL" title="Polen">PL</option>
-                  <option value="PT" title="Portugal">PT</option>
-                  <option value="RO" title="Rumänien">RO</option>
-                  <option value="SE" title="Schweden">SE</option>
-                  <option value="SI" title="Slowenien">SI</option>
-                  <option value="SK" title="Slowakei">SK</option>
-                  <option value="TR" title="Türkei">TR</option>
-                  <option value="UK" title="Vereinigtes Königreich">UK</option>
-               </select>
-            </div>
-         </td>
-      </tr>
-      <tr>
-         <td colspan="2">
-            <div>
-               <h3>Die Mitgliedschaft ist 100% kostenfrei und kann jederzeit beendet werden!</h3>
-            </div><br>
-            <div class="f_9hint">
-               Mit der Anmeldung akzeptierst du die <a href="http://fahrgemeinschaft.de/rules.php" target="_blank">Allgemeinen Nutzungsbedingungen</a> für fahrgemeinschaft.de
-            </div>
-         </td>
-      </tr>
-      <tr>
-         <td colspan="2">
-            <input value="Anmelden" tabindex="170" id="btnSend" name="btnSend" type="submit">
-         </td>
-      </tr>
-   </tbody>
-</table>
+
+<div class="title">Email-Adresse</div>
+<div style="width: 100%;">
+    <input name="edtEmail" id="edtEmail" value="" size="40" tabindex="100" class="textField required email" type="text">
+    <div class="img"><img src="pix/email.png" alt="" height="34" width="34"></div>
+    <div class="f_9hint">
+        Die Email-Adresse muss gültig sein.<br>
+        Wir schicken dir eine Bestätigungs-Email nach der Anmeldung.
+    </div>
+</div>
+
+<div class="title">Email wiederholen</div>
+<div style="width: 100%;">
+    <input name="edtEmail2" id="edtEmail2" value="" size="40" tabindex="100" class="textField required email" type="text">
+    <div class="img"><img src="pix/email.png" alt="" height="34" width="34"></div>
+</div>
+
+<div class="title">Passwort</div>
+<div style="width: 100%;">
+    <input name="edtPassword" id="edtPassword" size="40" tabindex="110" class="textField required" minlength="5" type="password">
+    <div class="img"><img src="pix/password.png" alt="" height="34" width="34"></div>
+    <div class="f_9hint">
+        Mindestens 5 Zeichen.<br>
+        Verwende Sonderzeichen und Zahlen, um dein Passwort sicherer zu machen.
+    </div>
+</div>
+
+<div class="title">Vorname</div>
+<div style="width: 100%;">
+    <input name="edtFirstname" id="edtFirstname" value="" size="40" tabindex="120" class="textField required" minlength="3" type="text">
+    <div class="img"><img src="pix/name.png" alt="" height="34" width="34"></div>
+</div>
+
+<div class="title">Nachname</div>
+<div style="width: 100%;">
+    <input name="edtLastname" id="edtLastname" size="40" value="" tabindex="130" class="privateField textField required" minlength="3" type="text">
+    <div class="img"><img src="pix/name_lock.png" alt="" height="34" width="34"></div>
+    <div class="f_9hint">
+        Deine persönlichen Daten sind zu 100% gegen Missbrauch geschützt.<br>
+        Sie sind nur sichtbar nach expliziter Freigabe von dir.
+    </div>
+</div>
+
+<div class="title">Geschlecht</div>
+<div style="width: 100%;">
+    <div style="float: left;">
+        <input name="radGender" id="radF" style="width: 15px;" checked="checked" class="radio" value="f" tabindex="140" type="radio">
+        <label>Weiblich</label>
+    </div>
+    <div style="float: right;">
+        <input name="radGender" id="radM" style="width: 15px;" class="radio" tabindex="150" value="m" type="radio">
+        <label>Männlich</label>
+    </div>
+</div>
+
+<div class="title">Wohnort</div>
+<div style="width: 100%;">
+    <input id="suggestPlace" class="suggestField required" autocomplete="off" tabindex="160" type="text">
+    <div id="country_list">
+        <select id="countryOrigin" tabindex="165">
+            <option value="DE" title="Deutschland">DE</option>
+            <option value="AT" title="Österreich">AT</option>
+            <option value="BE" title="Belgien">BE</option>
+            <option value="BG" title="Bulgarien">BG</option>
+            <option value="CH" title="Schweiz">CH</option>
+            <option value="CY" title="Zypern">CY</option>
+            <option value="CZ" title="Tschechische Republik">CZ</option>
+            <option value="DK" title="Dänemark">DK</option>
+            <option value="EE" title="Estland">EE</option>
+            <option value="ES" title="Spanien">ES</option>
+            <option value="FI" title="Finnland">FI</option>
+            <option value="FR" title="Frankreich">FR</option>
+            <option value="GR" title="Griechenland">GR</option>
+            <option value="HR" title="Kroatien">HR</option>
+            <option value="HU" title="Ungarn">HU</option>
+            <option value="IE" title="Irland">IE</option>
+            <option value="IS" title="Island">IS</option>
+            <option value="IT" title="Italien">IT</option>
+            <option value="LI" title="Liechtenstein">LI</option>
+            <option value="LT" title="Litauen">LT</option>
+            <option value="LU" title="Luxemburg">LU</option>
+            <option value="LV" title="Lettland">LV</option>
+            <option value="MT" title="Malta">MT</option>
+            <option value="NL" title="Niederlande">NL</option>
+            <option value="NO" title="Norwegen">NO</option>
+            <option value="PL" title="Polen">PL</option>
+            <option value="PT" title="Portugal">PT</option>
+            <option value="RO" title="Rumänien">RO</option>
+            <option value="SE" title="Schweden">SE</option>
+            <option value="SI" title="Slowenien">SI</option>
+            <option value="SK" title="Slowakei">SK</option>
+            <option value="TR" title="Türkei">TR</option>
+            <option value="UK" title="Vereinigtes Königreich">UK</option>
+        </select>
+    </div>
+</div>
+
+<div>
+    <h3>Die Mitgliedschaft ist 100% kostenfrei und kann jederzeit beendet werden!</h3>
+</div><br>
+<div class="f_9hint">
+    Mit der Anmeldung akzeptierst du die <a href="http://fahrgemeinschaft.de/rules.php" target="_blank">Allgemeinen Nutzungsbedingungen</a> für fahrgemeinschaft.de
+</div>
+
+<input value="Anmelden" tabindex="170" id="btnSend" name="btnSend" type="submit">
+
 </form>
 </body>
 </html>
