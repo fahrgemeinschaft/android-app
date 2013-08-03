@@ -46,6 +46,10 @@
         android:textStyle="bold"
         android:text="@string/login" />
 
+    <View 
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
     <Button
         android:id="@+id/register"
         android:layout_width="match_parent"

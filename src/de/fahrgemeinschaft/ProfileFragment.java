@@ -11,6 +11,7 @@ import org.teleportr.ConnectorService;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import android.view.ViewGroup;
 import com.actionbarsherlock.app.SherlockFragment;
 
 import de.fahrgemeinschaft.util.EditTextImageButton;
+import de.fahrgemeinschaft.util.WebActivity;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -44,6 +46,7 @@ public class ProfileFragment extends SherlockFragment implements OnClickListener
         username = (EditTextImageButton) v.findViewById(R.id.username);
         password = (EditTextImageButton) v.findViewById(R.id.password);
         v.findViewById(R.id.login).setOnClickListener(this);
+        v.findViewById(R.id.register).setOnClickListener(this);
         super.onViewCreated(v, savedInstanceState);
         username.text.setText(prefs.getString("EMail", ""));
         password.text.setText(prefs.getString("password", ""));
@@ -51,13 +54,22 @@ public class ProfileFragment extends SherlockFragment implements OnClickListener
 
     @Override
     public void onClick(View v) {
-        prefs.edit()
+        switch(v.getId()) {
+        case R.id.login:
+            prefs.edit()
             .putString("EMail", username.text.getText().toString())
             .putString("password", password.text.getText().toString())
             .remove("auth")
-        .commit();
-        Crouton.makeText(getActivity(), "Authentifiziere...", Style.INFO).show();
-        getActivity().getSupportFragmentManager().popBackStack();
+            .commit();
+            Crouton.makeText(getActivity(), "Authentifiziere...", Style.INFO).show();
+            getActivity().getSupportFragmentManager().popBackStack();
+            break;
+        case R.id.register:
+            getActivity().startActivity(
+                    new Intent(getActivity(), WebActivity.class)
+                    .setData(Uri.parse("file:///android_asset/register.html")));
+            break;
+        }
     }
 
 }

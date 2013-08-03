@@ -7,8 +7,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.fahrgemeinschaft"
-    android:versionCode="19"
-    android:versionName="alpha 0.2.1" >
+    android:versionCode="20"
+    android:versionName="alpha 0.8.9" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -69,7 +69,7 @@
 
         <activity android:name="ProfileActivity" />
 
-        <activity android:name="WebActivity" />
+        <activity android:name=".util.WebActivity" />
 
             <!-- teleportR Android Library -->
 
