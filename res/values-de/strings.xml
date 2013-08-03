@@ -16,7 +16,7 @@
     <string name="ready">Fertig</string>
     <string name="tomorrow">morgen</string>
     <string name="after_tomorrow">übermorgen</string>
-    <string name="publish" >Fahrt Eintragen</string>
+    <string name="publish" >veröffentlichen</string>
     <string name="uncomplete">unvollständig</string>
     <string name="search">suchen</string>
     <string name="offer">anbieten</string>
@@ -44,8 +44,8 @@
 
     <string name="username">eMail</string>
     <string name="password">Passwort</string>
-    <string name="login">Einloggen</string>
-    <string name="register">Registrieren</string>
+    <string name="login">anmelden</string>
+    <string name="register">registrieren</string>
 
     <string name="contact">Kontakt</string>
     <string name="seats">Sitzplätze</string>
@@ -71,11 +71,6 @@
         <item name="request">sichtbar auf Anfrage</item>
         <item name="nobody">nicht sichtbar</item>
     </string-array>
-
-    <string name="login">Login</string>
-    <string name="email">Email</string>
-    <string name="passwd">Passwort</string>
-    <string name="register">Registrieren</string>
 
     <string name="search_settings">Sucheinstellungen</string>
     <string name="radius_from">Umkreis um Start</string>

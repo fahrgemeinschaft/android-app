@@ -20,7 +20,7 @@
     <string name="ready">Ready</string>
     <string name="tomorrow">tomorrow</string>
     <string name="after_tomorrow">day after tomorrow</string>
-    <string name="publish">Publish</string>
+    <string name="publish">publish</string>
     <string name="search">search</string>
     <string name="offer">offer</string>
     <string name="uncomplete">uncomplete</string>
@@ -47,8 +47,8 @@
 
     <string name="username">eMail</string>
     <string name="password">Password</string>
-    <string name="login">Login</string>
-    <string name="register">Register</string>
+    <string name="login">login</string>
+    <string name="register">register</string>
 
     <string name="contact">Contact</string>
     <string name="seats">Seats</string>
@@ -74,11 +74,6 @@
         <item name="request">visible upon request</item>
         <item name="nobody">not visible</item>
     </string-array>
-
-    <string name="login">Login</string>
-    <string name="email">Email</string>
-    <string name="passwd">Password</string>
-    <string name="register">Register</string>
 
     <string name="search_settings">Search Settings</string>
     <string name="radius_from">Nearby radius origin</string>

@@ -37,7 +37,13 @@
         android:layout_height="80dp"
         android:layout_gravity="right"
         android:layout_marginTop="@dimen/medium"
-        android:background="@drawable/btn_medium_green"
+        android:background="@drawable/btn_dark_green"
+        android:paddingTop="8sp"
+        android:drawableTop="@drawable/btn_login"
+        android:drawablePadding="-32sp"
+        android:textColor="@color/light_green"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:text="@string/login" />
 
     <Button
@@ -47,6 +53,12 @@
         android:layout_gravity="bottom"
         android:layout_marginTop="@dimen/xlarge"
         android:background="@drawable/btn_medium_green"
+        android:paddingTop="8sp"
+        android:drawableTop="@drawable/btn_register"
+        android:drawablePadding="-32sp"
+        android:textColor="@color/light_green"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:text="@string/register" />
 
 </LinearLayout>
