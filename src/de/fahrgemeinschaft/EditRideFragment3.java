@@ -64,12 +64,6 @@ public class EditRideFragment3 extends SherlockFragment
         plate.setPrivacyListener(PLATE, this);
     }
 
-    @Override
-    public void onViewStateRestored(Bundle savedInstanceState) {
-        setRide(((EditRideActivity)getActivity()).ride);
-        super.onViewStateRestored(savedInstanceState);
-    }
-
     public void setRide(Ride ride) {
         try {
             JSONObject d = ride.getDetails();
