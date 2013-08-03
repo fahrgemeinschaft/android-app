@@ -105,7 +105,7 @@
         android:orientation="horizontal"
         android:layout_alignParentBottom="true" >
 
-        <ImageButton
+        <Button
             android:id="@+id/btn_mitfahren"
             android:layout_width="140dp"
             android:layout_weight="1"
@@ -113,10 +113,16 @@
             android:layout_marginBottom="0dp"
             android:layout_marginRight="@dimen/medium"
             android:background="@drawable/btn_dark_green"
-            android:src="@drawable/btn_suchen"
+            android:paddingTop="0sp"
+            android:drawableTop="@drawable/btn_suchen"
+            android:drawablePadding="-35sp"
+            android:textColor="@color/light_green"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="@string/search"
             android:contentDescription="@string/search" />
 
-        <ImageButton
+        <Button
             android:id="@+id/btn_selberfahren"
             android:layout_width="140dp"
             android:layout_weight="1"
@@ -124,7 +130,13 @@
             android:layout_marginBottom="0dp"
             android:layout_marginLeft="@dimen/medium"
             android:background="@drawable/btn_medium_green"
-            android:src="@drawable/btn_anbieten"
+            android:paddingTop="0sp"
+            android:drawableTop="@drawable/btn_anbieten"
+            android:drawablePadding="-35sp"
+            android:textColor="@color/light_green"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="@string/offer"
             android:contentDescription="@string/offer" />
 
     </LinearLayout>

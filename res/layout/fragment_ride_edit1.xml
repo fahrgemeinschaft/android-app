@@ -30,7 +30,7 @@
             <ImageView
                 android:id="@+id/mode_car_image"
                 android:layout_width="wrap_content"
-                android:layout_height="35dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/icn_goby_car"
                 android:contentDescription="@string/mode_car"/>
@@ -57,7 +57,7 @@
             <ImageView
                 android:id="@+id/mode_rail_image"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/icn_goby_train"
                 android:contentDescription="@string/mode_rail" />

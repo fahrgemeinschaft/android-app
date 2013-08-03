@@ -64,16 +64,22 @@
                     style="@style/comment_text_box" />
             </LinearLayout>
 
-            <ImageButton
+            <Button
                 android:id="@+id/publish"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:layout_marginTop="@dimen/larger"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:src="@drawable/btn_veroeffentlichen"
+                android:layout_marginLeft="@dimen/larger"
+                android:layout_marginRight="@dimen/larger"
                 android:background="@drawable/btn_medium_green"
-                android:layout_marginBottom="@dimen/large" />
+                android:layout_marginBottom="@dimen/larger"
+                android:paddingTop="8sp"
+                android:drawableTop="@drawable/btn_veroeffentlichen"
+                android:drawablePadding="-32sp"
+                android:textColor="@color/light_green"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="@string/publish" />
         </LinearLayout>
     </ScrollView>
 </FrameLayout>
