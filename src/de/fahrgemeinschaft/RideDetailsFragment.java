@@ -25,7 +25,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -418,8 +417,7 @@ public class RideDetailsFragment extends SherlockFragment
     public Map<String, String> headers() {
         if (headers == null) {
             headers = new HashMap<String, String>();  
-            headers.put("apikey", FahrgemeinschaftConnector.APIKEY);
-            headers.put("authkey", PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("auth",null));
+            headers.put("apikey", Secret.APIKEY);
         }
         return headers;
     }

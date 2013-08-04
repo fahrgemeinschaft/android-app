@@ -237,7 +237,7 @@ public class MainActivity extends SherlockFragmentActivity
                 R.anim.do_nix, R.anim.slide_out_right)
             .replace(R.id.container, fragment, name)
             .addToBackStack(name)
-            .commit();
+        .commitAllowingStateLoss();
     }
 
 
@@ -247,7 +247,6 @@ public class MainActivity extends SherlockFragmentActivity
         System.out.println("loader reset " + loader.getId());
         results.swapCursor(null);
         details.swapCursor(null);
-
     }
 
     @Override

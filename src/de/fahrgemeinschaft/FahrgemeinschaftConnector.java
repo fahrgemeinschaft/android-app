@@ -33,7 +33,6 @@ public class FahrgemeinschaftConnector extends Connector {
 
     public String endpoint =  "http://test.service.fahrgemeinschaft.de";
 
-    static final String APIKEY = "API-KEY";
     static final SimpleDateFormat fulldf =
             new SimpleDateFormat("yyyyMMddHHmm", Locale.GERMAN);
     static final SimpleDateFormat df =
@@ -43,7 +42,7 @@ public class FahrgemeinschaftConnector extends Connector {
     public String authenticate() throws Exception {
         HttpURLConnection post = (HttpURLConnection)
                 new URL(endpoint + "/session").openConnection();
-        post.setRequestProperty("apikey", APIKEY);
+        post.setRequestProperty("apikey", Secret.APIKEY);
         post.setDoOutput(true);
         post.getOutputStream().write((
                 "{\"Email\": \"" + get("EMail")
@@ -87,7 +86,7 @@ public class FahrgemeinschaftConnector extends Connector {
                     + "&searchDestination=" + to_json).openConnection();
         }
         try {
-            conn.setRequestProperty("apikey", APIKEY);
+            conn.setRequestProperty("apikey", Secret.APIKEY);
             JSONObject json = loadJson(conn);
             if (json != null) {
                 JSONArray results = json.getJSONArray("results");
@@ -203,7 +202,7 @@ public class FahrgemeinschaftConnector extends Connector {
             post.setRequestMethod("PUT");
         }
         post.setRequestProperty("authkey", getAuth());
-        post.setRequestProperty("apikey", APIKEY);
+        post.setRequestProperty("apikey", Secret.APIKEY);
         post.setDoOutput(true);
         JSONObject json = new JSONObject();
 //        json.put("Smoker", "no");
