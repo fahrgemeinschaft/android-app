@@ -32,9 +32,9 @@
         android:icon="@drawable/ic_launcher"
         android:showAsAction="never|withText" />
 
-<!--     <item
+     <item
         android:id="@+id/duplicate_retour"
         android:title="@string/duplicate_retour"
         android:icon="@drawable/ic_launcher"
-        android:showAsAction="never|withText" /> -->
+        android:showAsAction="never|withText" />
 </menu>

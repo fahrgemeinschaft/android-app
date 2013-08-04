@@ -10,17 +10,20 @@ package de.fahrgemeinschaft;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.teleportr.Place;
 import org.teleportr.Ride;
 import org.teleportr.Ride.COLUMNS;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -85,6 +88,7 @@ public class RideDetailsFragment extends SherlockFragment
     private int selected;
     private HashMap<String, String> headers;
     private MenuItem edit;
+    private int position;
     private static ImageLoader imageLoader;
 
     @Override
@@ -383,25 +387,44 @@ public class RideDetailsFragment extends SherlockFragment
 
     @Override
     public void onPageSelected(int position) {
+        this.position = position;
         ((OnPageChangeListener) getActivity()).onPageSelected(position);
         cursor.moveToPosition(position);
         if (cursor.getString(COLUMNS.WHO).equals("")) {
-//          getSherlockActivity().startActionMode(new AnActionModeOfEpicProportions());
           edit.setVisible(true);
       } else {
           edit.setVisible(false);
-//          getSherlockActivity().startActionMode(new AnActionModeOfEpicProportions());
       }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        cursor.moveToPosition(position);
         switch (item.getItemId()) {
         case R.id.edit:
-            System.out.println("edit");
+            getActivity().startActivity(new Intent(Intent.ACTION_EDIT,
+                    Uri.parse("content://de.fahrgemeinschaft/rides/"
+                            + cursor.getLong(0))));
             return true;
         case R.id.duplicate:
-            System.out.println("duplicate");
+            Ride duplicate = new Ride(cursor, getActivity());
+            duplicate.ref("");
+            getActivity().startActivity(new Intent(
+                    Intent.ACTION_EDIT, duplicate.store(getActivity())));
+            return true;
+        case R.id.duplicate_retour:
+            duplicate = new Ride(cursor, getActivity());
+            duplicate.ref("");
+            List<Place> vias = duplicate.getVias();
+            Place from = duplicate.getFrom();
+            duplicate.removeVias();
+            duplicate.from(duplicate.getTo());
+            for (int i = vias.size() - 1; i >= 0; i--) {
+                duplicate.via(vias.get(i));
+            }
+            duplicate.to(from);
+            getActivity().startActivity(new Intent(
+                    Intent.ACTION_EDIT, duplicate.store(getActivity())));
             return true;
         default:
             return super.onOptionsItemSelected(item);
