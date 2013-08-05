@@ -158,4 +158,12 @@ public class GPlaces extends Connector {
 
 
 
+    @Override
+    public String delete(Ride arg0) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
+
 }

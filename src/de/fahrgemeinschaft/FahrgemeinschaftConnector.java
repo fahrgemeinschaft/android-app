@@ -31,7 +31,7 @@ public class FahrgemeinschaftConnector extends Connector {
 
     private String startDate;
 
-    public String endpoint =  "http://test.service.fahrgemeinschaft.de";
+    public String endpoint =  "http://service.fahrgemeinschaft.de";
 
     static final SimpleDateFormat fulldf =
             new SimpleDateFormat("yyyyMMddHHmm", Locale.GERMAN);
@@ -173,6 +173,8 @@ public class FahrgemeinschaftConnector extends Connector {
             departure = json.getString("Starttime");
             if (departure.length() == 3)
                 departure = "0" + departure;
+            else if (departure.length() == 1)
+                departure = "0000";
         }
         System.out.println("dep " + departure);
         if (startDate == null) {
@@ -257,5 +259,15 @@ public class FahrgemeinschaftConnector extends Connector {
         place.put("CountryCode", "DE");
         place.put("Placetype", "geo");
         return place;
+    }
+
+    @Override
+    public String delete(Ride offer) throws Exception {
+        HttpURLConnection delete = (HttpURLConnection) new URL(
+                endpoint + "/trip/id/" + offer.getRef()).openConnection();
+        delete.setRequestMethod("DELETE");
+        delete.setRequestProperty("authkey", getAuth());
+        delete.setRequestProperty("apikey", Secret.APIKEY);
+        return loadJson(delete).toString();
     }
 }
