@@ -71,7 +71,7 @@
         android:layout_below="@id/row" />
 
     <View 
-        android:layout_height="300dp"
+        android:layout_height="138dp"
         android:layout_width="match_parent"
         android:background="@drawable/background_repeat" />
 </view>
