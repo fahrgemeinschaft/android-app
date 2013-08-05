@@ -6,12 +6,14 @@
 -->
 
 <view xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="@dimen/xxlarge"
+    android:layout_height="wrap_content"
     class="de.fahrgemeinschaft.RideListFragment$RideView"
-    android:padding="@dimen/small" >
+    android:background="@drawable/background_repeat" >
 
     <TextView
         android:id="@+id/from_city"
+        android:textIsSelectable="false"
+        android:layout_marginLeft="@dimen/small"
         style="@style/light.Small" />
 
     <TextView
@@ -19,11 +21,15 @@
         android:layout_below="@id/from_city"
         android:layout_marginTop="-8dp"
         android:width="175dp"
+        android:textIsSelectable="false"
+        android:layout_marginLeft="@dimen/small"
         style="@style/dark.Bold" />
 
     <TextView
         android:id="@+id/to_city"
         android:layout_alignParentRight="true"
+        android:textIsSelectable="false"
+        android:layout_marginRight="@dimen/small"
         style="@style/light.Small" />
 
     <TextView
@@ -31,6 +37,8 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/to_city"
         android:layout_marginTop="-8dp"
+        android:textIsSelectable="false"
+        android:layout_marginRight="@dimen/small"
         style="@style/dark.Bold" />
 
     <ProgressBar
@@ -42,16 +50,17 @@
 
     <View
         android:id="@+id/line"
+        android:layout_below="@id/from_place"
         android:layout_height="1dp"
-        android:layout_centerVertical="true"
         android:background="@color/dark_green" />
 
     <de.fahrgemeinschaft.util.RideRowView 
         android:id="@+id/row"
+        android:layout_below="@id/line"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true" />
+        android:layout_margin="@dimen/small"
+        android:orientation="horizontal" />
 
     <ViewStub
         android:id="@+id/stub"
@@ -59,5 +68,10 @@
         android:layout="@layout/two_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/seats" />
+        android:layout_below="@id/row" />
+
+    <View 
+        android:layout_height="300dp"
+        android:layout_width="match_parent"
+        android:background="@drawable/background_repeat" />
 </view>
