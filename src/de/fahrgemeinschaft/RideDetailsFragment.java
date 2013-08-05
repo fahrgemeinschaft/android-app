@@ -252,6 +252,12 @@ public class RideDetailsFragment extends SherlockFragment
         cursor.moveToPosition(selected);
         Ride ride = new Ride(cursor, getActivity());
         switch (item.getItemId()) {
+        case R.id.deactivate:
+            ride.deactivate().dirty().store(getActivity());
+            getActivity().startService(
+                    new Intent(getActivity(), ConnectorService.class)
+                            .setAction(ConnectorService.PUBLISH));
+            return true;
         case R.id.delete:
             ride.delete(getActivity());
             getActivity().startService(

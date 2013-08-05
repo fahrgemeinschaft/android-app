@@ -24,6 +24,7 @@ import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -74,7 +75,17 @@ public class RideListFragment extends SpinningZebraListFragment
         } else {
             v.loading.setVisibility(View.GONE);
         }
-        if (ride.getString(COLUMNS.WHO).equals("")) {
+
+        if (ride.getInt(COLUMNS.ACTIVE) == 0) {
+            v.active.setVisibility(View.VISIBLE);
+        } else {
+            v.active.setVisibility(View.GONE);
+        }
+
+        if (ride.getString(COLUMNS.WHO).equals("") ||
+                ride.getString(COLUMNS.WHO).equals(PreferenceManager
+                        .getDefaultSharedPreferences(getActivity())
+                        .getString("user", ""))) {
             view.findViewById(R.id.stub).setVisibility(View.VISIBLE);
             final Uri edit_uri = Uri.parse(
                     "content://de.fahrgemeinschaft/rides/" + ride.getLong(0));
@@ -167,6 +178,7 @@ public class RideListFragment extends SpinningZebraListFragment
         TextView to_city;
         ProgressBar loading;
         RideRowView row;
+        View active;
 
         public RideView(Context context, AttributeSet attrs) {
             super(context, attrs);
@@ -181,6 +193,7 @@ public class RideListFragment extends SpinningZebraListFragment
             to_city = (TextView) findViewById(R.id.to_city);
             loading = (ProgressBar) findViewById(R.id.loading);
             row = (RideRowView) findViewById(R.id.row);
+            active = findViewById(R.id.active);
         }
     }
 }

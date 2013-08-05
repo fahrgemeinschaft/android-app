@@ -71,6 +71,8 @@
         android:layout_below="@id/row" />
 
     <View 
+        android:id="@+id/active"
+        android:visibility="gone"
         android:layout_height="138dp"
         android:layout_width="match_parent"
         android:background="@drawable/background_repeat" />

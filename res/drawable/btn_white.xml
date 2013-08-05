@@ -8,6 +8,6 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:state_pressed="true" android:drawable="@color/white" />
     <item android:state_focused="true" android:drawable="@color/white" />
+    <item android:state_enabled="false" android:drawable="@drawable/background_repeat" />
     <item android:drawable="@color/opacity_white" />
-
 </selector>
