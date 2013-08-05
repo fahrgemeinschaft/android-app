@@ -6,118 +6,52 @@
 -->
 
 <view xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/xxlarge"
     class="de.fahrgemeinschaft.RideListFragment$RideView"
-    android:layout_marginRight="5dp"
-    >
+    android:padding="@dimen/small" >
 
     <TextView
         android:id="@+id/from_city"
-        android:width="175dp"
-        android:layout_marginLeft="5dp"
-        style="@style/light.Small"
-    />
+        style="@style/light.Small" />
+
     <TextView
         android:id="@+id/from_place"
         android:layout_below="@id/from_city"
-        android:layout_marginLeft="5dp"
         android:layout_marginTop="-8dp"
         android:width="175dp"
-        style="@style/dark.Bold"
-    />
+        style="@style/dark.Bold" />
 
     <TextView
         android:id="@+id/to_city"
-        android:layout_marginLeft="190dp"
-        style="@style/light.Small"
-    />
+        android:layout_alignParentRight="true"
+        style="@style/light.Small" />
+
     <TextView
         android:id="@+id/to_place"
-        android:layout_marginLeft="190dp"
+        android:layout_alignParentRight="true"
         android:layout_below="@id/to_city"
         android:layout_marginTop="-8dp"
-        style="@style/dark.Bold"
-    />
+        style="@style/dark.Bold" />
+
     <ProgressBar
         android:id="@+id/loading"
         android:layout_width="@dimen/large"
         android:layout_height="@dimen/large"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
-    />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp" />
+
     <View
         android:id="@+id/line"
         android:layout_height="1dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="-1dp"
-        android:layout_below="@id/from_place"
-        android:background="@color/dark_green"
-    />
-    <TextView
-        android:id="@+id/day"
-        android:layout_below="@id/line"
-        android:layout_marginBottom="1dp"
-        android:layout_marginLeft="5dp"
-        style="@style/dark.Large"
-    />
-    <TextView
-        android:id="@+id/date"
-        android:layout_toRightOf="@id/day"
-        android:layout_below="@id/line"
-        android:layout_marginBottom="1dp"
-        style="@style/light.Large"
-    />
-    <TextView
-        android:id="@+id/time"
-        android:layout_below="@id/line"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="107dp"
-        style="@style/dark.Large.Bold"
-    />
-    <View
-        android:layout_width="0dp"
-        android:layout_height="26dp"
-        android:layout_marginLeft="190dp"
-        android:layout_below="@id/line"
-        android:background="@color/opacity_white"
-    />
-    <TextView
-        android:id="@+id/price"
-        android:layout_marginLeft="190dp"
-        android:layout_below="@id/line"
-        android:layout_marginBottom="0dp"
-        style="@style/dark.Large.Bold"
-    />
-    <TextView
-        android:id="@+id/currency"
-        android:layout_toRightOf="@id/price"
-        android:layout_below="@id/line"
-        style="@style/light.Large"
-    />
-    <TextView
-        android:layout_marginLeft="2dp"
-        android:layout_toRightOf="@id/currency"
-        android:layout_below="@id/line"
-        style="@style/light.Large.Bold"
-        android:text="@string/currency"
-    />
-    <ImageView
-        android:id="@+id/seats"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/line"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="0dp"
-        android:src="@drawable/ic_seats"
-        android:contentDescription="@string/seats"
-    />
-    <View
-        android:layout_height="0dp"
-        android:layout_below="@id/line"
-        android:background="@android:color/white"
-    />
+        android:layout_centerVertical="true"
+        android:background="@color/dark_green" />
+
+    <de.fahrgemeinschaft.util.RideRowView 
+        android:id="@+id/row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true" />
 
     <ViewStub
         android:id="@+id/stub"
@@ -125,6 +59,5 @@
         android:layout="@layout/two_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/seats"
-    />
+        android:layout_below="@id/seats" />
 </view>

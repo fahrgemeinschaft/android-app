@@ -177,7 +177,6 @@ public class MainActivity extends SherlockFragmentActivity
     public void onPageSelected(final int position) {
         System.out.println("selected " + position);
 //        results.getListView().setSelection(position);
-        details.setSelection(position);
     }
 
 

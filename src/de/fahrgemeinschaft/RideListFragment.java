@@ -32,6 +32,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import de.fahrgemeinschaft.util.RideRowView;
 import de.fahrgemeinschaft.util.SpinningZebraListFragment;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -65,23 +66,7 @@ public class RideListFragment extends SpinningZebraListFragment
         else
             v.to_city.setText(ride.getString(COLUMNS.TO_ADDRESS));
 
-        Date timestamp = new Date(ride.getLong(COLUMNS.DEPARTURE));
-        v.day.setText(day.format(timestamp));
-        v.date.setText(date.format(timestamp));
-        v.time.setText(time.format(timestamp));
-        v.price.setText(ride.getInt(COLUMNS.PRICE) / 100 + "");
-        switch(ride.getInt(COLUMNS.SEATS)){
-        case 0:
-            v.seats.setImageResource(R.drawable.icn_seats_white_full); break;
-        case 1:
-            v.seats.setImageResource(R.drawable.icn_seats_white_1); break;
-        case 2:
-            v.seats.setImageResource(R.drawable.icn_seats_white_2); break;
-        case 3:
-            v.seats.setImageResource(R.drawable.icn_seats_white_3); break;
-        default:
-            v.seats.setImageResource(R.drawable.icn_seats_white_many); break;
-        }
+        v.row.bind(ride, getActivity());
         long dif = ride.getLong(COLUMNS.DEPARTURE) - currently_searching_date;
 //        System.out.println("DELTA " + delta / 3600000);
         if (ride.getShort(COLUMNS.DIRTY) == 1 || dif > 0 && dif < 24*3600000) {
@@ -180,12 +165,8 @@ public class RideListFragment extends SpinningZebraListFragment
         TextView from_city;
         TextView to_place;
         TextView to_city;
-        ImageView seats;
-        TextView price;
-        TextView date;
-        TextView time;
-        TextView day;
         ProgressBar loading;
+        RideRowView row;
 
         public RideView(Context context, AttributeSet attrs) {
             super(context, attrs);
@@ -198,12 +179,8 @@ public class RideListFragment extends SpinningZebraListFragment
             from_city = (TextView) findViewById(R.id.from_city);
             to_place = (TextView) findViewById(R.id.to_place);
             to_city = (TextView) findViewById(R.id.to_city);
-            seats = (ImageView) findViewById(R.id.seats);
-            price = (TextView) findViewById(R.id.price);
-            date = (TextView) findViewById(R.id.date);
-            time = (TextView) findViewById(R.id.time);
-            day = (TextView) findViewById(R.id.day);
             loading = (ProgressBar) findViewById(R.id.loading);
+            row = (RideRowView) findViewById(R.id.row);
         }
     }
 }

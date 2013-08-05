@@ -67,23 +67,18 @@ import com.android.volley.toolbox.Volley;
 import com.calciumion.widget.BasePagerAdapter;
 
 import de.fahrgemeinschaft.util.ReoccuringWeekDaysView;
+import de.fahrgemeinschaft.util.RideRowView;
 
 public class RideDetailsFragment extends SherlockFragment
         implements Response.ErrorListener, OnPageChangeListener {
 
     private static final String TAG = "Details";
-    private static final SimpleDateFormat day =
-            new SimpleDateFormat("EE", Locale.GERMANY);
     private static final SimpleDateFormat lrdate =
             new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.GERMANY);
     private static final SimpleDateFormat lwdate =
             new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
     private static final SimpleDateFormat lwhdate =
             new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMANY);
-    private static final SimpleDateFormat date =
-            new SimpleDateFormat("dd.MM.", Locale.GERMANY);
-    private static SimpleDateFormat time =
-            new SimpleDateFormat("HH:mm", Locale.GERMANY);
     private ViewPager pager;
     private RequestQueue queue;
     public Cursor cursor;
@@ -116,6 +111,10 @@ public class RideDetailsFragment extends SherlockFragment
         queue = Volley.newRequestQueue(getActivity());
         imageLoader = new ImageLoader(queue, imageCache);
         queue.start();
+
+        if (savedInstanceState != null) {
+            selected = savedInstanceState.getInt("selected");
+        }
     }
 
     @Override
@@ -155,35 +154,9 @@ public class RideDetailsFragment extends SherlockFragment
                 view.from_place.setText(cursor.getString(COLUMNS.FROM_ADDRESS));
                 view.to_place.setText(cursor.getString(COLUMNS.TO_ADDRESS));
 
-                Date timestamp = new Date(cursor.getLong(COLUMNS.DEPARTURE));
-                view.day.setText(day.format(timestamp));
-                view.date.setText(date.format(timestamp));
-                view.time.setText(time.format(timestamp));
+                view.row.bind(cursor, getActivity());
                 view.reoccur.setDays(Ride.getDetails(cursor));
 
-                view.price.setText("" + (cursor.getInt(COLUMNS.PRICE) / 100));
-                switch(cursor.getInt(COLUMNS.SEATS)){
-                case 0:
-                    ((ImageView) v.findViewById(R.id.seats_icon))
-                            .setImageResource(R.drawable.icn_seats_white_full);
-                    break;
-                case 1:
-                    ((ImageView) v.findViewById(R.id.seats_icon))
-                            .setImageResource(R.drawable.icn_seats_white_1);
-                    break;
-                case 2:
-                    ((ImageView) v.findViewById(R.id.seats_icon))
-                            .setImageResource(R.drawable.icn_seats_white_2);
-                    break;
-                case 3:
-                    ((ImageView) v.findViewById(R.id.seats_icon))
-                            .setImageResource(R.drawable.icn_seats_white_3);
-                    break;
-                default:
-                    ((ImageView) v.findViewById(R.id.seats_icon))
-                            .setImageResource(R.drawable.icn_seats_white_many);
-                    break;
-                }
                 try {
                     view.details.setText(
                             Ride.getDetails(cursor).getString("Comment"));
@@ -221,7 +194,6 @@ public class RideDetailsFragment extends SherlockFragment
 
     public void swapCursor(Cursor cursor) {
         this.cursor = cursor;
-        selected = 0;
         if (pager != null)
             pager.getAdapter().notifyDataSetChanged();
     }
@@ -235,25 +207,32 @@ public class RideDetailsFragment extends SherlockFragment
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt("selected", selected);
+        super.onSaveInstanceState(outState);
+    }
+    @Override
     public void onResume() {
         super.onResume();
-        pager.setOnPageChangeListener(this);
-        pager.setCurrentItem(selected);
-        onPageSelected(selected);
     }
 
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        System.out.println("menu");
         getSherlockActivity().getSupportMenuInflater()
                 .inflate(R.menu.ride_actions, menu);
         edit = menu.findItem(R.id.edit);
         delete = menu.findItem(R.id.delete);
         super.onCreateOptionsMenu(menu, inflater);
+        pager.setCurrentItem(selected);
+        pager.setOnPageChangeListener(this);
+        onPageSelected(selected);
     }
 
     @Override
     public void onPageSelected(int position) {
+        System.out.println("selected");
         selected = position;
         ((OnPageChangeListener) getActivity()).onPageSelected(position);
         cursor.moveToPosition(position);
@@ -316,10 +295,7 @@ public class RideDetailsFragment extends SherlockFragment
 
         TextView from_place;
         TextView to_place;
-        TextView price;
-        TextView day;
-        TextView date;
-        TextView time;
+        RideRowView row;
         TextView details;
         LinearLayout content;
         ImageView avatar;
@@ -342,10 +318,6 @@ public class RideDetailsFragment extends SherlockFragment
             FrameLayout to = (FrameLayout) findViewById(R.id.to_place);
             to_place = (TextView) to.getChildAt(1);
             ((ImageView)to.getChildAt(0)).setImageResource(R.drawable.shape_to);
-            price = (TextView) findViewById(R.id.price);
-            day = (TextView) findViewById(R.id.day);
-            date = (TextView) findViewById(R.id.date);
-            time = (TextView) findViewById(R.id.time);
             details = (TextView) findViewById(R.id.details);
             content = (LinearLayout) findViewById(R.id.content);
             avatar = (ImageView)findViewById(R.id.avatar);
@@ -353,7 +325,7 @@ public class RideDetailsFragment extends SherlockFragment
             reg_date = (TextView) findViewById(R.id.driver_registration_date);
             last_login = (TextView) findViewById(R.id.driver_active_date);
             reoccur = (ReoccuringWeekDaysView) findViewById(R.id.reoccur);
-            
+            row = (RideRowView) findViewById(R.id.row);
             avatar.setOnClickListener(new OnClickListener() {
 
                 @Override
