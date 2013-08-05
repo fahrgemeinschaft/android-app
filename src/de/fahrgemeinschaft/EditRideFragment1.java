@@ -114,6 +114,7 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
                 setMode(Mode.TRAIN);
                 break;
             }
+            ((EditRideActivity)getActivity()).f3.setRide(ride);
         }
     };
 

@@ -73,7 +73,13 @@ public class EditRideFragment3 extends SherlockFragment
             else land.text.setText(prefs.getString(LANDLINE, ""));
             if (!d.isNull(MOBILE)) mobile.text.setText(d.getString(MOBILE));
             else mobile.text.setText(prefs.getString(MOBILE, ""));
-            if (!d.isNull(PLATE)) plate.text.setText(d.getString(PLATE));
+            if (!d.isNull(PLATE)) {
+                if (ride.getMode().equals(Ride.Mode.TRAIN)) {
+                    plate.setEnabled(false);
+                } else {
+                    plate.text.setText(d.getString(PLATE));
+                }
+            }
             else plate.text.setText(prefs.getString(PLATE, ""));
 
             if (d.isNull("Privacy")) d.put("Privacy", new JSONObject());

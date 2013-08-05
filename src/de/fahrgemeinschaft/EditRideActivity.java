@@ -36,6 +36,9 @@ public class EditRideActivity extends SherlockFragmentActivity
         implements LoaderCallbacks<Cursor>, OnClickListener {
 
     public Ride ride;
+    public EditRideFragment3 f3;
+    public EditRideFragment2 f2;
+    public EditRideFragment1 f1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,11 +75,11 @@ public class EditRideActivity extends SherlockFragmentActivity
     }
 
     private void initFragments() {
-        EditRideFragment1 f1 = (EditRideFragment1) getSupportFragmentManager()
+        f1 = (EditRideFragment1) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment1);
-        EditRideFragment2 f2 = (EditRideFragment2) getSupportFragmentManager()
+        f2 = (EditRideFragment2) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment2);
-        EditRideFragment3 f3 = (EditRideFragment3) getSupportFragmentManager()
+        f3 = (EditRideFragment3) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment3);
         if (ride != null) {
             f1.setRide(ride);
