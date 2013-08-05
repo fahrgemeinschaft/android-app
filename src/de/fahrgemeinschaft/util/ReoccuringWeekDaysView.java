@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import de.fahrgemeinschaft.EditRideActivity;
 import de.fahrgemeinschaft.R;
 
 
@@ -24,6 +25,12 @@ public class ReoccuringWeekDaysView extends LinearLayout {
     private JSONObject details;
 
     private boolean clickable;
+
+    private boolean reoccuring;
+
+    public boolean isReoccuring() {
+        return reoccuring;
+    }
 
     public ReoccuringWeekDaysView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -39,7 +46,7 @@ public class ReoccuringWeekDaysView extends LinearLayout {
     public void setDays(JSONObject details) {
         this.details = details;
         try {
-            boolean reoccuring = false;
+            reoccuring = false;
             JSONObject days = details.getJSONObject("reoccur");
             for (int i = 0; i < 7; i++) {
                 boolean selected = days.getBoolean(DAYS[i]);
@@ -93,14 +100,19 @@ public class ReoccuringWeekDaysView extends LinearLayout {
 
     public void updateDays() {
         JSONObject days = new JSONObject();
+        reoccuring = false;
         try {
             for (int i = 0; i < 7; i++) {
-                days.put(DAYS[i], getChildAt(i).isSelected());
-                System.out.println("update " + i + getChildAt(i).isSelected());
+                if (getChildAt(i).isSelected()) {
+                    days.put(DAYS[i], true);
+                    reoccuring = true;
+                } else days.put(DAYS[i], false);
             }
             details.put("reoccur", days);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        EditRideActivity ediot = (EditRideActivity) getContext();
+        ediot.f2.setRide(ediot.ride);
     }
 }

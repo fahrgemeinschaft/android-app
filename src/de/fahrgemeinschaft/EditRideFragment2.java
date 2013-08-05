@@ -64,8 +64,16 @@ public class EditRideFragment2 extends SherlockFragment
     public void setRide(Ride ride) {
         this.ride = ride;
         setPrice(ride.getPrice());
-        setDeparture(ride.getDep());
         reoccur.setDays(ride.getDetails());
+        if (reoccur.isReoccuring()) {
+            date.btn.setEnabled(false);
+            date.icn.setEnabled(false);
+            date.btn.setText(R.string.reccurence);
+        } else {
+            date.btn.setEnabled(true);
+            date.icn.setEnabled(true);
+            setDeparture(ride.getDep());
+        }
     }
 
     protected void setPrice(int p) {
