@@ -184,6 +184,7 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
                 }
                 setVias(vias);
             }
+            route.requestFocus();
         }
     }
 
