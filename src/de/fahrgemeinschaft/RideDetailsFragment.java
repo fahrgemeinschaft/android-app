@@ -17,6 +17,7 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.teleportr.ConnectorService;
 import org.teleportr.Place;
 import org.teleportr.Ride;
 import org.teleportr.Ride.COLUMNS;
@@ -28,6 +29,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -88,7 +90,7 @@ public class RideDetailsFragment extends SherlockFragment
     private int selected;
     private HashMap<String, String> headers;
     private MenuItem edit;
-    private int position;
+    private MenuItem delete;
     private static ImageLoader imageLoader;
 
     @Override
@@ -148,7 +150,6 @@ public class RideDetailsFragment extends SherlockFragment
                     view.content.removeViews(1, view.content.getChildCount()-5);
                 cursor.moveToPosition((Integer) position);
 
-                view.userId = cursor.getString(COLUMNS.WHO);
                 view.name.setText("");
                 view.url = null;
                 view.from_place.setText(cursor.getString(COLUMNS.FROM_ADDRESS));
@@ -196,9 +197,18 @@ public class RideDetailsFragment extends SherlockFragment
                 view.avatar.setImageResource(R.drawable.icn_view_user);
                 view.last_login.setText("");
                 view.reg_date.setText("");
-                
-                queue.add(new ProfileRequest(cursor.getString(COLUMNS.WHO),
-                        view, RideDetailsFragment.this));
+
+                if (cursor.getString(COLUMNS.WHO).equals("")) {
+                    String user = PreferenceManager.getDefaultSharedPreferences(
+                            getActivity()).getString("user", "");
+                    queue.add(new ProfileRequest(user,
+                            view, RideDetailsFragment.this));
+                    view.userId = user;
+                } else {
+                    queue.add(new ProfileRequest(cursor.getString(COLUMNS.WHO),
+                            view, RideDetailsFragment.this));
+                    view.userId = cursor.getString(COLUMNS.WHO);
+                }
                 return view;
             }
 
@@ -211,6 +221,7 @@ public class RideDetailsFragment extends SherlockFragment
 
     public void swapCursor(Cursor cursor) {
         this.cursor = cursor;
+        selected = 0;
         if (pager != null)
             pager.getAdapter().notifyDataSetChanged();
     }
@@ -228,7 +239,76 @@ public class RideDetailsFragment extends SherlockFragment
         super.onResume();
         pager.setOnPageChangeListener(this);
         pager.setCurrentItem(selected);
+        onPageSelected(selected);
     }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        getSherlockActivity().getSupportMenuInflater()
+                .inflate(R.menu.ride_actions, menu);
+        edit = menu.findItem(R.id.edit);
+        delete = menu.findItem(R.id.delete);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        selected = position;
+        ((OnPageChangeListener) getActivity()).onPageSelected(position);
+        cursor.moveToPosition(position);
+        if (cursor.getString(COLUMNS.WHO).equals("") ||
+                cursor.getString(COLUMNS.WHO).equals(PreferenceManager
+                        .getDefaultSharedPreferences(getActivity()).getString("user", ""))) {
+          edit.setVisible(true);
+          delete.setVisible(true);
+      } else {
+          edit.setVisible(false);
+          delete.setVisible(false);
+      }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        cursor.moveToPosition(selected);
+        Ride ride = new Ride(cursor, getActivity());
+        switch (item.getItemId()) {
+        case R.id.delete:
+            ride.delete(getActivity());
+            getActivity().startService(
+                    new Intent(getActivity(), ConnectorService.class)
+                            .setAction(ConnectorService.PUBLISH));
+            getActivity().getSupportFragmentManager().popBackStack();
+            return true;
+        case R.id.edit:
+            getActivity().startActivity(new Intent(Intent.ACTION_EDIT,
+                    Uri.parse("content://de.fahrgemeinschaft/rides/"
+                            + cursor.getLong(0))));
+            return true;
+        case R.id.duplicate:
+            ride.ref("");
+            getActivity().startActivity(new Intent(
+                    Intent.ACTION_EDIT, ride.store(getActivity())));
+            return true;
+        case R.id.duplicate_retour:
+            ride = new Ride(cursor, getActivity());
+            ride.ref("");
+            List<Place> vias = ride.getVias();
+            Place from = ride.getFrom();
+            ride.removeVias();
+            ride.from(ride.getTo());
+            for (int i = vias.size() - 1; i >= 0; i--) {
+                ride.via(vias.get(i));
+            }
+            ride.to(from);
+            getActivity().startActivity(new Intent(
+                    Intent.ACTION_EDIT, ride.store(getActivity())));
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
 
 
     static class RideView extends RelativeLayout
@@ -345,89 +425,36 @@ public class RideDetailsFragment extends SherlockFragment
         @Override
         public void onResponse(JSONObject json) {
             try {
-              JSONObject user = json.getJSONObject("user");
-              Log.d(TAG, "profile downloaded " + user.get("UserID"));
-              if (user.getString("UserID").equals(userId)) {
-                  JSONArray kvp = user.getJSONArray("KeyValuePairs");
-                  name.setText(kvp.getJSONObject(1).getString("Value") + " " 
-                          + kvp.getJSONObject(2).getString("Value"));
-                  Date since = lrdate.parse(user.getString("RegistrationDate"));
-                  Date logon = lrdate.parse(user.getString("LastvisitDate"));
-                  reg_date.setText(getContext().getString(
-                          R.string.member_since, lwdate.format(since)));
-                  last_login.setText(getContext().getString(
-                          R.string.last_login, lwhdate.format(logon)));
-//                  JSONArray rgd = user.getJSONArray("RegistrationDate");
-//                  reg_date.setText(user.getJSONArray("").getString("Value") + " " 
-//                          + kvp.getJSONObject(2).getString("Value"));
-//                  Log.d(TAG, json.toString());
-                  if (!user.isNull("AvatarPhoto")) {
-                      JSONObject photo = user.getJSONObject("AvatarPhoto");
-                      String id = photo.getString("PhotoID");
-                      String path = photo.getString("PathTo");
-                      url = "http://service.fahrgemeinschaft.de//"
-                              + "ugc/pa/" + path +"/"+ id + "_big.jpg";
-                      imageLoader.get(url, ImageLoader.getImageListener(avatar,
-                              R.drawable.ic_loading, R.drawable.icn_view_none));
-                  }
-              }
+                JSONObject user = json.getJSONObject("user");
+                Log.d(TAG, "profile downloaded " + user.get("UserID"));
+                if (user.getString("UserID").equals(userId)) {
+                    JSONArray kvp = user.getJSONArray("KeyValuePairs");
+                    name.setText(kvp.getJSONObject(1).getString("Value") + " " 
+                            + kvp.getJSONObject(2).getString("Value"));
+                    System.out.println(kvp.getJSONObject(2).getString("Value"));
+                    Date since = lrdate.parse(user.getString("RegistrationDate"));
+                    Date logon = lrdate.parse(user.getString("LastvisitDate"));
+                    reg_date.setText(getContext().getString(
+                            R.string.member_since, lwdate.format(since)));
+                    last_login.setText(getContext().getString(
+                            R.string.last_login, lwhdate.format(logon)));
+                    //                  JSONArray rgd = user.getJSONArray("RegistrationDate");
+                    //                  reg_date.setText(user.getJSONArray("").getString("Value") + " " 
+                    //                          + kvp.getJSONObject(2).getString("Value"));
+                    //                  Log.d(TAG, json.toString());
+                    if (!user.isNull("AvatarPhoto")) {
+                        JSONObject photo = user.getJSONObject("AvatarPhoto");
+                        String id = photo.getString("PhotoID");
+                        String path = photo.getString("PathTo");
+                        url = "http://service.fahrgemeinschaft.de//"
+                                + "ugc/pa/" + path +"/"+ id + "_big.jpg";
+                        imageLoader.get(url, ImageLoader.getImageListener(avatar,
+                                R.drawable.ic_loading, R.drawable.icn_view_none));
+                    }
+                }
           } catch (Exception e) {
               e.printStackTrace();
           }
-        }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getSherlockActivity().getSupportMenuInflater()
-                .inflate(R.menu.ride_actions, menu);
-        edit = menu.findItem(R.id.edit);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        this.position = position;
-        ((OnPageChangeListener) getActivity()).onPageSelected(position);
-        cursor.moveToPosition(position);
-        if (cursor.getString(COLUMNS.WHO).equals("")) {
-          edit.setVisible(true);
-      } else {
-          edit.setVisible(false);
-      }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        cursor.moveToPosition(position);
-        switch (item.getItemId()) {
-        case R.id.edit:
-            getActivity().startActivity(new Intent(Intent.ACTION_EDIT,
-                    Uri.parse("content://de.fahrgemeinschaft/rides/"
-                            + cursor.getLong(0))));
-            return true;
-        case R.id.duplicate:
-            Ride duplicate = new Ride(cursor, getActivity());
-            duplicate.ref("");
-            getActivity().startActivity(new Intent(
-                    Intent.ACTION_EDIT, duplicate.store(getActivity())));
-            return true;
-        case R.id.duplicate_retour:
-            duplicate = new Ride(cursor, getActivity());
-            duplicate.ref("");
-            List<Place> vias = duplicate.getVias();
-            Place from = duplicate.getFrom();
-            duplicate.removeVias();
-            duplicate.from(duplicate.getTo());
-            for (int i = vias.size() - 1; i >= 0; i--) {
-                duplicate.via(vias.get(i));
-            }
-            duplicate.to(from);
-            getActivity().startActivity(new Intent(
-                    Intent.ACTION_EDIT, duplicate.store(getActivity())));
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
         }
     }
 
