@@ -86,6 +86,9 @@ public class RideDetailsFragment extends SherlockFragment
     private HashMap<String, String> headers;
     private MenuItem edit;
     private MenuItem delete;
+    private MenuItem duplicate;
+    private MenuItem duplicate_retour;
+    private MenuItem toggle_active;
     private static ImageLoader imageLoader;
 
     @Override
@@ -227,6 +230,9 @@ public class RideDetailsFragment extends SherlockFragment
                 .inflate(R.menu.ride_actions, menu);
         edit = menu.findItem(R.id.edit);
         delete = menu.findItem(R.id.delete);
+        duplicate = menu.findItem(R.id.duplicate);
+        duplicate_retour = menu.findItem(R.id.duplicate_retour);
+        toggle_active = menu.findItem(R.id.toggle_active);
         super.onCreateOptionsMenu(menu, inflater);
         pager.setCurrentItem(selected);
         pager.setOnPageChangeListener(this);
@@ -245,9 +251,20 @@ public class RideDetailsFragment extends SherlockFragment
                         .getString("user", ""))) {
           edit.setVisible(true);
           delete.setVisible(true);
+          duplicate.setVisible(true);
+          duplicate_retour.setVisible(true);
+          toggle_active.setVisible(true);
+          if (cursor.getInt(COLUMNS.ACTIVE) == 1) {
+              toggle_active.setTitle(R.string.deactivate);
+          } else {
+              toggle_active.setTitle(R.string.activate);
+          }
       } else {
           edit.setVisible(false);
           delete.setVisible(false);
+          duplicate.setVisible(false);
+          duplicate_retour.setVisible(false);
+          toggle_active.setVisible(false);
       }
     }
 
@@ -256,11 +273,20 @@ public class RideDetailsFragment extends SherlockFragment
         cursor.moveToPosition(selected);
         Ride ride = new Ride(cursor, getActivity());
         switch (item.getItemId()) {
-        case R.id.deactivate:
-            ride.deactivate().dirty().store(getActivity());
-            getActivity().startService(
-                    new Intent(getActivity(), ConnectorService.class)
-                            .setAction(ConnectorService.PUBLISH));
+        case R.id.toggle_active:
+            if (cursor.getInt(COLUMNS.ACTIVE) == 1) {
+                ride.deactivate().dirty().store(getActivity());
+                getActivity().startService(
+                        new Intent(getActivity(), ConnectorService.class)
+                        .setAction(ConnectorService.PUBLISH));
+                toggle_active.setTitle(R.string.activate);
+            } else {
+                ride.activate().dirty().store(getActivity());
+                getActivity().startService(
+                        new Intent(getActivity(), ConnectorService.class)
+                        .setAction(ConnectorService.PUBLISH));
+                toggle_active.setTitle(R.string.deactivate);
+            }
             return true;
         case R.id.delete:
             ride.delete(getActivity());

@@ -10,31 +10,26 @@
     <item
         android:id="@+id/edit"
         android:title="@string/edit"
-        android:icon="@drawable/ic_launcher"
         android:alphabeticShortcut="e"
         android:showAsAction="never|withText" />
 
     <item
-        android:id="@+id/deactivate"
+        android:id="@+id/toggle_active"
         android:title="@string/deactivate"
-        android:icon="@drawable/ic_launcher"
         android:showAsAction="never|withText" />
 
     <item
         android:id="@+id/delete"
         android:title="@string/delete"
-        android:icon="@drawable/ic_launcher"
         android:showAsAction="never|withText" />
 
     <item
         android:id="@+id/duplicate"
         android:title="@string/duplicate"
-        android:icon="@drawable/ic_launcher"
         android:showAsAction="never|withText" />
 
      <item
         android:id="@+id/duplicate_retour"
         android:title="@string/duplicate_retour"
-        android:icon="@drawable/ic_launcher"
         android:showAsAction="never|withText" />
 </menu>

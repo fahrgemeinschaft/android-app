@@ -31,6 +31,7 @@
     <string name="increase_seats">+</string>
     <string name="edit">Bearbeiten</string>
     <string name="deactivate">Deaktivieren</string>
+    <string name="activate">Aktivieren</string>
     <string name="delete">Löschen</string>
     <string name="duplicate">Duplizieren</string>
     <string name="duplicate_retour">Duplizieren Retour</string>
