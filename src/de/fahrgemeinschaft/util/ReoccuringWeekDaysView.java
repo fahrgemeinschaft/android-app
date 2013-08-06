@@ -53,8 +53,6 @@ public class ReoccuringWeekDaysView extends LinearLayout {
                 getChildAt(i).setSelected(selected);
                 if (selected) reoccuring = true;
             }
-            if (reoccuring) setVisibility(VISIBLE);
-            else setVisibility(INVISIBLE);
         } catch (Exception e) {
             clear();
         }

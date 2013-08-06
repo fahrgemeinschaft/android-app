@@ -156,6 +156,9 @@ public class RideDetailsFragment extends SherlockFragment
 
                 view.row.bind(cursor, getActivity());
                 view.reoccur.setDays(Ride.getDetails(cursor));
+                if (view.reoccur.isReoccuring())
+                    view.reoccur.setVisibility(View.VISIBLE);
+                else view.reoccur.setVisibility(View.GONE);
 
                 try {
                     view.details.setText(
@@ -238,7 +241,8 @@ public class RideDetailsFragment extends SherlockFragment
         cursor.moveToPosition(position);
         if (cursor.getString(COLUMNS.WHO).equals("") ||
                 cursor.getString(COLUMNS.WHO).equals(PreferenceManager
-                        .getDefaultSharedPreferences(getActivity()).getString("user", ""))) {
+                        .getDefaultSharedPreferences(getActivity())
+                        .getString("user", ""))) {
           edit.setVisible(true);
           delete.setVisible(true);
       } else {
