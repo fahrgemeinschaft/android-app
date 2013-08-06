@@ -126,8 +126,11 @@ public class FahrgemeinschaftConnector extends Connector {
         if (!value.equals("") && !value.equals("null"))
             ride.set(LANDLINE, value);
         value = json.getString(PLATE);
-        if (!value.equals("") && !value.equals("null"))
+        if (!value.equals("") && !value.equals("null")) {
             ride.set(PLATE, value);
+            if (value.equals("Bahn"))
+                ride.mode(Mode.TRAIN);
+        }
         ride.getDetails().put("privacy", json.getJSONObject("Privacy"));
         ride.set("Comment", json.getString("Description"));
         if (json.getInt("Relevance") == 10) {

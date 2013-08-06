@@ -15,6 +15,7 @@ import org.teleportr.ConnectorService;
 import org.teleportr.ConnectorService.BackgroundListener;
 import org.teleportr.Ride;
 import org.teleportr.Ride.COLUMNS;
+import org.teleportr.Ride.Mode;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -74,6 +75,12 @@ public class RideListFragment extends SpinningZebraListFragment
             v.loading.setVisibility(View.VISIBLE);
         } else {
             v.loading.setVisibility(View.GONE);
+        }
+
+        if (ride.getString(COLUMNS.MODE).equals(Mode.CAR.name())) {
+            v.mode.setImageResource(R.drawable.icn_mode_car);
+        } else {
+            v.mode.setImageResource(R.drawable.icn_mode_train);
         }
 
         if (ride.getInt(COLUMNS.ACTIVE) == 0) {
@@ -178,6 +185,7 @@ public class RideListFragment extends SpinningZebraListFragment
         TextView to_city;
         ProgressBar loading;
         RideRowView row;
+        ImageView mode;
         View active;
 
         public RideView(Context context, AttributeSet attrs) {
@@ -193,6 +201,7 @@ public class RideListFragment extends SpinningZebraListFragment
             to_city = (TextView) findViewById(R.id.to_city);
             loading = (ProgressBar) findViewById(R.id.loading);
             row = (RideRowView) findViewById(R.id.row);
+            mode = (ImageView) findViewById(R.id.mode);
             active = findViewById(R.id.active);
         }
     }

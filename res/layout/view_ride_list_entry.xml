@@ -7,8 +7,8 @@
 
 <view xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
-    class="de.fahrgemeinschaft.RideListFragment$RideView"
-    android:background="@drawable/background_repeat" >
+    android:layout_width="match_parent"
+    class="de.fahrgemeinschaft.RideListFragment$RideView" >
 
     <TextView
         android:id="@+id/from_city"
@@ -20,16 +20,15 @@
         android:id="@+id/from_place"
         android:layout_below="@id/from_city"
         android:layout_marginTop="-8dp"
-        android:width="175dp"
-        android:textIsSelectable="false"
         android:layout_marginLeft="@dimen/small"
+        android:textIsSelectable="false"
         style="@style/dark.Bold" />
 
     <TextView
         android:id="@+id/to_city"
         android:layout_alignParentRight="true"
-        android:textIsSelectable="false"
         android:layout_marginRight="@dimen/small"
+        android:textIsSelectable="false"
         style="@style/light.Small" />
 
     <TextView
@@ -41,17 +40,33 @@
         android:layout_marginRight="@dimen/small"
         style="@style/dark.Bold" />
 
-    <ProgressBar
-        android:id="@+id/loading"
-        android:layout_width="@dimen/large"
-        android:layout_height="@dimen/large"
+    <LinearLayout 
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="5dp" >
+
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="@dimen/large"
+            android:layout_height="@dimen/large" />
+
+        <ImageView 
+            android:id="@+id/mode"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@drawable/icn_mode_train"
+            android:contentDescription="@string/mode_car" />
+
+    </LinearLayout>
 
     <View
         android:id="@+id/line"
         android:layout_below="@id/from_place"
         android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/small"
+        android:layout_marginRight="@dimen/small"
         android:background="@color/dark_green" />
 
     <de.fahrgemeinschaft.util.RideRowView 
