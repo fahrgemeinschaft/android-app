@@ -96,13 +96,27 @@ public class RideListFragment extends SpinningZebraListFragment
             view.findViewById(R.id.stub).setVisibility(View.VISIBLE);
             final Uri edit_uri = Uri.parse(
                     "content://de.fahrgemeinschaft/rides/" + ride.getLong(0));
+            final Ride r = new Ride(ride, getActivity());
             view.findViewById(R.id.increase_seats)
                     .setOnClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(getActivity(),
-                            EditRideActivity.class).setData(edit_uri));
+                    r.seats(r.getSeats() + 1).dirty().store(getActivity());
+                    getActivity().startService(
+                            new Intent(getActivity(), ConnectorService.class)
+                            .setAction(ConnectorService.PUBLISH));
+                }
+            });
+            view.findViewById(R.id.decrease_seats)
+            .setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    r.seats(r.getSeats() - 1).dirty().store(getActivity());
+                    getActivity().startService(
+                            new Intent(getActivity(), ConnectorService.class)
+                            .setAction(ConnectorService.PUBLISH));
                 }
             });
         } else {

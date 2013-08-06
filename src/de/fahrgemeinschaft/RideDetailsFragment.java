@@ -220,6 +220,8 @@ public class RideDetailsFragment extends SherlockFragment
     @Override
     public void onResume() {
         super.onResume();
+        pager.setCurrentItem(selected);
+        pager.setOnPageChangeListener(this);
     }
 
 
@@ -234,8 +236,6 @@ public class RideDetailsFragment extends SherlockFragment
         duplicate_retour = menu.findItem(R.id.duplicate_retour);
         toggle_active = menu.findItem(R.id.toggle_active);
         super.onCreateOptionsMenu(menu, inflater);
-        pager.setCurrentItem(selected);
-        pager.setOnPageChangeListener(this);
         onPageSelected(selected);
     }
 
