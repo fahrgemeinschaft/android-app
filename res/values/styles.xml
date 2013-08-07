@@ -17,7 +17,6 @@
         <item name="actionBarItemBackground">@drawable/btn_actionbar_item</item>
         <item name="android:listViewStyle">@style/ListView</item>
         <item name="android:listSeparatorTextViewStyle">@style/ListSeparator</item>
-        <item name="android:itemBackground">#ddefa9</item>
         <item name="android:singleLine">true</item>
         
         <!-- Scrollbar attributes -->
@@ -53,12 +52,12 @@
     </style>
 
     <style name="ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse">
-        <item name="background">#FF222222</item>
-        <item name="android:background">#FF222222</item>
+        <!-- <item name="background">#FF222222</item>
+        <item name="android:background">#FF222222</item> -->
     </style>
 
     <style name="ListView" parent="@android:style/Widget.ListView">
-        <item name="android:background">@color/light_green</item>
+        <!-- <item name="android:background">@color/light_green</item> -->
         <item name="android:cacheColorHint">#00000000</item>
     </style>
     
