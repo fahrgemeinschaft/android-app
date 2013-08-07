@@ -255,7 +255,6 @@ public class FahrgemeinschaftConnector extends Connector {
             }
         }
         json.put("Routings", new JSONArray(routings));
-        System.out.println(json);
         OutputStreamWriter out = new OutputStreamWriter(post.getOutputStream());
         out.write(json.toString());
         out.flush();
