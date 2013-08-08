@@ -11,12 +11,6 @@
     android:background="@color/light_green_translucent"
     android:padding="13dp" >
 
-    <View 
-        android:id="@+id/active"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:background="@drawable/background_repeat" />
-
     <de.fahrgemeinschaft.util.RideRowView 
         android:id="@+id/row"
         android:layout_width="match_parent"
@@ -122,4 +116,11 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <View 
+        android:id="@+id/active"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:background="@drawable/background_repeat" />
+
 </view>

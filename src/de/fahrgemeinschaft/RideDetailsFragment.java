@@ -152,11 +152,11 @@ public class RideDetailsFragment extends SherlockFragment
                     view.content.removeViews(1, view.content.getChildCount()-5);
                 cursor.moveToPosition((Integer) position);
 
-//                if (cursor.getInt(COLUMNS.ACTIVE) == 0) {
-//                    view.active.setVisibility(View.VISIBLE);
-//                } else {
-//                    view.active.setVisibility(View.GONE);
-//                }
+                if (cursor.getInt(COLUMNS.ACTIVE) == 0) {
+                    view.active.setVisibility(View.VISIBLE);
+                } else {
+                    view.active.setVisibility(View.GONE);
+                }
 
                 view.name.setText("");
                 view.url = null;
@@ -370,6 +370,7 @@ public class RideDetailsFragment extends SherlockFragment
             last_login = (TextView) findViewById(R.id.driver_active_date);
             reoccur = (ReoccuringWeekDaysView) findViewById(R.id.reoccur);
             row = (RideRowView) findViewById(R.id.row);
+            active = findViewById(R.id.active);
             avatar.setOnClickListener(new OnClickListener() {
 
                 @Override
