@@ -152,6 +152,12 @@ public class RideDetailsFragment extends SherlockFragment
                     view.content.removeViews(1, view.content.getChildCount()-5);
                 cursor.moveToPosition((Integer) position);
 
+//                if (cursor.getInt(COLUMNS.ACTIVE) == 0) {
+//                    view.active.setVisibility(View.VISIBLE);
+//                } else {
+//                    view.active.setVisibility(View.GONE);
+//                }
+
                 view.name.setText("");
                 view.url = null;
                 view.from_place.setText(cursor.getString(COLUMNS.FROM_ADDRESS));
@@ -228,6 +234,7 @@ public class RideDetailsFragment extends SherlockFragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         System.out.println("menu");
+        
         getSherlockActivity().getSupportMenuInflater()
                 .inflate(R.menu.ride_actions, menu);
         edit = menu.findItem(R.id.edit);
@@ -329,6 +336,7 @@ public class RideDetailsFragment extends SherlockFragment
     static class RideView extends RelativeLayout
         implements LoaderCallbacks<Cursor>, Response.Listener<JSONObject> {
 
+        View active;
         TextView from_place;
         TextView to_place;
         RideRowView row;
