@@ -161,7 +161,7 @@ public class RideListFragment extends SpinningZebraListFragment
                                 + date.format(query.getDep()),
                                 Toast.LENGTH_SHORT).show();
             }
-            stopSpinning("click for weida..");
+            stopSpinning("weiteren Tag suchen");
         }
         currently_searching_date = 0;
     }

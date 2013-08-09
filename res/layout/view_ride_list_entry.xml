@@ -10,35 +10,60 @@
     android:layout_width="match_parent"
     class="de.fahrgemeinschaft.RideListFragment$RideView" >
 
-    <TextView
-        android:id="@+id/from_city"
-        android:textIsSelectable="false"
-        android:layout_marginLeft="@dimen/small"
-        style="@style/light.Small" />
+    <LinearLayout
+        android:id="@+id/from_to"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/small"
+        android:paddingRight="@dimen/small"
+        android:baselineAligned="false"
+        android:orientation="horizontal" >
 
-    <TextView
-        android:id="@+id/from_place"
-        android:layout_below="@id/from_city"
-        android:layout_marginTop="-8dp"
-        android:layout_marginLeft="@dimen/small"
-        android:textIsSelectable="false"
-        style="@style/dark.Bold" />
+        <RelativeLayout 
+            android:layout_weight="1"
+            android:paddingRight="@dimen/xmedium"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp" >
 
-    <TextView
-        android:id="@+id/to_city"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/small"
-        android:textIsSelectable="false"
-        style="@style/light.Small" />
+            <TextView
+                android:id="@+id/from_city"
+                style="@style/light.Small"
+                android:ellipsize="end"
+                android:textIsSelectable="false" />
 
-    <TextView
-        android:id="@+id/to_place"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/to_city"
-        android:layout_marginTop="-8dp"
-        android:textIsSelectable="false"
-        android:layout_marginRight="@dimen/small"
-        style="@style/dark.Bold" />
+            <TextView
+                android:id="@+id/from_place"
+                style="@style/dark.Bold"
+                android:layout_below="@id/from_city"
+                android:layout_marginTop="-8dp"
+                android:ellipsize="end"
+                android:textIsSelectable="false" />
+        </RelativeLayout>
+
+        <RelativeLayout 
+            android:layout_weight="1"
+            android:paddingLeft="@dimen/xmedium"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp" >
+
+            <TextView
+                android:id="@+id/to_city"
+                style="@style/light.Small"
+                android:layout_alignParentRight="true"
+                android:ellipsize="end"
+                android:textIsSelectable="false" />
+
+            <TextView
+                android:id="@+id/to_place"
+                style="@style/dark.Bold"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/to_city"
+                android:layout_marginTop="-8dp"
+                android:ellipsize="end"
+                android:textIsSelectable="false" />
+        </RelativeLayout>
+
+    </LinearLayout>
 
     <LinearLayout 
         android:layout_height="wrap_content"
@@ -64,7 +89,7 @@
 
     <View
         android:id="@+id/line"
-        android:layout_below="@id/from_place"
+        android:layout_below="@id/from_to"
         android:layout_height="1dp"
         android:layout_marginLeft="@dimen/small"
         android:layout_marginRight="@dimen/small"
