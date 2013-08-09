@@ -97,6 +97,17 @@ public class RideListFragment extends SpinningZebraListFragment
             final Uri edit_uri = Uri.parse(
                     "content://de.fahrgemeinschaft/rides/" + ride.getLong(0));
             final Ride r = new Ride(ride, getActivity());
+
+            view.findViewById(R.id.edit)
+            .setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getActivity(),
+                            EditRideActivity.class).setData(edit_uri));
+                }
+            });
+
             view.findViewById(R.id.increase_seats)
                     .setOnClickListener(new OnClickListener() {
 
