@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@color/light_opacity_white" >
+    android:background="@color/xlight_opacity_white" >
 
     <Button
         android:id="@+id/increase_seats"

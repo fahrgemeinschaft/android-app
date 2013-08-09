@@ -131,9 +131,11 @@
     <color name="dark_green">#5D6F29</color>
     <color name="darker_green">#525F26</color>
     <color name="light_opacity_white">#33FFFFFF</color>
+    <color name="xlight_opacity_white">#11FFFFFF</color>
     <color name="opacity_white">#BBFFFFFF</color>
     <color name="opacity_black">#99000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="grey">#CCCCCC</color>
 
     <color name="btn_mitfahren_selected">#85925D</color>
     <color name="btn_mitfahren_pressed">#AEB794</color>

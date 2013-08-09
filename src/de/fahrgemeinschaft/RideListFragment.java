@@ -88,10 +88,11 @@ public class RideListFragment extends SpinningZebraListFragment
             v.active.setVisibility(View.GONE);
         }
 
-        if (ride.getString(COLUMNS.WHO).equals("") ||
+        if ((ride.getString(COLUMNS.WHO).equals("") ||
                 ride.getString(COLUMNS.WHO).equals(PreferenceManager
                         .getDefaultSharedPreferences(getActivity())
-                        .getString("user", ""))) {
+                        .getString("user", "")))
+                        && ride.getInt(COLUMNS.ACTIVE) == 1) {
             view.findViewById(R.id.stub).setVisibility(View.VISIBLE);
             final Uri edit_uri = Uri.parse(
                     "content://de.fahrgemeinschaft/rides/" + ride.getLong(0));

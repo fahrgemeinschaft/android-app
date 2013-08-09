@@ -4,6 +4,9 @@
   Copyright (c) 2013 by it's authors.
   Some rights reserved. See LICENSE.. 
 -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
     <ListView
         android:id="@android:id/list"
@@ -11,6 +14,43 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:listSelector="@drawable/list_selector"
+        android:background="@color/light_green_translucent" />
+
+    <RelativeLayout android:id="@id/android:empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@color/light_green_translucent"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-    />
+        android:padding="@dimen/large" >
+
+        <TextView
+            android:id="@+id/text1"
+            android:textColor="@color/white"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            android:singleLine="false"
+            android:text="Es sind noch keine" />
+        <TextView
+            android:id="@+id/text2"
+            android:layout_below="@id/text1"
+            android:textColor="@color/darker_green"
+            android:textSize="26sp"
+            android:singleLine="false"
+            android:textStyle="bold"
+            android:text="eigenen Fahrten" />
+        <TextView
+            android:id="@+id/text3"
+            android:layout_below="@id/text2"
+            android:textColor="@color/white"
+            android:singleLine="false"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            android:text="eingetragen!" />
+        <TextView
+            android:id="@+id/text4"
+            android:layout_alignParentBottom="true"
+            android:textColor="@color/darker_green"
+            android:singleLine="false"
+            android:textSize="21sp"
+            android:text="Entweder bist du noch nicht eingeloggt oder hast noch keine Fahrt eingetragen." />
+    </RelativeLayout>
+</FrameLayout>

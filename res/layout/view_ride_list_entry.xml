@@ -81,6 +81,7 @@
     <ViewStub
         android:id="@+id/stub"
         android:inflatedId="@+id/stub"
+        android:layout_marginBottom="20dp"
         android:layout="@layout/two_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -89,7 +90,8 @@
     <View 
         android:id="@+id/active"
         android:visibility="gone"
-        android:layout_height="138dp"
+        android:layout_height="72dp"
         android:layout_width="match_parent"
         android:background="@drawable/background_repeat" />
+
 </view>
