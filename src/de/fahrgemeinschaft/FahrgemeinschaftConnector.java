@@ -13,6 +13,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -59,6 +60,7 @@ public class FahrgemeinschaftConnector extends Connector {
     @Override
     public long search(Place from, Place to, Date dep, Date arr) throws Exception {
 
+
         HttpURLConnection conn;
         if (from == null && to == null && dep == null) {
             conn = (HttpURLConnection) new URL(endpoint + "/trip").openConnection();
@@ -66,6 +68,7 @@ public class FahrgemeinschaftConnector extends Connector {
         } else {
             JSONObject from_json = new JSONObject();
             JSONObject to_json = new JSONObject();
+            dep = getNextDayMorning(dep);
             startDate = df.format(dep);
             try {
                 from_json.put("Longitude", "" + from.getLng());
@@ -100,9 +103,16 @@ public class FahrgemeinschaftConnector extends Connector {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        if (dep != null)
-            return dep.getTime() + 24 * 3600 * 1000;
-        else return 0;
+        return 0;
+    }
+
+    private Date getNextDayMorning(Date dep) {
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(dep.getTime() + 24 * 3600000); // plus one day
+        c.set(Calendar.HOUR_OF_DAY, 0); // reset
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        return c.getTime();
     }
 
     private static final String EMAIL = "EMail";

@@ -8,6 +8,7 @@
 package de.fahrgemeinschaft;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
 
 import org.teleportr.ConnectorService;
@@ -22,7 +23,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
@@ -45,8 +45,6 @@ public class RideListFragment extends SpinningZebraListFragment
             new SimpleDateFormat("EEE", Locale.GERMANY);
     private static final SimpleDateFormat date =
             new SimpleDateFormat("dd.MM.", Locale.GERMANY);
-    private static SimpleDateFormat time =
-            new SimpleDateFormat("HH:mm", Locale.GERMANY);
     private String[] split;
     private long currently_searching_date;
 
@@ -69,7 +67,6 @@ public class RideListFragment extends SpinningZebraListFragment
 
         v.row.bind(ride, getActivity());
         long dif = ride.getLong(COLUMNS.DEPARTURE) - currently_searching_date;
-//        System.out.println("DELTA " + delta / 3600000);
         if (ride.getShort(COLUMNS.DIRTY) == 1 || dif > 0 && dif < 24*3600000) {
             v.loading.setVisibility(View.VISIBLE);
         } else {
@@ -93,8 +90,6 @@ public class RideListFragment extends SpinningZebraListFragment
                         .getDefaultSharedPreferences(getActivity())
                         .getString("user", ""))) {
             view.findViewById(R.id.stub).setVisibility(View.VISIBLE);
-            final Uri edit_uri = Uri.parse(
-                    "content://de.fahrgemeinschaft/rides/" + ride.getLong(0));
             final Ride r = new Ride(ride, getActivity());
             view.findViewById(R.id.increase_seats)
                     .setOnClickListener(new OnClickListener() {
@@ -138,11 +133,10 @@ public class RideListFragment extends SpinningZebraListFragment
     @Override
     public void onBackgroundSearch(Ride query) {
         if (onScreen) {
+            currently_searching_date = getNextDayMorning(query.getDep());
             startSpinning(getString(R.string.searching),
-                    day.format(query.getDep()) + " "
-                            + date.format(query.getDep()));
-            currently_searching_date = query.getDep();
-//            ((CursorAdapter)getListAdapter()).notifyDataSetChanged();
+                    day.format(currently_searching_date) + " "
+                            + date.format(currently_searching_date));
         }
     }
 
@@ -150,14 +144,10 @@ public class RideListFragment extends SpinningZebraListFragment
     public void onBackgroundSuccess(Ride query, int numberOfRidesFound) {
         if (onScreen) {
             if (numberOfRidesFound == 0) {
-//                Crouton.makeText(getActivity(), 
-//                        getString(R.string.nothing) + " "
-//                        + day.format(query.getDep()) + " "
-//                        + date.format(query.getDep()), Style.INFO).show();
                 Toast.makeText(getActivity(), 
                         getString(R.string.nothing) + " "
-                                + day.format(query.getDep()) + " "
-                                + date.format(query.getDep()),
+                                + day.format(currently_searching_date) + " "
+                                + date.format(currently_searching_date),
                                 Toast.LENGTH_SHORT).show();
             }
             stopSpinning("click for weida..");
@@ -218,4 +208,14 @@ public class RideListFragment extends SpinningZebraListFragment
             active = findViewById(R.id.active);
         }
     }
+
+    private long getNextDayMorning(long dep) {
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(dep + 24 * 3600000); // plus one day
+        c.set(Calendar.HOUR_OF_DAY, 0); // reset
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        return c.getTimeInMillis();
+    }
+
 }
