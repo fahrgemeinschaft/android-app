@@ -10,21 +10,17 @@ package de.fahrgemeinschaft;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.teleportr.ConnectorService;
-import org.teleportr.Place;
 import org.teleportr.Ride;
 import org.teleportr.Ride.COLUMNS;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -68,6 +64,7 @@ import com.calciumion.widget.BasePagerAdapter;
 
 import de.fahrgemeinschaft.util.ReoccuringWeekDaysView;
 import de.fahrgemeinschaft.util.RideRowView;
+import de.fahrgemeinschaft.util.Util;
 
 public class RideDetailsFragment extends SherlockFragment
         implements Response.ErrorListener, OnPageChangeListener {
@@ -233,8 +230,6 @@ public class RideDetailsFragment extends SherlockFragment
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        System.out.println("menu");
-        
         getSherlockActivity().getSupportMenuInflater()
                 .inflate(R.menu.ride_actions, menu);
         edit = menu.findItem(R.id.edit);
@@ -279,56 +274,7 @@ public class RideDetailsFragment extends SherlockFragment
     public boolean onOptionsItemSelected(MenuItem item) {
         cursor.moveToPosition(selected);
         Ride ride = new Ride(cursor, getActivity());
-        switch (item.getItemId()) {
-        case R.id.toggle_active:
-            if (cursor.getInt(COLUMNS.ACTIVE) == 1) {
-                ride.deactivate().dirty().store(getActivity());
-                getActivity().startService(
-                        new Intent(getActivity(), ConnectorService.class)
-                        .setAction(ConnectorService.PUBLISH));
-                toggle_active.setTitle(R.string.activate);
-            } else {
-                ride.activate().dirty().store(getActivity());
-                getActivity().startService(
-                        new Intent(getActivity(), ConnectorService.class)
-                        .setAction(ConnectorService.PUBLISH));
-                toggle_active.setTitle(R.string.deactivate);
-            }
-            return true;
-        case R.id.delete:
-            ride.delete(getActivity());
-            getActivity().startService(
-                    new Intent(getActivity(), ConnectorService.class)
-                            .setAction(ConnectorService.PUBLISH));
-            getActivity().getSupportFragmentManager().popBackStack();
-            return true;
-        case R.id.edit:
-            getActivity().startActivity(new Intent(Intent.ACTION_EDIT,
-                    Uri.parse("content://de.fahrgemeinschaft/rides/"
-                            + cursor.getLong(0))));
-            return true;
-        case R.id.duplicate:
-            ride.ref("");
-            getActivity().startActivity(new Intent(
-                    Intent.ACTION_EDIT, ride.store(getActivity())));
-            return true;
-        case R.id.duplicate_retour:
-            ride = new Ride(cursor, getActivity());
-            ride.ref("");
-            List<Place> vias = ride.getVias();
-            Place from = ride.getFrom();
-            ride.removeVias();
-            ride.from(ride.getTo());
-            for (int i = vias.size() - 1; i >= 0; i--) {
-                ride.via(vias.get(i));
-            }
-            ride.to(from);
-            getActivity().startActivity(new Intent(
-                    Intent.ACTION_EDIT, ride.store(getActivity())));
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
+        return Util.handleRideAction(item.getItemId(), ride, getActivity());
     }
 
 

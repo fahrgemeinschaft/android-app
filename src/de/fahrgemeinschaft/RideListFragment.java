@@ -27,8 +27,12 @@ import android.net.Uri;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -36,6 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.fahrgemeinschaft.util.RideRowView;
 import de.fahrgemeinschaft.util.SpinningZebraListFragment;
+import de.fahrgemeinschaft.util.Util;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -87,19 +92,18 @@ public class RideListFragment extends SpinningZebraListFragment
             v.active.setVisibility(View.GONE);
         }
 
-        if (isActiveMyRide(ride)) {
+        if (isMyRide(ride) && ride.getInt(COLUMNS.ACTIVE) == 1) {
             v.showButtons();
         } else {
             view.findViewById(R.id.stub).setVisibility(View.GONE);
         }
     }
 
-    private boolean isActiveMyRide(Cursor ride) {
+    private boolean isMyRide(Cursor ride) {
         return (ride.getString(COLUMNS.WHO).equals("") ||
                 ride.getString(COLUMNS.WHO).equals(PreferenceManager
                         .getDefaultSharedPreferences(getActivity())
-                        .getString("user", "")))
-                && ride.getInt(COLUMNS.ACTIVE) == 1;
+                        .getString("user", "")));
     }
 
     @Override
@@ -149,6 +153,35 @@ public class RideListFragment extends SpinningZebraListFragment
             stopSpinning(reason);
         }
         currently_searching_date = 0;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu m, View v, ContextMenuInfo i) {
+        cursor.moveToPosition(((AdapterView.AdapterContextMenuInfo)i).position);
+        getActivity().getMenuInflater().inflate(R.menu.ride_actions, m);
+        if (isMyRide(cursor)) {
+            MenuItem toggle_active = m.findItem(R.id.toggle_active);
+            if (cursor.getInt(COLUMNS.ACTIVE) == 1) {
+                toggle_active.setTitle(R.string.deactivate);
+            } else {
+                toggle_active.setTitle(R.string.activate);
+            }
+        } else {
+            m.findItem(R.id.edit).setVisible(false);
+            m.findItem(R.id.delete).setVisible(false);
+            m.findItem(R.id.duplicate).setVisible(false);
+            m.findItem(R.id.toggle_active).setVisible(false);
+            m.findItem(R.id.duplicate_retour).setVisible(false);
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        cursor.moveToPosition(info.position);
+        Ride ride = new Ride(cursor, getActivity());
+        return Util.handleRideAction(item.getItemId(), ride, getActivity());
     }
 
     @Override

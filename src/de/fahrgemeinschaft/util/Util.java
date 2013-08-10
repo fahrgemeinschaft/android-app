@@ -1,9 +1,12 @@
 package de.fahrgemeinschaft.util;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.teleportr.ConnectorService;
+import org.teleportr.Place;
 import org.teleportr.Ride;
 import org.teleportr.Ride.COLUMNS;
 
@@ -18,10 +21,54 @@ import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents.Insert;
+import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 import de.fahrgemeinschaft.R;
 
 public class Util {
+
+    public static boolean handleRideAction(int i, Ride r, FragmentActivity c) {
+        switch (i) {
+        case R.id.toggle_active:
+            if (r.isActive()) {
+                r.deactivate().dirty().store(c);
+            } else {
+                r.activate().dirty().store(c);
+            }
+            c.startService(new Intent(c, ConnectorService.class)
+                    .setAction(ConnectorService.PUBLISH));
+            return true;
+        case R.id.delete:
+            r.delete(c);
+            c.startService(new Intent(c, ConnectorService.class)
+                    .setAction(ConnectorService.PUBLISH));
+            c.getSupportFragmentManager().popBackStack();
+            return true;
+        case R.id.edit:
+            c.startActivity(new Intent(Intent.ACTION_EDIT, Uri.parse(
+                    "content://de.fahrgemeinschaft/rides/" + r.getId())));
+            return true;
+        case R.id.duplicate:
+            r.ref("");
+            c.startActivity(new Intent(Intent.ACTION_EDIT, r.store(c)));
+            return true;
+        case R.id.duplicate_retour:
+            r.ref("");
+            List<Place> vias = r.getVias();
+            Place from = r.getFrom();
+            r.removeVias();
+            r.from(r.getTo());
+            for (int j = vias.size() - 1; j >= 0; j--) {
+                r.via(vias.get(j));
+            }
+            r.to(from);
+            c.startActivity(new Intent(Intent.ACTION_EDIT, r.store(c)));
+            return true;
+        }
+        return false;
+    }
+
+
 
     private static final String EMAIL = "EMail";
     private static final String MOBILE = "Mobile";
