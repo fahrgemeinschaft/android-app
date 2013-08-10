@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
@@ -85,12 +86,26 @@ public class RideListFragment extends SpinningZebraListFragment
             v.active.setVisibility(View.GONE);
         }
 
-        if (ride.getString(COLUMNS.WHO).equals("") ||
+        if ((ride.getString(COLUMNS.WHO).equals("") ||
                 ride.getString(COLUMNS.WHO).equals(PreferenceManager
                         .getDefaultSharedPreferences(getActivity())
-                        .getString("user", ""))) {
+                        .getString("user", "")))
+                        && ride.getInt(COLUMNS.ACTIVE) == 1) {
             view.findViewById(R.id.stub).setVisibility(View.VISIBLE);
+            final Uri edit_uri = Uri.parse(
+                    "content://de.fahrgemeinschaft/rides/" + ride.getLong(0));
             final Ride r = new Ride(ride, getActivity());
+
+            view.findViewById(R.id.edit)
+            .setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getActivity(),
+                            EditRideActivity.class).setData(edit_uri));
+                }
+            });
+
             view.findViewById(R.id.increase_seats)
                     .setOnClickListener(new OnClickListener() {
 
@@ -150,7 +165,7 @@ public class RideListFragment extends SpinningZebraListFragment
                                 + date.format(currently_searching_date),
                                 Toast.LENGTH_SHORT).show();
             }
-            stopSpinning("click for weida..");
+            stopSpinning("weiteren Tag suchen");
         }
         currently_searching_date = 0;
     }

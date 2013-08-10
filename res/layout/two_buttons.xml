@@ -3,39 +3,52 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@color/light_opacity_white" >
+    android:background="@color/xlight_opacity_white" >
 
     <Button
-        android:id="@+id/increase_seats"
+        android:id="@+id/edit"
         android:layout_height="@dimen/xlarger"
-        android:layout_width="@dimen/xlarger"
-        android:layout_weight="1"
-        android:layout_margin="@dimen/medium"
-        android:text="@string/increase_seats"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_marginTop="@dimen/medium"
+        android:layout_marginLeft="@dimen/medium"
+        android:layout_marginRight="@dimen/medium"
+        android:layout_marginBottom="@dimen/medium"
+        android:gravity="center"
+        android:paddingLeft="5dp"
+        android:drawableLeft="@drawable/icn_edit"
+        android:drawablePadding="0sp"
+        android:text="@string/edit"
+        android:textColor="@color/darker_green"
         android:background="@drawable/btn_light_white"
         android:focusable="false"
         style="@style/place_pick_btn" />
 
-    <TextView 
-        android:id="@+id/seats_text"
+    <ImageButton
+        android:id="@+id/increase_seats"
         android:layout_height="@dimen/xlarger"
         android:layout_width="0dp"
-        android:layout_weight="8"
-        android:layout_margin="@dimen/medium"
-        android:gravity="center"
-        android:textColor="#384219"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:text="@string/seats" />
+        android:layout_weight="1"
+        android:layout_marginTop="@dimen/medium"
+        android:layout_marginBottom="@dimen/medium"
+        android:src="@drawable/icn_seats_plus"
+        android:background="@drawable/btn_dark_green"
+        android:contentDescription="@string/increase_seats"
+        android:focusable="false"
+        style="@style/place_pick_btn" />
 
-    <Button
+    <ImageButton
         android:id="@+id/decrease_seats"
         android:layout_height="@dimen/xlarger"
-        android:layout_width="@dimen/xlarger"
+        android:layout_width="0dp"
         android:layout_weight="1"
-        android:layout_margin="@dimen/medium"
-        android:text="@string/decrease_seats"
-        android:background="@drawable/btn_light_white"
+        android:layout_marginTop="@dimen/medium"
+        android:layout_marginLeft="@dimen/medium"
+        android:layout_marginRight="@dimen/medium"
+        android:layout_marginBottom="@dimen/medium"
+        android:src="@drawable/icn_seats_minus"
+        android:background="@drawable/btn_dark_green"
+        android:contentDescription="@string/decrease_seats"
         android:focusable="false"
         style="@style/place_pick_btn" />
 

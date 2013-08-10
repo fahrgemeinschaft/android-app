@@ -37,6 +37,7 @@ public class EditRideFragment2 extends SherlockFragment
 
     private Ride ride; 
     private ButtonImageButton date;
+    private View white_bg;
     private ButtonImageButton time;
     private ReoccuringWeekDaysView reoccur;
     private EditTextImageButton price;
@@ -51,6 +52,7 @@ public class EditRideFragment2 extends SherlockFragment
         super.onViewCreated(v, savedInstanceState);
         
         date = (ButtonImageButton) v.findViewById(R.id.date);
+        white_bg = v.findViewById(R.id.white_bg);
         date.btn.setOnClickListener(pickDate);
         date.icn.setOnClickListener(pickDate);
         time = (ButtonImageButton) v.findViewById(R.id.time);
@@ -68,10 +70,12 @@ public class EditRideFragment2 extends SherlockFragment
         if (reoccur.isReoccuring()) {
             date.btn.setEnabled(false);
             date.icn.setEnabled(false);
-            date.btn.setText(R.string.reccurence);
+            white_bg.setVisibility(View.VISIBLE);
+            date.btn.setText(R.string.reccurence_date);
         } else {
             date.btn.setEnabled(true);
             date.icn.setEnabled(true);
+            white_bg.setVisibility(View.GONE);
             setDeparture(ride.getDep());
         }
     }

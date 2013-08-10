@@ -10,12 +10,24 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <de.fahrgemeinschaft.util.ButtonImageButton
-        android:id="@+id/date"
-        android:layout_width="match_parent"
+    <RelativeLayout 
         android:layout_marginTop="@dimen/larger"
-        android:src="@drawable/icn_datepicker"
-        android:text="@string/date" />
+        android:layout_height="@dimen/large_icn"
+        android:layout_width="match_parent" >
+
+        <View 
+            android:id="@+id/white_bg"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:background="@color/opacity_white" />
+
+        <de.fahrgemeinschaft.util.ButtonImageButton
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:src="@drawable/icn_datepicker"
+            android:text="@string/date" />
+
+    </RelativeLayout>
 
     <de.fahrgemeinschaft.util.ButtonImageButton
         android:id="@+id/time"

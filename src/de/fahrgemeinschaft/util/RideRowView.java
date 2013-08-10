@@ -20,7 +20,7 @@ public class RideRowView extends LinearLayout {
     private static final SimpleDateFormat dayf =
             new SimpleDateFormat("EEE", Locale.GERMANY);
     private static final SimpleDateFormat datef =
-            new SimpleDateFormat("dd.MM.", Locale.GERMANY);
+            new SimpleDateFormat("dd.MM.yy", Locale.GERMANY);
     private static SimpleDateFormat timef =
             new SimpleDateFormat("HH:mm", Locale.GERMANY);
 
