@@ -47,7 +47,7 @@ public class ReoccuringWeekDaysView extends LinearLayout {
         this.details = details;
         try {
             reoccuring = false;
-            JSONObject days = details.getJSONObject("reoccur");
+            JSONObject days = details.getJSONObject("Reoccur");
             for (int i = 0; i < 7; i++) {
                 boolean selected = days.getBoolean(DAYS[i]);
                 getChildAt(i).setSelected(selected);
@@ -106,7 +106,7 @@ public class ReoccuringWeekDaysView extends LinearLayout {
                     reoccuring = true;
                 } else days.put(DAYS[i], false);
             }
-            details.put("reoccur", days);
+            details.put("Reoccur", days);
         } catch (JSONException e) {
             e.printStackTrace();
         }
