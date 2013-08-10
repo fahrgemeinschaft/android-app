@@ -35,6 +35,7 @@ public class SettingsActivity extends SherlockPreferenceActivity
         getSupportActionBar().setHomeButtonEnabled(true);
         addPreferencesFromResource(R.xml.settings);
         prefs.registerOnSharedPreferenceChangeListener(this);
+        setTitle(R.string.settings);
     }
 
     @SuppressWarnings("deprecation")
