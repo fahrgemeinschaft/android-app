@@ -6,13 +6,15 @@
 -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,9 +26,9 @@
                 android:name="de.fahrgemeinschaft.EditRideFragment1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin" />
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin" />
 
             <fragment
                 android:id="@+id/fragment2"
@@ -41,46 +43,47 @@
                 android:name="de.fahrgemeinschaft.EditRideFragment3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/larger"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin" />
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/larger" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="@dimen/larger"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin" >
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/larger"
+                android:orientation="vertical" >
 
                 <EditText
                     android:id="@+id/comment"
+                    style="@style/comment_text_box"
                     android:layout_width="match_parent"
-                    android:minHeight="100dp"
                     android:background="@drawable/btn_white"
                     android:gravity="top"
-                    android:padding="16dp"
-                    android:inputType="textMultiLine"
                     android:hint="@string/comment"
-                    style="@style/comment_text_box" />
+                    android:inputType="textMultiLine"
+                    android:minHeight="100dp"
+                    android:padding="16dp" />
             </LinearLayout>
 
             <Button
                 android:id="@+id/publish"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:layout_marginTop="@dimen/larger"
+                android:layout_marginBottom="@dimen/larger"
                 android:layout_marginLeft="@dimen/larger"
                 android:layout_marginRight="@dimen/larger"
+                android:layout_marginTop="@dimen/larger"
                 android:background="@drawable/btn_medium_green"
-                android:layout_marginBottom="@dimen/larger"
-                android:paddingTop="8sp"
-                android:drawableTop="@drawable/btn_veroeffentlichen"
                 android:drawablePadding="-32sp"
+                android:drawableTop="@drawable/btn_veroeffentlichen"
+                android:paddingTop="8sp"
+                android:text="@string/publish"
                 android:textColor="@color/light_green"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:text="@string/publish" />
+                android:textStyle="bold" />
         </LinearLayout>
     </ScrollView>
+
 </FrameLayout>
