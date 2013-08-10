@@ -52,6 +52,7 @@ public class RideListFragment extends SpinningZebraListFragment
     @Override
     public void bindListItemView(View view, Cursor ride) {
         RideView v = (RideView) view;
+        v.id = ride.getInt(0);
         v.from_place.setText(ride.getString(COLUMNS.FROM_NAME));
         split = ride.getString(COLUMNS.FROM_ADDRESS).split(",");
         if (split.length > 1)
@@ -86,51 +87,19 @@ public class RideListFragment extends SpinningZebraListFragment
             v.active.setVisibility(View.GONE);
         }
 
-        if ((ride.getString(COLUMNS.WHO).equals("") ||
-                ride.getString(COLUMNS.WHO).equals(PreferenceManager
-                        .getDefaultSharedPreferences(getActivity())
-                        .getString("user", "")))
-                        && ride.getInt(COLUMNS.ACTIVE) == 1) {
-            view.findViewById(R.id.stub).setVisibility(View.VISIBLE);
-            final Uri edit_uri = Uri.parse(
-                    "content://de.fahrgemeinschaft/rides/" + ride.getLong(0));
-            final Ride r = new Ride(ride, getActivity());
-
-            view.findViewById(R.id.edit)
-            .setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(getActivity(),
-                            EditRideActivity.class).setData(edit_uri));
-                }
-            });
-
-            view.findViewById(R.id.increase_seats)
-                    .setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    r.seats(r.getSeats() + 1).dirty().store(getActivity());
-                    getActivity().startService(
-                            new Intent(getActivity(), ConnectorService.class)
-                            .setAction(ConnectorService.PUBLISH));
-                }
-            });
-            view.findViewById(R.id.decrease_seats)
-            .setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    r.seats(r.getSeats() - 1).dirty().store(getActivity());
-                    getActivity().startService(
-                            new Intent(getActivity(), ConnectorService.class)
-                            .setAction(ConnectorService.PUBLISH));
-                }
-            });
+        if (isActiveMyRide(ride)) {
+            v.showButtons();
         } else {
             view.findViewById(R.id.stub).setVisibility(View.GONE);
         }
+    }
+
+    private boolean isActiveMyRide(Cursor ride) {
+        return (ride.getString(COLUMNS.WHO).equals("") ||
+                ride.getString(COLUMNS.WHO).equals(PreferenceManager
+                        .getDefaultSharedPreferences(getActivity())
+                        .getString("user", "")))
+                && ride.getInt(COLUMNS.ACTIVE) == 1;
     }
 
     @Override
@@ -195,7 +164,7 @@ public class RideListFragment extends SpinningZebraListFragment
 
 
 
-    static class RideView extends RelativeLayout {
+    static class RideView extends RelativeLayout implements OnClickListener {
 
         TextView from_place;
         TextView from_city;
@@ -205,6 +174,7 @@ public class RideListFragment extends SpinningZebraListFragment
         RideRowView row;
         ImageView mode;
         View active;
+        int id;
 
         public RideView(Context context, AttributeSet attrs) {
             super(context, attrs);
@@ -221,6 +191,36 @@ public class RideListFragment extends SpinningZebraListFragment
             row = (RideRowView) findViewById(R.id.row);
             mode = (ImageView) findViewById(R.id.mode);
             active = findViewById(R.id.active);
+        }
+
+        public void showButtons() {
+            findViewById(R.id.stub).setVisibility(View.VISIBLE);
+            findViewById(R.id.edit).setOnClickListener(this);
+            findViewById(R.id.increase_seats).setOnClickListener(this);
+            findViewById(R.id.decrease_seats).setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Ride ride = new Ride(id, getContext());
+            switch (v.getId()) {
+            case R.id.edit:
+                getContext().startActivity(new Intent(getContext(),
+                        EditRideActivity.class).setData(Uri.parse(
+                                "content://de.fahrgemeinschaft/rides/" + id)));
+                break;
+            case R.id.increase_seats:
+                ride.seats(ride.getSeats() + 1).dirty().store(getContext());
+                getContext().startService(
+                        new Intent(getContext(), ConnectorService.class)
+                                .setAction(ConnectorService.PUBLISH));
+                break;
+            case R.id.decrease_seats:
+                ride.seats(ride.getSeats() - 1).dirty().store(getContext());
+                getContext().startService(
+                        new Intent(getContext(), ConnectorService.class)
+                        .setAction(ConnectorService.PUBLISH));
+            }
         }
     }
 

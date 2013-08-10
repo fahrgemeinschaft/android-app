@@ -193,7 +193,6 @@ public class FahrgemeinschaftConnector extends Connector {
             if (departure.length() == 3)
                 departure = "0" + departure;
         }
-        System.out.println("dep " + departure);
         if (startDate == null) {
             departure = json.getString("Startdate") + departure;
         } else {
