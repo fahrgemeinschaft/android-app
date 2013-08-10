@@ -9,6 +9,7 @@ package de.fahrgemeinschaft;
 
 import org.teleportr.ConnectorService;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -18,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
@@ -57,11 +59,14 @@ public class ProfileFragment extends SherlockFragment implements OnClickListener
         switch(v.getId()) {
         case R.id.login:
             prefs.edit()
-            .putString("EMail", username.text.getText().toString())
-            .putString("password", password.text.getText().toString())
-            .remove("auth")
+                .putString("EMail", username.text.getText().toString())
+                .putString("password", password.text.getText().toString())
+                .remove("auth")
             .commit();
             Crouton.makeText(getActivity(), "Authentifiziere...", Style.INFO).show();
+            ((InputMethodManager) getActivity()
+                    .getSystemService(Context.INPUT_METHOD_SERVICE))
+                    .hideSoftInputFromWindow(username.getWindowToken(), 0);
             getActivity().getSupportFragmentManager().popBackStack();
             break;
         case R.id.register:
