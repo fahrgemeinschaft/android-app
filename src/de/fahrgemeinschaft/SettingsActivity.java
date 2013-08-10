@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.actionbarsherlock.view.MenuItem;
@@ -24,6 +25,7 @@ public class SettingsActivity extends SherlockPreferenceActivity
         implements OnSharedPreferenceChangeListener {
 
     private SharedPreferences prefs;
+    private boolean radius_changed;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -45,13 +47,22 @@ public class SettingsActivity extends SherlockPreferenceActivity
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
         if (key.equals("radius_from") || key.equals("radius_to")) {
+            radius_changed = true;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        if (radius_changed) {
+            Log.d(MainActivity.TAG, "clear cache");
             getContentResolver().delete(Uri.parse(
                     "content://de.fahrgemeinschaft/rides"), null, null);
             startService(new Intent(this, ConnectorService.class)
                     .setAction(ConnectorService.SEARCH));
-            prefs.edit()
-                    .putLong("cleanup", System.currentTimeMillis()).commit();
+            prefs.edit().putLong("cleanup",
+                    System.currentTimeMillis()).commit();
         }
+        super.onPause();
     }
 
     @Override

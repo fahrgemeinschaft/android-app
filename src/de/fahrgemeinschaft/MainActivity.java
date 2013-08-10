@@ -47,6 +47,7 @@ public class MainActivity extends SherlockFragmentActivity
             Uri.parse("content://de.fahrgemeinschaft/myrides");
     public static final Uri BG_JOBS_URI =
             Uri.parse("content://de.fahrgemeinschaft/jobs/search");
+    public static final String TAG = "Fahrgemeinschaft";
     private static final String DETAILS = "details";
     private static final String RESULTS = "results";
     public RideDetailsFragment details;
