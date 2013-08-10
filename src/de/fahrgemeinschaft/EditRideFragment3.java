@@ -108,6 +108,7 @@ public class EditRideFragment3 extends SherlockFragment
         Ride ride = ((EditRideActivity)getActivity()).ride;
         try {
             ride.getDetails().put(key, text);
+            prefs.edit().putString(key, text).commit();
         } catch (JSONException e) {
             e.printStackTrace();
         }
