@@ -32,4 +32,14 @@
         android:id="@+id/duplicate_retour"
         android:title="@string/duplicate_retour"
         android:showAsAction="never|withText" />
+
+     <item
+        android:id="@+id/show_website"
+        android:title="@string/show_website"
+        android:showAsAction="never|withText" />
+
+     <item
+        android:id="@+id/share"
+        android:title="@string/share"
+        android:showAsAction="never|withText" />
 </menu>

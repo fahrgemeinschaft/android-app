@@ -38,6 +38,8 @@
     <string name="delete">Delete</string>
     <string name="duplicate">Duplicate</string>
     <string name="duplicate_retour">Duplicate Retour</string>
+    <string name="show_website">Show Website</string>
+    <string name="share">Share</string>
     <string name="stored">stored</string>
 
     <string name="mode_car">Car</string>

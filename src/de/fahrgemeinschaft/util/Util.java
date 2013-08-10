@@ -64,6 +64,25 @@ public class Util {
             r.to(from);
             c.startActivity(new Intent(Intent.ACTION_EDIT, r.store(c)));
             return true;
+        case R.id.show_website:
+            c.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
+                    "http://www.fahrgemeinschaft.de/" +
+                    "tripdetails.php?trip=" + r.getRef()
+                    )).setClass(c, WebActivity.class));
+            return true;
+        case R.id.share:
+            Intent share = new Intent(android.content.Intent.ACTION_SEND);
+            share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+            share.setType("text/plain");
+            share.putExtra(Intent.EXTRA_SUBJECT,
+                    "From " + r.getFrom().getName()
+                    + " to " + r.getTo().getName());
+            share.putExtra(Intent.EXTRA_TEXT, 
+                    "http://www.fahrgemeinschaft.de/" +
+                    "tripdetails.php?trip=" + r.getRef());
+            c.startActivity(Intent.createChooser(share,
+                    c.getString(R.string.share)));
+            return true;
         }
         return false;
     }
@@ -75,10 +94,6 @@ public class Util {
     private static final String LANDLINE = "Landline";
 
     public static void openContactOptionsChooserDialog(Context ctx, Cursor c) {
-        Intent web = new Intent(Intent.ACTION_VIEW, Uri.parse(
-                "http://www.fahrgemeinschaft.de/tripdetails.php?trip="
-                        + c.getString(COLUMNS.REF)))
-                .setClass(ctx, WebActivity.class);
         String route = c.getString(COLUMNS.FROM_NAME)
                 + " -> " + c.getString(COLUMNS.TO_NAME);
         Intent contact = new Intent(Intent.ACTION_INSERT, Contacts.CONTENT_URI);
@@ -122,7 +137,7 @@ public class Util {
         } else {
             if (PreferenceManager.getDefaultSharedPreferences(ctx)
                     .getBoolean("create_contact", false)) intents.add(contact);
-            ctx.startActivity(Intent.createChooser(web, "Kontakt")
+            ctx.startActivity(Intent.createChooser(intents.remove(0), "Kontakt")
                     .putExtra(Intent.EXTRA_INITIAL_INTENTS,
                             intents.toArray(new Parcelable[intents.size()])));
         }
