@@ -107,7 +107,7 @@
         android:id="@+id/stub"
         android:inflatedId="@+id/stub"
         android:layout_marginBottom="20dp"
-        android:layout="@layout/two_buttons"
+        android:layout="@layout/three_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/row" />

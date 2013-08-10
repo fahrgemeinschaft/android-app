@@ -198,6 +198,9 @@ public class RideListFragment extends SpinningZebraListFragment
             findViewById(R.id.edit).setOnClickListener(this);
             findViewById(R.id.increase_seats).setOnClickListener(this);
             findViewById(R.id.decrease_seats).setOnClickListener(this);
+            findViewById(R.id.edit).setFocusable(false);
+            findViewById(R.id.increase_seats).setFocusable(false);
+            findViewById(R.id.decrease_seats).setFocusable(false);
         }
 
         @Override

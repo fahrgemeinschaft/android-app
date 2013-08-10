@@ -21,7 +21,6 @@
         android:text="@string/edit"
         android:textColor="@color/darker_green"
         android:background="@drawable/btn_light_white"
-        android:focusable="false"
         style="@style/place_pick_btn" />
 
     <ImageButton
@@ -34,7 +33,6 @@
         android:src="@drawable/icn_seats_plus"
         android:background="@drawable/btn_dark_green"
         android:contentDescription="@string/increase_seats"
-        android:focusable="false"
         style="@style/place_pick_btn" />
 
     <ImageButton
@@ -49,7 +47,6 @@
         android:src="@drawable/icn_seats_minus"
         android:background="@drawable/btn_dark_green"
         android:contentDescription="@string/decrease_seats"
-        android:focusable="false"
         style="@style/place_pick_btn" />
 
 </LinearLayout>
