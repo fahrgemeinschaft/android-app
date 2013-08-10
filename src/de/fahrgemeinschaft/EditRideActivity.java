@@ -110,8 +110,9 @@ public class EditRideActivity extends SherlockFragmentActivity
             startActivity(new Intent(this, SettingsActivity.class));
             break;
         case R.id.profile:
-            startActivity(new Intent(this, SettingsActivity.class)
-                    .putExtra("profile", true));
+            getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, new ProfileFragment())
+                .addToBackStack("").commit();
             break;
         case android.R.id.home:
             if (getSupportFragmentManager().getBackStackEntryCount() > 0)
