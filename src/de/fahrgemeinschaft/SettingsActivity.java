@@ -50,6 +50,8 @@ public class SettingsActivity extends SherlockPreferenceActivity
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
         if (key.equals("radius_from") || key.equals("radius_to")) {
             radius_changed = true;
+        } else if (key.equals("refresh")) {
+            setSummaries();
         } else if (key.equals(REMEMBER) && !prefs.getBoolean(key, false)) {
             prefs.edit().remove("password").commit();
         }
