@@ -8,7 +8,6 @@
 package de.fahrgemeinschaft;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Locale;
 
 import org.teleportr.ConnectorService;
@@ -121,7 +120,7 @@ public class RideListFragment extends SpinningZebraListFragment
     @Override
     public void onBackgroundSearch(Ride query) {
         if (onScreen) {
-            currently_searching_date = getNextDayMorning(query.getDep());
+            currently_searching_date = query.getDep();
             startSpinning(getString(R.string.searching),
                     day.format(currently_searching_date) + " "
                             + date.format(currently_searching_date));
@@ -259,14 +258,4 @@ public class RideListFragment extends SpinningZebraListFragment
             }
         }
     }
-
-    private long getNextDayMorning(long dep) {
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(dep + 24 * 3600000); // plus one day
-        c.set(Calendar.HOUR_OF_DAY, 0); // reset
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        return c.getTimeInMillis();
-    }
-
 }

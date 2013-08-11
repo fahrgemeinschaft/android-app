@@ -59,16 +59,13 @@ public class FahrgemeinschaftConnector extends Connector {
 
     @Override
     public long search(Place from, Place to, Date dep, Date arr) throws Exception {
-
-
         HttpURLConnection conn;
-        if (from == null && to == null && dep == null) {
+        if (from == null && to == null) { // myrides
             conn = (HttpURLConnection) new URL(endpoint + "/trip").openConnection();
             conn.setRequestProperty("authkey", getAuth());
         } else {
             JSONObject from_json = new JSONObject();
             JSONObject to_json = new JSONObject();
-            dep = getNextDayMorning(dep);
             startDate = df.format(dep);
             try {
                 from_json.put("Longitude", "" + from.getLng());
@@ -103,16 +100,17 @@ public class FahrgemeinschaftConnector extends Connector {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return 0;
+        startDate = null;
+        return getNextDayMorning(dep);
     }
 
-    private Date getNextDayMorning(Date dep) {
+    private long getNextDayMorning(Date dep) {
         Calendar c = Calendar.getInstance();
         c.setTimeInMillis(dep.getTime() + 24 * 3600000); // plus one day
         c.set(Calendar.HOUR_OF_DAY, 0); // reset
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
-        return c.getTime();
+        return c.getTimeInMillis();
     }
 
     private static final String EMAIL = "EMail";
@@ -192,6 +190,8 @@ public class FahrgemeinschaftConnector extends Connector {
             departure = json.getString("Starttime");
             if (departure.length() == 3)
                 departure = "0" + departure;
+            if (departure.length() != 4)
+                departure = "0000";
         }
         if (startDate == null) {
             departure = json.getString("Startdate") + departure;
