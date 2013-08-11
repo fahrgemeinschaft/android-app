@@ -87,13 +87,16 @@ public class MainActivity extends SherlockFragmentActivity
             setIntent(getIntent().setData(uri));
             getSupportLoaderManager().destroyLoader(0);
         }
-        getSupportLoaderManager().initLoader(0, null, this);
         if (uri.getLastPathSegment().equals("rides")) {
             setTitle(R.string.results);
             results.setSpinningEnabled(true);
+            getSupportLoaderManager().initLoader(0, null, this);
         } else if (uri.equals(MY_RIDES_URI)) {
             setTitle(R.string.my_rides);
             results.setSpinningEnabled(false);
+            getSupportLoaderManager().initLoader(0, null, this);
+        } else if (uri.getLastPathSegment().equals("profile")) {
+            showFragment(new ProfileFragment(), "profile");
         }
     }
 

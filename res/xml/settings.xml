@@ -33,6 +33,11 @@
             android:defaultValue="600000" />
         <PreferenceScreen android:title="Special Expert Features" >
             <CheckBoxPreference
+                android:key="remember_password"
+                android:defaultValue="false"
+                android:title="@string/remember_password"
+                android:summary="@string/remember_password_desc" />
+            <CheckBoxPreference
                 android:key="create_contact"
                 android:defaultValue="false"
                 android:title="@string/create_contact"

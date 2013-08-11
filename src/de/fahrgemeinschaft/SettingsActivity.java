@@ -24,6 +24,7 @@ import com.actionbarsherlock.view.MenuItem;
 public class SettingsActivity extends SherlockPreferenceActivity
         implements OnSharedPreferenceChangeListener {
 
+    private static final String REMEMBER = "remember_password";
     private SharedPreferences prefs;
     private boolean radius_changed;
 
@@ -31,11 +32,11 @@ public class SettingsActivity extends SherlockPreferenceActivity
     @SuppressWarnings("deprecation")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        addPreferencesFromResource(R.xml.settings);
-        prefs.registerOnSharedPreferenceChangeListener(this);
         setTitle(R.string.settings);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs.registerOnSharedPreferenceChangeListener(this);
+        addPreferencesFromResource(R.xml.settings);
     }
 
     @SuppressWarnings("deprecation")
@@ -49,6 +50,8 @@ public class SettingsActivity extends SherlockPreferenceActivity
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
         if (key.equals("radius_from") || key.equals("radius_to")) {
             radius_changed = true;
+        } else if (key.equals(REMEMBER) && !prefs.getBoolean(key, false)) {
+            prefs.edit().remove("password").commit();
         }
     }
 

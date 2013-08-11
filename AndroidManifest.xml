@@ -7,8 +7,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.fahrgemeinschaft"
-    android:versionCode="20"
-    android:versionName="alpha 0.8.9" >
+    android:versionCode="21"
+    android:versionName="alpha 0.8.21" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -69,9 +69,16 @@
 
         <activity android:name="ProfileActivity" />
 
-        <activity android:name=".util.WebActivity" />
+        <activity android:name="util.WebActivity" />
 
-            <!-- teleportR Android Library -->
+        <receiver android:name="AuthRequestReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="auth_request" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
+        <!-- teleportR Android Library -->
 
         <service android:name="org.teleportr.ConnectorService" />
 

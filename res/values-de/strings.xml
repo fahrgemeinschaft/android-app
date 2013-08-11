@@ -49,6 +49,8 @@
     <string name="password">Passwort</string>
     <string name="login">anmelden</string>
     <string name="register">registrieren</string>
+    <string name="login_required">Login</string>
+    <string name="need_to_login">Bitte einloggen</string>
 
     <string name="contact">Kontakt</string>
     <string name="seats">Sitzplätze</string>
@@ -81,7 +83,8 @@
     <string name="radius_from_desc">Suche Fahrten in Abfahrt Umgebung</string>
     <string name="radius_to">Umkreis um Ziel</string>
     <string name="radius_to_desc">Suche Fahrten in Ankunft Umgebung</string>
-
+    <string name="remember_password">Passwort Merken</string>
+    <string name="remember_password_desc">auf dem Gerät gespeichert</string>
     <string name="refresh_title">Refresh</string>
     <string name="refresh_description">
         Suchergebnisse neu laden nach %1$s

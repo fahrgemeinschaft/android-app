@@ -9,6 +9,7 @@ package de.fahrgemeinschaft;
 
 import org.teleportr.ConnectorService;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -67,6 +68,8 @@ public class ProfileFragment extends SherlockFragment implements OnClickListener
             ((InputMethodManager) getActivity()
                     .getSystemService(Context.INPUT_METHOD_SERVICE))
                     .hideSoftInputFromWindow(username.getWindowToken(), 0);
+            ((NotificationManager) getActivity().getSystemService(
+                    Context.NOTIFICATION_SERVICE)).cancel(42);
             getActivity().getSupportFragmentManager().popBackStack();
             break;
         case R.id.register:

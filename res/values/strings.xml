@@ -52,6 +52,8 @@
     <string name="password">Password</string>
     <string name="login">login</string>
     <string name="register">register</string>
+    <string name="login_required">Login</string>
+    <string name="need_to_login">Please log in</string>
 
     <string name="contact">Contact</string>
     <string name="seats">Seats</string>
@@ -84,7 +86,8 @@
     <string name="radius_from_desc">Search rides nearby \'from\' place</string>
     <string name="radius_to">Nearby radius destination</string>
     <string name="radius_to_desc">Search rides nearby \'to\' place</string>
-
+    <string name="remember_password">Remember Password</string>
+    <string name="remember_password_desc">stored on device</string>
     <string name="refresh_title">Refresh after</string>
     <string name="refresh_description">
         Expire search results after %1$s

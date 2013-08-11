@@ -42,19 +42,25 @@ public class FahrgemeinschaftConnector extends Connector {
 
     @Override
     public String authenticate() throws Exception {
-        HttpURLConnection post = (HttpURLConnection)
-                new URL(endpoint + "/session").openConnection();
-        post.setRequestProperty("apikey", Secret.APIKEY);
-        post.setDoOutput(true);
-        post.getOutputStream().write((
-                "{\"Email\": \"" + get("EMail")
-                + "\", \"Password\": \"" + get("password")
-                + "\"}").getBytes());
-        post.getOutputStream().close();
-        JSONObject json = loadJson(post);
-        JSONObject auth = json.getJSONObject("auth");
-        set("user", auth.getString("IDuser"));
-        return auth.getString("AuthKey");
+        if (get("password").equals("null")) {
+            System.out.println("not remembered");
+            return null;
+        } else {
+            System.out.println("refreshing authtoken");
+            HttpURLConnection post = (HttpURLConnection)
+                    new URL(endpoint + "/session").openConnection();
+            post.setRequestProperty("apikey", Secret.APIKEY);
+            post.setDoOutput(true);
+            post.getOutputStream().write((
+                    "{\"Email\": \"" + get("EMail")
+                    + "\", \"Password\": \"" + get("password")
+                    + "\"}").getBytes());
+            post.getOutputStream().close();
+            JSONObject json = loadJson(post);
+            JSONObject auth = json.getJSONObject("auth");
+            set("user", auth.getString("IDuser"));
+            return auth.getString("AuthKey");
+        }
     }
 
     @Override
@@ -121,9 +127,8 @@ public class FahrgemeinschaftConnector extends Connector {
     private Ride parseRide(JSONObject json)  throws JSONException {
 
         Ride ride = new Ride().type(Ride.OFFER);
-        if (startDate != null)
-            ride.who(json.getString("IDuser"));
-        else ride.marked();
+        if (startDate == null) ride.marked(); // myrides
+        ride.who(json.getString("IDuser"));
         String value = json.getString("Contactmail");
         if (!value.equals("") && !value.equals("null"))
             ride.set(EMAIL, value);
