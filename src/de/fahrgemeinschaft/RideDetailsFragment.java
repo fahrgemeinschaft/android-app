@@ -238,12 +238,10 @@ public class RideDetailsFragment extends SherlockFragment
         duplicate_retour = menu.findItem(R.id.duplicate_retour);
         toggle_active = menu.findItem(R.id.toggle_active);
         super.onCreateOptionsMenu(menu, inflater);
-        onPageSelected(selected);
     }
 
     @Override
     public void onPageSelected(int position) {
-        System.out.println("selected");
         selected = position;
         ((OnPageChangeListener) getActivity()).onPageSelected(position);
         cursor.moveToPosition(position);

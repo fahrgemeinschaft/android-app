@@ -91,9 +91,11 @@ public class GPlaces extends Connector {
         @Override
         public Cursor loadInBackground() {
 
-            StringBuilder sb = new StringBuilder(PLACES_API_BASE
-                    + TYPE_AUTOCOMPLETE + OUT_JSON);
+            MatrixCursor gPlaces = new MatrixCursor(new String[] { "_id",
+                    "geohash", "name", "address", "ref" });
             try {
+                StringBuilder sb = new StringBuilder(PLACES_API_BASE
+                        + TYPE_AUTOCOMPLETE + OUT_JSON);
                 sb.append("?sensor=false&key=" + API_KEY);
                 sb.append("&language=de&location=48.1,11.8&radius=3000");
                 sb.append("&input=" + URLEncoder.encode(text, "utf8"));
@@ -101,19 +103,17 @@ public class GPlaces extends Connector {
                 String jsonResults = httpGet(sb.toString());
 
                 if (jsonResults == null) {
+                    gPlaces.close();
                     return prev;
                 }
                 
                 JSONObject jsonObj = new JSONObject(jsonResults.toString());
                 JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
-
-                HashSet<String> already = new HashSet<String>();
+                HashSet<String> cached = new HashSet<String>();
                 for (int i = 0; i < prev.getCount(); i++) {
                     prev.moveToPosition(i);
-                    already.add(prev.getString(2));
+                    cached.add(prev.getString(2));
                 }
-                MatrixCursor gPlaces = new MatrixCursor(new String[] { "_id",
-                        "geohash", "name", "address", "ref" });
                 for (int i = 0; i < predsJsonArray.length(); i++) {
                     JSONObject json = predsJsonArray.getJSONObject(i);
                     String address = json.get("description").toString();
@@ -123,13 +123,13 @@ public class GPlaces extends Connector {
                         name = split[0] + " " + split[1];
                     else if (split.length > 1)
                         name = split[0];
-                    if (name != null && !already.contains(name)) {
+                    if (name != null && !cached.contains(name)) {
                         gPlaces.addRow(new String[] { "" + i,
                                 "", name, address,
                                 json.getString("reference") });
                     }
                 }
-                places = new MergeCursor(new Cursor[] { prev, gPlaces });
+
             } catch (UnsupportedEncodingException e1) {
                 e1.printStackTrace();
             } catch (JSONException e) {
@@ -137,6 +137,7 @@ public class GPlaces extends Connector {
             } catch (Exception e) {
                 Log.e(TAG, "no internet?", e);
             }
+            places = new MergeCursor(new Cursor[] { prev, gPlaces });
             return places;
         }
     }

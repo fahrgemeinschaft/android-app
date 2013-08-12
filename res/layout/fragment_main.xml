@@ -126,6 +126,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:text="@string/search"
+            android:focusable="true"
             android:contentDescription="@string/search" />
 
         <Button
@@ -143,6 +144,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:text="@string/offer"
+            android:focusable="true"
             android:contentDescription="@string/offer" />
 
     </LinearLayout>
