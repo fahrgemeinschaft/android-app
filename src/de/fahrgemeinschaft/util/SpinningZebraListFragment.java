@@ -130,7 +130,6 @@ public abstract class SpinningZebraListFragment extends SherlockListFragment {
     }
 
     public void swapCursor(Cursor cursor) {
-        if (this.cursor != null && !this.cursor.isClosed()) this.cursor.close();
         this.cursor = cursor;
         if (getListAdapter() == null) System.out.println("NO Adapter");
         if (getListAdapter() != null && cursor != null && !cursor.isClosed()) {

@@ -59,6 +59,15 @@ public class FahrgemeinschaftConnector extends Connector {
             JSONObject json = loadJson(post);
             JSONObject auth = json.getJSONObject("auth");
             set("user", auth.getString("IDuser"));
+            JSONArray kvp = json.getJSONObject("user")
+                    .getJSONArray("KeyValuePairs");
+            for (int i = 1; i < kvp.length(); i++) {
+                String key = kvp.getJSONObject(i).getString("Key");
+                if (key.equals("firstname"))
+                    set("firstname", kvp.getJSONObject(i).getString("Value"));
+                else if (key.equals("lastname"))
+                    set("lastname", kvp.getJSONObject(i).getString("Value"));
+            }
             return auth.getString("AuthKey");
         }
     }
@@ -144,7 +153,7 @@ public class FahrgemeinschaftConnector extends Connector {
             if (value.equals("Bahn"))
                 ride.mode(Mode.TRAIN);
         }
-        ride.getDetails().put("privacy", json.getJSONObject("Privacy"));
+        ride.getDetails().put("Privacy", json.getJSONObject("Privacy"));
         ride.set("Comment", json.getString("Description"));
         if (json.getInt("Relevance") == 10) {
             ride.activate();
