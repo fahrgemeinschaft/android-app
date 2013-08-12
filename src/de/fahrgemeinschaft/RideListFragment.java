@@ -86,9 +86,9 @@ public class RideListFragment extends SpinningZebraListFragment
         }
 
         if (ride.getInt(COLUMNS.ACTIVE) == 0) {
-            v.active.setVisibility(View.VISIBLE);
+            v.inactive.setVisibility(View.VISIBLE);
         } else {
-            v.active.setVisibility(View.GONE);
+            v.inactive.setVisibility(View.GONE);
         }
 
         if (isMyRide(ride) && ride.getInt(COLUMNS.ACTIVE) == 1) {
@@ -205,12 +205,11 @@ public class RideListFragment extends SpinningZebraListFragment
         ProgressBar loading;
         RideRowView row;
         ImageView mode;
-        View active;
+        View inactive;
         int id;
 
         public RideView(Context context, AttributeSet attrs) {
             super(context, attrs);
-            Util.fixBackgroundRepeat(this);
         }
 
         @Override
@@ -223,7 +222,8 @@ public class RideListFragment extends SpinningZebraListFragment
             loading = (ProgressBar) findViewById(R.id.loading);
             row = (RideRowView) findViewById(R.id.row);
             mode = (ImageView) findViewById(R.id.mode);
-            active = findViewById(R.id.active);
+            inactive = findViewById(R.id.active);
+            Util.fixStreifenhoernchen(inactive);
         }
 
         public void showButtons() {

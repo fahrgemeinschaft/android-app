@@ -201,7 +201,7 @@ public class Util {
         return mail;
     }
 
-    public static void fixBackgroundRepeat(View view) {
+    public static void fixStreifenhoernchen(View view) {
         Drawable bg = view.getBackground();
         if (bg != null) {
             if (bg instanceof BitmapDrawable) {

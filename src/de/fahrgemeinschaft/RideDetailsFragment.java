@@ -298,7 +298,6 @@ public class RideDetailsFragment extends SherlockFragment
 
         public RideView(Context context, AttributeSet attrs) {
             super(context, attrs);
-            Util.fixBackgroundRepeat(this);
         }
 
         @Override
@@ -318,6 +317,7 @@ public class RideDetailsFragment extends SherlockFragment
             reoccur = (ReoccuringWeekDaysView) findViewById(R.id.reoccur);
             row = (RideRowView) findViewById(R.id.row);
             inactive = findViewById(R.id.active);
+            Util.fixStreifenhoernchen(inactive);
             avatar.setOnClickListener(new OnClickListener() {
 
                 @Override
