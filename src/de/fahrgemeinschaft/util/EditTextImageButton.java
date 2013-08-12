@@ -52,7 +52,8 @@ public class EditTextImageButton extends FrameLayout implements TextWatcher {
         text.addTextChangedListener(this);
         image.setId(ID--);
         text.setId(ID--);
-        Util.fixStreifenhoernchen(this);
+        Util.fixStreifenhoernchen(text);
+        Util.fixStreifenhoernchen(image);
     }
 
     public interface TextListener {
