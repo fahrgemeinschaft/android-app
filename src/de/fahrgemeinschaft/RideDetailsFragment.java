@@ -150,13 +150,13 @@ public class RideDetailsFragment extends SherlockFragment
                 cursor.moveToPosition((Integer) position);
 
                 if (cursor.getInt(COLUMNS.ACTIVE) == 0) {
-                    view.active.setVisibility(View.VISIBLE);
+                    view.inactive.setVisibility(View.VISIBLE);
                 } else {
-                    view.active.setVisibility(View.GONE);
+                    view.inactive.setVisibility(View.GONE);
                 }
 
-                view.name.setText("");
                 view.url = null;
+                view.name.setText("");
                 view.from_place.setText(cursor.getString(COLUMNS.FROM_ADDRESS));
                 view.to_place.setText(cursor.getString(COLUMNS.TO_ADDRESS));
 
@@ -191,6 +191,7 @@ public class RideDetailsFragment extends SherlockFragment
                             view, RideDetailsFragment.this));
                     view.userId = cursor.getString(COLUMNS.WHO);
                 }
+                view.visible = Util.isVisible("Name", Ride.getDetails(cursor));
                 return view;
             }
 
@@ -280,18 +281,19 @@ public class RideDetailsFragment extends SherlockFragment
     static class RideView extends RelativeLayout
         implements LoaderCallbacks<Cursor>, Response.Listener<JSONObject> {
 
-        View active;
-        TextView from_place;
-        TextView to_place;
+        String url;
+        View inactive;
         RideRowView row;
-        TextView details;
-        LinearLayout content;
-        ImageView avatar;
         String userId;
         TextView name;
-        private String url;
+        boolean visible;
+        ImageView avatar;
         TextView reg_date;
         TextView last_login;
+        LinearLayout content;
+        TextView from_place;
+        TextView to_place;
+        TextView details;
         ReoccuringWeekDaysView reoccur;
 
         public RideView(Context context, AttributeSet attrs) {
@@ -314,7 +316,7 @@ public class RideDetailsFragment extends SherlockFragment
             last_login = (TextView) findViewById(R.id.driver_active_date);
             reoccur = (ReoccuringWeekDaysView) findViewById(R.id.reoccur);
             row = (RideRowView) findViewById(R.id.row);
-            active = findViewById(R.id.active);
+            inactive = findViewById(R.id.active);
             avatar.setOnClickListener(new OnClickListener() {
 
                 @Override
@@ -390,9 +392,20 @@ public class RideDetailsFragment extends SherlockFragment
                 Log.d(TAG, "profile downloaded " + user.get("UserID"));
                 if (user.getString("UserID").equals(userId)) {
                     JSONArray kvp = user.getJSONArray("KeyValuePairs");
-                    name.setText(kvp.getJSONObject(1).getString("Value") + " " 
-                            + kvp.getJSONObject(2).getString("Value"));
-                    System.out.println(kvp.getJSONObject(2).getString("Value"));
+                    String firstname = "n/a";
+                    String lastname = "n/a";
+                    for (int i = 1; i < kvp.length(); i++) {
+                        String key = kvp.getJSONObject(i).getString("Key");
+                        if (key.equals("firstname"))
+                            firstname = kvp.getJSONObject(i).getString("Value");
+                        else if (key.equals("lastname"))
+                            lastname = kvp.getJSONObject(i).getString("Value");
+                    }
+                    if (visible) {
+                        name.setText(firstname + " " + lastname);
+                    } else {
+                        name.setText(firstname + " " + "<not visible>"); 
+                    }
                     Date since = lrdate.parse(user.getString("RegistrationDate"));
                     Date logon = lrdate.parse(user.getString("LastvisitDate"));
                     reg_date.setText(getContext().getString(

@@ -89,6 +89,15 @@ public class Util {
 
 
 
+    public static boolean isVisible(String key, JSONObject details) {
+        try {
+            return details.getJSONObject("privacy").getInt(key) == 1;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     private static final String EMAIL = "EMail";
     private static final String MOBILE = "Mobile";
     private static final String LANDLINE = "Landline";
@@ -98,6 +107,10 @@ public class Util {
                 + " -> " + c.getString(COLUMNS.TO_NAME);
         Intent contact = new Intent(Intent.ACTION_INSERT, Contacts.CONTENT_URI);
         contact.putExtra(Insert.NAME, route);
+        Intent web = new Intent(Intent.ACTION_VIEW, Uri.parse(
+                "http://www.fahrgemeinschaft.de/" +
+                "tripdetails.php?trip=" + c.getString(COLUMNS.REF)))
+                        .setClass(ctx, WebActivity.class);
         ArrayList<Intent> intents = new ArrayList<Intent>();
         JSONObject details = Ride.getDetails(c);
         String dingens;
@@ -137,8 +150,9 @@ public class Util {
         } else {
             if (PreferenceManager.getDefaultSharedPreferences(ctx)
                     .getBoolean("create_contact", false)) intents.add(contact);
-            ctx.startActivity(Intent.createChooser(intents.remove(0), "Kontakt")
-                    .putExtra(Intent.EXTRA_INITIAL_INTENTS,
+            ctx.startActivity(Intent.createChooser(web,
+                    ctx.getString(R.string.contact))
+                        .putExtra(Intent.EXTRA_INITIAL_INTENTS,
                             intents.toArray(new Parcelable[intents.size()])));
         }
     }
