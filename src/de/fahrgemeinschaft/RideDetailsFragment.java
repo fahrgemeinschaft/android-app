@@ -298,6 +298,7 @@ public class RideDetailsFragment extends SherlockFragment
 
         public RideView(Context context, AttributeSet attrs) {
             super(context, attrs);
+            Util.fixBackgroundRepeat(this);
         }
 
         @Override

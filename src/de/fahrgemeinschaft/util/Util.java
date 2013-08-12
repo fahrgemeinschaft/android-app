@@ -16,12 +16,16 @@ import android.content.Intent;
 import android.content.pm.LabeledIntent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Shader.TileMode;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents.Insert;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
 import android.widget.Toast;
 import de.fahrgemeinschaft.R;
 
@@ -197,4 +201,14 @@ public class Util {
         return mail;
     }
 
+    public static void fixBackgroundRepeat(View view) {
+        Drawable bg = view.getBackground();
+        if (bg != null) {
+            if (bg instanceof BitmapDrawable) {
+                BitmapDrawable bmp = (BitmapDrawable) bg;
+                bmp.mutate(); // make sure that we aren't sharing state anymore
+                bmp.setTileModeXY(TileMode.REPEAT, TileMode.REPEAT);
+            }
+        }
+    }
 }

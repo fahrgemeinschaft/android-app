@@ -210,6 +210,7 @@ public class RideListFragment extends SpinningZebraListFragment
 
         public RideView(Context context, AttributeSet attrs) {
             super(context, attrs);
+            Util.fixBackgroundRepeat(this);
         }
 
         @Override

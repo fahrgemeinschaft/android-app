@@ -52,6 +52,7 @@ public class EditTextImageButton extends FrameLayout implements TextWatcher {
         text.addTextChangedListener(this);
         image.setId(ID--);
         text.setId(ID--);
+        Util.fixBackgroundRepeat(text);
     }
 
     public interface TextListener {
