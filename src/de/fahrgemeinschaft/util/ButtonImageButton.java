@@ -51,4 +51,9 @@ public class ButtonImageButton extends FrameLayout {
                 attrs.getAttributeResourceValue(
                 android, "text", R.string.app_name))));
     }
+
+    public void streifenhornchen(boolean on) {
+        if (on) findViewById(R.id.inactive).setVisibility(VISIBLE);
+        else findViewById(R.id.inactive).setVisibility(INVISIBLE);
+    }
 }

@@ -316,7 +316,7 @@ public class RideDetailsFragment extends SherlockFragment
             last_login = (TextView) findViewById(R.id.driver_active_date);
             reoccur = (ReoccuringWeekDaysView) findViewById(R.id.reoccur);
             row = (RideRowView) findViewById(R.id.row);
-            inactive = findViewById(R.id.active);
+            inactive = findViewById(R.id.inactive);
             Util.fixStreifenhoernchen(inactive);
             avatar.setOnClickListener(new OnClickListener() {
 

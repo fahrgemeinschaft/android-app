@@ -222,7 +222,7 @@ public class RideListFragment extends SpinningZebraListFragment
             loading = (ProgressBar) findViewById(R.id.loading);
             row = (RideRowView) findViewById(R.id.row);
             mode = (ImageView) findViewById(R.id.mode);
-            inactive = findViewById(R.id.active);
+            inactive = findViewById(R.id.inactive);
             Util.fixStreifenhoernchen(inactive);
         }
 

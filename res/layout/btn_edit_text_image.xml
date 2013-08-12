@@ -28,4 +28,10 @@
         android:background="@drawable/btn_white"
         android:contentDescription="@string/app_name" />
 
+h    <View
+        android:id="@+id/inactive"
+        android:visibility="invisible"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:background="@drawable/background_repeat" />
 </merge>

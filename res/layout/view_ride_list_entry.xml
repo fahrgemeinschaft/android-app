@@ -112,8 +112,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/row" />
 
-    <View 
-        android:id="@+id/active"
+    <View
+        android:id="@+id/inactive"
         android:visibility="gone"
         android:layout_height="72dp"
         android:layout_width="match_parent"
