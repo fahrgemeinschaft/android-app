@@ -57,8 +57,10 @@ public class EditTextImageButton extends FrameLayout implements TextWatcher {
     }
 
     public void streifenhornchen(boolean on) {
-        if (on) findViewById(R.id.inactive).setVisibility(VISIBLE);
-        else findViewById(R.id.inactive).setVisibility(INVISIBLE);
+        View streifen = findViewById(R.id.inactive);
+        if (on) streifen.setVisibility(VISIBLE);
+        else streifen.setVisibility(INVISIBLE);
+        Util.fixStreifenhoernchen(streifen);
     }
 
     public interface TextListener {

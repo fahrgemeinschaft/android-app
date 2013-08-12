@@ -53,7 +53,9 @@ public class ButtonImageButton extends FrameLayout {
     }
 
     public void streifenhornchen(boolean on) {
-        if (on) findViewById(R.id.inactive).setVisibility(VISIBLE);
-        else findViewById(R.id.inactive).setVisibility(INVISIBLE);
+        View streifen = findViewById(R.id.inactive);
+        Util.fixStreifenhoernchen(streifen);
+        if (on) streifen.setVisibility(VISIBLE);
+        else streifen.setVisibility(INVISIBLE);
     }
 }
