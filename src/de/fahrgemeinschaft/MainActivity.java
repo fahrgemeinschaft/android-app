@@ -208,9 +208,13 @@ public class MainActivity extends SherlockFragmentActivity
             return true;
         case R.id.settings:
             startActivity(new Intent(this, SettingsActivity.class));
+            this.overridePendingTransition(
+                    R.anim.slide_in_top, R.anim.do_nix);
             return true;
         case R.id.profile:
             showFragment(new ProfileFragment(), "profile");
+            this.overridePendingTransition(
+                    R.anim.slide_in_top, R.anim.do_nix);
             return true;
         case android.R.id.home:
             if (getSupportFragmentManager().getBackStackEntryCount() > 0)
@@ -218,6 +222,8 @@ public class MainActivity extends SherlockFragmentActivity
             else {
                 showFragment(new AboutFragment(), "about");
             }
+            this.overridePendingTransition(
+                    R.anim.slide_in_top, R.anim.do_nix);
             return true;
         default:
             return super.onOptionsItemSelected(item);
