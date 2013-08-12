@@ -7,12 +7,12 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.fahrgemeinschaft"
-    android:versionCode="21"
-    android:versionName="alpha 0.8.21" >
+    android:versionCode="22"
+    android:versionName="beta 0.8.5" >
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="17" />
+        android:targetSdkVersion="18" />
 
     <uses-permission android:name="android.permission.INTERNET" />
 
