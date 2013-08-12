@@ -9,19 +9,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/row"
     android:layout_width="match_parent"
-    android:layout_height="30dp" >
+    android:layout_height="28dp" >
 
     <TextView
         android:id="@+id/day"
         style="@style/dark.Large"
-        android:layout_width="38sp"
+        android:layout_width="35dp"
         android:textIsSelectable="false"
         android:layout_height="match_parent" />
 
     <TextView
         android:id="@+id/date"
         style="@style/light.Large"
-        android:layout_width="95sp"
+        android:layout_width="98dp"
+        android:gravity="center_horizontal"
         android:textIsSelectable="false"
         android:layout_height="match_parent"
         android:paddingLeft="3dp" />
@@ -29,7 +30,7 @@
     <TextView
         android:id="@+id/time"
         style="@style/dark.Large.Bold"
-        android:layout_width="65sp"
+        android:layout_width="68dp"
         android:textIsSelectable="false"
         android:layout_height="match_parent" />
 

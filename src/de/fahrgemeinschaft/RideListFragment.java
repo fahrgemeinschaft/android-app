@@ -58,14 +58,14 @@ public class RideListFragment extends SpinningZebraListFragment
         RideView v = (RideView) view;
         v.id = ride.getInt(0);
         v.from_place.setText(ride.getString(COLUMNS.FROM_NAME));
-        split = ride.getString(COLUMNS.FROM_ADDRESS).split(",");
+        split = ride.getString(COLUMNS.FROM_ADDRESS).split(", ");
         if (split.length > 1)
             v.from_city.setText(split[1]);
         else
             v.from_city.setText(ride.getString(COLUMNS.FROM_ADDRESS));
 
         v.to_place.setText(ride.getString(COLUMNS.TO_NAME));
-        split = ride.getString(COLUMNS.TO_ADDRESS).split(",");
+        split = ride.getString(COLUMNS.TO_ADDRESS).split(", ");
         if (split.length > 1)
             v.to_city.setText(split[1]);
         else
@@ -137,7 +137,7 @@ public class RideListFragment extends SpinningZebraListFragment
                                 + date.format(currently_searching_date),
                                 Toast.LENGTH_SHORT).show();
             }
-            stopSpinning("weiteren Tag suchen");
+            stopSpinning(getString(R.string.search_continue));
         }
         currently_searching_date = 0;
     }

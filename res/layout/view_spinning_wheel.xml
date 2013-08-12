@@ -5,31 +5,44 @@
   Some rights reserved. See LICENSE.. 
 -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:id="@+id/spinner"
-    android:padding="3dp" >
+    android:paddingLeft="3dp"
+    android:orientation="horizontal" >
 
-    <TextView 
-        android:id="@+id/small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left|center_vertical" />
+    <RelativeLayout
+        android:layout_weight="618"
+        android:layout_width="0dp"
+        android:padding="@dimen/small"
+        android:layout_height="@dimen/xlarge" >
 
-    <TextView 
-        android:id="@+id/large"
-        style="@style/dark.Bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:layout_gravity="left|bottom" />
+        <TextView 
+            android:id="@+id/small"
+            style="@style/light.Bold"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView 
+            android:id="@+id/large"
+            style="@style/dark"
+            android:textSize="13sp"
+            android:layout_marginTop="-5dp"
+            android:layout_below="@id/small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/progress"
-        android:layout_width="@dimen/xlarge"
+        android:layout_weight="382"
+        android:layout_width="0dp"
         android:layout_height="@dimen/xlarge" 
         android:src="@drawable/ic_loading"
-        android:layout_gravity="center"
+        android:gravity="left"
         android:contentDescription="@string/searching" />
 
-</FrameLayout>
+</LinearLayout>

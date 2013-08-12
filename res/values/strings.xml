@@ -25,7 +25,8 @@
     <string name="offer">offer</string>
     <string name="uncomplete">uncomplete</string>
     <string name="searching">searching for</string>
-    <string name="nothing">nixda found for</string>
+    <string name="nothing">nothing found for</string>
+    <string name="search_continue">continue searching</string>
     <string name="results">Results</string>
     <string name="my_rides">My Rides</string>
     <string name="profile">Profile</string>
