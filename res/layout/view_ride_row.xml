@@ -14,12 +14,14 @@
     <TextView
         android:id="@+id/day"
         style="@style/dark.Large"
+        android:layout_width="38sp"
         android:textIsSelectable="false"
         android:layout_height="match_parent" />
 
     <TextView
         android:id="@+id/date"
         style="@style/light.Large"
+        android:layout_width="95sp"
         android:textIsSelectable="false"
         android:layout_height="match_parent"
         android:paddingLeft="3dp" />
@@ -27,8 +29,8 @@
     <TextView
         android:id="@+id/time"
         style="@style/dark.Large.Bold"
+        android:layout_width="65sp"
         android:textIsSelectable="false"
-        android:layout_width="wrap_content"
         android:layout_height="match_parent" />
 
     <TextView
