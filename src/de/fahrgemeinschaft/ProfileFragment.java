@@ -70,6 +70,9 @@ public class ProfileFragment extends SherlockFragment implements OnClickListener
                     .hideSoftInputFromWindow(username.getWindowToken(), 0);
             ((NotificationManager) getActivity().getSystemService(
                     Context.NOTIFICATION_SERVICE)).cancel(42);
+            getActivity().startService(
+                    new Intent(getActivity(), ConnectorService.class)
+                            .setAction(ConnectorService.AUTH));
             getActivity().getSupportFragmentManager().popBackStack();
             break;
         case R.id.register:

@@ -14,6 +14,7 @@ import org.teleportr.Ride;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ public class EditRideFragment3 extends SherlockFragment
     private static final String PLATE = "NumberPlate";
     private static final String MOBILE = "Mobile";
     private static final String LANDLINE = "Landline";
+    private static final String NAME = "Name";
     private EditTextPrivacyButton email;
     private EditTextPrivacyButton land;
     private EditTextPrivacyButton mobile;
@@ -62,6 +64,8 @@ public class EditRideFragment3 extends SherlockFragment
         mobile.setPrivacyListener(MOBILE, this);
         land.setPrivacyListener(LANDLINE, this);
         plate.setPrivacyListener(PLATE, this);
+        name.setPrivacyListener(NAME, this);
+        name.text.setInputType(InputType.TYPE_NULL);
     }
 
     public void setRide(Ride ride) {
@@ -81,6 +85,8 @@ public class EditRideFragment3 extends SherlockFragment
                     plate.text.setText(d.getString(PLATE));
                 } else plate.text.setText(prefs.getString(PLATE, ""));
             }
+            name.text.setText(prefs.getString("lastname", "n/a"));
+            System.out.println(d);
             if (d.isNull("Privacy")) d.put("Privacy", new JSONObject());
             JSONObject p = d.getJSONObject("Privacy");
             if (!p.isNull("Email")) email.setPrivacy(p.getInt("Email")); // 'm'
@@ -91,6 +97,8 @@ public class EditRideFragment3 extends SherlockFragment
             else setPublic(mobile, p, MOBILE);
             if (!p.isNull(PLATE)) plate.setPrivacy(p.getInt(PLATE));
             else setPublic(plate, p, PLATE);
+            if (!p.isNull(NAME)) name.setPrivacy(p.getInt(NAME));
+            else setPublic(name, p, NAME);
         } catch (JSONException e) {
             e.printStackTrace();
             //TODO what?
