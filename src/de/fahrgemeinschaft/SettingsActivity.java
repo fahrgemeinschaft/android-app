@@ -37,6 +37,7 @@ public class SettingsActivity extends SherlockPreferenceActivity
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefs.registerOnSharedPreferenceChangeListener(this);
         addPreferencesFromResource(R.xml.settings);
+        setSummaries();
     }
 
     @SuppressWarnings("deprecation")
