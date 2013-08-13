@@ -16,6 +16,15 @@ try out apk [http://bit.ly/13gMAV9](http://bit.ly/13gMAV9)
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-build with [actionbarsherlock.com](http://actionbarsherlock.com), [kungfoo geohash-java](https://github.com/kungfoo/geohash-java) and [teleportR.org library](https://github.com/teleportR/android-library)
 
-    UX interaction design Copyright (C) subphisticated.com licensed cc-nc-sa
+build with 
+* [keyboardsurfer crouton](https://github.com/keyboardsurfer/Crouton)
+* [actionbarsherlock.com](http://actionbarsherlock.com)
+* [kungfoo geohash-java](https://github.com/kungfoo/geohash-java)
+* [teleportR.org library](https://github.com/teleportR/android-library)
+* [android.com volley](https://android.googlesource.com/platform/frameworks/volley)
+
+
+Most of the icons by [iconmonstr.com](http://iconmonstr.com)
+
+UI/UX Copyright (C) subphisticated.com licensed [cc-nc-sa]
