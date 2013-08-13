@@ -244,6 +244,8 @@ public class RideListFragment extends SpinningZebraListFragment
                 getContext().startActivity(new Intent(getContext(),
                         EditRideActivity.class).setData(Uri.parse(
                                 "content://de.fahrgemeinschaft/rides/" + id)));
+//                getActivity().overridePendingTransition(
+//                        R.anim.slide_out_left, R.anim.slide_in_right);
                 break;
             case R.id.increase_seats:
                 ride.seats(ride.getSeats() + 1).dirty().store(getContext());

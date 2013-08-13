@@ -18,6 +18,8 @@ import android.webkit.WebViewClient;
 
 import com.actionbarsherlock.app.SherlockActivity;
 
+import de.fahrgemeinschaft.R;
+
 public class WebActivity extends SherlockActivity {
 
     private static final String TAG = "Fahrgemeinschaft";
@@ -29,7 +31,7 @@ public class WebActivity extends SherlockActivity {
         super.onCreate(savedInstanceState);
         webView = new WebView(this);
         progress = new ProgressDialog(this);
-        webView.getSettings().setJavaScriptEnabled(true);
+//        webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient() {
             
             @Override
@@ -45,6 +47,8 @@ public class WebActivity extends SherlockActivity {
             public void onPageFinished(WebView view, String url) {
                 Log.d(TAG, "finished");
                 progress.dismiss();
+                overridePendingTransition(
+                        R.anim.do_nix, R.anim.slide_out_bottom);
                 super.onPageFinished(view, url);
             }
         });
@@ -61,8 +65,16 @@ public class WebActivity extends SherlockActivity {
                 return true;
             }
         }
+        overridePendingTransition(
+                R.anim.do_nix, R.anim.slide_out_bottom);
         return super.onKeyUp(keyCode, event);
     }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_CANCELED);
+        finish();
+        overridePendingTransition(R.anim.do_nix, R.anim.slide_out_bottom);
+        super.onBackPressed();
+    }
 }
-
-

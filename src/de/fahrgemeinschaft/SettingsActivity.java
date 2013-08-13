@@ -69,12 +69,14 @@ public class SettingsActivity extends SherlockPreferenceActivity
             prefs.edit().putLong("cleanup",
                     System.currentTimeMillis()).commit();
         }
+        overridePendingTransition(R.anim.do_nix, R.anim.slide_out_top);
         super.onPause();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         finish();
+        overridePendingTransition(R.anim.do_nix, R.anim.slide_out_top);
         return true;
     }
 }

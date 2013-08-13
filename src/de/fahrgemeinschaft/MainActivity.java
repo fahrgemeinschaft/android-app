@@ -78,7 +78,8 @@ public class MainActivity extends SherlockFragmentActivity
         super.onNewIntent(intent);
         if (intent.getData() != null) {
             handleIntent(intent.getData());
-            showFragment(results, RESULTS);
+            showFragment(results, RESULTS,
+                    R.anim.slide_in_right,R.anim.slide_out_right);
         }
     }
 
@@ -96,7 +97,8 @@ public class MainActivity extends SherlockFragmentActivity
             results.setSpinningEnabled(false);
             getSupportLoaderManager().initLoader(0, null, this);
         } else if (uri.getLastPathSegment().equals("profile")) {
-            showFragment(new ProfileFragment(), "profile");
+            showFragment(new ProfileFragment(), "profile",
+                    R.anim.slide_in_top,R.anim.slide_out_top);
         }
     }
 
@@ -110,6 +112,8 @@ public class MainActivity extends SherlockFragmentActivity
                     .dep(r.getDep() < now? now + 3600000 : r.getDep())
                     .mode(Ride.Mode.CAR).seats(3).store(this);
             startActivity(new Intent(Intent.ACTION_EDIT, uri));
+            this.overridePendingTransition(
+                    R.anim.slide_in_right, R.anim.slide_out_left);
             break;
         case R.id.btn_mitfahren:
             if (main.ride.getFrom() == null || main.ride.getTo() == null) {
@@ -125,7 +129,8 @@ public class MainActivity extends SherlockFragmentActivity
                     + "?from_id=" + r.getFromId()
                     + "&to_id=" + r.getToId()
                     + "&dep=" + r.getDep()));
-            showFragment(results, RESULTS);
+            showFragment(results, RESULTS,
+                    R.anim.slide_in_left,R.anim.slide_out_left);
             break;
         }
     }
@@ -173,7 +178,8 @@ public class MainActivity extends SherlockFragmentActivity
 
     @Override
     public void onListItemClick(int position) {
-        showFragment(details, DETAILS);
+        showFragment(details, DETAILS,
+                R.anim.slide_in_right, R.anim.slide_out_right);
         details.setSelection(position);
     }
 
@@ -202,7 +208,8 @@ public class MainActivity extends SherlockFragmentActivity
         switch (item.getItemId()) {
         case R.id.my_rides:
             handleIntent(MY_RIDES_URI);
-            showFragment(results, RESULTS);
+            showFragment(results, RESULTS,
+                    R.anim.slide_in_top, R.anim.slide_out_top);
             startService(new Intent(this, ConnectorService.class)
                 .setAction(ConnectorService.PUBLISH));
             return true;
@@ -212,25 +219,24 @@ public class MainActivity extends SherlockFragmentActivity
                     R.anim.slide_in_top, R.anim.do_nix);
             return true;
         case R.id.profile:
-            showFragment(new ProfileFragment(), "profile");
-            this.overridePendingTransition(
-                    R.anim.slide_in_top, R.anim.do_nix);
+            showFragment(new ProfileFragment(), "profile",
+                        R.anim.slide_in_top, R.anim.slide_out_top);
             return true;
         case android.R.id.home:
             if (getSupportFragmentManager().getBackStackEntryCount() > 0)
                 getSupportFragmentManager().popBackStack();
             else {
-                showFragment(new AboutFragment(), "about");
+                showFragment(new AboutFragment(), "about",
+                        R.anim.slide_in_left, R.anim.slide_out_left);
             }
-            this.overridePendingTransition(
-                    R.anim.slide_in_top, R.anim.do_nix);
             return true;
         default:
             return super.onOptionsItemSelected(item);
         }
     }
 
-    private void showFragment(Fragment fragment, String name) {
+    private void showFragment(Fragment fragment, String name,
+            int anim_in, int anim_out) {
         FragmentManager fm = getSupportFragmentManager();
         for (int i = fm.getBackStackEntryCount() - 1; i >= 0; i--) {
             if (fm.getBackStackEntryAt(i).getName().equals(name)) {
@@ -242,8 +248,8 @@ public class MainActivity extends SherlockFragmentActivity
         }
         fm.beginTransaction()
             .setCustomAnimations(
-                R.anim.slide_in_right, R.anim.do_nix,
-                R.anim.do_nix, R.anim.slide_out_right)
+                anim_in, R.anim.do_nix,
+                R.anim.do_nix, anim_out)
             .replace(R.id.container, fragment, name)
             .addToBackStack(name)
         .commitAllowingStateLoss();

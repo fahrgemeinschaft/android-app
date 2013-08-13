@@ -79,6 +79,8 @@ public class ProfileFragment extends SherlockFragment implements OnClickListener
             getActivity().startActivity(
                     new Intent(getActivity(), WebActivity.class)
                     .setData(Uri.parse("file:///android_asset/register.html")));
+            getActivity().overridePendingTransition(
+                    R.anim.do_nix, R.anim.slide_in_bottom);
             break;
         }
     }

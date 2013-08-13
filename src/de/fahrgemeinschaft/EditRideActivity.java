@@ -105,19 +105,24 @@ public class EditRideActivity extends SherlockFragmentActivity
         case R.id.my_rides:
             startActivity(new Intent(this, MainActivity.class)
                 .setData(MainActivity.MY_RIDES_URI));
+            overridePendingTransition(R.anim.do_nix, R.anim.slide_in_top);
             break;
         case R.id.settings:
             startActivity(new Intent(this, SettingsActivity.class));
+            overridePendingTransition(R.anim.do_nix, R.anim.slide_in_top);
             break;
         case R.id.profile:
             getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, new ProfileFragment())
                 .addToBackStack("").commit();
+            overridePendingTransition(R.anim.do_nix, R.anim.slide_in_top);
             break;
         case android.R.id.home:
             if (getSupportFragmentManager().getBackStackEntryCount() > 0)
                 getSupportFragmentManager().popBackStack();
             else startActivity(new Intent(this, MainActivity.class));
+            overridePendingTransition(
+                    R.anim.slide_in_left, R.anim.slide_out_right);
             break;
         }
         return true;
@@ -143,6 +148,8 @@ public class EditRideActivity extends SherlockFragmentActivity
                     .setAction(ConnectorService.PUBLISH));
             startActivity(new Intent(this, MainActivity.class)
                     .setData(MainActivity.MY_RIDES_URI));
+            overridePendingTransition(
+                    R.anim.slide_in_left, R.anim.slide_out_right);
             Toast.makeText(this, getString(R.string.stored), Toast.LENGTH_SHORT)
                     .show();
         }
@@ -154,5 +161,14 @@ public class EditRideActivity extends SherlockFragmentActivity
                 R.id.comment)).getText().toString());
         outState.putParcelable("ride", ride);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_CANCELED);
+        finish();
+        overridePendingTransition(
+                R.anim.slide_in_left, R.anim.slide_out_right);
+        super.onBackPressed();
     }
 }
