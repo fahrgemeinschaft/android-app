@@ -17,4 +17,4 @@ try out apk [http://bit.ly/13gMAV9](http://bit.ly/13gMAV9)
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-    Icons, styles, artwork (C) subphisticated.com Licensed CC-NC-SA
+    Icons artwork Copyright (C) subphisticated.com licensed cc-nc-sa
