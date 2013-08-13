@@ -91,11 +91,9 @@ public class Util {
         return false;
     }
 
-
-
     public static boolean isVisible(String key, JSONObject details) {
         try {
-            return details.getJSONObject("privacy").getInt(key) == 1;
+            return details.getJSONObject("Privacy").getInt(key) == 1;
         } catch (JSONException e) {
             e.printStackTrace();
             return false;
@@ -119,12 +117,12 @@ public class Util {
         JSONObject details = Ride.getDetails(c);
         String dingens;
         try {
-            JSONObject privacy = details.getJSONObject("privacy");
+            JSONObject privacy = details.getJSONObject("Privacy");
             dingens = details.getString(MOBILE);
             if (dingens != null && privacy.getInt(MOBILE) == 1) {
                 contact.putExtra(Insert.PHONE, dingens);
                 Intent call = labeledIntent(callIntent(dingens),
-                        R.drawable.ic_call, dingens, ctx);
+                        R.drawable.icn_contact_handy, dingens, ctx);
                 if (call != null) intents.add(call);
                 Intent sms = labeledIntent(smsIntent(dingens, route),
                         R.drawable.ic_sms, dingens, ctx);
@@ -135,7 +133,7 @@ public class Util {
                 dingens = dingens.substring(1);
                 contact.putExtra(Insert.SECONDARY_PHONE, dingens);
                 Intent call = labeledIntent(callIntent(dingens),
-                        R.drawable.ic_dial, dingens, ctx);
+                        R.drawable.icn_contact_phone, dingens, ctx);
                 if (call != null) intents.add(call);
             }
             dingens = details.getString(EMAIL);
@@ -143,7 +141,7 @@ public class Util {
                 dingens = dingens.substring(1);
                 contact.putExtra(Insert.EMAIL, dingens);
                 Intent mail = labeledIntent(mailIntent(dingens, route),
-                        R.drawable.ic_mail, dingens, ctx);
+                        R.drawable.icn_contact_email, dingens, ctx);
                 if (mail != null) intents.add(mail);
             }
         } catch (JSONException e) {
