@@ -15,3 +15,6 @@ try out apk [http://bit.ly/13gMAV9](http://bit.ly/13gMAV9)
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+    Icons, styles, artwork (C) subphisticated.com Licensed CC-NC-SA
