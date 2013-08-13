@@ -113,7 +113,7 @@ public class MainActivity extends SherlockFragmentActivity
                     .mode(Ride.Mode.CAR).seats(3).store(this);
             startActivity(new Intent(Intent.ACTION_EDIT, uri));
             this.overridePendingTransition(
-                    R.anim.slide_in_right, R.anim.slide_out_left);
+                    R.anim.slide_in_bottom, R.anim.slide_out_top);
             break;
         case R.id.btn_mitfahren:
             if (main.ride.getFrom() == null || main.ride.getTo() == null) {
@@ -130,7 +130,7 @@ public class MainActivity extends SherlockFragmentActivity
                     + "&to_id=" + r.getToId()
                     + "&dep=" + r.getDep()));
             showFragment(results, RESULTS,
-                    R.anim.slide_in_left,R.anim.slide_out_left);
+                    R.anim.slide_in_right,R.anim.slide_out_right);
             break;
         }
     }

@@ -122,7 +122,7 @@ public class EditRideActivity extends SherlockFragmentActivity
                 getSupportFragmentManager().popBackStack();
             else startActivity(new Intent(this, MainActivity.class));
             overridePendingTransition(
-                    R.anim.slide_in_left, R.anim.slide_out_right);
+                    R.anim.slide_in_top, R.anim.slide_out_bottom);
             break;
         }
         return true;
@@ -149,7 +149,7 @@ public class EditRideActivity extends SherlockFragmentActivity
             startActivity(new Intent(this, MainActivity.class)
                     .setData(MainActivity.MY_RIDES_URI));
             overridePendingTransition(
-                    R.anim.slide_in_left, R.anim.slide_out_right);
+                    R.anim.slide_in_top, R.anim.slide_out_bottom);
             Toast.makeText(this, getString(R.string.stored), Toast.LENGTH_SHORT)
                     .show();
         }
@@ -168,7 +168,7 @@ public class EditRideActivity extends SherlockFragmentActivity
         setResult(RESULT_CANCELED);
         finish();
         overridePendingTransition(
-                R.anim.slide_in_left, R.anim.slide_out_right);
+                R.anim.slide_in_top, R.anim.slide_out_bottom);
         super.onBackPressed();
     }
 }
