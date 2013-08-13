@@ -40,7 +40,7 @@
         <item name="searchViewEditQueryBackground">?attr/selectableItemBackground</item> -->
     </style>
 
-    <style name="AppTheme.Translucent" parent="AppBaseTheme">
+    <style name="AppTheme.Translucent" parent="Theme.Sherlock.Light.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@color/light_green_translucent</item>
     </style>
