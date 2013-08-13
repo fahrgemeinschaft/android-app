@@ -8,6 +8,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="21dp"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin" >
 
@@ -22,7 +23,6 @@
         android:singleLine="true"
         android:gravity="left|center_vertical"
         android:layout_gravity="left|center_vertical"
-        android:layout_marginTop="21dp"
         android:paddingLeft="@dimen/large"
         android:paddingRight="@dimen/xlarge"
         android:background="@color/opacity_white"
