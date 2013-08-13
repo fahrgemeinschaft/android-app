@@ -16,5 +16,6 @@ try out apk [http://bit.ly/13gMAV9](http://bit.ly/13gMAV9)
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+build with [actionbarsherlock](http://actionbarsherlock.com), [geohash-java](https://github.com/kungfoo/geohash-java) and [teleportR](https://github.com/teleportR/android-library)
 
-    Icons artwork Copyright (C) subphisticated.com licensed cc-nc-sa
+    UX interaction design Copyright (C) subphisticated.com licensed cc-nc-sa
