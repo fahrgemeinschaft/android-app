@@ -202,14 +202,16 @@ public class RideDetailsFragment extends SherlockFragment
         });
     }
 
-    public void swapCursor(Cursor cursor) {
-        this.cursor = cursor;
-        if (pager != null)
-            pager.getAdapter().notifyDataSetChanged();
-    }
-
     public void setSelection(int position) {
         selected = position;
+    }
+
+    public void swapCursor(Cursor cursor) {
+        this.cursor = cursor;
+        updateOptionsMenu();
+        if (pager != null) {
+            pager.getAdapter().notifyDataSetChanged();
+        }
     }
 
     public int getSelection() {
@@ -226,11 +228,12 @@ public class RideDetailsFragment extends SherlockFragment
         super.onResume();
         pager.setCurrentItem(selected);
         pager.setOnPageChangeListener(this);
+        updateOptionsMenu();
     }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
         getSherlockActivity().getSupportMenuInflater()
                 .inflate(R.menu.ride_actions, menu);
         edit = menu.findItem(R.id.edit);
@@ -238,35 +241,45 @@ public class RideDetailsFragment extends SherlockFragment
         duplicate = menu.findItem(R.id.duplicate);
         duplicate_retour = menu.findItem(R.id.duplicate_retour);
         toggle_active = menu.findItem(R.id.toggle_active);
-        super.onCreateOptionsMenu(menu, inflater);
+        updateOptionsMenu();
     }
 
     @Override
     public void onPageSelected(int position) {
         selected = position;
         ((OnPageChangeListener) getActivity()).onPageSelected(position);
-        cursor.moveToPosition(position);
-        if (cursor.getString(COLUMNS.WHO).equals("") ||
+        updateOptionsMenu();
+    }
+
+    private void updateOptionsMenu() {
+        if (cursor != null && edit != null) {
+            cursor.moveToPosition(selected);
+            if (isMyRide()) {
+                edit.setVisible(true);
+                delete.setVisible(true);
+                duplicate.setVisible(true);
+                duplicate_retour.setVisible(true);
+                toggle_active.setVisible(true);
+                if (cursor.getInt(COLUMNS.ACTIVE) == 1) {
+                    toggle_active.setTitle(R.string.deactivate);
+                } else {
+                    toggle_active.setTitle(R.string.activate);
+                }
+            } else {
+                edit.setVisible(false);
+                delete.setVisible(false);
+                duplicate.setVisible(false);
+                duplicate_retour.setVisible(false);
+                toggle_active.setVisible(false);
+            }
+        }
+    }
+
+    private boolean isMyRide() {
+        return cursor.getString(COLUMNS.WHO).equals("") ||
                 cursor.getString(COLUMNS.WHO).equals(PreferenceManager
                         .getDefaultSharedPreferences(getActivity())
-                        .getString("user", ""))) {
-          edit.setVisible(true);
-          delete.setVisible(true);
-          duplicate.setVisible(true);
-          duplicate_retour.setVisible(true);
-          toggle_active.setVisible(true);
-          if (cursor.getInt(COLUMNS.ACTIVE) == 1) {
-              toggle_active.setTitle(R.string.deactivate);
-          } else {
-              toggle_active.setTitle(R.string.activate);
-          }
-      } else {
-          edit.setVisible(false);
-          delete.setVisible(false);
-          duplicate.setVisible(false);
-          duplicate_retour.setVisible(false);
-          toggle_active.setVisible(false);
-      }
+                        .getString("user", ""));
     }
 
     @Override
