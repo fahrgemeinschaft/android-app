@@ -5,12 +5,13 @@
     android:layout_height="match_parent"
     android:background="@color/darker_green" >
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="22dp"
+        android:orientation="vertical"
         android:paddingBottom="20dp" >
 
         <TextView
@@ -33,8 +34,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/medium_green"
-            android:layout_below="@id/copyright"
-            android:text="fahrgemeinschaft.de APP"
             android:layout_marginTop="10dp"
             android:gravity="right"
             android:textSize="22sp" />
@@ -43,7 +42,6 @@
             android:id="@+id/version"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/title"
             android:textSize="23sp"
             android:textColor="@color/medium_green"
             android:textStyle="bold"
@@ -51,98 +49,9 @@
             android:gravity="right" />
 
         <View
-            android:id="@+id/line"
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:layout_marginTop="0dp"
-            android:layout_below="@id/version"
-            android:background="@color/medium_green" />
-
-        <TextView
-            android:id="@+id/authors"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/line"
-            android:layout_marginTop="12dp"
-            android:gravity="left"
-            android:singleLine="false"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:text="proudly programmed by orangeman and sonnenstreifen, styled by"
-            android:textSize="18sp" />
-
-        <ImageView
-            android:id="@+id/subphisticated_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/authors"
-            android:layout_marginTop="15dp"
-            android:src="@drawable/icn_sbphstctd" />
-
-        <TextView
-            android:id="@+id/contact"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/subphisticated_logo"
-            android:layout_marginTop="15dp"
-            android:gravity="left"
-            android:singleLine="false"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:text="feel free to contact us for details or cooperation."
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/ingredients"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/contact"
-            android:textSize="23sp"
-            android:textColor="@color/medium_green"
-            android:textStyle="bold"
-            android:layout_marginTop="2dp"
-            android:text="// ingredients"
-            android:gravity="right" />
-
-        <View
-            android:id="@+id/line2"
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:layout_marginTop="0dp"
-            android:layout_below="@id/ingredients"
-            android:background="@color/medium_green" />
-
-        <TextView
-            android:id="@+id/build_with"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/line2"
-            android:textSize="18sp"
-            android:textColor="@color/medium_green"
-            android:textStyle="bold"
-            android:singleLine="false"
-            android:layout_marginTop="12dp"
-            android:text="Build with "
-            android:gravity="left" />
-
-        <TextView
-            android:id="@+id/license"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/build_with"
-            android:textSize="23sp"
-            android:textColor="@color/medium_green"
-            android:textStyle="bold"
-            android:text="// license"
-            android:layout_marginTop="2dp"
-            android:gravity="right" />
-
-        <View
-            android:id="@+id/line3"
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:layout_marginTop="0dp"
-            android:layout_below="@id/license"
             android:background="@color/medium_green" />
 
         <TextView
@@ -150,7 +59,6 @@
             style="@style/light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/line3"
             android:textSize="12sp"
             android:textColor="@color/medium_green"
             android:textStyle="bold"
@@ -170,94 +78,140 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see http://www.gnu.org/licenses/."
             android:gravity="left" />
 
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="23sp"
+            android:textColor="@color/medium_green"
+            android:textStyle="bold"
+            android:layout_marginTop="2dp"
+            android:text="// build with"
+            android:gravity="right" />
+
         <View
-            android:id="@+id/line4"
             android:layout_width="match_parent"
             android:layout_height="3dp"
+            android:layout_marginTop="0dp"
+            android:background="@color/medium_green" />
+
+        <TextView
+            android:id="@+id/crouton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/lighter_green"
+            android:textStyle="bold"
+            android:singleLine="false"
             android:layout_marginTop="12dp"
-            android:layout_below="@id/license_text"
+            android:text="keyboardsurfer crouton"
+            android:gravity="left" />
+        <TextView
+            android:id="@+id/actionbarsherlock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/lighter_green"
+            android:textStyle="bold"
+            android:singleLine="false"
+            android:layout_marginTop="12dp"
+            android:text="actionbarsherlock.com"
+            android:gravity="left" />
+        <TextView
+            android:id="@+id/geohash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/lighter_green"
+            android:textStyle="bold"
+            android:singleLine="false"
+            android:layout_marginTop="12dp"
+            android:text="kungfoo geohash-java"
+            android:gravity="left" />
+        <TextView
+            android:id="@+id/teleportr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/lighter_green"
+            android:textStyle="bold"
+            android:singleLine="false"
+            android:layout_marginTop="12dp"
+            android:text="teleportR.org library"
+            android:gravity="left" />
+        <TextView
+            android:id="@+id/volley"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/lighter_green"
+            android:textStyle="bold"
+            android:singleLine="false"
+            android:layout_marginTop="12dp"
+            android:text="android.com volley"
+            android:gravity="left" />
+        <TextView
+            android:id="@+id/iconmonstr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/medium_green"
+            android:textStyle="bold"
+            android:singleLine="false"
+            android:layout_marginTop="12dp"
+            android:text="android.com volley"
+            android:gravity="left" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="23sp"
+            android:textColor="@color/medium_green"
+            android:textStyle="bold"
+            android:layout_marginTop="2dp"
+            android:text="// styled by"
+            android:gravity="right" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginTop="0dp"
+            android:background="@color/medium_green" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="left"
+            android:singleLine="false"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:text="styled by"
+            android:textSize="18sp" />
+        
+        <ImageView
+            android:id="@+id/subphisticated_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-34dp"
+            android:layout_gravity="right"
+            android:src="@drawable/icn_sbphstctd" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginTop="0dp"
             android:background="@color/medium_green" />
 
         <TextView
             android:id="@+id/git_url"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/line4"
-            android:textSize="18sp"
+            android:textSize="13sp"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:singleLine="false"
             android:layout_marginTop="12dp"
-            android:text="https://github.com/fahrgemeinschaft/android-app/"
-            android:gravity="left" />
-<!-- 
-        <TextView
-            android:id="@+id/crouton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/build_with"
-            android:layout_alignBottom="@id/build_with"
-            android:textSize="18sp"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:text="keyboardsurfer crouton, "
+            android:text="github.com/fahrgemeinschaft/android-app"
             android:gravity="left" />
 
-        <TextView
-            android:id="@+id/actionbarsherlock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/crouton"
-            android:textSize="18sp"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:text="actionbarsherlock.com, "
-            android:gravity="left" /> -->
-<!--
-    
-    <TextView
-        android:textSize="10.5sp"
-        android:id="@+id/attribution"
-        android:textColor="@color/medium_green"
-        android:layout_alignParentBottom="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="contains actionbarsherlock.com and teleportR.org" />
-
-    <TextView
-        android:id="@+id/disclaimer"
-        style="@style/dark"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@id/attribution"
-        android:background="@color/dark_green"
-        android:fontFamily="monospace"
-        android:paddingTop="8dp"
-        android:paddingLeft="18dp"
-        android:paddingBottom="8dp"
-        android:singleLine="false"
-        android:text="This program is free software: you can redistribute it and/or modify
-\nit under the terms of the GNU General Public License as published by
-\nthe Free Software Foundation, either version 3 of the License, or
-\n(at your option) any later version. See http://www.gnu.org/licenses
-\n
-\nThis program is distributed in the hope that it will be useful,
-\nbut WITHOUT ANY WARRANTY; without even the implied warranty of
-\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-\nGNU General Public License for more details"
-        android:textSize="@dimen/smallprint" />
-
-    <TextView
-        android:textSize="10.5sp"
-        android:id="@+id/copyright"
-        android:textColor="@color/medium_green"
-        android:layout_above="@id/disclaimer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="Copyright (C) 2013 by it's authors.  Some rights reserved." /> -->
-
-    </RelativeLayout>
+    </LinearLayout>
 </ScrollView>

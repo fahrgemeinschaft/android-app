@@ -16,7 +16,6 @@ import com.actionbarsherlock.app.SherlockFragment;
 public class AboutFragment extends SherlockFragment implements OnClickListener {
 
     private TextView title;
-    private TextView build_with;
 
     @Override
     public View onCreateView(final LayoutInflater lI, ViewGroup p, Bundle b) {
@@ -30,15 +29,16 @@ public class AboutFragment extends SherlockFragment implements OnClickListener {
         String text = "fahrgemeinschaft.de <font color=#FFFFFF><b>APP</b></font>";
         title = (TextView) v.findViewById(R.id.title);
         title.setText(Html.fromHtml(text));
-//        v.findViewById(R.id.github).setOnClickListener(this);
         v.findViewById(R.id.version).setOnClickListener(this);
-//        v.findViewById(R.id.disclaimer).setOnClickListener(this);
-//        v.findViewById(R.id.attribution).setOnClickListener(this);
-        String build_with_text = "build with <font color=#D0E987>" +
-                "keyboardsurfer crouton, actionbarsherlock.com, " +
-                "kungfoo geohash-java, teleportR.org library, android.com volley.</font><br>most of the icons from<font color=#D0E987> iconmonstr</font>";
-        build_with = (TextView) v.findViewById(R.id.build_with);
-        build_with.setText(Html.fromHtml(build_with_text));
+        v.findViewById(R.id.license_text).setOnClickListener(this);
+        v.findViewById(R.id.crouton).setOnClickListener(this);
+        v.findViewById(R.id.actionbarsherlock).setOnClickListener(this);
+        v.findViewById(R.id.geohash).setOnClickListener(this);
+        v.findViewById(R.id.teleportr).setOnClickListener(this);
+        v.findViewById(R.id.volley).setOnClickListener(this);
+        v.findViewById(R.id.iconmonstr).setOnClickListener(this);
+        ((TextView) v.findViewById(R.id.iconmonstr)).setText(Html.fromHtml(
+                "most icons by<font color=#D0E987> iconmonstr</font>"));
         try {
             ((TextView)v.findViewById(R.id.version)).setText( "// " +
                     getActivity().getPackageManager().getPackageInfo(
@@ -46,6 +46,8 @@ public class AboutFragment extends SherlockFragment implements OnClickListener {
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         }
+        v.findViewById(R.id.subphisticated_logo).setOnClickListener(this);
+        v.findViewById(R.id.git_url).setOnClickListener(this);
     }
 
     @Override
@@ -54,16 +56,35 @@ public class AboutFragment extends SherlockFragment implements OnClickListener {
         case R.id.layout:
             getActivity().getSupportFragmentManager().popBackStack();
             break;
-//        case R.id.github:
-//        case R.id.version:
-//            openBrowser("http://github.com/fahrgemeinschaft/android-app");
-//            break;
-//        case R.id.disclaimer:
-//            openBrowser("https://gnu.org/licenses/gpl.html");
-//            break;
-//        case R.id.attribution:
-//            openBrowser("http://actionbarsherlock.com/");
-//            break;
+        case R.id.git_url:
+        case R.id.version:
+            openBrowser("http://github.com/fahrgemeinschaft/android-app");
+            break;
+        case R.id.license_text:
+            openBrowser("https://gnu.org/licenses/gpl.html");
+            break;
+        case R.id.crouton:
+            openBrowser("https://github.com/keyboardsurfer/Crouton");
+            break;
+        case R.id.actionbarsherlock:
+            openBrowser("http://actionbarsherlock.com");
+            break;
+        case R.id.geohash:
+            openBrowser("https://github.com/kungfoo/geohash-java");
+            break;
+        case R.id.teleportr:
+            openBrowser("https://github.com/teleportR/android-library");
+            break;
+        case R.id.volley:
+            openBrowser(
+                "https://android.googlesource.com/platform/frameworks/volley");
+            break;
+        case R.id.iconmonstr:
+            openBrowser("http://iconmonstr.com");
+            break;
+        case R.id.subphisticated_logo:
+            openBrowser("http://subphisticated.com.com");
+            break;
         }
     }
 
