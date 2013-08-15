@@ -10,6 +10,7 @@
     android:versionCode="26"
     android:versionName="beta 0.9" >
 
+
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="18" />
