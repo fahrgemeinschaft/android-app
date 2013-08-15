@@ -9,9 +9,7 @@ package de.fahrgemeinschaft;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,14 +20,12 @@ import org.teleportr.Ride.COLUMNS;
 import android.app.Dialog;
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.util.LruCache;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
@@ -48,20 +44,14 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.android.volley.AuthFailureError;
-import com.android.volley.Cache;
-import com.android.volley.NetworkResponse;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.ImageLoader.ImageCache;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.calciumion.widget.BasePagerAdapter;
 
+import de.fahrgemeinschaft.util.ProfileRequest;
 import de.fahrgemeinschaft.util.ReoccuringWeekDaysView;
 import de.fahrgemeinschaft.util.RideRowView;
 import de.fahrgemeinschaft.util.Util;
@@ -80,7 +70,6 @@ public class RideDetailsFragment extends SherlockFragment
     private RequestQueue queue;
     public Cursor cursor;
     private int selected;
-    private HashMap<String, String> headers;
     private MenuItem edit;
     private MenuItem delete;
     private MenuItem duplicate;
@@ -92,26 +81,9 @@ public class RideDetailsFragment extends SherlockFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-        final LruCache<String, Bitmap> mImageCache =
-                new LruCache<String, Bitmap>(20);
-
-        ImageCache imageCache = new ImageCache() {
-            @Override
-            public void putBitmap(String key, Bitmap value) {
-                mImageCache.put(key, value);
-            }
-
-            @Override
-            public Bitmap getBitmap(String key) {
-                return mImageCache.get(key);
-            }
-        };
-
         queue = Volley.newRequestQueue(getActivity());
-        imageLoader = new ImageLoader(queue, imageCache);
+        imageLoader = new ImageLoader(queue, ProfileRequest.imageCache);
         queue.start();
-
         if (savedInstanceState != null) {
             selected = savedInstanceState.getInt("selected");
         }
@@ -450,66 +422,6 @@ public class RideDetailsFragment extends SherlockFragment
     public void onErrorResponse(VolleyError err) {
         Log.d(TAG, err.toString());
         err.printStackTrace();
-    }
-
-    public Map<String, String> headers() {
-        if (headers == null) {
-            headers = new HashMap<String, String>();  
-            headers.put("apikey", Secret.APIKEY);
-        }
-        return headers;
-    }
-
-    class ProfileRequest extends JsonObjectRequest { 
-
-        public ProfileRequest( String userid,
-                Listener<JSONObject> listener, ErrorListener errorListener) {
-            super(Method.GET, "http://service.fahrgemeinschaft.de/user/"
-                + userid, null, listener, errorListener);
-            setShouldCache(Boolean.TRUE);
-        }
-
-        @Override
-        public Map<String, String> getHeaders() throws AuthFailureError {
-            return headers();
-        };
-
-        @Override
-        protected Response<JSONObject> parseNetworkResponse(NetworkResponse res) {
-            return Response.success(super.parseNetworkResponse(res).result,
-                    parseIgnoreCacheHeaders(res));
-        }
-    }
-
-    public static Cache.Entry parseIgnoreCacheHeaders(NetworkResponse response) {
-        long now = System.currentTimeMillis();
-
-        Map<String, String> headers = response.headers;
-        long serverDate = 0;
-        String serverEtag = null;
-        String headerValue;
-
-        headerValue = headers.get("Date");
-        if (headerValue != null) {
-//            serverDate = parseDateAsEpoch(headerValue);
-        }
-
-        serverEtag = headers.get("ETag");
-
-        final long cacheHitButRefreshed = 3 * 60 * 1000; // in 3 minutes cache will be hit, but also refreshed on background
-        final long cacheExpired = 24 * 60 * 60 * 1000; // in 24 hours this cache entry expires completely
-        final long softExpire = now + cacheHitButRefreshed;
-        final long ttl = now + cacheExpired;
-
-        Cache.Entry entry = new Cache.Entry();
-        entry.data = response.data;
-        entry.etag = serverEtag;
-        entry.softTtl = softExpire;
-        entry.ttl = ttl;
-        entry.serverDate = serverDate;
-        entry.responseHeaders = headers;
-
-        return entry;
     }
 
     @Override
