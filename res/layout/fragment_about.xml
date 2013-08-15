@@ -68,7 +68,7 @@
             android:singleLine="false"
             android:textColor="@color/white"
             android:textStyle="bold"
-            android:text="proudly programmed by orangeman and sonnenstreifen"
+            android:text="proudly programmed by orangeman and sonnenstreifen, styled by"
             android:textSize="18sp" />
 
         <ImageView

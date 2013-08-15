@@ -14,7 +14,7 @@
     <TextView
         android:id="@+id/day"
         style="@style/dark.Large"
-        android:layout_width="35dp"
+        android:layout_width="40dp"
         android:textIsSelectable="false"
         android:layout_height="match_parent" />
 
