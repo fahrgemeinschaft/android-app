@@ -248,16 +248,20 @@ public class RideListFragment extends SpinningZebraListFragment
 //                        R.anim.slide_out_left, R.anim.slide_in_right);
                 break;
             case R.id.increase_seats:
-                ride.seats(ride.getSeats() + 1).dirty().store(getContext());
-                getContext().startService(
+                if (ride.getSeats() <= 4) {
+                    ride.seats(ride.getSeats() + 1).dirty().store(getContext());
+                    getContext().startService(
                         new Intent(getContext(), ConnectorService.class)
                                 .setAction(ConnectorService.PUBLISH));
+                }
                 break;
             case R.id.decrease_seats:
-                ride.seats(ride.getSeats() - 1).dirty().store(getContext());
-                getContext().startService(
+                if (ride.getSeats() >= 1) {
+                    ride.seats(ride.getSeats() - 1).dirty().store(getContext());
+                    getContext().startService(
                         new Intent(getContext(), ConnectorService.class)
                         .setAction(ConnectorService.PUBLISH));
+                }
             }
         }
     }
