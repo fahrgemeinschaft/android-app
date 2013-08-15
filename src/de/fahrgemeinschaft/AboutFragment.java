@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,6 +15,9 @@ import com.actionbarsherlock.app.SherlockFragment;
 
 public class AboutFragment extends SherlockFragment implements OnClickListener {
 
+    private TextView title;
+    private TextView build_with;
+
     @Override
     public View onCreateView(final LayoutInflater lI, ViewGroup p, Bundle b) {
         return lI.inflate(R.layout.fragment_about, p, false);
@@ -22,14 +26,21 @@ public class AboutFragment extends SherlockFragment implements OnClickListener {
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
-        v.findViewById(R.id.logo).setOnClickListener(this);
         v.findViewById(R.id.layout).setOnClickListener(this);
-        v.findViewById(R.id.github).setOnClickListener(this);
+        String text = "fahrgemeinschaft.de <font color=#FFFFFF><b>APP</b></font>";
+        title = (TextView) v.findViewById(R.id.title);
+        title.setText(Html.fromHtml(text));
+//        v.findViewById(R.id.github).setOnClickListener(this);
         v.findViewById(R.id.version).setOnClickListener(this);
-        v.findViewById(R.id.disclaimer).setOnClickListener(this);
-        v.findViewById(R.id.attribution).setOnClickListener(this);
+//        v.findViewById(R.id.disclaimer).setOnClickListener(this);
+//        v.findViewById(R.id.attribution).setOnClickListener(this);
+        String build_with_text = "build with <font color=#D0E987>" +
+                "keyboardsurfer crouton, actionbarsherlock.com, " +
+                "kungfoo geohash-java, teleportR.org library, android.com volley.</font><br>most of the icons from<font color=#D0E987> iconmonstr</font>";
+        build_with = (TextView) v.findViewById(R.id.build_with);
+        build_with.setText(Html.fromHtml(build_with_text));
         try {
-            ((TextView)v.findViewById(R.id.version)).setText(
+            ((TextView)v.findViewById(R.id.version)).setText( "// " +
                     getActivity().getPackageManager().getPackageInfo(
                             getActivity().getPackageName(), 0).versionName);
         } catch (NameNotFoundException e) {
@@ -40,22 +51,19 @@ public class AboutFragment extends SherlockFragment implements OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-        case R.id.logo:
-            openBrowser("http://fahrgemeinschaft.de");
-            break;
         case R.id.layout:
             getActivity().getSupportFragmentManager().popBackStack();
             break;
-        case R.id.github:
-        case R.id.version:
-            openBrowser("http://github.com/fahrgemeinschaft/android-app");
-            break;
-        case R.id.disclaimer:
-            openBrowser("https://gnu.org/licenses/gpl.html");
-            break;
-        case R.id.attribution:
-            openBrowser("http://actionbarsherlock.com/");
-            break;
+//        case R.id.github:
+//        case R.id.version:
+//            openBrowser("http://github.com/fahrgemeinschaft/android-app");
+//            break;
+//        case R.id.disclaimer:
+//            openBrowser("https://gnu.org/licenses/gpl.html");
+//            break;
+//        case R.id.attribution:
+//            openBrowser("http://actionbarsherlock.com/");
+//            break;
         }
     }
 
