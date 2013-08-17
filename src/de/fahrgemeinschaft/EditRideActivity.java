@@ -57,6 +57,7 @@ public class EditRideActivity extends SherlockFragmentActivity
         }
         initFragments();
         findViewById(R.id.publish).setOnClickListener(this);
+        setTitle(R.string.offer);
     }
 
     @Override
@@ -70,6 +71,9 @@ public class EditRideActivity extends SherlockFragmentActivity
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             ride = new Ride(cursor, this);
+            if (ride.getRef() != null) {
+                setTitle(R.string.edit);
+            }
         }
         initFragments();
     }
