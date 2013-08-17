@@ -88,7 +88,6 @@ public class EditRideFragment3 extends SherlockFragment
                 } else plate.text.setText(prefs.getString(PLATE, ""));
             }
             name.text.setText(prefs.getString("lastname", "n/a"));
-            System.out.println(d);
             if (d.isNull("Privacy")) d.put("Privacy", new JSONObject());
             JSONObject p = d.getJSONObject("Privacy");
             if (!p.isNull("Email")) email.setPrivacy(p.getInt("Email")); // 'm'
