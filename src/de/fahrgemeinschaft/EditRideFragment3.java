@@ -72,7 +72,9 @@ public class EditRideFragment3 extends SherlockFragment
         try {
             JSONObject d = ride.getDetails();
             if (!d.isNull(EMAIL)) email.text.setText(d.getString(EMAIL));
-            else email.text.setText(prefs.getString(EMAIL, ""));
+            else email.text.setText(
+                    prefs.getString(EMAIL,
+                    prefs.getString("login", "")));
             if (!d.isNull(LANDLINE)) land.text.setText(d.getString(LANDLINE));
             else land.text.setText(prefs.getString(LANDLINE, ""));
             if (!d.isNull(MOBILE)) mobile.text.setText(d.getString(MOBILE));

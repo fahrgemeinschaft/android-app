@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import org.teleportr.ConnectorService;
-import org.teleportr.ConnectorService.BackgroundListener;
+import org.teleportr.ConnectorService.SearchListener;
 import org.teleportr.Ride;
 import org.teleportr.Ride.COLUMNS;
 import org.teleportr.Ride.Mode;
@@ -44,7 +44,7 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class RideListFragment extends SpinningZebraListFragment
-        implements ServiceConnection, BackgroundListener {
+        implements ServiceConnection, SearchListener {
 
     private static final SimpleDateFormat day =
             new SimpleDateFormat("EEE", Locale.GERMANY);
@@ -114,7 +114,7 @@ public class RideListFragment extends SpinningZebraListFragment
 
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
-        ((ConnectorService.Bind) service).getService().register(this);
+        ((ConnectorService.Bind) service).getService().searchCallback(this);
     }
 
     @Override

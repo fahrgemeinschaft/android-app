@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import org.teleportr.ConnectorService;
+import org.teleportr.ConnectorService.AuthListener;
 import org.teleportr.Ride;
 import org.teleportr.Ride.COLUMNS;
 
@@ -38,10 +39,12 @@ import com.actionbarsherlock.view.MenuItem;
 
 import de.fahrgemeinschaft.util.SpinningZebraListFragment.ListFragmentCallback;
 import de.fahrgemeinschaft.util.Util;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class MainActivity extends SherlockFragmentActivity
        implements OnClickListener, ListFragmentCallback,
-       LoaderCallbacks<Cursor>, OnPageChangeListener {
+       LoaderCallbacks<Cursor>, OnPageChangeListener, AuthListener {
 
     public static final Uri MY_RIDES_URI =
             Uri.parse("content://de.fahrgemeinschaft/myrides");
@@ -53,6 +56,7 @@ public class MainActivity extends SherlockFragmentActivity
     public RideDetailsFragment details;
     public RideListFragment results;
     public MainFragment main;
+    private MenuItem profile;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -189,7 +193,6 @@ public class MainActivity extends SherlockFragmentActivity
 //        results.getListView().setSelection(position);
     }
 
-
     public void contact(View v) {
         Cursor cursor = ((CursorAdapter) results.getListAdapter()).getCursor();
         cursor.moveToPosition(details.getSelection());
@@ -200,6 +203,7 @@ public class MainActivity extends SherlockFragmentActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getSupportMenuInflater().inflate(R.menu.action_bar, menu);
+        profile = menu.findItem(R.id.profile);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -262,6 +266,24 @@ public class MainActivity extends SherlockFragmentActivity
         System.out.println("loader reset " + loader.getId());
         results.swapCursor(null);
         details.swapCursor(null);
+    }
+
+    @Override
+    public void onAuth() {
+        Crouton.makeText(this, "Authentifiziere..", Style.INFO).show();
+        profile.setIcon(R.drawable.ic_loading);
+    }
+
+    @Override
+    public void onAuthFail(String arg0) {
+        Crouton.makeText(this, "Fail!", Style.ALERT).show();
+        profile.setIcon(R.drawable.ic_topmenu_user);
+    }
+
+    @Override
+    public void onAuthSuccess() {
+        Crouton.makeText(this, "Success.", Style.CONFIRM).show();
+        profile.setIcon(R.drawable.ic_topmenu_user);
     }
 
     @Override

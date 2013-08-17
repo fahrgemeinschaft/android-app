@@ -118,8 +118,8 @@ public class Util {
         String dingens;
         try {
             JSONObject privacy = details.getJSONObject("Privacy");
-            dingens = details.getString(MOBILE);
-            if (dingens != null && privacy.getInt(MOBILE) == 1) {
+            if (!details.isNull(MOBILE) && privacy.getInt(MOBILE) == 1) {
+                dingens = details.getString(MOBILE);
                 contact.putExtra(Insert.PHONE, dingens);
                 Intent call = labeledIntent(callIntent(dingens),
                         R.drawable.icn_contact_handy, dingens, ctx);
@@ -128,17 +128,15 @@ public class Util {
                         R.drawable.ic_sms, dingens, ctx);
                 if (sms != null) intents.add(sms);
             }
-            dingens = details.getString(LANDLINE);
-            if (dingens != null && privacy.getInt(LANDLINE) == 1) {
-                dingens = dingens.substring(1);
+            if (!details.isNull(LANDLINE) && privacy.getInt(LANDLINE) == 1) {
+                dingens = details.getString(LANDLINE);
                 contact.putExtra(Insert.SECONDARY_PHONE, dingens);
                 Intent call = labeledIntent(callIntent(dingens),
                         R.drawable.icn_contact_phone, dingens, ctx);
                 if (call != null) intents.add(call);
             }
-            dingens = details.getString(EMAIL);
-            if (dingens != null && privacy.getInt(EMAIL) == 1) {
-                dingens = dingens.substring(1);
+            if (!details.isNull(EMAIL) && privacy.getInt("Email") == 1) { // 'm'
+                dingens = details.getString(EMAIL);
                 contact.putExtra(Insert.EMAIL, dingens);
                 Intent mail = labeledIntent(mailIntent(dingens, route),
                         R.drawable.icn_contact_email, dingens, ctx);

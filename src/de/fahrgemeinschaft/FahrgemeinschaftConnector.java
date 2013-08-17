@@ -18,6 +18,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+
+import org.apache.http.auth.AuthenticationException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,43 +43,40 @@ public class FahrgemeinschaftConnector extends Connector {
             new SimpleDateFormat("yyyyMMdd", Locale.GERMAN);
 
     @Override
-    public String authenticate() throws Exception {
-        if (get("password").equals("null")) {
-            System.out.println("not remembered");
-            return null;
-        } else {
-            System.out.println("refreshing authtoken");
-            HttpURLConnection post = (HttpURLConnection)
-                    new URL(endpoint + "/session").openConnection();
-            post.setRequestProperty("apikey", Secret.APIKEY);
-            post.setDoOutput(true);
-            post.getOutputStream().write((
-                    "{\"Email\": \"" + get("EMail")
-                    + "\", \"Password\": \"" + get("password")
-                    + "\"}").getBytes());
-            post.getOutputStream().close();
-            JSONObject json = loadJson(post);
-            JSONObject auth = json.getJSONObject("auth");
-            set("user", auth.getString("IDuser"));
-            JSONArray kvp = json.getJSONObject("user")
-                    .getJSONArray("KeyValuePairs");
-            for (int i = 1; i < kvp.length(); i++) {
-                String key = kvp.getJSONObject(i).getString("Key");
-                if (key.equals("firstname"))
-                    set("firstname", kvp.getJSONObject(i).getString("Value"));
-                else if (key.equals("lastname"))
-                    set("lastname", kvp.getJSONObject(i).getString("Value"));
-            }
-            return auth.getString("AuthKey");
+    public String authenticate(String credential) throws Exception {
+        System.out.println("refreshing authtoken");
+        HttpURLConnection post = (HttpURLConnection)
+                new URL(endpoint + "/session").openConnection();
+        post.setRequestProperty("apikey", Secret.APIKEY);
+        post.setDoOutput(true);
+        post.getOutputStream().write((
+                "{\"Email\": \"" + get("EMail")
+                + "\", \"Password\": \"" + credential
+                + "\"}").getBytes());
+        post.getOutputStream().close();
+        JSONObject json = loadJson(post);
+        if (post.getResponseCode() == 403)
+            throw new AuthenticationException();
+        JSONObject auth = json.getJSONObject("auth");
+        set("user", auth.getString("IDuser"));
+        JSONArray kvp = json.getJSONObject("user")
+                .getJSONArray("KeyValuePairs");
+        for (int i = 1; i < kvp.length(); i++) {
+            String key = kvp.getJSONObject(i).getString("Key");
+            if (key.equals("firstname"))
+                set("firstname", kvp.getJSONObject(i).getString("Value"));
+            else if (key.equals("lastname"))
+                set("lastname", kvp.getJSONObject(i).getString("Value"));
         }
+        return auth.getString("AuthKey");
     }
 
     @Override
     public long search(Place from, Place to, Date dep, Date arr) throws Exception {
-        HttpURLConnection conn;
+        HttpURLConnection get;
         if (from == null && to == null) { // myrides
-            conn = (HttpURLConnection) new URL(endpoint + "/trip").openConnection();
-            conn.setRequestProperty("authkey", getAuth());
+            get = (HttpURLConnection) new URL(endpoint + "/trip").openConnection();
+            get.setRequestProperty("authkey", getAuth());
         } else {
             JSONObject from_json = new JSONObject();
             JSONObject to_json = new JSONObject();
@@ -97,13 +96,15 @@ public class FahrgemeinschaftConnector extends Connector {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            conn = (HttpURLConnection) new URL(endpoint
+            get = (HttpURLConnection) new URL(endpoint
                     + "/trip?searchOrigin=" + from_json
                     + "&searchDestination=" + to_json).openConnection();
         }
         try {
-            conn.setRequestProperty("apikey", Secret.APIKEY);
-            JSONObject json = loadJson(conn);
+            get.setRequestProperty("apikey", Secret.APIKEY);
+            JSONObject json = loadJson(get);
+            if (get.getResponseCode() == 403)
+                throw new AuthenticationException();
             if (json != null) {
                 JSONArray results = json.getJSONArray("results");
                 System.out.println("FOUND " + results.length() + " rides");
