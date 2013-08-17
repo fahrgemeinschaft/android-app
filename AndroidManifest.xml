@@ -8,7 +8,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.fahrgemeinschaft"
     android:versionCode="28"
-    android:versionName="beta 0.9.5" >
+    android:versionName="beta 0.8.15" >
 
 
     <uses-sdk
@@ -74,7 +74,7 @@
 
         <receiver android:name=".AuthRequestReceiver" android:exported="false">
             <intent-filter>
-                <action android:name="auth_request" />
+                <action android:name="auth" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>

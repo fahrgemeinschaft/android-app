@@ -224,7 +224,8 @@ public class RideDetailsFragment extends SherlockFragment
     }
 
     private void updateOptionsMenu() {
-        if (cursor != null && edit != null && getActivity() != null) {
+        if (cursor != null && cursor.getCount() > 0
+                && edit != null && getActivity() != null) {
             cursor.moveToPosition(selected);
             if (isMyRide()) {
                 edit.setVisible(true);
@@ -258,6 +259,9 @@ public class RideDetailsFragment extends SherlockFragment
     public boolean onOptionsItemSelected(MenuItem item) {
         cursor.moveToPosition(selected);
         Ride ride = new Ride(cursor, getActivity());
+        if (item.getItemId() == R.id.delete) {
+            getActivity().getSupportFragmentManager().popBackStack();
+        }
         return Util.handleRideAction(item.getItemId(), ride, getActivity());
     }
 

@@ -50,8 +50,8 @@
     <string name="password">Passwort</string>
     <string name="login">anmelden</string>
     <string name="register">registrieren</string>
-    <string name="login_required">Login</string>
-    <string name="need_to_login">Bitte einloggen</string>
+    <string name="login_required">Bitte einloggen</string>
+    <string name="why_login">um Fahrgemeinschaften zu veröffentlichen</string>
 
     <string name="contact">Kontakt</string>
     <string name="seats">Sitzplätze</string>

@@ -19,10 +19,10 @@ import java.util.List;
 import java.util.Locale;
 
 
-import org.apache.http.auth.AuthenticationException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.teleportr.AuthException;
 import org.teleportr.Connector;
 import org.teleportr.Place;
 import org.teleportr.Ride;
@@ -50,13 +50,13 @@ public class FahrgemeinschaftConnector extends Connector {
         post.setRequestProperty("apikey", Secret.APIKEY);
         post.setDoOutput(true);
         post.getOutputStream().write((
-                "{\"Email\": \"" + get("EMail")
+                "{\"Email\": \"" + get("login")
                 + "\", \"Password\": \"" + credential
                 + "\"}").getBytes());
         post.getOutputStream().close();
         JSONObject json = loadJson(post);
         if (post.getResponseCode() == 403)
-            throw new AuthenticationException();
+            throw new AuthException();
         JSONObject auth = json.getJSONObject("auth");
         set("user", auth.getString("IDuser"));
         JSONArray kvp = json.getJSONObject("user")
@@ -104,7 +104,7 @@ public class FahrgemeinschaftConnector extends Connector {
             get.setRequestProperty("apikey", Secret.APIKEY);
             JSONObject json = loadJson(get);
             if (get.getResponseCode() == 403)
-                throw new AuthenticationException();
+                throw new AuthException();
             if (json != null) {
                 JSONArray results = json.getJSONArray("results");
                 System.out.println("FOUND " + results.length() + " rides");

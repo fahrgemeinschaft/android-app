@@ -46,7 +46,6 @@ public class Util {
             r.delete(c);
             c.startService(new Intent(c, ConnectorService.class)
                     .setAction(ConnectorService.PUBLISH));
-            c.getSupportFragmentManager().popBackStack();
             return true;
         case R.id.edit:
             c.startActivity(new Intent(Intent.ACTION_EDIT, Uri.parse(

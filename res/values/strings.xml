@@ -53,8 +53,8 @@
     <string name="password">Password</string>
     <string name="login">login</string>
     <string name="register">register</string>
-    <string name="login_required">Login</string>
-    <string name="need_to_login">Please log in</string>
+    <string name="login_required">Please log in</string>
+    <string name="why_login">to publish rides on fahrgemeinschaft.de</string>
 
     <string name="contact">Contact</string>
     <string name="seats">Seats</string>

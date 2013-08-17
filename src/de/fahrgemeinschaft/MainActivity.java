@@ -82,27 +82,28 @@ public class MainActivity extends SherlockFragmentActivity
         super.onNewIntent(intent);
         if (intent.getData() != null) {
             handleIntent(intent.getData());
-            showFragment(results, RESULTS,
-                    R.anim.slide_in_right,R.anim.slide_out_right);
         }
     }
 
     private void handleIntent(Uri uri) {
-        if (getIntent().getData() != uri) {
-            setIntent(getIntent().setData(uri));
-            getSupportLoaderManager().destroyLoader(0);
-        }
-        if (uri.getLastPathSegment().equals("rides")) {
-            setTitle(R.string.results);
-            results.setSpinningEnabled(true);
-            getSupportLoaderManager().initLoader(0, null, this);
-        } else if (uri.equals(MY_RIDES_URI)) {
-            setTitle(R.string.my_rides);
-            results.setSpinningEnabled(false);
-            getSupportLoaderManager().initLoader(0, null, this);
-        } else if (uri.getLastPathSegment().equals("profile")) {
+        if (uri.getLastPathSegment().equals("profile")) {
             showFragment(new ProfileFragment(), "profile",
                     R.anim.slide_in_top,R.anim.slide_out_top);
+        } else {
+            if (getIntent().getData() != uri) {
+                setIntent(getIntent().setData(uri));
+                getSupportLoaderManager().destroyLoader(0);
+            }
+            if (uri.getLastPathSegment().equals("rides")) {
+                setTitle(R.string.results);
+                results.setSpinningEnabled(true);
+            } else if (uri.equals(MY_RIDES_URI)) {
+                setTitle(R.string.my_rides);
+                results.setSpinningEnabled(false);
+            }
+            getSupportLoaderManager().initLoader(0, null, this);
+            showFragment(results, RESULTS,
+                    R.anim.slide_in_right,R.anim.slide_out_right);
         }
     }
 
@@ -275,8 +276,8 @@ public class MainActivity extends SherlockFragmentActivity
     }
 
     @Override
-    public void onAuthFail(String arg0) {
-        Crouton.makeText(this, "Fail!", Style.ALERT).show();
+    public void onAuthFail(String reason) {
+        Crouton.makeText(this, "Fail! " + reason, Style.ALERT).show();
         profile.setIcon(R.drawable.ic_topmenu_user);
     }
 

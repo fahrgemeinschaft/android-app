@@ -19,12 +19,13 @@ public class AuthRequestReceiver extends BroadcastReceiver {
                                 "content://de.fahrgemeinschaft/profile")), 0))
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setContentTitle(ctx.getString(R.string.login_required))
-                .setContentText(ctx.getString(R.string.need_to_login))
-                .setTicker(ctx.getString(R.string.need_to_login))
+                .setTicker(ctx.getString(R.string.login_required))
+                .setContentText(ctx.getString(R.string.why_login))
                 .build();
-        ((NotificationManager) ctx.getSystemService(
-                Context.NOTIFICATION_SERVICE)).notify(42, notify);
-        
+        NotificationManager n = (NotificationManager) ctx.getSystemService(
+                Context.NOTIFICATION_SERVICE);
+        n.cancel(42);
+        n.notify(42, notify);
     }
 
 }
