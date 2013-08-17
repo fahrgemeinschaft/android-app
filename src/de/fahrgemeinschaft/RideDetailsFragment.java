@@ -224,7 +224,8 @@ public class RideDetailsFragment extends SherlockFragment
     }
 
     private void updateOptionsMenu() {
-        if (cursor != null && edit != null && getActivity() != null) {
+        if (cursor != null && cursor.getCount() > 0
+                && edit != null && getActivity() != null) {
             cursor.moveToPosition(selected);
             if (isMyRide()) {
                 edit.setVisible(true);
