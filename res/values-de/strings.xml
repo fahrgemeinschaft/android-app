@@ -17,10 +17,9 @@
     <string name="tomorrow">morgen</string>
     <string name="after_tomorrow">übermorgen</string>
     <string name="publish" >veröffentlichen</string>
-    <string name="uncomplete">unvollständig</string>
     <string name="search">suchen</string>
     <string name="offer">anbieten</string>
-    <string name="uncomplete">uncomplete</string>
+    <string name="incomplete">unvollständig</string>
     <string name="searching">suche für</string>
     <string name="nothing">keine Ergebnisse für</string>
     <string name="search_continue">weiter suchen</string>

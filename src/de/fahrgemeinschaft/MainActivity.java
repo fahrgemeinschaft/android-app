@@ -31,7 +31,6 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.CursorAdapter;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -123,8 +122,8 @@ public class MainActivity extends SherlockFragmentActivity
             break;
         case R.id.btn_mitfahren:
             if (main.ride.getFrom() == null || main.ride.getTo() == null) {
-                Toast.makeText(this, getString(R.string.uncomplete),
-                        Toast.LENGTH_SHORT).show();
+                Crouton.makeText(this, getString(R.string.incomplete),
+                        Style.INFO).show();
                 return;
             }
             r.type(Ride.SEARCH).arr(r.getDep() +2*24*3600*1000)

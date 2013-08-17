@@ -135,7 +135,7 @@ public class EditRideActivity extends SherlockFragmentActivity
     @Override
     public void onClick(View v) {
         if (ride.getFrom() == null || ride.getTo() == null) {
-            Crouton.makeText(this, getString(R.string.uncomplete), Style.INFO)
+            Crouton.makeText(this, getString(R.string.incomplete), Style.INFO)
                 .show();
         } else {
             ride.set("Comment", ((EditText) findViewById(
