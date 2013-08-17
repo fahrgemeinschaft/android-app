@@ -247,7 +247,7 @@ public class RideListFragment extends SpinningZebraListFragment
 //                        R.anim.slide_out_left, R.anim.slide_in_right);
                 break;
             case R.id.increase_seats:
-                if (ride.getSeats() <= 4) {
+                if (ride.getSeats() <= 3) { // 4 is max / means many
                     ride.seats(ride.getSeats() + 1).dirty().store(getContext());
                     getContext().startService(
                         new Intent(getContext(), ConnectorService.class)

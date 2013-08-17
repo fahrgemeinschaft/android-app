@@ -211,7 +211,8 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
         for (int i = 0; i < seats.getChildCount(); i++) {
             seats.getChildAt(i).setSelected(false);
         }
-        seats.getChildAt(s).setSelected(true);
+        if (s >= 0 && s <= 4 )
+            seats.getChildAt(s).setSelected(true);
         ride.seats(s);
     }
 
