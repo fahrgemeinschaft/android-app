@@ -23,7 +23,7 @@
     <string name="publish">publish</string>
     <string name="search">search</string>
     <string name="offer">offer</string>
-    <string name="uncomplete">uncomplete</string>
+    <string name="incomplete">uncomplete</string>
     <string name="searching">searching for</string>
     <string name="nothing">nothing found for</string>
     <string name="search_continue">continue searching</string>
