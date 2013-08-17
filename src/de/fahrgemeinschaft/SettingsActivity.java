@@ -34,6 +34,7 @@ public class SettingsActivity extends SherlockPreferenceActivity
         super.onCreate(savedInstanceState);
         setTitle(R.string.settings);
         getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefs.registerOnSharedPreferenceChangeListener(this);
         addPreferencesFromResource(R.xml.settings);
