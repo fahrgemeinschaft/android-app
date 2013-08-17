@@ -87,6 +87,7 @@ public class MainActivity extends SherlockFragmentActivity
 
     private void handleIntent(Uri uri) {
         if (uri.getLastPathSegment().equals("profile")) {
+            setTitle(R.string.profile);
             showFragment(new ProfileFragment(), "profile",
                     R.anim.slide_in_top,R.anim.slide_out_top);
         } else {
@@ -224,10 +225,12 @@ public class MainActivity extends SherlockFragmentActivity
                     R.anim.slide_in_top, R.anim.do_nix);
             return true;
         case R.id.profile:
+            setTitle(R.string.profile);
             showFragment(new ProfileFragment(), "profile",
                         R.anim.slide_in_top, R.anim.slide_out_top);
             return true;
         case android.R.id.home:
+            setTitle("About");
             if (getSupportFragmentManager().getBackStackEntryCount() > 0)
                 getSupportFragmentManager().popBackStack();
             else {
