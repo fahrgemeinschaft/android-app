@@ -72,25 +72,24 @@ public class RideListFragment extends SpinningZebraListFragment
             v.to_city.setText(ride.getString(COLUMNS.TO_ADDRESS));
 
         v.row.bind(ride, getActivity());
-        long dif = ride.getLong(COLUMNS.DEPARTURE) - currently_searching_date;
-        if (ride.getShort(COLUMNS.DIRTY) == 1 || dif > 0 && dif < 24*3600000) {
+        long dep = ride.getLong(COLUMNS.DEPARTURE);
+        if (dep - System.currentTimeMillis() < 0 ||
+                (ride.getInt(COLUMNS.ACTIVE) == 0)) {
+                v.inactive.setVisibility(View.VISIBLE);
+        } else {
+            v.inactive.setVisibility(View.GONE);
+        }
+        dep = dep - currently_searching_date;
+        if (ride.getShort(COLUMNS.DIRTY) == 1 || dep > 0 && dep < 24*3600000) {
             v.loading.setVisibility(View.VISIBLE);
         } else {
             v.loading.setVisibility(View.GONE);
         }
-
         if (ride.getString(COLUMNS.MODE).equals(Mode.CAR.name())) {
             v.mode.setImageResource(R.drawable.icn_mode_car);
         } else {
             v.mode.setImageResource(R.drawable.icn_mode_train);
         }
-
-        if (ride.getInt(COLUMNS.ACTIVE) == 0) {
-            v.inactive.setVisibility(View.VISIBLE);
-        } else {
-            v.inactive.setVisibility(View.GONE);
-        }
-
         if (isMyRide(ride) && ride.getInt(COLUMNS.ACTIVE) == 1) {
             v.showButtons();
         } else {
