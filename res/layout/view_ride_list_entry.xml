@@ -62,7 +62,6 @@
                 android:ellipsize="end"
                 android:textIsSelectable="false" />
         </RelativeLayout>
-
     </LinearLayout>
 
     <LinearLayout 
@@ -84,7 +83,6 @@
             android:layout_width="wrap_content"
             android:src="@drawable/icn_mode_train"
             android:contentDescription="@string/mode_car" />
-
     </LinearLayout>
 
     <View
