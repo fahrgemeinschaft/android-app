@@ -8,8 +8,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     
     <item
-        android:id="@+id/my_rides"
-        android:title="@string/my_rides"
+        android:id="@+id/myrides"
+        android:title="@string/myrides"
         android:icon="@drawable/ic_topmenu_rides"
         android:alphabeticShortcut="m"
         android:showAsAction="always|withText" />

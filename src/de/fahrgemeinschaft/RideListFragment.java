@@ -74,14 +74,18 @@ public class RideListFragment extends SpinningZebraListFragment
         v.row.bind(ride, getActivity());
 
         long dep = ride.getLong(COLUMNS.DEPARTURE);
-        if (isMyRide(ride) // and is active future ride
-                && dep - System.currentTimeMillis() > 0
-                && (ride.getInt(COLUMNS.ACTIVE) == 1)) {
+        if (isMyRide(ride)) {
+            if (dep - System.currentTimeMillis() > 0  // future ride
+                    && (ride.getInt(COLUMNS.ACTIVE) == 1)) {
                 v.showButtons();
                 v.streifenhoernchen.setVisibility(View.GONE);
+            } else {
+                v.hideButtons();
+                v.streifenhoernchen.setVisibility(View.VISIBLE);
+            }
         } else {
             v.hideButtons();
-            v.streifenhoernchen.setVisibility(View.VISIBLE);
+            v.streifenhoernchen.setVisibility(View.GONE);
         }
         dep = dep - currently_searching_date; // refresh spinning wheel
         if (ride.getShort(COLUMNS.DIRTY) == 1 || dep > 0 && dep < 24*3600000) {
@@ -188,9 +192,8 @@ public class RideListFragment extends SpinningZebraListFragment
 
     @Override
     public void onDetach() {
-        getActivity().setTitle("");
-//        Crouton.cancelAllCroutons();
         getActivity().unbindService(this);
+//        Crouton.cancelAllCroutons();
         super.onDetach();
     }
 

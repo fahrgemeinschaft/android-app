@@ -106,7 +106,7 @@ public class EditRideActivity extends SherlockFragmentActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.my_rides:
+        case R.id.myrides:
             startActivity(new Intent(this, MainActivity.class)
                 .setData(MainActivity.MY_RIDES_URI));
             overridePendingTransition(R.anim.do_nix, R.anim.slide_in_top);

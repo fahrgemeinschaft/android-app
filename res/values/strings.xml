@@ -28,9 +28,11 @@
     <string name="nothing">nothing found for</string>
     <string name="search_continue">continue searching</string>
     <string name="results">Results</string>
-    <string name="my_rides">My Rides</string>
+    <string name="details">Details</string>
+    <string name="myrides">My Rides</string>
     <string name="profile">Profile</string>
     <string name="settings">Settings</string>
+    <string name="about">About</string>
     <string name="decrease_seats">-</string>
     <string name="increase_seats">+</string>
     <string name="edit">Edit</string>

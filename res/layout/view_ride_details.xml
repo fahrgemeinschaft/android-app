@@ -78,19 +78,19 @@
                     android:layout_marginLeft="@dimen/small"
                     android:orientation="vertical"
                     android:background="@color/almost_medium_green" >
-                    <TextView 
+                    <TextView
                         android:id="@+id/driver_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="6dp"
                         style="@style/dark.MediumLarge" />
-                    <TextView 
+                    <TextView
                         android:id="@+id/driver_registration_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="6dp"
                         style="@style/light.MediumSmall" />
-                    <TextView 
+                    <TextView
                         android:id="@+id/driver_active_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
