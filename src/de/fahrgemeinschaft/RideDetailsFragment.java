@@ -232,11 +232,16 @@ public class RideDetailsFragment extends SherlockFragment
                 delete.setVisible(true);
                 duplicate.setVisible(true);
                 duplicate_retour.setVisible(true);
-                toggle_active.setVisible(true);
-                if (cursor.getInt(COLUMNS.ACTIVE) == 1) {
-                    toggle_active.setTitle(R.string.deactivate);
-                } else {
-                    toggle_active.setTitle(R.string.activate);
+                if (cursor.getLong(COLUMNS.DEPARTURE)
+                        - System.currentTimeMillis() > 0) { // future ride
+                    toggle_active.setVisible(true);
+                    if (cursor.getInt(COLUMNS.ACTIVE) == 1) {
+                        toggle_active.setTitle(R.string.deactivate);
+                    } else {
+                        toggle_active.setTitle(R.string.activate);
+                    }
+                } else { // past ride
+                    toggle_active.setVisible(false);
                 }
             } else {
                 edit.setVisible(false);

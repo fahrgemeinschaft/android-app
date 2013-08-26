@@ -158,10 +158,15 @@ public class RideListFragment extends SpinningZebraListFragment
         getActivity().getMenuInflater().inflate(R.menu.ride_actions, m);
         if (isMyRide(cursor)) {
             MenuItem toggle_active = m.findItem(R.id.toggle_active);
-            if (cursor.getInt(COLUMNS.ACTIVE) == 1) {
-                toggle_active.setTitle(R.string.deactivate);
-            } else {
-                toggle_active.setTitle(R.string.activate);
+            if (cursor.getLong(COLUMNS.DEPARTURE)
+                    - System.currentTimeMillis() > 0) { // future ride
+                if (cursor.getInt(COLUMNS.ACTIVE) == 1) {
+                    toggle_active.setTitle(R.string.deactivate);
+                } else {
+                    toggle_active.setTitle(R.string.activate);
+                }
+            } else { // past ride
+                m.findItem(R.id.toggle_active).setVisible(false);
             }
         } else {
             m.findItem(R.id.edit).setVisible(false);
