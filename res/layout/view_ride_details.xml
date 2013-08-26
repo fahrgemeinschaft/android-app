@@ -80,6 +80,7 @@
                     android:background="@color/almost_medium_green" >
                     <TextView 
                         android:id="@+id/driver_name"
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="6dp"

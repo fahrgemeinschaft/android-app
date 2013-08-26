@@ -399,7 +399,7 @@ public class RideDetailsFragment extends SherlockFragment
                     if (visible) {
                         name.setText(firstname + " " + lastname);
                     } else {
-                        name.setText(firstname + " " + "<not visible>"); 
+                        name.setText(firstname); 
                     }
                     Date since = lrdate.parse(user.getString("RegistrationDate"));
                     Date logon = lrdate.parse(user.getString("LastvisitDate"));
