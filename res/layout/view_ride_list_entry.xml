@@ -113,7 +113,7 @@
         android:layout_below="@id/row" />
 
     <View
-        android:id="@+id/inactive"
+        android:id="@+id/streifenhoernchen"
         android:visibility="gone"
         android:layout_height="73dp"
         android:layout_width="match_parent"

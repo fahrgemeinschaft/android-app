@@ -72,14 +72,18 @@ public class RideListFragment extends SpinningZebraListFragment
             v.to_city.setText(ride.getString(COLUMNS.TO_ADDRESS));
 
         v.row.bind(ride, getActivity());
+
         long dep = ride.getLong(COLUMNS.DEPARTURE);
-        if (dep - System.currentTimeMillis() < 0 ||
-                (ride.getInt(COLUMNS.ACTIVE) == 0)) {
-                v.inactive.setVisibility(View.VISIBLE);
+        if (isMyRide(ride) // and is active future ride
+                && dep - System.currentTimeMillis() > 0
+                && (ride.getInt(COLUMNS.ACTIVE) == 1)) {
+                v.showButtons();
+                v.streifenhoernchen.setVisibility(View.GONE);
         } else {
-            v.inactive.setVisibility(View.GONE);
+            v.hideButtons();
+            v.streifenhoernchen.setVisibility(View.VISIBLE);
         }
-        dep = dep - currently_searching_date;
+        dep = dep - currently_searching_date; // refresh spinning wheel
         if (ride.getShort(COLUMNS.DIRTY) == 1 || dep > 0 && dep < 24*3600000) {
             v.loading.setVisibility(View.VISIBLE);
         } else {
@@ -89,11 +93,6 @@ public class RideListFragment extends SpinningZebraListFragment
             v.mode.setImageResource(R.drawable.icn_mode_car);
         } else {
             v.mode.setImageResource(R.drawable.icn_mode_train);
-        }
-        if (isMyRide(ride) && ride.getInt(COLUMNS.ACTIVE) == 1) {
-            v.showButtons();
-        } else {
-            view.findViewById(R.id.stub).setVisibility(View.GONE);
         }
     }
 
@@ -197,14 +196,14 @@ public class RideListFragment extends SpinningZebraListFragment
 
     static class RideView extends RelativeLayout implements OnClickListener {
 
+        View streifenhoernchen;
+        ProgressBar loading;
         TextView from_place;
         TextView from_city;
         TextView to_place;
         TextView to_city;
-        ProgressBar loading;
         RideRowView row;
         ImageView mode;
-        View inactive;
         int id;
 
         public RideView(Context context, AttributeSet attrs) {
@@ -214,15 +213,15 @@ public class RideListFragment extends SpinningZebraListFragment
         @Override
         protected void onFinishInflate() {
             super.onFinishInflate();
+            streifenhoernchen = findViewById(R.id.streifenhoernchen);
+            Util.fixStreifenhoernchen(streifenhoernchen);
+            loading = (ProgressBar) findViewById(R.id.loading);
             from_place = (TextView) findViewById(R.id.from_place);
             from_city = (TextView) findViewById(R.id.from_city);
             to_place = (TextView) findViewById(R.id.to_place);
             to_city = (TextView) findViewById(R.id.to_city);
-            loading = (ProgressBar) findViewById(R.id.loading);
             row = (RideRowView) findViewById(R.id.row);
             mode = (ImageView) findViewById(R.id.mode);
-            inactive = findViewById(R.id.inactive);
-            Util.fixStreifenhoernchen(inactive);
         }
 
         public void showButtons() {
@@ -233,6 +232,10 @@ public class RideListFragment extends SpinningZebraListFragment
             findViewById(R.id.edit).setFocusable(false);
             findViewById(R.id.increase_seats).setFocusable(false);
             findViewById(R.id.decrease_seats).setFocusable(false);
+        }
+
+        public void hideButtons() {
+            findViewById(R.id.stub).setVisibility(View.GONE);
         }
 
         @Override
