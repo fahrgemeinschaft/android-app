@@ -22,6 +22,7 @@
         android:id="@+id/date"
         style="@style/light.Large"
         android:layout_width="98dp"
+        android:layout_marginLeft="-10dp"
         android:gravity="center_horizontal"
         android:textIsSelectable="false"
         android:layout_height="match_parent"
@@ -38,6 +39,7 @@
         android:id="@+id/price"
         style="@style/light.Large.Bold"
         android:layout_weight="1"
+        android:layout_marginLeft="-10dp"
         android:textIsSelectable="false"
         android:layout_height="match_parent"
         android:gravity="center" />
