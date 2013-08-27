@@ -30,10 +30,11 @@ import com.actionbarsherlock.app.SherlockFragment;
 
 import de.fahrgemeinschaft.util.ButtonImageButton;
 import de.fahrgemeinschaft.util.EditTextImageButton;
+import de.fahrgemeinschaft.util.EditTextImageButton.TextListener;
 import de.fahrgemeinschaft.util.ReoccuringWeekDaysView;
 
 public class EditRideFragment2 extends SherlockFragment 
-        implements OnDateSetListener, OnTimeSetListener {
+        implements OnDateSetListener, OnTimeSetListener, TextListener {
 
     private Ride ride; 
     private ButtonImageButton date;
@@ -60,6 +61,7 @@ public class EditRideFragment2 extends SherlockFragment
         time.icn.setOnClickListener(pickTime);
         price = (EditTextImageButton) v.findViewById(R.id.price);
         price.text.setOnFocusChangeListener(onPriceChange);
+        price.setTextListener("price", this);
         reoccur = (ReoccuringWeekDaysView) v.findViewById(R.id.reoccur);
     }
 
@@ -91,13 +93,17 @@ public class EditRideFragment2 extends SherlockFragment
         ride.price(p);
     }
 
+    @Override
+    public void onTextChange(String key, String text) {
+        if (text.matches("\\d+\\.?\\d*"))
+            ride.price((int) Double.valueOf(text).doubleValue() * 100);
+    }
+
     OnFocusChangeListener onPriceChange = new OnFocusChangeListener() {
         
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
-            if (hasFocus) {
-                price.text.setText("");
-            } else {
+            if (!hasFocus) {
                 String p = price.text.getText().toString();
                 if (p.matches("\\d+\\.?\\d*"))
                     setPrice((int) Double.valueOf(p).doubleValue() * 100);
