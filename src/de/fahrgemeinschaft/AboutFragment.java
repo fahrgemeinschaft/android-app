@@ -83,7 +83,7 @@ public class AboutFragment extends SherlockFragment implements OnClickListener {
             openBrowser("http://iconmonstr.com");
             break;
         case R.id.subphisticated_logo:
-            openBrowser("http://subphisticated.com.com");
+            openBrowser("http://subphisticated.com");
             break;
         }
     }

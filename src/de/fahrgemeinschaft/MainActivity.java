@@ -18,12 +18,14 @@ import org.teleportr.Ride;
 import org.teleportr.Ride.COLUMNS;
 
 import android.content.Intent;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -43,37 +45,42 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class MainActivity extends SherlockFragmentActivity
        implements OnClickListener, ListFragmentCallback,
-       LoaderCallbacks<Cursor>, OnPageChangeListener, AuthListener {
+       LoaderCallbacks<Cursor>, OnPageChangeListener,
+       AuthListener, OnBackStackChangedListener {
 
-    public static final Uri MY_RIDES_URI =
-            Uri.parse("content://de.fahrgemeinschaft/myrides");
-    public static final Uri BG_JOBS_URI =
-            Uri.parse("content://de.fahrgemeinschaft/jobs/search");
-    public static final String TAG = "Fahrgemeinschaft";
-    private static final String DETAILS = "details";
-    private static final String RESULTS = "results";
-    public RideDetailsFragment details;
-    public RideListFragment results;
     public MainFragment main;
     private MenuItem profile;
+    public RideListFragment results;
+    private RideListFragment myrides;
+    public RideDetailsFragment details;
+    private RideDetailsFragment mydetails;
+    public static final String TAG = "Fahrgemeinschaft";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("");
         setContentView(R.layout.activity_main);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        PreferenceManager.setDefaultValues(this, R.xml.settings, false);
         FragmentManager fm = getSupportFragmentManager();
-        main = (MainFragment) fm.findFragmentById(R.id.main);
-        results = (RideListFragment) fm.findFragmentByTag(RESULTS);
+        main = (MainFragment) fm.findFragmentByTag("main");
+        results = (RideListFragment)
+                fm.findFragmentByTag(getString(R.string.results));
         if (results == null) results = new RideListFragment();
-        details = (RideDetailsFragment) fm.findFragmentByTag(DETAILS);
+        results.setSpinningEnabled(true);
+        myrides = (RideListFragment)
+                fm.findFragmentByTag(getString(R.string.myrides));
+        if (myrides == null) myrides = new RideListFragment();
+        myrides.setSpinningEnabled(false);
+        details = (RideDetailsFragment)
+                fm.findFragmentByTag(getString(R.string.details));
         if (details == null) details = new RideDetailsFragment();
-        if (getIntent().getData() != null) {
-            handleIntent(getIntent().getData());
-        }
-        if (fm.getBackStackEntryCount() == 0) setTitle("");
+        mydetails = (RideDetailsFragment)
+                fm.findFragmentByTag(getString(R.string.mydetails));
+        if (mydetails == null) mydetails = new RideDetailsFragment();
+        handleIntent(getIntent().getData());
+        PreferenceManager.setDefaultValues(this, R.xml.settings, false);
+        getSupportFragmentManager().addOnBackStackChangedListener(this);
+        onBackStackChanged();
     }
 
     @Override
@@ -81,29 +88,32 @@ public class MainActivity extends SherlockFragmentActivity
         super.onNewIntent(intent);
         if (intent.getData() != null) {
             handleIntent(intent.getData());
+            switch (uriMatcher.match(intent.getData())) {
+            case SEARCH:
+                showFragment(results, getString(R.string.results),
+                        R.anim.slide_in_right,R.anim.slide_out_right);
+                break;
+            case MYRIDES:
+                showFragment(myrides, getString(R.string.myrides),
+                        R.anim.slide_in_top, R.anim.slide_out_top);
+                break;
+            case DETAILS:
+                break;
+            }
         }
     }
 
     private void handleIntent(Uri uri) {
-        if (uri.getLastPathSegment().equals("profile")) {
-            setTitle(R.string.profile);
-            showFragment(new ProfileFragment(), "profile",
-                    R.anim.slide_in_top,R.anim.slide_out_top);
-        } else {
-            if (getIntent().getData() != uri) {
-                setIntent(getIntent().setData(uri));
-                getSupportLoaderManager().destroyLoader(0);
+        if (uri != null) {
+            setIntent(getIntent().setData(uri));
+            switch (uriMatcher.match(uri)) {
+            case SEARCH:
+                getSupportLoaderManager().restartLoader(SEARCH, null, this);
+                break;
+            case MYRIDES:
+                getSupportLoaderManager().restartLoader(MYRIDES, null, this);
+                break;
             }
-            if (uri.getLastPathSegment().equals("rides")) {
-                setTitle(R.string.results);
-                results.setSpinningEnabled(true);
-            } else if (uri.equals(MY_RIDES_URI)) {
-                setTitle(R.string.my_rides);
-                results.setSpinningEnabled(false);
-            }
-            getSupportLoaderManager().initLoader(0, null, this);
-            showFragment(results, RESULTS,
-                    R.anim.slide_in_right,R.anim.slide_out_right);
         }
     }
 
@@ -130,11 +140,8 @@ public class MainActivity extends SherlockFragmentActivity
                 .store(this);
             startService(new Intent(this, ConnectorService.class)
                 .setAction(ConnectorService.SEARCH));
-            handleIntent(Uri.parse("content://de.fahrgemeinschaft/rides"
-                    + "?from_id=" + r.getFromId()
-                    + "&to_id=" + r.getToId()
-                    + "&dep=" + r.getDep()));
-            showFragment(results, RESULTS,
+            handleIntent(r.toUri());
+            showFragment(results, getString(R.string.results),
                     R.anim.slide_in_right,R.anim.slide_out_right);
             break;
         }
@@ -142,31 +149,50 @@ public class MainActivity extends SherlockFragmentActivity
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle b) {
-        Uri uri = getIntent().getData();
-        System.out.println("create loader " + id + " : " + uri);
-        if (uri != null)
-            return new CursorLoader(this, uri, null, null, null, null);
-        else return null;
+        return new CursorLoader(this, getIntent().getData(),
+                null, null, null, null);
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> l, Cursor rides) {
-        results.swapCursor(rides);
-        details.swapCursor(rides);
-        if (rides.getCount() > 0) {
-            rides.moveToLast();
-            long latest_dep = rides.getLong(COLUMNS.DEPARTURE);
-            System.out.println("ALREADY in CACHE until "
-                    + new SimpleDateFormat("dd.MM. HH:mm", Locale.GERMANY)
-                            .format(new Date(latest_dep)));
-            if (latest_dep - main.ride.getArr() > 24*3600000) {// inc window
-                Calendar cal = Calendar.getInstance();
-                cal.setTimeInMillis(latest_dep);
-                cal.set(Calendar.HOUR_OF_DAY, 0);
-                cal.set(Calendar.MINUTE, 0);
-                cal.set(Calendar.SECOND, 0);
-                main.ride.arr(cal.getTimeInMillis());
+    public void onLoadFinished(Loader<Cursor> loader, Cursor rides) {
+        switch (loader.getId()) {
+        case MYRIDES:
+            myrides.swapCursor(rides);
+            mydetails.swapCursor(rides);
+            break;
+        case SEARCH:
+            results.swapCursor(rides);
+            details.swapCursor(rides);
+            if (rides.getCount() > 0) {
+                rides.moveToLast();
+                long latest_dep = rides.getLong(COLUMNS.DEPARTURE);
+                System.out.println("ALREADY in CACHE until "
+                        + new SimpleDateFormat("dd.MM. HH:mm", Locale.GERMANY)
+                        .format(new Date(latest_dep)));
+                if (latest_dep - main.ride.getArr() > 24*3600000) {// inc window
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTimeInMillis(latest_dep);
+                    cal.set(Calendar.HOUR_OF_DAY, 0);
+                    cal.set(Calendar.MINUTE, 0);
+                    cal.set(Calendar.SECOND, 0);
+                    main.ride.arr(cal.getTimeInMillis()).store(this);
+                }
             }
+            break;
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        switch (loader.getId()) {
+        case SEARCH:
+            results.swapCursor(null);
+            details.swapCursor(null);
+            break;
+        case MYRIDES:
+            myrides.swapCursor(null);
+            mydetails.swapCursor(null);
+            break;
         }
     }
 
@@ -183,9 +209,15 @@ public class MainActivity extends SherlockFragmentActivity
 
     @Override
     public void onListItemClick(int position) {
-        showFragment(details, DETAILS,
-                R.anim.slide_in_right, R.anim.slide_out_right);
-        details.setSelection(position);
+        if (getIntent().getData().equals(MY_RIDES_URI)) {
+            mydetails.setSelection(position);
+            showFragment(mydetails, getString(R.string.mydetails),
+                    R.anim.slide_in_right, R.anim.slide_out_right);
+        } else {
+            details.setSelection(position);
+            showFragment(details, getString(R.string.details),
+                    R.anim.slide_in_right, R.anim.slide_out_right);
+        }
     }
 
     @Override
@@ -211,9 +243,9 @@ public class MainActivity extends SherlockFragmentActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.my_rides:
+        case R.id.myrides:
             handleIntent(MY_RIDES_URI);
-            showFragment(results, RESULTS,
+            showFragment(myrides, getString(R.string.myrides),
                     R.anim.slide_in_top, R.anim.slide_out_top);
             startService(new Intent(this, ConnectorService.class)
                 .setAction(ConnectorService.PUBLISH));
@@ -224,26 +256,23 @@ public class MainActivity extends SherlockFragmentActivity
                     R.anim.slide_in_top, R.anim.do_nix);
             return true;
         case R.id.profile:
-            setTitle(R.string.profile);
-            showFragment(new ProfileFragment(), "profile",
-                        R.anim.slide_in_top, R.anim.slide_out_top);
+            showFragment(new ProfileFragment(), getString(R.string.profile),
+                    R.anim.slide_in_top, R.anim.slide_out_top);
             return true;
-        case android.R.id.home:
-            setTitle("About");
+        case android.R.id.home: // up
             if (getSupportFragmentManager().getBackStackEntryCount() > 0)
                 getSupportFragmentManager().popBackStack();
-            else {
-                showFragment(new AboutFragment(), "about",
-                        R.anim.slide_in_left, R.anim.slide_out_left);
-            }
+            else
+                showFragment(new AboutFragment(), getString(R.string.about),
+                    R.anim.slide_in_left, R.anim.slide_out_left);
             return true;
         default:
             return super.onOptionsItemSelected(item);
         }
     }
 
-    private void showFragment(Fragment fragment, String name,
-            int anim_in, int anim_out) {
+    private void showFragment(Fragment fragment, String name, int in, int out) {
+        setTitle(name);
         FragmentManager fm = getSupportFragmentManager();
         for (int i = fm.getBackStackEntryCount() - 1; i >= 0; i--) {
             if (fm.getBackStackEntryAt(i).getName().equals(name)) {
@@ -255,21 +284,32 @@ public class MainActivity extends SherlockFragmentActivity
         }
         fm.beginTransaction()
             .setCustomAnimations(
-                anim_in, R.anim.do_nix,
-                R.anim.do_nix, anim_out)
-            .replace(R.id.container, fragment, name)
+                in, R.anim.do_nix, R.anim.do_nix, out)
+            .add(R.id.container, fragment, name)
             .addToBackStack(name)
-        .commitAllowingStateLoss();
+        .commit();
     }
-
-
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        System.out.println("loader reset " + loader.getId());
-        results.swapCursor(null);
-        details.swapCursor(null);
+    public void onBackStackChanged() {
+        FragmentManager fm = getSupportFragmentManager();
+        int backstack = fm.getBackStackEntryCount();
+        if (backstack == 0)
+            setTitle("");
+        else {
+            String name = fm.getBackStackEntryAt(backstack - 1).getName();
+            if (name.equals(getString(R.string.results)) ||
+                    name.equals(getString(R.string.details))) {
+                handleIntent(main.ride.toUri());
+            } else if (name.equals(getString(R.string.myrides)) ||
+                    name.equals(getString(R.string.mydetails))) {
+                handleIntent(MY_RIDES_URI);
+            }
+            setTitle(name);
+        }
     }
+
+
 
     @Override
     public void onAuth() {
@@ -294,4 +334,20 @@ public class MainActivity extends SherlockFragmentActivity
 
     @Override
     public void onPageScrolled(int arg0, float arg1, int arg2) {}
+
+    private static final String AUTHORITY = "de.fahrgemeinschaft";
+    public static final Uri MY_RIDES_URI =
+            Uri.parse("content://de.fahrgemeinschaft/myrides");
+    private static final int DETAILS = 4;
+    private static final int MYRIDES = 5;
+    private static final int SEARCH = 42;
+
+    static final UriMatcher uriMatcher = new UriMatcher(0);
+    static {
+        uriMatcher.addURI(AUTHORITY, "rides", SEARCH);
+        uriMatcher.addURI(AUTHORITY, "myrides", MYRIDES);
+//        uriMatcher.addURI(AUTHORITY, "rides/#", DETAILS);
+//        uriMatcher.addURI(AUTHORITY, "profile", PROFILE);
+//        uriMatcher.addURI(AUTHORITY, "about", ABOUT);
+    }
 }

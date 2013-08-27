@@ -23,8 +23,8 @@
     <string name="searching">suche für</string>
     <string name="nothing">keine Ergebnisse für</string>
     <string name="search_continue">weiter suchen</string>
-    <string name="results">Suchergebnisse</string>
-    <string name="my_rides">Meine Fahrten</string>
+    <string name="results">Ergebnisse</string>
+    <string name="myrides">Meine Fahrten</string>
     <string name="profile">Profil</string>
     <string name="settings">Einstellungen</string>
     <string name="decrease_seats">-</string>
