@@ -37,6 +37,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -122,7 +123,7 @@ public class RideDetailsFragment extends SherlockFragment
                 cursor.moveToPosition((Integer) position);
 
                 view.url = null;
-                view.name.setText("");
+
                 view.from_place.setText(cursor.getString(COLUMNS.FROM_ADDRESS));
                 view.to_place.setText(cursor.getString(COLUMNS.TO_ADDRESS));
 
@@ -143,8 +144,12 @@ public class RideDetailsFragment extends SherlockFragment
                     .initLoader((int) cursor.getLong(0), null, view);
 
                 view.avatar.setImageResource(R.drawable.icn_view_user);
+                view.name.setText("");
                 view.last_login.setText("");
                 view.reg_date.setText("");
+                view.name.setVisibility(View.GONE);
+                view.last_login.setVisibility(View.GONE);
+                view.reg_date.setVisibility(View.GONE);
 
                 if (isMyRide(cursor)) {
                     if (cursor.getLong(COLUMNS.DEPARTURE)
@@ -285,6 +290,7 @@ public class RideDetailsFragment extends SherlockFragment
     static class RideView extends RelativeLayout
         implements LoaderCallbacks<Cursor>, Response.Listener<JSONObject> {
 
+        LinearLayout driver_info;
         String url;
         RideRowView row;
         String userId;
@@ -299,6 +305,7 @@ public class RideDetailsFragment extends SherlockFragment
         TextView details;
         View streifenhoernchen;
         ReoccuringWeekDaysView reoccur;
+        ProgressBar name_loading;
 
         public RideView(Context context, AttributeSet attrs) {
             super(context, attrs);
@@ -315,6 +322,7 @@ public class RideDetailsFragment extends SherlockFragment
             details = (TextView) findViewById(R.id.details);
             content = (LinearLayout) findViewById(R.id.content);
             avatar = (ImageView)findViewById(R.id.avatar);
+            name_loading = (ProgressBar) findViewById(R.id.name_loading);
             name = (TextView) findViewById(R.id.driver_name);
             reg_date = (TextView) findViewById(R.id.driver_registration_date);
             last_login = (TextView) findViewById(R.id.driver_active_date);
@@ -406,7 +414,7 @@ public class RideDetailsFragment extends SherlockFragment
                     if (visible) {
                         name.setText(firstname + " " + lastname);
                     } else {
-                        name.setText(firstname); 
+                        name.setText(firstname);
                     }
                     Date since = lrdate.parse(user.getString("RegistrationDate"));
                     Date logon = lrdate.parse(user.getString("LastvisitDate"));
@@ -418,6 +426,11 @@ public class RideDetailsFragment extends SherlockFragment
                     //                  reg_date.setText(user.getJSONArray("").getString("Value") + " " 
                     //                          + kvp.getJSONObject(2).getString("Value"));
                     //                  Log.d(TAG, json.toString());
+
+                    name_loading.setVisibility(View.GONE);
+                    name.setVisibility(View.VISIBLE);
+                    last_login.setVisibility(View.VISIBLE);
+                    reg_date.setVisibility(View.VISIBLE);
                     if (!user.isNull("AvatarPhoto")) {
                         JSONObject photo = user.getJSONObject("AvatarPhoto");
                         String id = photo.getString("PhotoID");
