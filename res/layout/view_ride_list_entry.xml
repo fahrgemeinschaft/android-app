@@ -115,6 +115,6 @@
         android:visibility="gone"
         android:layout_height="73dp"
         android:layout_width="match_parent"
-        android:background="@drawable/background_repeat" />
+        android:background="@drawable/streifenhoernchen_grey" />
 
 </view>
