@@ -61,7 +61,7 @@ public class ProfileFragment extends SherlockFragment
         v.findViewById(R.id.register).setOnClickListener(this);
         super.onViewCreated(v, savedInstanceState);
         username.text.setText(prefs.getString("login",
-                prefs.getString("EMail", "")));
+                prefs.getString("Email", "")));
         password.text.setText(prefs.getString("password", ""));
     }
 

@@ -76,7 +76,6 @@ public class FahrgemeinschaftConnector extends Connector {
         HttpURLConnection get;
         if (from == null && to == null) { // myrides
             get = (HttpURLConnection) new URL(endpoint + "/trip").openConnection();
-            get.setRequestProperty("authkey", getAuth());
         } else {
             JSONObject from_json = new JSONObject();
             JSONObject to_json = new JSONObject();
@@ -88,7 +87,6 @@ public class FahrgemeinschaftConnector extends Connector {
                 from_json.put("Reoccur", JSONObject.NULL);
                 from_json.put("ToleranceRadius", get("radius_from"));
                 // place.put("Starttime", JSONObject.NULL);
-                
                 to_json.put("Longitude", "" + to.getLng());
                 to_json.put("Latitude", "" + to.getLat());
                 to_json.put("ToleranceRadius", get("radius_to"));
@@ -102,6 +100,8 @@ public class FahrgemeinschaftConnector extends Connector {
         }
         try {
             get.setRequestProperty("apikey", Secret.APIKEY);
+            if (getAuth() != null)
+                get.setRequestProperty("authkey", getAuth());
             JSONObject json = loadJson(get);
             if (get.getResponseCode() == 403)
                 throw new AuthException();
@@ -121,15 +121,17 @@ public class FahrgemeinschaftConnector extends Connector {
     }
 
     private long getNextDayMorning(Date dep) {
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(dep.getTime() + 24 * 3600000); // plus one day
-        c.set(Calendar.HOUR_OF_DAY, 0); // reset
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        return c.getTimeInMillis();
+        if (dep != null) {
+            Calendar c = Calendar.getInstance();
+            c.setTimeInMillis(dep.getTime() + 24 * 3600000); // plus one day
+            c.set(Calendar.HOUR_OF_DAY, 0); // reset
+            c.set(Calendar.MINUTE, 0);
+            c.set(Calendar.SECOND, 0);
+            return c.getTimeInMillis();
+        } else return 0;
     }
 
-    private static final String EMAIL = "EMail";
+    private static final String EMAIL = "Email";
     private static final String MOBILE = "Mobile";
     private static final String LANDLINE = "Landline";
     private static final String PLATE = "NumberPlate";
@@ -164,7 +166,7 @@ public class FahrgemeinschaftConnector extends Connector {
         ride.ref(json.getString("TripID"));
         ride.seats(json.getInt("Places"));
         ride.dep(parseTimestamp(json));
-        ride.getDetails().put("reoccur", json.getJSONObject("Reoccur"));
+        ride.getDetails().put("Reoccur", json.getJSONObject("Reoccur"));
 
         if (!json.isNull("Price")) {
             ride.price((int) Double.parseDouble(
@@ -234,8 +236,9 @@ public class FahrgemeinschaftConnector extends Connector {
                     + offer.getRef()).openConnection();
             post.setRequestMethod("PUT");
         }
-        post.setRequestProperty("authkey", getAuth());
         post.setRequestProperty("apikey", Secret.APIKEY);
+        if (getAuth() != null)
+            post.setRequestProperty("authkey", getAuth());
         post.setDoOutput(true);
         JSONObject json = new JSONObject();
 //        json.put("Smoker", "no");

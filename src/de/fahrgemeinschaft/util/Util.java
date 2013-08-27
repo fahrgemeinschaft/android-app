@@ -27,9 +27,12 @@ import android.provider.ContactsContract.Intents.Insert;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Toast;
+import de.fahrgemeinschaft.MainActivity;
 import de.fahrgemeinschaft.R;
 
 public class Util {
+
+    private static Intent profile;
 
     public static boolean handleRideAction(int i, Ride r, FragmentActivity c) {
         switch (i) {
@@ -112,34 +115,75 @@ public class Util {
                 "http://www.fahrgemeinschaft.de/" +
                 "tripdetails.php?trip=" + c.getString(COLUMNS.REF)))
                         .setClass(ctx, WebActivity.class);
-        ArrayList<Intent> intents = new ArrayList<Intent>();
+        ArrayList<Intent> intents = new ArrayList<Intent>() {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public boolean add(Intent intent) {
+                if (intent != null)
+                    return super.add(intent);
+                else return false;
+            }
+        };
         JSONObject details = Ride.getDetails(c);
         String dingens;
         try {
             JSONObject privacy = details.getJSONObject("Privacy");
-            if (!details.isNull(MOBILE) && privacy.getInt(MOBILE) == 1) {
+            if (details.has(MOBILE)) {
                 dingens = details.getString(MOBILE);
                 contact.putExtra(Insert.PHONE, dingens);
-                Intent call = labeledIntent(callIntent(dingens),
-                        R.drawable.icn_contact_handy, dingens, ctx);
-                if (call != null) intents.add(call);
-                Intent sms = labeledIntent(smsIntent(dingens, route),
-                        R.drawable.ic_sms, dingens, ctx);
-                if (sms != null) intents.add(sms);
+                intents.add(labeledIntent(callIntent(dingens),
+                        R.drawable.icn_contact_handy, dingens, ctx));
+                intents.add(labeledIntent(smsIntent(dingens, route),
+                        R.drawable.ic_sms, dingens, ctx));
+            } else if (privacy.getInt(MOBILE) == 4) { // members
+                intents.add(labeledIntent(profileIntent(ctx),
+                        R.drawable.icn_contact_handy,
+                        ctx.getString(R.string.login_required), ctx));
+                intents.add(labeledIntent(profileIntent(ctx),
+                        R.drawable.ic_sms,
+                        ctx.getString(R.string.login_required), ctx));
+            } else if (privacy.getInt(MOBILE) == 0) { // request
+                intents.add(labeledIntent(web,
+                        R.drawable.icn_contact_handy,
+                        ctx.getString(R.string.request_contact), ctx));
+                intents.add(labeledIntent(web,
+                        R.drawable.ic_sms,
+                        ctx.getString(R.string.request_contact), ctx));
+                Toast.makeText(ctx, ctx.getString(R.string.why_request),
+                        Toast.LENGTH_LONG).show();
             }
-            if (!details.isNull(LANDLINE) && privacy.getInt(LANDLINE) == 1) {
+            if (details.has(LANDLINE)) {
                 dingens = details.getString(LANDLINE);
                 contact.putExtra(Insert.SECONDARY_PHONE, dingens);
-                Intent call = labeledIntent(callIntent(dingens),
-                        R.drawable.icn_contact_phone, dingens, ctx);
-                if (call != null) intents.add(call);
+                intents.add(labeledIntent(callIntent(dingens),
+                        R.drawable.icn_contact_phone, dingens, ctx));
+            } else if (privacy.getInt(LANDLINE) == 4) { // members
+                intents.add(labeledIntent(profileIntent(ctx),
+                        R.drawable.icn_contact_phone,
+                        ctx.getString(R.string.login_required), ctx));
+            } else if (privacy.getInt(LANDLINE) == 0) { // request
+                intents.add(labeledIntent(web,
+                        R.drawable.icn_contact_phone,
+                        ctx.getString(R.string.request_contact), ctx));
+                Toast.makeText(ctx, ctx.getString(R.string.why_request),
+                        Toast.LENGTH_LONG).show();
             }
-            if (!details.isNull(EMAIL) && privacy.getInt("Email") == 1) { // 'm'
+            if (!details.has(EMAIL)) { // 'm'
                 dingens = details.getString(EMAIL);
                 contact.putExtra(Insert.EMAIL, dingens);
-                Intent mail = labeledIntent(mailIntent(dingens, route),
-                        R.drawable.icn_contact_email, dingens, ctx);
-                if (mail != null) intents.add(mail);
+                intents.add(labeledIntent(mailIntent(dingens, route),
+                        R.drawable.icn_contact_email, dingens, ctx));
+            } else if (privacy.getInt("Email") == 4) { // members
+                intents.add(labeledIntent(profileIntent(ctx),
+                        R.drawable.icn_contact_email,
+                        ctx.getString(R.string.login_required), ctx));
+            } else if (privacy.getInt("Email") == 0) { // request
+                intents.add(labeledIntent(web,
+                        R.drawable.icn_contact_email,
+                        ctx.getString(R.string.request_contact), ctx));
+                Toast.makeText(ctx, ctx.getString(R.string.why_request),
+                        Toast.LENGTH_LONG).show();
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -154,6 +198,13 @@ public class Util {
                         .putExtra(Intent.EXTRA_INITIAL_INTENTS,
                             intents.toArray(new Parcelable[intents.size()])));
         }
+    }
+
+    public static Intent profileIntent(Context ctx) {
+        if (profile == null)
+            profile = new Intent(ctx, MainActivity.class).setData(Uri.parse(
+                    "content://de.fahrgemeinschaft/profile"));
+        return profile;
     }
 
     public static LabeledIntent labeledIntent(Intent intent,
