@@ -6,17 +6,16 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import de.fahrgemeinschaft.util.Util;
 
 public class AuthRequestReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context ctx, Intent intent) {
         Notification notify = new NotificationCompat.Builder(ctx)
-                .setContentIntent(PendingIntent.getActivity(ctx, 42,
-                        new Intent(ctx, MainActivity.class).setData(Uri.parse(
-                                "content://de.fahrgemeinschaft/profile")), 0))
+                .setContentIntent(PendingIntent.getActivity(
+                        ctx, 42, Util.profileIntent(ctx), 0))
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setContentTitle(ctx.getString(R.string.login_required))
                 .setTicker(ctx.getString(R.string.login_required))

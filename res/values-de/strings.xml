@@ -51,6 +51,11 @@
     <string name="register">registrieren</string>
     <string name="login_required">Bitte einloggen</string>
     <string name="why_login">um Fahrgemeinschaften zu veröffentlichen</string>
+    <string name="request_contact">Auf Website anfragen</string>
+    <string name="why_request">
+        Die Kontaktdaten sind vom Benutzer nicht freigegeben 
+        und können nur über das Webportal angefragt werden.
+    </string>
 
     <string name="contact">Kontakt</string>
     <string name="seats">Sitzplätze</string>

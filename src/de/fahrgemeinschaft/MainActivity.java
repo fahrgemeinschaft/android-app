@@ -97,7 +97,9 @@ public class MainActivity extends SherlockFragmentActivity
                 showFragment(myrides, getString(R.string.myrides),
                         R.anim.slide_in_top, R.anim.slide_out_top);
                 break;
-            case DETAILS:
+            case PROFILE:
+                showFragment(new ProfileFragment(), getString(R.string.profile),
+                        R.anim.slide_in_top, R.anim.slide_out_top);
                 break;
             }
         }
@@ -341,13 +343,15 @@ public class MainActivity extends SherlockFragmentActivity
     private static final int DETAILS = 4;
     private static final int MYRIDES = 5;
     private static final int SEARCH = 42;
+    private static final int PROFILE = 3;
+    private static final int ABOUT = 112;
 
     static final UriMatcher uriMatcher = new UriMatcher(0);
     static {
         uriMatcher.addURI(AUTHORITY, "rides", SEARCH);
         uriMatcher.addURI(AUTHORITY, "myrides", MYRIDES);
 //        uriMatcher.addURI(AUTHORITY, "rides/#", DETAILS);
-//        uriMatcher.addURI(AUTHORITY, "profile", PROFILE);
-//        uriMatcher.addURI(AUTHORITY, "about", ABOUT);
+        uriMatcher.addURI(AUTHORITY, "profile", PROFILE);
+        uriMatcher.addURI(AUTHORITY, "about", ABOUT);
     }
 }

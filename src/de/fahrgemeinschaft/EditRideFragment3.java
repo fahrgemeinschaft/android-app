@@ -28,7 +28,7 @@ import de.fahrgemeinschaft.util.EditTextPrivacyButton.PrivacyListener;
 public class EditRideFragment3 extends SherlockFragment
                 implements TextListener, PrivacyListener {
 
-    private static final String EMAIL = "EMail";
+    private static final String EMAIL = "Email";
     private static final String PLATE = "NumberPlate";
     private static final String MOBILE = "Mobile";
     private static final String LANDLINE = "Landline";
@@ -126,7 +126,6 @@ public class EditRideFragment3 extends SherlockFragment
     @Override
     public void onPrivacyChange(String key, int privacy) {
         try {
-            if (key.equals(EMAIL)) key = "Email"; // lowcase 'm'
             ((EditRideActivity)getActivity()).ride.getDetails()
                 .getJSONObject("Privacy").put(key, privacy);
         } catch (JSONException e) {
