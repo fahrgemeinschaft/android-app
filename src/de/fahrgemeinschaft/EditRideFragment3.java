@@ -14,7 +14,6 @@ import org.teleportr.Ride;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +64,7 @@ public class EditRideFragment3 extends SherlockFragment
         land.setPrivacyListener(LANDLINE, this);
         plate.setPrivacyListener(PLATE, this);
         name.setPrivacyListener(NAME, this);
-        name.text.setInputType(InputType.TYPE_NULL);
+        name.text.setKeyListener(null);
     }
 
     public void setRide(Ride ride) {
