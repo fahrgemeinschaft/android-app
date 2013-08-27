@@ -121,12 +121,6 @@ public class RideDetailsFragment extends SherlockFragment
                     view.content.removeViews(1, view.content.getChildCount()-5);
                 cursor.moveToPosition((Integer) position);
 
-                if (cursor.getInt(COLUMNS.ACTIVE) == 0) {
-                    view.inactive.setVisibility(View.VISIBLE);
-                } else {
-                    view.inactive.setVisibility(View.GONE);
-                }
-
                 view.url = null;
                 view.name.setText("");
                 view.from_place.setText(cursor.getString(COLUMNS.FROM_ADDRESS));
@@ -151,6 +145,18 @@ public class RideDetailsFragment extends SherlockFragment
                 view.avatar.setImageResource(R.drawable.icn_view_user);
                 view.last_login.setText("");
                 view.reg_date.setText("");
+
+                if (isMyRide(cursor)) {
+                    if (cursor.getLong(COLUMNS.DEPARTURE)
+                            - System.currentTimeMillis() > 0  // future ride
+                            && (cursor.getInt(COLUMNS.ACTIVE) == 1)) {
+                        view.streifenhoernchen.setVisibility(View.GONE);
+                    } else {
+                        view.streifenhoernchen.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    view.streifenhoernchen.setVisibility(View.GONE);
+                }
 
                 if (cursor.getString(COLUMNS.WHO).equals("")) {
                     String user = PreferenceManager.getDefaultSharedPreferences(
@@ -280,7 +286,6 @@ public class RideDetailsFragment extends SherlockFragment
         implements LoaderCallbacks<Cursor>, Response.Listener<JSONObject> {
 
         String url;
-        View inactive;
         RideRowView row;
         String userId;
         TextView name;
@@ -292,6 +297,7 @@ public class RideDetailsFragment extends SherlockFragment
         TextView from_place;
         TextView to_place;
         TextView details;
+        View streifenhoernchen;
         ReoccuringWeekDaysView reoccur;
 
         public RideView(Context context, AttributeSet attrs) {
@@ -314,8 +320,8 @@ public class RideDetailsFragment extends SherlockFragment
             last_login = (TextView) findViewById(R.id.driver_active_date);
             reoccur = (ReoccuringWeekDaysView) findViewById(R.id.reoccur);
             row = (RideRowView) findViewById(R.id.row);
-            inactive = findViewById(R.id.inactive);
-            Util.fixStreifenhoernchen(inactive);
+            streifenhoernchen = findViewById(R.id.streifenhoernchen);
+            Util.fixStreifenhoernchen(streifenhoernchen);
             avatar.setOnClickListener(new OnClickListener() {
 
                 @Override
@@ -432,6 +438,13 @@ public class RideDetailsFragment extends SherlockFragment
     public void onErrorResponse(VolleyError err) {
         Log.d(TAG, err.toString());
         err.printStackTrace();
+    }
+
+    private boolean isMyRide(Cursor ride) {
+        return (ride.getString(COLUMNS.WHO).equals("") ||
+                ride.getString(COLUMNS.WHO).equals(PreferenceManager
+                        .getDefaultSharedPreferences(getActivity())
+                        .getString("user", "")));
     }
 
     @Override
