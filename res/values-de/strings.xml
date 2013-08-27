@@ -48,6 +48,7 @@
     <string name="username">eMail</string>
     <string name="password">Passwort</string>
     <string name="login">anmelden</string>
+    <string name="logout">abmelden</string>
     <string name="register">registrieren</string>
     <string name="login_required">Bitte einloggen</string>
     <string name="why_login">um Fahrgemeinschaften zu veröffentlichen</string>

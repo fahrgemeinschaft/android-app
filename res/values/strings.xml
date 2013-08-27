@@ -55,6 +55,7 @@
     <string name="username">eMail</string>
     <string name="password">Password</string>
     <string name="login">login</string>
+    <string name="logout">logout</string>
     <string name="register">register</string>
     <string name="login_required">Please log in</string>
     <string name="why_login">to publish rides on fahrgemeinschaft.de</string>

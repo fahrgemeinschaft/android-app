@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -33,9 +34,12 @@ import com.actionbarsherlock.app.SherlockFragment;
 
 import de.fahrgemeinschaft.util.EditTextImageButton;
 import de.fahrgemeinschaft.util.WebActivity;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class ProfileFragment extends SherlockFragment
-                implements OnClickListener, ServiceConnection {
+        implements OnClickListener, ServiceConnection,
+                OnSharedPreferenceChangeListener {
 
     private EditTextImageButton username;
     private EditTextImageButton password;
@@ -63,6 +67,19 @@ public class ProfileFragment extends SherlockFragment
         username.text.setText(prefs.getString("login",
                 prefs.getString("Email", "")));
         password.text.setText(prefs.getString("password", ""));
+        prefs.registerOnSharedPreferenceChangeListener(this);
+        onSharedPreferenceChanged(prefs, "auth");
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+        if (key.equals("auth")) {
+            if (prefs.contains("auth")) {
+                login.setText(R.string.logout);
+            } else {
+                login.setText(R.string.login);
+            }
+        }
     }
 
     @Override
@@ -76,18 +93,23 @@ public class ProfileFragment extends SherlockFragment
     public void onClick(View v) {
         switch(v.getId()) {
         case R.id.login:
+            boolean logout = prefs.contains("auth");
             Editor t = prefs.edit().remove("auth").remove("password")
                 .putString("login", username.text.getText().toString());
             if (prefs.getBoolean("remember_password", false))
                 t.putString("password", password.text.getText().toString());
             t.commit();
-            server.authenticate(password.text.getText().toString());
-            ((InputMethodManager) getActivity()
-                    .getSystemService(Context.INPUT_METHOD_SERVICE))
-                    .hideSoftInputFromWindow(username.getWindowToken(), 0);
-            ((NotificationManager) getActivity().getSystemService(
-                    Context.NOTIFICATION_SERVICE)).cancel(42);
-            
+            if (logout) {
+                Crouton.makeText(getActivity(), getString(
+                        R.string.logout), Style.CONFIRM).show();
+            } else {
+                server.authenticate(password.text.getText().toString());
+                ((InputMethodManager) getActivity()
+                        .getSystemService(Context.INPUT_METHOD_SERVICE))
+                        .hideSoftInputFromWindow(username.getWindowToken(), 0);
+                ((NotificationManager) getActivity().getSystemService(
+                        Context.NOTIFICATION_SERVICE)).cancel(42);
+            }
             getActivity().getSupportFragmentManager().popBackStack();
             break;
         case R.id.register:
@@ -110,5 +132,6 @@ public class ProfileFragment extends SherlockFragment
 
     @Override
     public void onServiceDisconnected(ComponentName name) {}
+
 
 }
