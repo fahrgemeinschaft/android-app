@@ -29,6 +29,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.fahrgemeinschaft.util.EditTextPrivacyButton;
+import de.fahrgemeinschaft.util.Util;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -108,6 +109,7 @@ public class EditRideActivity extends SherlockFragmentActivity
         switch (item.getItemId()) {
         case R.id.myrides:
             startActivity(new Intent(this, MainActivity.class)
+                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 .setData(MainActivity.MY_RIDES_URI));
             overridePendingTransition(R.anim.do_nix, R.anim.slide_in_top);
             break;
@@ -116,15 +118,13 @@ public class EditRideActivity extends SherlockFragmentActivity
             overridePendingTransition(R.anim.do_nix, R.anim.slide_in_top);
             break;
         case R.id.profile:
-            getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, new ProfileFragment())
-                .addToBackStack("").commit();
+            startActivity(Util.profileIntent(this)
+                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
             overridePendingTransition(R.anim.do_nix, R.anim.slide_in_top);
             break;
         case android.R.id.home:
-            if (getSupportFragmentManager().getBackStackEntryCount() > 0)
-                getSupportFragmentManager().popBackStack();
-            else startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, MainActivity.class)
+                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
             overridePendingTransition(
                     R.anim.slide_in_top, R.anim.slide_out_bottom);
             break;
