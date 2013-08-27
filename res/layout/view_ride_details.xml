@@ -55,7 +55,7 @@
                 android:id="@+id/to_place"
                 layout="@layout/view_place_bubble"
                 android:layout_width="match_parent" />
-            
+
             <LinearLayout 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,6 +63,7 @@
                 android:padding="@dimen/small"
                 android:orientation="horizontal"
                 android:layout_marginTop="@dimen/small" >
+
                 <ImageView
                     android:id="@+id/avatar"
                     android:layout_width="@dimen/xxlarge"
@@ -72,31 +73,42 @@
                     android:src="@drawable/icn_view_user"
                     android:background="@color/medium_green"
                     android:contentDescription="@string/username" />
+
                 <LinearLayout
+                    android:id="@+id/driver_info"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/small"
+                    android:paddingLeft="6dp"
                     android:orientation="vertical"
                     android:background="@color/almost_medium_green" >
+
                     <TextView 
                         android:id="@+id/driver_name"
                         android:layout_weight="1"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="6dp"
+                        android:layout_height="0dip"
                         style="@style/dark.MediumLarge" />
+
                     <TextView 
                         android:id="@+id/driver_registration_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="6dp"
                         style="@style/light.MediumSmall" />
+
                     <TextView 
                         android:id="@+id/driver_active_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="6dp"
                         style="@style/light.MediumSmall" />
+
+                    <ProgressBar
+                        android:id="@+id/name_loading"
+                        android:layout_width="@dimen/larger"
+                        android:layout_height="@dimen/larger"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="-6dp" />
                 </LinearLayout>
             </LinearLayout>
 
