@@ -28,7 +28,7 @@ public abstract class SpinningZebraListFragment extends SherlockListFragment {
 
     abstract public void bindListItemView(View view, Cursor cursor);
 
-    private boolean spinningEnabled = true;
+    protected boolean spinningEnabled = true;
 
     public boolean isSpinningEnabled() {
         return spinningEnabled;

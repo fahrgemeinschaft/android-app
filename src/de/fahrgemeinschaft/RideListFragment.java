@@ -16,7 +16,6 @@ import org.teleportr.Ride;
 import org.teleportr.Ride.COLUMNS;
 import org.teleportr.Ride.Mode;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -108,10 +107,11 @@ public class RideListFragment extends SpinningZebraListFragment
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        getActivity().bindService(
-                new Intent(activity, ConnectorService.class), this, 0);
+    public void onResume() {
+        super.onResume();
+        if (spinningEnabled)
+            getActivity().bindService(
+                    new Intent(getActivity(), ConnectorService.class), this, 0);
     }
 
     @Override
@@ -191,8 +191,9 @@ public class RideListFragment extends SpinningZebraListFragment
     }
 
     @Override
-    public void onDetach() {
-        getActivity().unbindService(this);
+    public void onPause() {
+        if (spinningEnabled)
+            getActivity().unbindService(this);
 //        Crouton.cancelAllCroutons();
         super.onDetach();
     }

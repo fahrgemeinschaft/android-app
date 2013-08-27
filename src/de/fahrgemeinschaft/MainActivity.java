@@ -143,7 +143,6 @@ public class MainActivity extends SherlockFragmentActivity
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor rides) {
-        System.out.println("load " + rides.getCount());
         switch (loader.getId()) {
         case MYRIDES:
             myrides.swapCursor(rides);
