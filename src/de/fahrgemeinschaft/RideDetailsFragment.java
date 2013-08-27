@@ -99,7 +99,7 @@ public class RideDetailsFragment extends SherlockFragment
         super.onViewCreated(layout, savedInstanceState);
         pager = (ViewPager) layout.findViewById(R.id.pager);
         pager.setAdapter(new BasePagerAdapter() {
-            
+
             @Override
             public int getCount() {
                 if (cursor == null)
@@ -107,7 +107,7 @@ public class RideDetailsFragment extends SherlockFragment
                 else
                     return cursor.getCount();
             }
-            
+
             @Override
             protected View getView(Object position, View v, ViewGroup parent) {
                 if (v == null) {
@@ -176,12 +176,14 @@ public class RideDetailsFragment extends SherlockFragment
 
     public void setSelection(int position) {
         selected = position;
+        updateOptionsMenu();
     }
 
     public void swapCursor(Cursor cursor) {
         this.cursor = cursor;
         updateOptionsMenu();
         if (pager != null) {
+            pager.setCurrentItem(selected);
             pager.getAdapter().notifyDataSetChanged();
         }
     }
@@ -195,6 +197,7 @@ public class RideDetailsFragment extends SherlockFragment
         outState.putInt("selected", selected);
         super.onSaveInstanceState(outState);
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -219,12 +222,13 @@ public class RideDetailsFragment extends SherlockFragment
     @Override
     public void onPageSelected(int position) {
         selected = position;
-        ((OnPageChangeListener) getActivity()).onPageSelected(position);
+        if (getActivity() != null)
+            ((OnPageChangeListener) getActivity()).onPageSelected(position);
         updateOptionsMenu();
     }
 
     private void updateOptionsMenu() {
-        if (cursor != null && cursor.getCount() > 0
+        if (cursor != null && cursor.getCount() >= selected
                 && edit != null && getActivity() != null) {
             cursor.moveToPosition(selected);
             if (isMyRide()) {
@@ -350,7 +354,6 @@ public class RideDetailsFragment extends SherlockFragment
 
         @Override
         public Loader<Cursor> onCreateLoader(int ride_id, Bundle b) {
-            Log.d(TAG, "loading subrides for ride " + ride_id);
             return new CursorLoader(getContext(), Uri.parse(
                     "content://de.fahrgemeinschaft/rides/" + ride_id + "/rides")
                     ,null, null, null, null);
@@ -358,7 +361,6 @@ public class RideDetailsFragment extends SherlockFragment
 
         @Override
         public void onLoadFinished(Loader<Cursor> l, Cursor c) {
-            Log.d(TAG, "finished loading subrides " + l.getId());
             for (int i = 1; i < c.getCount(); i++) {
                 c.moveToPosition(i);
                 FrameLayout view = (FrameLayout)
@@ -384,7 +386,6 @@ public class RideDetailsFragment extends SherlockFragment
         public void onResponse(JSONObject json) {
             try {
                 JSONObject user = json.getJSONObject("user");
-                Log.d(TAG, "profile downloaded " + user.get("UserID"));
                 if (user.getString("UserID").equals(userId)) {
                     JSONArray kvp = user.getJSONArray("KeyValuePairs");
                     String firstname = "n/a";
