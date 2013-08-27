@@ -163,7 +163,7 @@ public class MainActivity extends SherlockFragmentActivity
                     cal.set(Calendar.HOUR_OF_DAY, 0);
                     cal.set(Calendar.MINUTE, 0);
                     cal.set(Calendar.SECOND, 0);
-                    main.ride.arr(cal.getTimeInMillis());
+                    main.ride.arr(cal.getTimeInMillis()).store(this);
                 }
             }
             break;
