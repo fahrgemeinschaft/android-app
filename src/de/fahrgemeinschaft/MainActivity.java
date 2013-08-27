@@ -86,7 +86,21 @@ public class MainActivity extends SherlockFragmentActivity
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        handleIntent(intent.getData());
+        if (intent.getData() != null) {
+            handleIntent(intent.getData());
+            switch (uriMatcher.match(intent.getData())) {
+            case SEARCH:
+                showFragment(results, getString(R.string.results),
+                        R.anim.slide_in_right,R.anim.slide_out_right);
+                break;
+            case MYRIDES:
+                showFragment(myrides, getString(R.string.myrides),
+                        R.anim.slide_in_top, R.anim.slide_out_top);
+                break;
+            case DETAILS:
+                break;
+            }
+        }
     }
 
     private void handleIntent(Uri uri) {
@@ -98,8 +112,6 @@ public class MainActivity extends SherlockFragmentActivity
                 break;
             case MYRIDES:
                 getSupportLoaderManager().restartLoader(MYRIDES, null, this);
-                break;
-            case DETAILS:
                 break;
             }
         }
