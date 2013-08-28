@@ -102,7 +102,7 @@ public class Util {
         }
     }
 
-    private static final String EMAIL = "EMail";
+    private static final String EMAIL = "Email";
     private static final String MOBILE = "Mobile";
     private static final String LANDLINE = "Landline";
 
@@ -174,11 +174,11 @@ public class Util {
                 contact.putExtra(Insert.EMAIL, dingens);
                 intents.add(labeledIntent(mailIntent(dingens, route),
                         R.drawable.icn_contact_email, dingens, ctx));
-            } else if (privacy.getInt("Email") == 4) { // members
+            } else if (privacy.getInt(EMAIL) == 4) { // members
                 intents.add(labeledIntent(profileIntent(ctx),
                         R.drawable.icn_contact_email,
                         ctx.getString(R.string.login_required), ctx));
-            } else if (privacy.getInt("Email") == 0) { // request
+            } else if (privacy.getInt(EMAIL) == 0) { // request
                 intents.add(labeledIntent(web,
                         R.drawable.icn_contact_email,
                         ctx.getString(R.string.request_contact), ctx));
@@ -202,8 +202,9 @@ public class Util {
 
     public static Intent profileIntent(Context ctx) {
         if (profile == null)
-            profile = new Intent(ctx, MainActivity.class).setData(Uri.parse(
-                    "content://de.fahrgemeinschaft/profile"));
+            profile = new Intent(ctx, MainActivity.class)
+                    .setData(Uri.parse("content://de.fahrgemeinschaft/profile"))
+                    .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         return profile;
     }
 

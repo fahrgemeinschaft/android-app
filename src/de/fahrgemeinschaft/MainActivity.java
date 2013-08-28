@@ -98,11 +98,8 @@ public class MainActivity extends SherlockFragmentActivity
                         R.anim.slide_in_top, R.anim.slide_out_top);
                 break;
             case PROFILE:
-                FragmentManager fm = getSupportFragmentManager();
-                int backstack = fm.getBackStackEntryCount();
-                if (backstack > 0 && fm.getBackStackEntryAt(backstack - 1)
-                        .getName().equals(getString(R.string.details)))
-                    fm.popBackStackImmediate();
+                if (isTopFragment(R.string.details))
+                    getSupportFragmentManager().popBackStackImmediate();
                 showFragment(new ProfileFragment(), getString(R.string.profile),
                         R.anim.slide_in_top, R.anim.slide_out_top);
                 break;
@@ -176,7 +173,7 @@ public class MainActivity extends SherlockFragmentActivity
                 System.out.println("ALREADY in CACHE until "
                         + new SimpleDateFormat("dd.MM. HH:mm", Locale.GERMANY)
                         .format(new Date(latest_dep)));
-                if (latest_dep - main.ride.getArr() > 24*3600000) {// inc window
+                if (latest_dep - main.ride.getArr() > 3600000) {// inc window
                     Calendar cal = Calendar.getInstance();
                     cal.setTimeInMillis(latest_dep);
                     cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -263,6 +260,8 @@ public class MainActivity extends SherlockFragmentActivity
                     R.anim.slide_in_top, R.anim.do_nix);
             return true;
         case R.id.profile:
+            if (isTopFragment(R.string.details))
+                getSupportFragmentManager().popBackStackImmediate();
             showFragment(new ProfileFragment(), getString(R.string.profile),
                     R.anim.slide_in_top, R.anim.slide_out_top);
             return true;
@@ -314,6 +313,13 @@ public class MainActivity extends SherlockFragmentActivity
             }
             setTitle(name);
         }
+    }
+
+    public boolean isTopFragment(int id) {
+        FragmentManager fm = getSupportFragmentManager();
+        int backstack = fm.getBackStackEntryCount();
+        return backstack > 0 && fm.getBackStackEntryAt(backstack - 1)
+                .getName().equals(getString(id));
     }
 
 

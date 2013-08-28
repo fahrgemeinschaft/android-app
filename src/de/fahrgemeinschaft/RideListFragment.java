@@ -107,7 +107,8 @@ public class RideListFragment extends SpinningZebraListFragment
     }
 
     @Override
-    public void onResume() {
+    public void onStart() {
+        System.out.println("start");
         super.onResume();
         if (spinningEnabled)
             getActivity().bindService(
@@ -191,9 +192,11 @@ public class RideListFragment extends SpinningZebraListFragment
     }
 
     @Override
-    public void onPause() {
-        if (spinningEnabled)
+    public void onStop() {
+        if (spinningEnabled) {
+            System.out.println("stop");
             getActivity().unbindService(this);
+        }
 //        Crouton.cancelAllCroutons();
         super.onDetach();
     }

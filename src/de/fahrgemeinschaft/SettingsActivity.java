@@ -8,11 +8,11 @@
 package de.fahrgemeinschaft;
 
 import org.teleportr.ConnectorService;
+import org.teleportr.RidesProvider;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.PreferenceManager;
@@ -63,8 +63,8 @@ public class SettingsActivity extends SherlockPreferenceActivity
     protected void onPause() {
         if (radius_changed) {
             Log.d(MainActivity.TAG, "clear cache");
-            getContentResolver().delete(Uri.parse(
-                    "content://de.fahrgemeinschaft/rides"), null, null);
+            getContentResolver().delete(
+                    RidesProvider.getRidesUri(this), null, null);
             startService(new Intent(this, ConnectorService.class)
                     .setAction(ConnectorService.SEARCH));
             prefs.edit().putLong("cleanup",
