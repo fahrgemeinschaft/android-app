@@ -96,18 +96,19 @@ public class ProfileFragment extends SherlockFragment
         switch(v.getId()) {
         case R.id.login:
             boolean logout = prefs.contains("auth");
+            if (logout) {
+                getActivity().getContentResolver().delete(
+                        RidesProvider.getMyRidesUri(getActivity()), null, null);
+                Crouton.makeText(getActivity(), getString(
+                        R.string.logout), Style.CONFIRM).show();
+            }
             Editor t = prefs.edit().remove("auth").remove("password")
                     .remove("user").remove("firstname").remove("lastname")
                     .putString("login", username.text.getText().toString());
             if (prefs.getBoolean("remember_password", false))
                 t.putString("password", password.text.getText().toString());
             t.commit();
-            if (logout) {
-                getActivity().getContentResolver().delete(
-                        RidesProvider.getMyRidesUri(getActivity()), null, null);
-                Crouton.makeText(getActivity(), getString(
-                        R.string.logout), Style.CONFIRM).show();
-            } else {
+            if (!logout) { // i.e. login
                 server.authenticate(password.text.getText().toString());
                 ((InputMethodManager) getActivity()
                         .getSystemService(Context.INPUT_METHOD_SERVICE))

@@ -323,6 +323,8 @@ public class MainActivity extends SherlockFragmentActivity
     public void onAuthFail(String reason) {
         Crouton.makeText(this, "Fail! " + reason, Style.ALERT).show();
         profile.setIcon(R.drawable.ic_topmenu_user);
+        showFragment(new ProfileFragment(), getString(R.string.profile),
+                R.anim.slide_in_top, R.anim.slide_out_top);
     }
 
     @Override
