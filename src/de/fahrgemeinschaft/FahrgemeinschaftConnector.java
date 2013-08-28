@@ -98,23 +98,19 @@ public class FahrgemeinschaftConnector extends Connector {
                     + "/trip?searchOrigin=" + from_json
                     + "&searchDestination=" + to_json).openConnection();
         }
-        try {
-            get.setRequestProperty("apikey", Secret.APIKEY);
-            if (getAuth() != null)
-                get.setRequestProperty("authkey", getAuth());
-            JSONObject json = loadJson(get);
-            if (get.getResponseCode() == 403)
-                throw new AuthException();
-            if (json != null) {
-                JSONArray results = json.getJSONArray("results");
-                System.out.println("FOUND " + results.length() + " rides");
+        get.setRequestProperty("apikey", Secret.APIKEY);
+        if (getAuth() != null)
+            get.setRequestProperty("authkey", getAuth());
+        JSONObject json = loadJson(get);
+        if (get.getResponseCode() == 403)
+            throw new AuthException();
+        if (json != null) {
+            JSONArray results = json.getJSONArray("results");
+            System.out.println("FOUND " + results.length() + " rides");
 
-                for (int i = 0; i < results.length(); i++) {
-                    store(parseRide(results.getJSONObject(i)));
-                }
+            for (int i = 0; i < results.length(); i++) {
+                store(parseRide(results.getJSONObject(i)));
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
         startDate = null;
         return getNextDayMorning(dep);
