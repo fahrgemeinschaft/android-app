@@ -8,6 +8,7 @@
 package de.fahrgemeinschaft;
 
 import org.teleportr.ConnectorService;
+import org.teleportr.RidesProvider;
 import org.teleportr.ConnectorService.AuthListener;
 
 import android.app.Activity;
@@ -96,11 +97,14 @@ public class ProfileFragment extends SherlockFragment
         case R.id.login:
             boolean logout = prefs.contains("auth");
             Editor t = prefs.edit().remove("auth").remove("password")
-                .putString("login", username.text.getText().toString());
+                    .remove("user").remove("firstname").remove("lastname")
+                    .putString("login", username.text.getText().toString());
             if (prefs.getBoolean("remember_password", false))
                 t.putString("password", password.text.getText().toString());
             t.commit();
             if (logout) {
+                getActivity().getContentResolver().delete(
+                        RidesProvider.getMyRidesUri(getActivity()), null, null);
                 Crouton.makeText(getActivity(), getString(
                         R.string.logout), Style.CONFIRM).show();
             } else {
