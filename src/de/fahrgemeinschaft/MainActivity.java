@@ -98,6 +98,11 @@ public class MainActivity extends SherlockFragmentActivity
                         R.anim.slide_in_top, R.anim.slide_out_top);
                 break;
             case PROFILE:
+                FragmentManager fm = getSupportFragmentManager();
+                int backstack = fm.getBackStackEntryCount();
+                if (backstack > 0 && fm.getBackStackEntryAt(backstack - 1)
+                        .getName().equals(getString(R.string.details)))
+                    fm.popBackStackImmediate();
                 showFragment(new ProfileFragment(), getString(R.string.profile),
                         R.anim.slide_in_top, R.anim.slide_out_top);
                 break;
@@ -331,6 +336,8 @@ public class MainActivity extends SherlockFragmentActivity
     public void onAuthSuccess() {
         Crouton.makeText(this, "Success.", Style.CONFIRM).show();
         profile.setIcon(R.drawable.ic_topmenu_user);
+        startService(new Intent(this, ConnectorService.class)
+                .setAction(ConnectorService.SEARCH));
     }
 
     @Override

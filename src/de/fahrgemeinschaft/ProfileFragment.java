@@ -95,6 +95,8 @@ public class ProfileFragment extends SherlockFragment
         super.onAttach(activity);
         getActivity().bindService(
                 new Intent(activity, ConnectorService.class), this, 0);
+        ((NotificationManager) getActivity().getSystemService(
+                Context.NOTIFICATION_SERVICE)).cancel(42);
     }
 
     @Override
@@ -107,6 +109,11 @@ public class ProfileFragment extends SherlockFragment
                         RidesProvider.getMyRidesUri(getActivity()), null, null);
                 Crouton.makeText(getActivity(), getString(
                         R.string.logout), Style.CONFIRM).show();
+                getActivity().getContentResolver().update(RidesProvider
+                        .getRidesUri(getActivity()), null, null, null);
+                getActivity().startService(
+                        new Intent(getActivity(), ConnectorService.class)
+                        .setAction(ConnectorService.SEARCH));
             }
             Editor t = prefs.edit().remove("auth").remove("password")
                     .remove("user").remove("firstname").remove("lastname")
@@ -121,6 +128,8 @@ public class ProfileFragment extends SherlockFragment
                         .hideSoftInputFromWindow(username.getWindowToken(), 0);
                 ((NotificationManager) getActivity().getSystemService(
                         Context.NOTIFICATION_SERVICE)).cancel(42);
+                getActivity().getContentResolver().update(RidesProvider
+                        .getRidesUri(getActivity()), null, null, null);
             }
             getActivity().getSupportFragmentManager().popBackStack();
             break;
