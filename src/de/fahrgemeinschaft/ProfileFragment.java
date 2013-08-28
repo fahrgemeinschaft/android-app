@@ -47,6 +47,7 @@ public class ProfileFragment extends SherlockFragment
     private SharedPreferences prefs;
     private Button login;
     private ConnectorService server;
+    private Button register;
 
 
     @Override
@@ -63,7 +64,8 @@ public class ProfileFragment extends SherlockFragment
         password = (EditTextImageButton) v.findViewById(R.id.password);
         login = (Button) v.findViewById(R.id.login);
         login.setOnClickListener(this);
-        v.findViewById(R.id.register).setOnClickListener(this);
+        register = (Button) v.findViewById(R.id.register);
+        register.setOnClickListener(this);
         super.onViewCreated(v, savedInstanceState);
         username.text.setText(prefs.getString("login",
                 prefs.getString("Email", "")));
@@ -78,8 +80,12 @@ public class ProfileFragment extends SherlockFragment
         if (key.equals("auth")) {
             if (prefs.contains("auth")) {
                 login.setText(R.string.logout);
+                password.setVisibility(View.GONE);
+                register.setVisibility(View.GONE);
             } else {
                 login.setText(R.string.login);
+                password.setVisibility(View.VISIBLE);
+                register.setVisibility(View.VISIBLE);
             }
         }
     }
