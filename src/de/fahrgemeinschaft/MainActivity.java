@@ -13,15 +13,18 @@ import java.util.Date;
 import java.util.Locale;
 
 import org.teleportr.ConnectorService;
-import org.teleportr.ConnectorService.AuthListener;
+import org.teleportr.ConnectorService.ServiceCallback;
 import org.teleportr.Ride;
 import org.teleportr.Ride.COLUMNS;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -44,16 +47,19 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class MainActivity extends SherlockFragmentActivity
-       implements OnClickListener, ListFragmentCallback,
-       LoaderCallbacks<Cursor>, OnPageChangeListener,
-       AuthListener, OnBackStackChangedListener {
+       implements OnClickListener, LoaderCallbacks<Cursor>,
+       OnBackStackChangedListener, ListFragmentCallback, 
+       OnPageChangeListener, ServiceCallback<String>,
+       ServiceConnection {
 
     public MainFragment main;
-    private MenuItem profile;
+    private MenuItem ic_profile;
     public RideListFragment results;
     private RideListFragment myrides;
     public RideDetailsFragment details;
     private RideDetailsFragment mydetails;
+    public ConnectorService service;
+    private MenuItem ic_myrides;
     public static final String TAG = "Fahrgemeinschaft";
 
     @Override
@@ -77,10 +83,28 @@ public class MainActivity extends SherlockFragmentActivity
         mydetails = (RideDetailsFragment)
                 fm.findFragmentByTag(getString(R.string.mydetails));
         if (mydetails == null) mydetails = new RideDetailsFragment();
-        handleIntent(getIntent().getData());
+        if (savedInstanceState != null)
+            handleIntent(getIntent().getData());
+        else
+            onNewIntent(getIntent());
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
         getSupportFragmentManager().addOnBackStackChangedListener(this);
         onBackStackChanged();
+    }
+
+    @Override
+    protected void onStart() {
+        bindService(new Intent(this, ConnectorService.class), this, 0);
+        super.onStart();
+    }
+
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder bg) {
+        service = ((ConnectorService.Bind) bg).getService();
+        service.myrides.register(this);
+        service.authCallback = this;
+        service.publish.register(this);
+        service.search.register(results);
     }
 
     @Override
@@ -96,10 +120,13 @@ public class MainActivity extends SherlockFragmentActivity
             case MYRIDES:
                 showFragment(myrides, getString(R.string.myrides),
                         R.anim.slide_in_top, R.anim.slide_out_top);
+                startService(new Intent(this, ConnectorService.class)
+                        .setAction(ConnectorService.PUBLISH));
+                handleIntent(intent.getData());
                 break;
             case PROFILE:
                 if (isTopFragment(R.string.details))
-                    getSupportFragmentManager().popBackStackImmediate();
+                        getSupportFragmentManager().popBackStackImmediate();
                 showFragment(new ProfileFragment(), getString(R.string.profile),
                         R.anim.slide_in_top, R.anim.slide_out_top);
                 break;
@@ -130,7 +157,8 @@ public class MainActivity extends SherlockFragmentActivity
             Uri uri = r.type(Ride.OFFER)
                     .dep(r.getDep() < now? now + 3600000 : r.getDep())
                     .mode(Ride.Mode.CAR).seats(3).store(this);
-            startActivity(new Intent(Intent.ACTION_EDIT, uri));
+            startActivity(new Intent(Intent.ACTION_EDIT, uri)
+                    .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
             this.overridePendingTransition(
                     R.anim.slide_in_bottom, R.anim.slide_out_top);
             break;
@@ -240,7 +268,8 @@ public class MainActivity extends SherlockFragmentActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getSupportMenuInflater().inflate(R.menu.action_bar, menu);
-        profile = menu.findItem(R.id.profile);
+        ic_profile = menu.findItem(R.id.profile);
+        ic_myrides = menu.findItem(R.id.myrides);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -323,27 +352,50 @@ public class MainActivity extends SherlockFragmentActivity
     }
 
 
-
+    
     @Override
-    public void onAuth() {
-        Crouton.makeText(this, "Authentifiziere..", Style.INFO).show();
-        profile.setIcon(R.drawable.ic_loading);
+    public void onProgress(String what, int how) {
+        if (what.equals(ConnectorService.MYRIDES)) {
+            ic_myrides.setActionView(R.layout.view_progress);
+        } else if (what.equals(ConnectorService.AUTH)) {
+            Crouton.makeText(this, what, Style.INFO).show();
+            ic_profile.setActionView(R.layout.view_progress);
+        }
     }
 
     @Override
-    public void onAuthFail(String reason) {
-        Crouton.makeText(this, "Fail! " + reason, Style.ALERT).show();
-        profile.setIcon(R.drawable.ic_topmenu_user);
-        showFragment(new ProfileFragment(), getString(R.string.profile),
-                R.anim.slide_in_top, R.anim.slide_out_top);
+    public void onFail(String what, String reason) {
+        Crouton.makeText(this, what + " fail: " + reason, Style.ALERT).show();
+        if (what.equals(ConnectorService.MYRIDES)) {
+            ic_myrides.setActionView(null);
+        } else if (what.equals(ConnectorService.AUTH)) {
+            ic_profile.setActionView(null);
+            showFragment(new ProfileFragment(), getString(R.string.profile),
+                    R.anim.slide_in_top, R.anim.slide_out_top);
+        }
     }
 
     @Override
-    public void onAuthSuccess() {
-        Crouton.makeText(this, "Success.", Style.CONFIRM).show();
-        profile.setIcon(R.drawable.ic_topmenu_user);
-        startService(new Intent(this, ConnectorService.class)
-                .setAction(ConnectorService.SEARCH));
+    public void onSuccess(String what, int number) {
+        Crouton.makeText(this, what + " success.", Style.CONFIRM).show();
+        if (what.equals(ConnectorService.MYRIDES)) {
+            ic_myrides.setActionView(null);
+        } else if (what.equals(ConnectorService.AUTH)) {
+            ic_profile.setActionView(null);
+            startService(new Intent(this, ConnectorService.class)
+            .setAction(ConnectorService.SEARCH));
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        unbindService(this);
+        super.onStop();
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+        service = null;
     }
 
     @Override

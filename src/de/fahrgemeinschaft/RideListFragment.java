@@ -11,18 +11,15 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import org.teleportr.ConnectorService;
-import org.teleportr.ConnectorService.SearchListener;
+import org.teleportr.ConnectorService.ServiceCallback;
 import org.teleportr.Ride;
 import org.teleportr.Ride.COLUMNS;
 import org.teleportr.Ride.Mode;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.view.ContextMenu;
@@ -43,7 +40,7 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class RideListFragment extends SpinningZebraListFragment
-        implements ServiceConnection, SearchListener {
+            implements ServiceCallback<Ride> {
 
     private static final SimpleDateFormat day =
             new SimpleDateFormat("EEE", Locale.GERMANY);
@@ -107,21 +104,20 @@ public class RideListFragment extends SpinningZebraListFragment
     }
 
     @Override
-    public void onStart() {
-        System.out.println("start");
-        super.onResume();
-        if (spinningEnabled)
-            getActivity().bindService(
-                    new Intent(getActivity(), ConnectorService.class), this, 0);
+    public void onFail(Ride query, String reason) {
+        if (onScreen) {
+            Crouton.makeText(getActivity(), 
+                    reason + " while "
+                    + day.format(query.getDep()) + " "
+                    + date.format(query.getDep()), Style.ALERT).show();
+            stopSpinning(reason);
+        }
+        currently_searching_date = 0;
+        
     }
 
     @Override
-    public void onServiceConnected(ComponentName name, IBinder service) {
-        ((ConnectorService.Bind) service).getService().searchCallback(this);
-    }
-
-    @Override
-    public void onBackgroundSearch(Ride query) {
+    public void onProgress(Ride query, int how) {
         if (onScreen) {
             currently_searching_date = query.getDep();
             startSpinning(getString(R.string.searching),
@@ -131,7 +127,7 @@ public class RideListFragment extends SpinningZebraListFragment
     }
 
     @Override
-    public void onBackgroundSuccess(Ride query, int numberOfRidesFound) {
+    public void onSuccess(Ride query, int numberOfRidesFound) {
         if (onScreen) {
             if (numberOfRidesFound == 0) {
                 Toast.makeText(getActivity(), 
@@ -145,17 +141,6 @@ public class RideListFragment extends SpinningZebraListFragment
         currently_searching_date = 0;
     }
 
-    @Override
-    public void onBackgroundFail(Ride query, String reason) {
-        if (onScreen) {
-            Crouton.makeText(getActivity(), 
-                    reason + " while "
-                    + day.format(query.getDep()) + " "
-                    + date.format(query.getDep()), Style.ALERT).show();
-            stopSpinning(reason);
-        }
-        currently_searching_date = 0;
-    }
 
     @Override
     public void onCreateContextMenu(ContextMenu m, View v, ContextMenuInfo i) {
@@ -190,19 +175,6 @@ public class RideListFragment extends SpinningZebraListFragment
         Ride ride = new Ride(cursor, getActivity());
         return Util.handleRideAction(item.getItemId(), ride, getActivity());
     }
-
-    @Override
-    public void onStop() {
-        if (spinningEnabled) {
-            System.out.println("stop");
-            getActivity().unbindService(this);
-        }
-//        Crouton.cancelAllCroutons();
-        super.onDetach();
-    }
-
-    @Override
-    public void onServiceDisconnected(ComponentName name) {}
 
 
 

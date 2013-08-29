@@ -9,20 +9,16 @@ package de.fahrgemeinschaft;
 
 import org.teleportr.ConnectorService;
 import org.teleportr.RidesProvider;
-import org.teleportr.ConnectorService.AuthListener;
 
 import android.app.Activity;
 import android.app.NotificationManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,14 +35,12 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class ProfileFragment extends SherlockFragment
-        implements OnClickListener, ServiceConnection,
-                OnSharedPreferenceChangeListener {
+        implements OnClickListener, OnSharedPreferenceChangeListener {
 
     private EditTextImageButton username;
     private EditTextImageButton password;
     private SharedPreferences prefs;
     private Button login;
-    private ConnectorService server;
     private Button register;
 
 
@@ -93,8 +87,6 @@ public class ProfileFragment extends SherlockFragment
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        getActivity().bindService(
-                new Intent(activity, ConnectorService.class), this, 0);
         ((NotificationManager) getActivity().getSystemService(
                 Context.NOTIFICATION_SERVICE)).cancel(42);
     }
@@ -105,10 +97,10 @@ public class ProfileFragment extends SherlockFragment
         case R.id.login:
             boolean logout = prefs.contains("auth");
             if (logout) {
-                getActivity().getContentResolver().delete(
-                        RidesProvider.getMyRidesUri(getActivity()), null, null);
                 Crouton.makeText(getActivity(), getString(
                         R.string.logout), Style.CONFIRM).show();
+                getActivity().getContentResolver().delete(
+                        RidesProvider.getMyRidesUri(getActivity()), null, null);
                 getActivity().getContentResolver().update(RidesProvider
                         .getRidesUri(getActivity()), null, null, null);
                 getActivity().startService(
@@ -122,7 +114,8 @@ public class ProfileFragment extends SherlockFragment
                 t.putString("password", password.text.getText().toString());
             t.commit();
             if (!logout) { // i.e. login
-                server.authenticate(password.text.getText().toString());
+                ((MainActivity)getActivity()).service
+                        .authenticate(password.text.getText().toString());
                 ((InputMethodManager) getActivity()
                         .getSystemService(Context.INPUT_METHOD_SERVICE))
                         .hideSoftInputFromWindow(username.getWindowToken(), 0);
@@ -142,17 +135,5 @@ public class ProfileFragment extends SherlockFragment
             break;
         }
     }
-
-    @Override
-    public void onServiceConnected(ComponentName name, IBinder service) {
-        server = ((ConnectorService.Bind) service).getService();
-        server.authCallback((AuthListener) getActivity());
-    }
-
-
-
-    @Override
-    public void onServiceDisconnected(ComponentName name) {}
-
 
 }
