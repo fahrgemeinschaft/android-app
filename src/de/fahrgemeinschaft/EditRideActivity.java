@@ -142,8 +142,8 @@ public class EditRideActivity extends SherlockFragmentActivity
                     R.id.comment)).getText().toString());
             SharedPreferences prefs = PreferenceManager
                     .getDefaultSharedPreferences(this);
-            if (!prefs.contains("EMail")) {
-                prefs.edit().putString("EMail", ((EditTextPrivacyButton)
+            if (!prefs.contains("Email")) {
+                prefs.edit().putString("Email", ((EditTextPrivacyButton)
                         findViewById(R.id.email)).text.getText().toString())
                         .commit();
             }
@@ -151,6 +151,7 @@ public class EditRideActivity extends SherlockFragmentActivity
             startService(new Intent(this, ConnectorService.class)
                     .setAction(ConnectorService.PUBLISH));
             startActivity(new Intent(this, MainActivity.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                     .setData(MainActivity.MY_RIDES_URI));
             overridePendingTransition(
                     R.anim.slide_in_top, R.anim.slide_out_bottom);
