@@ -17,7 +17,9 @@ import org.teleportr.ConnectorService.ServiceCallback;
 import org.teleportr.Ride;
 import org.teleportr.Ride.COLUMNS;
 
+import android.app.NotificationManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.UriMatcher;
@@ -382,13 +384,16 @@ public class MainActivity extends SherlockFragmentActivity
 
     @Override
     public void onSuccess(String what, int number) {
+        if (what == null) return;
         Crouton.makeText(this, what + " success.", Style.CONFIRM).show();
         if (what.equals(ConnectorService.MYRIDES)) {
             ic_myrides.setActionView(null);
         } else if (what.equals(ConnectorService.AUTH)) {
             ic_profile.setActionView(null);
             startService(new Intent(this, ConnectorService.class)
-            .setAction(ConnectorService.SEARCH));
+                    .setAction(ConnectorService.SEARCH));
+            ((NotificationManager) getSystemService(Context
+                    .NOTIFICATION_SERVICE)).cancel(42);
         }
     }
 

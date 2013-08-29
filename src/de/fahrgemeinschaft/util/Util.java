@@ -126,6 +126,7 @@ public class Util {
             }
         };
         JSONObject details = Ride.getDetails(c);
+        System.out.println(details);
         String dingens;
         try {
             JSONObject privacy = details.getJSONObject("Privacy");
