@@ -35,7 +35,7 @@ public class FahrgemeinschaftConnector extends Connector {
 
     private String startDate;
 
-    public String endpoint =  "http://test.service.fahrgemeinschaft.de";
+    public String endpoint =  "http://service.fahrgemeinschaft.de";
 
     static final SimpleDateFormat fulldf =
             new SimpleDateFormat("yyyyMMddHHmm", Locale.GERMAN);
@@ -116,7 +116,7 @@ public class FahrgemeinschaftConnector extends Connector {
         return getNextDayMorning(dep);
     }
 
-    private long getNextDayMorning(Date dep) {
+    public static long getNextDayMorning(Date dep) {
         if (dep != null) {
             Calendar c = Calendar.getInstance();
             c.setTimeInMillis(dep.getTime() + 24 * 3600000); // plus one day

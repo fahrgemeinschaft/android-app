@@ -126,7 +126,6 @@ public class Util {
             }
         };
         JSONObject details = Ride.getDetails(c);
-        System.out.println(details);
         String dingens;
         try {
             JSONObject privacy = details.getJSONObject("Privacy");
@@ -170,7 +169,7 @@ public class Util {
                 Toast.makeText(ctx, ctx.getString(R.string.why_request),
                         Toast.LENGTH_LONG).show();
             }
-            if (!details.has(EMAIL)) { // 'm'
+            if (details.has(EMAIL)) { // 'm'
                 dingens = details.getString(EMAIL);
                 contact.putExtra(Insert.EMAIL, dingens);
                 intents.add(labeledIntent(mailIntent(dingens, route),
@@ -211,11 +210,9 @@ public class Util {
 
     public static LabeledIntent labeledIntent(Intent intent,
                 int icon, String label, Context ctx) {
-        System.out.println("resolving " + label);
         PackageManager pm = ctx.getPackageManager();
         ComponentName cmp = intent.resolveActivity(pm);
         if (cmp != null) {
-            System.out.println("found " + cmp);
             intent.setComponent(cmp);
             Intent resolved = new Intent();
             resolved.setData(intent.getData());

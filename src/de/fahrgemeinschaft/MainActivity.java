@@ -170,6 +170,7 @@ public class MainActivity extends SherlockFragmentActivity
                         Style.INFO).show();
                 return;
             }
+            
             r.type(Ride.SEARCH).arr(r.getDep() +2*24*3600*1000)
                 .store(this);
             startService(new Intent(this, ConnectorService.class)
@@ -204,12 +205,7 @@ public class MainActivity extends SherlockFragmentActivity
                         + new SimpleDateFormat("dd.MM. HH:mm", Locale.GERMANY)
                         .format(new Date(latest_dep)));
                 if (latest_dep - main.ride.getArr() > 3600000) {// inc window
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTimeInMillis(latest_dep);
-                    cal.set(Calendar.HOUR_OF_DAY, 0);
-                    cal.set(Calendar.MINUTE, 0);
-                    cal.set(Calendar.SECOND, 0);
-                    main.ride.arr(cal.getTimeInMillis()).store(this);
+                    main.ride.arr(getNextDayMorning(latest_dep)).store(this);
                 }
             }
             break;
@@ -234,7 +230,8 @@ public class MainActivity extends SherlockFragmentActivity
     public void onSpinningWheelClick() {
         System.out.println("arr: " + new SimpleDateFormat("dd.MM. HH:mm", Locale.GERMANY)
             .format(new Date(main.ride.getArr())));
-        main.ride.arr(main.ride.getArr() + 2 * 24 * 3600 * 1000).store(this);
+        main.ride.arr(getNextDayMorning(
+                main.ride.getArr() + 2 * 24 * 3600 * 1000)).store(this);
         System.out.println("arr after: " + new SimpleDateFormat("dd.MM. HH:mm", Locale.GERMANY)
             .format(new Date(main.ride.getArr())));
         startService(new Intent(this, ConnectorService.class)
@@ -406,6 +403,15 @@ public class MainActivity extends SherlockFragmentActivity
     @Override
     public void onServiceDisconnected(ComponentName name) {
         service = null;
+    }
+
+    public static long getNextDayMorning(long dep) {
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(dep + 24 * 3600000); // plus one day
+        c.set(Calendar.HOUR_OF_DAY, 0); // reset
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        return c.getTimeInMillis();
     }
 
     @Override
