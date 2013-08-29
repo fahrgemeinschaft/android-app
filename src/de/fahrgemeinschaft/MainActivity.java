@@ -259,7 +259,12 @@ public class MainActivity extends SherlockFragmentActivity
     }
 
     public void contact(View v) {
-        Cursor cursor = ((CursorAdapter) results.getListAdapter()).getCursor();
+        Cursor cursor;
+        if (getIntent().getData().equals(MY_RIDES_URI)) {
+            cursor = ((CursorAdapter) myrides.getListAdapter()).getCursor();
+        } else {
+            cursor = ((CursorAdapter) results.getListAdapter()).getCursor();
+        }
         cursor.moveToPosition(details.getSelection());
         Util.openContactOptionsChooserDialog(this, cursor);
     }
