@@ -15,7 +15,7 @@
     <EditText
         android:id="@+id/autocomplete_text"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/large_icn"
+        android:layout_height="@dimen/place_height"
         android:hint="@string/search"
         android:textSize="21sp"
         android:textStyle="bold"
@@ -48,13 +48,13 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@id/autocomplete_text"
         android:layout_marginRight="@dimen/xlarge"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="16dp"
         android:visibility="gone" />
 
     <ImageButton
         android:id="@+id/toggle"
-        android:layout_width="@dimen/large_icn"
-        android:layout_height="@dimen/large_icn"
+        android:layout_width="@dimen/place_height"
+        android:layout_height="@dimen/place_height"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@id/autocomplete_text"
         android:background="@drawable/btn_white"
