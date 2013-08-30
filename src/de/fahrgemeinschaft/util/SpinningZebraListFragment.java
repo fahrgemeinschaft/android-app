@@ -55,7 +55,7 @@ public abstract class SpinningZebraListFragment extends SherlockListFragment {
     @Override
     public void onViewCreated(View layout, Bundle savedInstanceState) {
         super.onViewCreated(layout, savedInstanceState);
-
+        layout.setOnClickListener(null);
         setListAdapter(new CursorAdapter(getActivity(), null, 0) {
 
             @Override

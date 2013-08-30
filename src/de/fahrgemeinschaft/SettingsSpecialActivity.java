@@ -7,7 +7,6 @@
 
 package de.fahrgemeinschaft;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
@@ -15,8 +14,6 @@ import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import de.fahrgemeinschaft.util.Util;
 
 public class SettingsSpecialActivity extends SherlockPreferenceActivity {
-
-    private SharedPreferences prefs;
 
     @Override
     @SuppressWarnings("deprecation")
