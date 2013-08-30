@@ -49,6 +49,8 @@ public class SettingsActivity extends SherlockPreferenceActivity
         list.setSummary(getResources().getString(
                 R.string.refresh_description, list.getEntry()));
         findPreference("about").setIntent(Util.aboutIntent(this));
+        findPreference("special").setIntent(new Intent(this,
+                SettingsSpecialActivity.class));
     }
 
     @Override

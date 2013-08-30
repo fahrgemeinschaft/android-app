@@ -67,6 +67,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".SettingsSpecialActivity" />
+
         <activity android:name=".ProfileActivity" />
 
         <activity android:name=".util.WebActivity" />
