@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import de.fahrgemeinschaft.EditRideActivity;
+import de.fahrgemeinschaft.FahrgemeinschaftConnector;
 import de.fahrgemeinschaft.R;
 
 
@@ -19,9 +20,6 @@ public class ReoccuringWeekDaysView extends LinearLayout {
 
     static final String android = "http://schemas.android.com/apk/res/android";
 
-    public static final String[] DAYS = new String[] { "Monday", "Tuesday",
-        "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
-    };
     private JSONObject details;
 
     private boolean clickable;
@@ -49,7 +47,8 @@ public class ReoccuringWeekDaysView extends LinearLayout {
             reoccuring = false;
             JSONObject days = details.getJSONObject("Reoccur");
             for (int i = 0; i < 7; i++) {
-                boolean selected = days.getBoolean(DAYS[i]);
+                boolean selected = days.getBoolean(
+                        FahrgemeinschaftConnector.DAYS[i]);
                 getChildAt(i).setSelected(selected);
                 if (selected) reoccuring = true;
             }
@@ -102,9 +101,9 @@ public class ReoccuringWeekDaysView extends LinearLayout {
         try {
             for (int i = 0; i < 7; i++) {
                 if (getChildAt(i).isSelected()) {
-                    days.put(DAYS[i], true);
+                    days.put(FahrgemeinschaftConnector.DAYS[i], true);
                     reoccuring = true;
-                } else days.put(DAYS[i], false);
+                } else days.put(FahrgemeinschaftConnector.DAYS[i], false);
             }
             details.put("Reoccur", days);
         } catch (JSONException e) {

@@ -35,12 +35,17 @@ public class FahrgemeinschaftConnector extends Connector {
 
     private String startDate;
 
-    public String endpoint =  "http://service.fahrgemeinschaft.de";
+    public String endpoint =  "http://test.service.fahrgemeinschaft.de";
 
     static final SimpleDateFormat fulldf =
             new SimpleDateFormat("yyyyMMddHHmm", Locale.GERMAN);
     static final SimpleDateFormat df =
             new SimpleDateFormat("yyyyMMdd", Locale.GERMAN);
+    public static final long reoccuring = 2555452800000l;
+    static final String XMAS2050 = "20501224";
+    public static final String[] DAYS = new String[] { "Monday", "Tuesday",
+        "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+    };
 
     @Override
     public String authenticate(String credential) throws Exception {
@@ -161,8 +166,29 @@ public class FahrgemeinschaftConnector extends Connector {
         }
         ride.ref(json.getString("TripID"));
         ride.seats(json.getInt("Places"));
-        ride.dep(parseTimestamp(json));
-        ride.getDetails().put("Reoccur", json.getJSONObject("Reoccur"));
+
+        JSONObject reoccur = json.getJSONObject("Reoccur");
+        boolean isReoccuring = false;
+        for (int i = 0; i < 7; i++) {
+            if (reoccur.getBoolean(FahrgemeinschaftConnector.DAYS[i])) {
+                isReoccuring = true;
+                break;
+            }
+        }
+        if (isReoccuring) {
+            ride.arr(new Date(reoccuring));
+            ride.getDetails().put("Reoccur", reoccur);
+        }
+        String time = parseTime(json);
+        if (startDate != null) {
+            ride.dep(parseDate(startDate + time));
+        } else { // myrides
+            if (isReoccuring) {
+                ride.dep(parseDate(XMAS2050 + time));
+            } else {
+                ride.dep(parseDate(json.getString("Startdate") + time));
+            }
+        }
 
         if (!json.isNull("Price")) {
             ride.price((int) Double.parseDouble(
@@ -171,18 +197,15 @@ public class FahrgemeinschaftConnector extends Connector {
 
         JSONArray routings = json.getJSONArray("Routings");
 
-        ride.from(store(parsePlace(
-                routings.getJSONObject(0)
+        ride.from(store(parsePlace(routings.getJSONObject(0)
                 .getJSONObject("Origin"))));
 
         for (int j = 1; j < routings.length(); j++) {
-            ride.via(store(parsePlace(
-                    routings.getJSONObject(j)
+            ride.via(store(parsePlace(routings.getJSONObject(j)
                     .getJSONObject("Destination"))));
         }
 
-        ride.to(store(parsePlace(
-                routings.getJSONObject(0)
+        ride.to(store(parsePlace(routings.getJSONObject(0)
                 .getJSONObject("Destination"))));
         return ride;
     }
@@ -196,28 +219,28 @@ public class FahrgemeinschaftConnector extends Connector {
                 .name((split.length > 0)? split[0] : "");
     }
 
-    private Date parseTimestamp(JSONObject json) throws JSONException {
+    private String parseTime(JSONObject json) throws JSONException {
 //              new Date(Long.parseLong(ride.getString("Enterdate"));
-        String departure = "0000";
+        String time = "2359";
         if (!json.isNull("Starttime")) {
-            departure = json.getString("Starttime");
-            if (departure.length() == 3)
-                departure = "0" + departure;
-            if (departure.length() != 4)
-                departure = "0000";
+            time = json.getString("Starttime");
+            if (time.length() == 3)
+                time = "0" + time;
+            if (time.length() != 4)
+                time = "2359";
         }
-        if (startDate == null) {
-            departure = json.getString("Startdate") + departure;
-        } else {
-            departure = startDate + departure;
-        }
+        return time;
+    }
+
+    private Date parseDate(String date) {
         try {
-            return fulldf.parse(departure);
+            return fulldf.parse(date);
         } catch (ParseException e) {
             System.out.println("date/time parse error!");
             e.printStackTrace();
-            return new Date(0);
+            return new Date();
         }
+
     }
 
     @Override

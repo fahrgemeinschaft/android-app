@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 public class RideRowView extends LinearLayout {
 
+    private static final int DAY = 86400000;
+    private static final long NOTIME = 79140000;
     private static final SimpleDateFormat dayf =
             new SimpleDateFormat("EEE", Locale.GERMANY);
     private static final SimpleDateFormat datef =
@@ -47,10 +49,21 @@ public class RideRowView extends LinearLayout {
     }
 
     public void bind(Cursor cursor, Context ctx) {
-        Date timestamp = new Date(cursor.getLong(COLUMNS.DEPARTURE));
-        day.setText(dayf.format(timestamp));
-        date.setText(datef.format(timestamp));
-        time.setText(timef.format(timestamp));
+        long timestamp = cursor.getLong(COLUMNS.DEPARTURE);
+        Date dep = new Date(timestamp);
+        if (timestamp > 2555448960000l) {
+            day.setText("");
+            date.setText("regelmäßig");
+        } else {
+            day.setText(dayf.format(dep));
+            date.setText(datef.format(dep));
+        }
+        System.out.println(timef.format(dep) + timestamp );
+        if (timestamp % DAY == NOTIME) {
+            time.setText("");
+        } else {
+            time.setText(timef.format(dep));
+        }
         price.setText(cursor.getInt(COLUMNS.PRICE) / 100 + "€");
         switch(cursor.getInt(COLUMNS.SEATS)){
         case 0:
