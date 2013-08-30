@@ -32,8 +32,6 @@ import de.fahrgemeinschaft.R;
 
 public class Util {
 
-    private static Intent profile;
-
     public static boolean handleRideAction(int i, Ride r, FragmentActivity c) {
         switch (i) {
         case R.id.toggle_active:
@@ -201,11 +199,15 @@ public class Util {
     }
 
     public static Intent profileIntent(Context ctx) {
-        if (profile == null)
-            profile = new Intent(ctx, MainActivity.class)
-                    .setData(Uri.parse("content://de.fahrgemeinschaft/profile"))
-                    .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        return profile;
+        return new Intent(ctx, MainActivity.class)
+                .setData(Uri.parse("content://de.fahrgemeinschaft/profile"))
+                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+    }
+
+    public static Intent aboutIntent(Context ctx) {
+        return new Intent(ctx, MainActivity.class)
+                .setData(Uri.parse("content://de.fahrgemeinschaft/about"))
+                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
     }
 
     public static LabeledIntent labeledIntent(Intent intent,

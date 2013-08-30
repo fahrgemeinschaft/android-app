@@ -120,17 +120,13 @@ public class MainActivity extends SherlockFragmentActivity
                         R.anim.slide_in_right,R.anim.slide_out_right);
                 break;
             case MYRIDES:
-                showFragment(myrides, getString(R.string.myrides),
-                        R.anim.slide_in_top, R.anim.slide_out_top);
-                startService(new Intent(this, ConnectorService.class)
-                        .setAction(ConnectorService.PUBLISH));
-                handleIntent(intent.getData());
+                showMyRides();
                 break;
             case PROFILE:
-                if (isTopFragment(R.string.details))
-                        getSupportFragmentManager().popBackStackImmediate();
-                showFragment(new ProfileFragment(), getString(R.string.profile),
-                        R.anim.slide_in_top, R.anim.slide_out_top);
+                showProfile();
+                break;
+            case ABOUT:
+                showAbout();
                 break;
             }
         }
@@ -281,33 +277,44 @@ public class MainActivity extends SherlockFragmentActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.myrides:
-            handleIntent(MY_RIDES_URI);
-            showFragment(myrides, getString(R.string.myrides),
-                    R.anim.slide_in_top, R.anim.slide_out_top);
-            startService(new Intent(this, ConnectorService.class)
-                .setAction(ConnectorService.PUBLISH));
+            showMyRides();
+            return true;
+        case R.id.profile:
+            showProfile();
             return true;
         case R.id.settings:
             startActivity(new Intent(this, SettingsActivity.class));
             this.overridePendingTransition(
                     R.anim.slide_in_top, R.anim.do_nix);
             return true;
-        case R.id.profile:
-            if (isTopFragment(R.string.details))
-                getSupportFragmentManager().popBackStackImmediate();
-            showFragment(new ProfileFragment(), getString(R.string.profile),
-                    R.anim.slide_in_top, R.anim.slide_out_top);
-            return true;
         case android.R.id.home: // up
             if (getSupportFragmentManager().getBackStackEntryCount() > 0)
                 getSupportFragmentManager().popBackStack();
-            else
-                showFragment(new AboutFragment(), getString(R.string.about),
-                    R.anim.slide_in_left, R.anim.slide_out_left);
+            else showAbout();
             return true;
         default:
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void showAbout() {
+        showFragment(new AboutFragment(), getString(R.string.about),
+            R.anim.slide_in_left, R.anim.slide_out_left);
+    }
+
+    public void showProfile() {
+        if (isTopFragment(R.string.details))
+            getSupportFragmentManager().popBackStackImmediate();
+        showFragment(new ProfileFragment(), getString(R.string.profile),
+                R.anim.slide_in_top, R.anim.slide_out_top);
+    }
+
+    public void showMyRides() {
+        handleIntent(MY_RIDES_URI);
+        showFragment(myrides, getString(R.string.myrides),
+                R.anim.slide_in_top, R.anim.slide_out_top);
+        startService(new Intent(this, ConnectorService.class)
+            .setAction(ConnectorService.PUBLISH));
     }
 
     private void showFragment(Fragment fragment, String name, int in, int out) {

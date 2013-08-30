@@ -21,6 +21,8 @@ import android.util.Log;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.actionbarsherlock.view.MenuItem;
 
+import de.fahrgemeinschaft.util.Util;
+
 public class SettingsActivity extends SherlockPreferenceActivity
         implements OnSharedPreferenceChangeListener {
 
@@ -46,6 +48,7 @@ public class SettingsActivity extends SherlockPreferenceActivity
         ListPreference list = (ListPreference) findPreference("refresh");
         list.setSummary(getResources().getString(
                 R.string.refresh_description, list.getEntry()));
+        findPreference("about").setIntent(Util.aboutIntent(this));
     }
 
     @Override
