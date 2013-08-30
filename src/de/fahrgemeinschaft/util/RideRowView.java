@@ -64,7 +64,9 @@ public class RideRowView extends LinearLayout {
         } else {
             time.setText(timef.format(dep));
         }
-        price.setText(cursor.getInt(COLUMNS.PRICE) / 100 + "€");
+        if (cursor.getInt(COLUMNS.PRICE) != -1) {
+            price.setText(cursor.getInt(COLUMNS.PRICE) / 100 + "€");
+        }
         switch(cursor.getInt(COLUMNS.SEATS)){
         case 0:
             seats.setImageResource(R.drawable.icn_seats_white_full); break;

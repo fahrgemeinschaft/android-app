@@ -35,7 +35,7 @@ public class FahrgemeinschaftConnector extends Connector {
 
     private String startDate;
 
-    public String endpoint =  "http://test.service.fahrgemeinschaft.de";
+    public String endpoint =  "http://service.fahrgemeinschaft.de";
 
     static final SimpleDateFormat fulldf =
             new SimpleDateFormat("yyyyMMddHHmm", Locale.GERMAN);
@@ -166,6 +166,12 @@ public class FahrgemeinschaftConnector extends Connector {
         }
         ride.ref(json.getString("TripID"));
         ride.seats(json.getInt("Places"));
+        if (!json.isNull("Price")) {
+            ride.price((int) Double.parseDouble(
+                    json.getString("Price")) * 100);
+        } else {
+            ride.price(-1);
+        }
 
         JSONObject reoccur = json.getJSONObject("Reoccur");
         boolean isReoccuring = false;
@@ -188,11 +194,6 @@ public class FahrgemeinschaftConnector extends Connector {
             } else {
                 ride.dep(parseDate(json.getString("Startdate") + time));
             }
-        }
-
-        if (!json.isNull("Price")) {
-            ride.price((int) Double.parseDouble(
-                    json.getString("Price")) * 100);
         }
 
         JSONArray routings = json.getJSONArray("Routings");
