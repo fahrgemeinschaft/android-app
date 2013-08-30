@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,45 +9,47 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="20dp"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="22dp"
-        android:orientation="vertical"
-        android:paddingBottom="20dp" >
+        android:paddingTop="22dp" >
 
         <TextView
             android:id="@+id/copyright"
             style="@style/light"
-            android:background="@color/medium_green"
-            android:padding="3dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/medium_green"
             android:gravity="center_horizontal"
+            android:padding="3dp"
             android:singleLine="false"
-            android:textColor="@color/darker_green"
-            android:textStyle="bold"
-            android:text="Copyright (C) 2013 by it's authors.
+            android:text="Copyright (C) 2013 by it&apos;s authors.
                             Some rights reserved. See LICENSE"
-            android:textSize="12sp" />
+            android:textColor="@color/darker_green"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/medium_green"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="34dp"
             android:gravity="right"
-            android:textSize="22sp" />
+            android:textColor="@color/medium_green"
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/version"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="23sp"
-            android:textColor="@color/medium_green"
-            android:textStyle="bold"
             android:layout_marginTop="2dp"
-            android:gravity="right" />
+            android:layout_marginBottom="55dp"
+            android:gravity="right"
+            android:textColor="@color/medium_green"
+            android:textSize="23sp"
+            android:textStyle="bold" />
 
         <View
             android:layout_width="match_parent"
@@ -59,11 +62,9 @@
             style="@style/light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:textColor="@color/medium_green"
-            android:textStyle="bold"
-            android:singleLine="false"
             android:layout_marginTop="12dp"
+            android:gravity="left"
+            android:singleLine="false"
             android:text="This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
@@ -76,124 +77,129 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see http://www.gnu.org/licenses/."
-            android:gravity="left" />
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="23sp"
             android:textColor="@color/medium_green"
+            android:textSize="12sp"
             android:textStyle="bold"
-            android:layout_marginTop="2dp"
-            android:text="// build with"
-            android:gravity="right" />
+            tools:ignore="HardcodedText" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:layout_marginTop="0dp"
+            android:layout_marginTop="13dp"
             android:background="@color/medium_green" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="// build"
+            android:textColor="@color/medium_green"
+            android:textSize="23sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/crouton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@color/lighter_green"
-            android:textStyle="bold"
-            android:singleLine="false"
             android:layout_marginTop="12dp"
+            android:gravity="left"
+            android:singleLine="false"
             android:text="keyboardsurfer crouton"
-            android:gravity="left" />
+            android:textColor="@color/lighter_green"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+
         <TextView
             android:id="@+id/actionbarsherlock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@color/lighter_green"
-            android:textStyle="bold"
-            android:singleLine="false"
             android:layout_marginTop="12dp"
+            android:gravity="left"
+            android:singleLine="false"
             android:text="actionbarsherlock.com"
-            android:gravity="left" />
+            android:textColor="@color/lighter_green"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+
         <TextView
             android:id="@+id/geohash"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@color/lighter_green"
-            android:textStyle="bold"
-            android:singleLine="false"
             android:layout_marginTop="12dp"
+            android:gravity="left"
+            android:singleLine="false"
             android:text="kungfoo geohash-java"
-            android:gravity="left" />
+            android:textColor="@color/lighter_green"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+
         <TextView
             android:id="@+id/teleportr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@color/lighter_green"
-            android:textStyle="bold"
-            android:singleLine="false"
             android:layout_marginTop="12dp"
+            android:gravity="left"
+            android:singleLine="false"
             android:text="teleportR.org library"
-            android:gravity="left" />
+            android:textColor="@color/lighter_green"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+
         <TextView
             android:id="@+id/volley"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:layout_marginTop="12dp"
+            android:gravity="left"
+            android:singleLine="false"
+            android:text="android.com volley"
             android:textColor="@color/lighter_green"
-            android:textStyle="bold"
-            android:singleLine="false"
-            android:layout_marginTop="12dp"
-            android:text="android.com volley"
-            android:gravity="left" />
-        <TextView
-            android:id="@+id/iconmonstr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:textColor="@color/medium_green"
             android:textStyle="bold"
-            android:singleLine="false"
-            android:layout_marginTop="12dp"
-            android:text="android.com volley"
-            android:gravity="left" />
+            tools:ignore="HardcodedText" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginTop="13dp"
+            android:background="@color/medium_green" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="23sp"
-            android:textColor="@color/medium_green"
-            android:textStyle="bold"
             android:layout_marginTop="2dp"
-            android:text="// styled by"
-            android:gravity="right" />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:layout_marginTop="0dp"
-            android:background="@color/medium_green" />
+            android:gravity="right"
+            android:text="// style"
+            android:textColor="@color/medium_green"
+            android:textSize="23sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/iconmonstr"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:gravity="left"
             android:singleLine="false"
-            android:textColor="@color/white"
+            android:textColor="@color/medium_green"
+            android:textSize="18sp"
             android:textStyle="bold"
-            android:text="styled by"
-            android:textSize="18sp" />
-        
+            tools:ignore="HardcodedText" />
+
         <ImageView
             android:id="@+id/subphisticated_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-34dp"
             android:layout_gravity="right"
-            android:src="@drawable/icn_sbphstctd" />
+            android:contentDescription="subphisticated UI"
+            android:src="@drawable/icn_sbphstctd"
+            tools:ignore="HardcodedText" />
 
         <View
             android:layout_width="match_parent"
@@ -205,13 +211,22 @@ along with this program.  If not, see http://www.gnu.org/licenses/."
             android:id="@+id/git_url"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:singleLine="false"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="21dp"
+            android:layout_marginBottom="34dp"
+            android:paddingTop="12dp"
+            android:gravity="left"
             android:text="github.com/fahrgemeinschaft/android-app"
-            android:gravity="left" />
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:ellipsize="middle"
+            android:singleLine="true"
+            tools:ignore="HardcodedText" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/medium_green" />
     </LinearLayout>
+
 </ScrollView>
