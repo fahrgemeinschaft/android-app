@@ -78,6 +78,10 @@
                 <action android:name="auth" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="upgrade" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </receiver>
 
         <!-- teleportR Android Library -->

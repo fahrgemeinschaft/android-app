@@ -64,6 +64,8 @@
         Contact info is not protected by user 
         and can only be requested on the website
     </string>
+        <string name="error">Error!</string>
+    <string name="request_app_upgrade">Try upgrade to newer version of the app.</string>
 
     <string name="contact">Contact</string>
     <string name="seats">Seats</string>

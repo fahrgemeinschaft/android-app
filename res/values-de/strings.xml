@@ -57,6 +57,8 @@
         Die Kontaktdaten sind vom Benutzer nicht freigegeben 
         und können nur über das Webportal angefragt werden.
     </string>
+    <string name="error">Fehler!</string>
+    <string name="request_app_upgrade">Bitte App neu runterladen.</string>
 
     <string name="contact">Kontakt</string>
     <string name="seats">Sitzplätze</string>
