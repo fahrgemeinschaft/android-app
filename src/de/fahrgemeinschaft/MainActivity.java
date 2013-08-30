@@ -155,8 +155,7 @@ public class MainActivity extends SherlockFragmentActivity
             Uri uri = r.type(Ride.OFFER)
                     .dep(r.getDep() < now? now + 3600000 : r.getDep())
                     .mode(Ride.Mode.CAR).seats(3).store(this);
-            startActivity(new Intent(Intent.ACTION_EDIT, uri)
-                    .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
+            startActivity(new Intent(Intent.ACTION_EDIT, uri));
             this.overridePendingTransition(
                     R.anim.slide_in_bottom, R.anim.slide_out_top);
             break;
