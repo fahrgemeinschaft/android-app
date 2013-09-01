@@ -147,6 +147,7 @@ public class RideDetailsFragment extends SherlockFragment
                 view.name.setText("");
                 view.last_login.setText("");
                 view.reg_date.setText("");
+                view.name_loading.setVisibility(View.VISIBLE);
                 view.name.setVisibility(View.GONE);
                 view.last_login.setVisibility(View.GONE);
                 view.reg_date.setVisibility(View.GONE);
