@@ -75,13 +75,16 @@ public class RideListFragment extends SpinningZebraListFragment
                     && (ride.getInt(COLUMNS.ACTIVE) == 1)) {
                 v.showButtons();
                 v.streifenhoernchen.setVisibility(View.GONE);
+                v.grey_bg.setVisibility(View.GONE);
             } else {
                 v.hideButtons();
                 v.streifenhoernchen.setVisibility(View.VISIBLE);
+                v.grey_bg.setVisibility(View.VISIBLE);
             }
         } else {
             v.hideButtons();
             v.streifenhoernchen.setVisibility(View.GONE);
+            v.grey_bg.setVisibility(View.GONE);
         }
         dep = dep - currently_searching_date; // refresh spinning wheel
         if (ride.getShort(COLUMNS.DIRTY) == 1 || dep > 0 && dep < 24*3600000) {
@@ -181,6 +184,7 @@ public class RideListFragment extends SpinningZebraListFragment
     static class RideView extends RelativeLayout implements OnClickListener {
 
         View streifenhoernchen;
+        View grey_bg;
         ProgressBar loading;
         TextView from_place;
         TextView from_city;
@@ -199,6 +203,7 @@ public class RideListFragment extends SpinningZebraListFragment
             super.onFinishInflate();
             streifenhoernchen = findViewById(R.id.streifenhoernchen);
             Util.fixStreifenhoernchen(streifenhoernchen);
+            grey_bg = findViewById(R.id.grey_bg);
             loading = (ProgressBar) findViewById(R.id.loading);
             from_place = (TextView) findViewById(R.id.from_place);
             from_city = (TextView) findViewById(R.id.from_city);

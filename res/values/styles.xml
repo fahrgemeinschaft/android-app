@@ -136,6 +136,7 @@
     <color name="opacity_black">#99000000</color>
     <color name="white">#FFFFFF</color>
     <color name="grey">#CCCCCC</color>
+    <color name="grey_translucent">#66858585</color>
 
     <color name="btn_mitfahren_selected">#85925D</color>
     <color name="btn_mitfahren_pressed">#AEB794</color>
