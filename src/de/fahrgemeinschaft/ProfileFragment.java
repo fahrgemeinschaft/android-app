@@ -74,6 +74,7 @@ public class ProfileFragment extends SherlockFragment
         if (key.equals("auth")) {
             if (prefs.contains("auth")) {
                 login.setText(R.string.logout);
+//                login.setDrawable btn_logout!!
                 password.setVisibility(View.GONE);
                 register.setVisibility(View.GONE);
             } else {

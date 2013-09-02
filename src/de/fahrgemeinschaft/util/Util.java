@@ -133,20 +133,20 @@ public class Util {
                 intents.add(labeledIntent(callIntent(dingens),
                         R.drawable.icn_contact_handy, dingens, ctx));
                 intents.add(labeledIntent(smsIntent(dingens, route),
-                        R.drawable.ic_sms, dingens, ctx));
+                        R.drawable.icn_contact_sms, dingens, ctx));
             } else if (privacy.getInt(MOBILE) == 4) { // members
                 intents.add(labeledIntent(profileIntent(ctx),
                         R.drawable.icn_contact_handy,
                         ctx.getString(R.string.login_required), ctx));
                 intents.add(labeledIntent(profileIntent(ctx),
-                        R.drawable.ic_sms,
+                        R.drawable.icn_contact_sms,
                         ctx.getString(R.string.login_required), ctx));
             } else if (privacy.getInt(MOBILE) == 0) { // request
                 intents.add(labeledIntent(web,
                         R.drawable.icn_contact_handy,
                         ctx.getString(R.string.request_contact), ctx));
                 intents.add(labeledIntent(web,
-                        R.drawable.ic_sms,
+                        R.drawable.icn_contact_sms,
                         ctx.getString(R.string.request_contact), ctx));
                 Toast.makeText(ctx, ctx.getString(R.string.why_request),
                         Toast.LENGTH_LONG).show();
