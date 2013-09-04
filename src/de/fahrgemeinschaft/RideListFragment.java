@@ -116,7 +116,6 @@ public class RideListFragment extends SpinningZebraListFragment
             stopSpinning(reason);
         }
         currently_searching_date = 0;
-        
     }
 
     @Override

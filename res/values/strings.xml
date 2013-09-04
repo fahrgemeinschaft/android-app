@@ -104,7 +104,7 @@
     <string name="refresh_description">
         Expire search results after %1$s
     </string>
-    <string-array name="refresh_entries" translatable="false" >
+    <string-array name="refresh_entries" translatable="false">
         <item name="refresh_1min">1min</item>
         <item name="refresh_3min">3min</item>
         <item name="refresh_5min">5min</item>
@@ -129,7 +129,7 @@
         <item name="refresh_24h">86400000</item>
     </string-array>
     <string name="create_contact">Create Contact</string>
-    <string name="create_contact_desc">
+    <string name="create_contact_desc" translatable="false">
         Save to Phonebook as contact option
     </string>
     <string name="verbose" translatable="false">Debug Toasts</string>

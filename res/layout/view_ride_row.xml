@@ -11,6 +11,13 @@
     android:layout_width="match_parent"
     android:layout_height="28dp" >
 
+    <ImageView
+        android:id="@+id/reoccuring"
+        android:src="@drawable/icn_reoccuring"
+        android:visibility="gone"
+        android:layout_width="40dp"
+        android:contentDescription="@string/reccurence" />
+
     <TextView
         android:id="@+id/day"
         style="@style/dark.Large"
