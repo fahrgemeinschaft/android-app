@@ -6,7 +6,10 @@
 -->
 
 <resources>
+    <string name="app_name">Fahrgemeinschaft</string>
+
     <string name="from">von</string>
+    <string name="via">via</string>
     <string name="to">nach</string>
     <string name="when">wann</string>
     <string name="date">Datum</string>
@@ -24,9 +27,12 @@
     <string name="nothing">keine Ergebnisse für</string>
     <string name="search_continue">weiter suchen</string>
     <string name="results">Ergebnisse</string>
+    <string name="details">Details</string>
+    <string name="mydetails">Meine Details</string>
     <string name="myrides">Meine Fahrten</string>
     <string name="profile">Profil</string>
     <string name="settings">Einstellungen</string>
+    <string name="about">About</string>
     <string name="decrease_seats">-</string>
     <string name="increase_seats">+</string>
     <string name="edit">Bearbeiten</string>
@@ -96,6 +102,34 @@
     <string name="refresh_title">Refresh</string>
     <string name="refresh_description">
         Suchergebnisse neu laden nach %1$s
+    </string>
+    <string-array name="refresh_entries" >
+        <item name="refresh_1min">1min</item>
+        <item name="refresh_3min">3min</item>
+        <item name="refresh_5min">5min</item>
+        <item name="refresh_10min">10min</item>
+        <item name="refresh_30min">30min</item>
+        <item name="refresh_1h">1h</item>
+        <item name="refresh_2h">2h</item>
+        <item name="refresh_3h">3h</item>
+        <item name="refresh_12h">12h</item>
+        <item name="refresh_24h">24h</item>
+    </string-array>
+    <string-array name="refresh_values" >
+        <item name="refresh_1min">60000</item>
+        <item name="refresh_3min">180000</item>
+        <item name="refresh_5min">300000</item>
+        <item name="refresh_10min">600000</item>
+        <item name="refresh_30min">1800000</item>
+        <item name="refresh_1h">3600000</item>
+        <item name="refresh_2h">7200000</item>
+        <item name="refresh_3h">10800000</item>
+        <item name="refresh_12h">43200000</item>
+        <item name="refresh_24h">86400000</item>
+    </string-array>
+    <string name="verbose">Debug Toasts</string>
+    <string name="verbose_desc">
+        Informationen zum Hintergrund Service anzeigen
     </string>
     <string name="create_contact">Kontakt speichern</string>
     <string name="create_contact_desc">
