@@ -77,23 +77,23 @@ public class FahrgemeinschaftConnector extends Connector {
     }
 
     @Override
-    public long search(Place from, Place to, Date dep, Date arr) throws Exception {
+    public long search(Ride query) throws Exception {
         HttpURLConnection get;
-        if (from == null && to == null) { // myrides
+        if (query == null) { // myrides
             get = (HttpURLConnection) new URL(endpoint + "/trip").openConnection();
         } else {
             JSONObject from_json = new JSONObject();
             JSONObject to_json = new JSONObject();
-            startDate = df.format(dep);
+            startDate = df.format(query.getDep());
             try {
-                from_json.put("Longitude", "" + from.getLng());
-                from_json.put("Latitude", "" + from.getLat());
-                from_json.put("Startdate", df.format(dep));
+                from_json.put("Longitude", "" + query.getFrom().getLng());
+                from_json.put("Latitude", "" + query.getFrom().getLat());
+                from_json.put("Startdate", df.format(query.getDep()));
                 from_json.put("Reoccur", JSONObject.NULL);
                 from_json.put("ToleranceRadius", get("radius_from"));
                 // place.put("Starttime", JSONObject.NULL);
-                to_json.put("Longitude", "" + to.getLng());
-                to_json.put("Latitude", "" + to.getLat());
+                to_json.put("Longitude", "" + query.getTo().getLng());
+                to_json.put("Latitude", "" + query.getTo().getLat());
                 to_json.put("ToleranceRadius", get("radius_to"));
                 // place.put("ToleranceDays", "3");
             } catch (JSONException e) {
@@ -118,16 +118,19 @@ public class FahrgemeinschaftConnector extends Connector {
             }
         }
         startDate = null;
-        return getNextDayMorning(dep);
+        if (query != null)
+            return getNextDayMorning(query.getDep());
+        else return 0;
     }
 
-    public static long getNextDayMorning(Date dep) {
-        if (dep != null) {
+    public static long getNextDayMorning(long dep) {
+        if (dep != 0) {
             Calendar c = Calendar.getInstance();
-            c.setTimeInMillis(dep.getTime() + 24 * 3600000); // plus one day
+            c.setTimeInMillis(dep + 24 * 3600000); // plus one day
             c.set(Calendar.HOUR_OF_DAY, 0); // reset
             c.set(Calendar.MINUTE, 0);
             c.set(Calendar.SECOND, 0);
+            c.set(Calendar.MILLISECOND, 0);
             return c.getTimeInMillis();
         } else return 0;
     }

@@ -15,7 +15,6 @@ import java.util.Locale;
 import org.teleportr.ConnectorService;
 import org.teleportr.ConnectorService.ServiceCallback;
 import org.teleportr.Ride;
-import org.teleportr.Ride.COLUMNS;
 
 import android.app.NotificationManager;
 import android.content.ComponentName;
@@ -165,7 +164,6 @@ public class MainActivity extends SherlockFragmentActivity
                         Style.INFO).show();
                 return;
             }
-            
             r.type(Ride.SEARCH).arr(r.getDep() +2*24*3600*1000)
                 .store(this);
             startService(new Intent(this, ConnectorService.class)
@@ -193,16 +191,6 @@ public class MainActivity extends SherlockFragmentActivity
         case SEARCH:
             results.swapCursor(rides);
             details.swapCursor(rides);
-            if (rides.getCount() > 0) {
-                rides.moveToLast();
-                long latest_dep = rides.getLong(COLUMNS.DEPARTURE);
-                System.out.println("ALREADY in CACHE until "
-                        + new SimpleDateFormat("dd.MM. HH:mm", Locale.GERMANY)
-                        .format(new Date(latest_dep)));
-                if (latest_dep - main.ride.getArr() > 3600000) {// inc window
-                    main.ride.arr(getNextDayMorning(latest_dep)).store(this);
-                }
-            }
             break;
         }
     }
@@ -223,12 +211,8 @@ public class MainActivity extends SherlockFragmentActivity
 
     @Override
     public void onSpinningWheelClick() {
-        System.out.println("arr: " + new SimpleDateFormat("dd.MM. HH:mm", Locale.GERMANY)
-            .format(new Date(main.ride.getArr())));
-        main.ride.arr(getNextDayMorning(
+        main.ride.type(Ride.SEARCH).arr(getNextDayMorning(
                 main.ride.getArr() + 2 * 24 * 3600 * 1000)).store(this);
-        System.out.println("arr after: " + new SimpleDateFormat("dd.MM. HH:mm", Locale.GERMANY)
-            .format(new Date(main.ride.getArr())));
         startService(new Intent(this, ConnectorService.class)
             .setAction(ConnectorService.SEARCH));
     }

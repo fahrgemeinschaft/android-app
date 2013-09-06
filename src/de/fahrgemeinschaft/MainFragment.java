@@ -74,7 +74,7 @@ public class MainFragment extends SherlockFragment
             setDateButtonText(ride.getDep());
         } else {
             ride = new Ride(getActivity());
-            ride.dep(System.currentTimeMillis() - 3600000);
+            ride.dep(getMorning(System.currentTimeMillis()));
         }
     }
 
@@ -166,9 +166,10 @@ public class MainFragment extends SherlockFragment
         cal.set(Calendar.YEAR, year);
         cal.set(Calendar.MONTH, month);
         cal.set(Calendar.DAY_OF_MONTH, day);
-        cal.set(Calendar.HOUR_OF_DAY, 00);
-        cal.set(Calendar.MINUTE, 00);
-        cal.set(Calendar.SECOND, 00);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
         ride.dep(cal.getTime());
         setDateButtonText(ride.getDep());
     }
@@ -212,6 +213,16 @@ public class MainFragment extends SherlockFragment
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelable("ride", ride);
         super.onSaveInstanceState(outState);
+    }
+
+    public static long getMorning(long dep) {
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(dep);
+        c.set(Calendar.HOUR_OF_DAY, 0); // reset
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        return c.getTimeInMillis();
     }
 
 }

@@ -46,8 +46,10 @@ public class SettingsActivity extends SherlockPreferenceActivity
     @SuppressWarnings("deprecation")
     void setSummaries() {
         ListPreference list = (ListPreference) findPreference("refresh");
-        list.setSummary(getResources().getString(
-                R.string.refresh_description, list.getEntry()));
+        if (list.getEntry() != null) {
+            list.setSummary(getResources().getString(
+                    R.string.refresh_description, list.getEntry()));
+        } else Log.d("settings", "no refresh entry");
         findPreference("about").setIntent(Util.aboutIntent(this));
         findPreference("special").setIntent(new Intent(this,
                 SettingsSpecialActivity.class));

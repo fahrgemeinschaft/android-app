@@ -11,7 +11,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.Date;
 import java.util.HashSet;
 
 import org.json.JSONArray;
@@ -145,8 +144,7 @@ public class GPlaces extends Connector {
 
 
     @Override
-    public long search(Place from, Place to, Date dep, Date arr) {
-        // TODO Auto-generated method stub
+    public long search(Ride query) {
         return 0;
     }
 
