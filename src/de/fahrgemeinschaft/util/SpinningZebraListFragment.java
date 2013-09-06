@@ -149,6 +149,9 @@ public abstract class SpinningZebraListFragment extends SherlockListFragment {
         this.smallText = smallText;
         this.largeText = "";
         spinning = false;
+        if (cursor != null && !cursor.isClosed() && getListAdapter() != null) {
+            ((CursorAdapter) getListAdapter()).notifyDataSetChanged();
+        }
     }
 
 
