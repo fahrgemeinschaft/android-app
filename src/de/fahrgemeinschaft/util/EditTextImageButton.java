@@ -13,6 +13,7 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -54,6 +55,17 @@ public class EditTextImageButton extends FrameLayout implements TextWatcher {
         text.setId(ID--);
         Util.fixStreifenhoernchen(text);
         Util.fixStreifenhoernchen(image);
+        text.setOnFocusChangeListener(new OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    ((InputMethodManager) getContext()
+                            .getSystemService(Context.INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow(text.getWindowToken(), 0);
+                }
+            }
+        });
     }
 
     public void streifenhornchen(boolean on) {
