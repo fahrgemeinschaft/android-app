@@ -24,6 +24,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TimePicker;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -103,7 +104,11 @@ public class EditRideFragment2 extends SherlockFragment
         
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
-            if (!hasFocus) {
+            if (hasFocus) {
+                String text = price.text.getText().toString();
+                price.text.setText(text.substring(0, text.length() - 2));
+                ((EditText) v).selectAll();
+            } else {
                 String p = price.text.getText().toString();
                 if (p.matches("\\d+\\.?\\d*"))
                     setPrice((int) Double.valueOf(p).doubleValue() * 100);

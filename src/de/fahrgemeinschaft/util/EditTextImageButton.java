@@ -55,6 +55,7 @@ public class EditTextImageButton extends FrameLayout implements TextWatcher {
         text.setId(ID--);
         Util.fixStreifenhoernchen(text);
         Util.fixStreifenhoernchen(image);
+        text.setSelectAllOnFocus(true);
         text.setOnFocusChangeListener(new OnFocusChangeListener() {
 
             @Override
