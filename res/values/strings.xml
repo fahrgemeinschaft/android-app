@@ -61,7 +61,7 @@
     <string name="why_login">to publish rides on fahrgemeinschaft.de</string>
     <string name="request_contact">request contact</string>
     <string name="why_request">
-        Contact info is not protected by user 
+        Contact info is protected by user
         and can only be requested on the website
     </string>
         <string name="error">Error!</string>
