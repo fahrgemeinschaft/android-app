@@ -1,4 +1,6 @@
-### [Fahrgemeinschaft](http://fahrgemeinschaft.de) Android App 
+### [Fahrgemeinschaft](http://fahrgemeinschaft.de) Android App
+![qr code](http://chart.apis.google.com/chart?chs=200x200&cht=qr&chld=|1&chl=http%3A%2F%2Fbit.ly%2F13gMAV9)
+
 try out apk [http://bit.ly/13gMAV9](http://bit.ly/13gMAV9)
 
     Copyright (C) 2013 by it's authors. Some rights reserved. See LICENSE
