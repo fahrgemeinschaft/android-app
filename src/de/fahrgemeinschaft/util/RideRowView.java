@@ -70,7 +70,10 @@ public class RideRowView extends LinearLayout {
             time.setText(timef.format(dep));
         }
         if (cursor.getInt(COLUMNS.PRICE) != -1) {
+            price.setVisibility(View.VISIBLE);
             price.setText(cursor.getInt(COLUMNS.PRICE) / 100 + "€");
+        } else {
+            price.setVisibility(View.INVISIBLE);
         }
         switch(cursor.getInt(COLUMNS.SEATS)){
         case 0:
