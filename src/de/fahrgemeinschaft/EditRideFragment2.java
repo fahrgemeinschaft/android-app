@@ -64,6 +64,7 @@ public class EditRideFragment2 extends SherlockFragment
         price.text.setOnFocusChangeListener(onPriceChange);
         price.setTextListener("price", this);
         reoccur = (ReoccuringWeekDaysView) v.findViewById(R.id.reoccur);
+        time.requestFocus();
     }
 
     public void setRide(Ride ride) {
@@ -142,6 +143,7 @@ public class EditRideFragment2 extends SherlockFragment
         @Override
         public void onClick(View v) {
             final Calendar c = Calendar.getInstance();
+            c.setTimeInMillis(ride.getDep());
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
@@ -156,6 +158,7 @@ public class EditRideFragment2 extends SherlockFragment
         @Override
         public void onClick(View v) {
             final Calendar c = Calendar.getInstance();
+            c.setTimeInMillis(ride.getDep());
             int min = c.get(Calendar.MINUTE);
             int hour = c.get(Calendar.HOUR_OF_DAY);
             TimePickerDialog t = new TimePickerDialog(getActivity(),

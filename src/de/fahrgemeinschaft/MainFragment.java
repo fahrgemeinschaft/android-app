@@ -1,5 +1,11 @@
-package de.fahrgemeinschaft;
+/**
+ * Fahrgemeinschaft / Ridesharing App
+ * Copyright (c) 2013 by it's authors.
+ * Some rights reserved. See LICENSE..
+ *
+ */
 
+package de.fahrgemeinschaft;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -71,11 +77,11 @@ public class MainFragment extends SherlockFragment
             place = ride.getTo();
             if (place != null)
                 to.setText(place.getName());
-            setDateButtonText(ride.getDep());
         } else {
             ride = new Ride(getActivity());
             ride.dep(getMorning(System.currentTimeMillis()));
         }
+        setDateButtonText(ride.getDep());
     }
 
     @Override

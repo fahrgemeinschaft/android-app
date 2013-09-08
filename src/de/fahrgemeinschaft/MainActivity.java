@@ -162,7 +162,7 @@ public class MainActivity extends SherlockFragmentActivity
                     .dep(r.getDep() < now? now + 3600000 : r.getDep())
                     .mode(Ride.Mode.CAR).seats(3).store(this);
             startActivity(new Intent(Intent.ACTION_EDIT, uri));
-            this.overridePendingTransition(
+            overridePendingTransition(
                     R.anim.slide_in_bottom, R.anim.slide_out_top);
             break;
         case R.id.btn_mitfahren:
@@ -171,8 +171,7 @@ public class MainActivity extends SherlockFragmentActivity
                         Style.INFO).show();
                 return;
             }
-            r.type(Ride.SEARCH).arr(r.getDep() +2*24*3600*1000)
-                .store(this);
+            r.type(Ride.SEARCH).arr(r.getDep() + 48 * 3600000).store(this);
             startService(new Intent(this, ConnectorService.class)
                 .setAction(ConnectorService.SEARCH));
             load(r.toUri());

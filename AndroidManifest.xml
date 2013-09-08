@@ -2,13 +2,13 @@
 <!--
   Fahrgemeinschaft / Ridesharing App
   Copyright (c) 2013 by it's authors.
-  Some rights reserved. See LICENSE.. 
+  Some rights reserved. See LICENSE..
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.fahrgemeinschaft"
-    android:versionCode="44"
-    android:versionName="beta 0.9.3.4" >
+    android:versionCode="45"
+    android:versionName="beta 0.9.3.5" >
 
 
     <uses-sdk
