@@ -87,7 +87,7 @@ public class RideListFragment extends SpinningZebraListFragment
             v.grey_bg.setVisibility(View.GONE);
         }
         dep = dep - currently_searching_date; // refresh spinning wheel
-        if (ride.getShort(COLUMNS.DIRTY) == 1 || dep > 0 && dep < 24*3600000) {
+        if (ride.getShort(COLUMNS.DIRTY) > 0 || dep > 0 && dep < 24*3600000) {
             v.loading.setVisibility(View.VISIBLE);
         } else {
             v.loading.setVisibility(View.GONE);
@@ -173,6 +173,7 @@ public class RideListFragment extends SpinningZebraListFragment
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info =
                 (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        System.out.println("POSITION " + info.position);
         cursor.moveToPosition(info.position);
         Ride ride = new Ride(cursor, getActivity());
         return Util.handleRideAction(item.getItemId(), ride, getActivity());

@@ -53,11 +53,11 @@ public class Util {
                     "content://de.fahrgemeinschaft/rides/" + r.getId())));
             return true;
         case R.id.duplicate:
-            r.ref("");
+            r.ref(null);
             c.startActivity(new Intent(Intent.ACTION_EDIT, r.store(c)));
             return true;
         case R.id.duplicate_retour:
-            r.ref("");
+            r.ref(null);
             List<Place> vias = r.getVias();
             Place from = r.getFrom();
             r.removeVias();
