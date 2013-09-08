@@ -106,7 +106,8 @@ public class EditRideFragment2 extends SherlockFragment
         public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus) {
                 String text = price.text.getText().toString();
-                price.text.setText(text.substring(0, text.length() - 2));
+                if (text.length() > 2)
+                    price.text.setText(text.substring(0, text.length() - 2));
                 ((EditText) v).selectAll();
             } else {
                 String p = price.text.getText().toString();
