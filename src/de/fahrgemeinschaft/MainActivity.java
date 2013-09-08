@@ -7,10 +7,7 @@
 
 package de.fahrgemeinschaft;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 import org.teleportr.ConnectorService;
 import org.teleportr.ConnectorService.ServiceCallback;
@@ -349,9 +346,9 @@ public class MainActivity extends SherlockFragmentActivity
     
     @Override
     public void onProgress(String what, int how) {
-        if (what.equals(ConnectorService.MYRIDES)) {
+        if (what.equals(ConnectorService.MYRIDES) && ic_myrides != null) {
             ic_myrides.setActionView(R.layout.view_progress);
-        } else if (what.equals(ConnectorService.AUTH)) {
+        } else if (what.equals(ConnectorService.AUTH) && ic_profile != null) {
             Crouton.makeText(this, what, Style.INFO).show();
             ic_profile.setActionView(R.layout.view_progress);
         }
@@ -360,9 +357,9 @@ public class MainActivity extends SherlockFragmentActivity
     @Override
     public void onFail(String what, String reason) {
         Crouton.makeText(this, what + " fail: " + reason, Style.ALERT).show();
-        if (what.equals(ConnectorService.MYRIDES)) {
+        if (what.equals(ConnectorService.MYRIDES) && ic_myrides != null) {
             ic_myrides.setActionView(null);
-        } else if (what.equals(ConnectorService.AUTH)) {
+        } else if (what.equals(ConnectorService.AUTH) && ic_profile != null) {
             ic_profile.setActionView(null);
             showFragment(new ProfileFragment(), getString(R.string.profile),
                     R.anim.slide_in_top, R.anim.slide_out_top);
