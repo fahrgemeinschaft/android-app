@@ -58,6 +58,7 @@ public class MainActivity extends SherlockFragmentActivity
     private RideDetailsFragment mydetails;
     public ConnectorService service;
     private MenuItem ic_myrides;
+    private boolean popup;
     public static final String TAG = "Fahrgemeinschaft";
 
     @Override
@@ -81,13 +82,15 @@ public class MainActivity extends SherlockFragmentActivity
         mydetails = (RideDetailsFragment)
                 fm.findFragmentByTag(getString(R.string.mydetails));
         if (mydetails == null) mydetails = new RideDetailsFragment();
-        if (savedInstanceState != null)
-            handleIntent(getIntent().getData());
-        else
-            onNewIntent(getIntent());
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
         getSupportFragmentManager().addOnBackStackChangedListener(this);
         onBackStackChanged();
+        if (getIntent().getData() != null)
+            popup = true;
+        if (savedInstanceState != null)
+            load(getIntent().getData());
+        else
+            handleIntent(getIntent());
     }
 
     @Override
@@ -108,8 +111,12 @@ public class MainActivity extends SherlockFragmentActivity
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        handleIntent(intent);
+    }
+
+    protected void handleIntent(Intent intent) {
         if (intent.getData() != null) {
-            handleIntent(intent.getData());
+            load(intent.getData());
             switch (uriMatcher.match(intent.getData())) {
             case SEARCH:
                 showFragment(results, getString(R.string.results),
@@ -128,7 +135,7 @@ public class MainActivity extends SherlockFragmentActivity
         }
     }
 
-    private void handleIntent(Uri uri) {
+    private void load(Uri uri) {
         if (uri != null) {
             setIntent(getIntent().setData(uri));
             switch (uriMatcher.match(uri)) {
@@ -165,7 +172,7 @@ public class MainActivity extends SherlockFragmentActivity
                 .store(this);
             startService(new Intent(this, ConnectorService.class)
                 .setAction(ConnectorService.SEARCH));
-            handleIntent(r.toUri());
+            load(r.toUri());
             showFragment(results, getString(R.string.results),
                     R.anim.slide_in_right,R.anim.slide_out_right);
             break;
@@ -290,7 +297,7 @@ public class MainActivity extends SherlockFragmentActivity
     }
 
     public void showMyRides() {
-        handleIntent(MY_RIDES_URI);
+        load(MY_RIDES_URI);
         showFragment(myrides, getString(R.string.myrides),
                 R.anim.slide_in_top, R.anim.slide_out_top);
         startService(new Intent(this, ConnectorService.class)
@@ -320,16 +327,20 @@ public class MainActivity extends SherlockFragmentActivity
     public void onBackStackChanged() {
         FragmentManager fm = getSupportFragmentManager();
         int backstack = fm.getBackStackEntryCount();
-        if (backstack == 0)
+        if (backstack == 0) {
+            if (popup) { // hack
+                popup = false;
+                finish();
+            }
             setTitle("");
-        else {
+        } else {
             String name = fm.getBackStackEntryAt(backstack - 1).getName();
             if (name.equals(getString(R.string.results)) ||
                     name.equals(getString(R.string.details))) {
-                handleIntent(main.ride.toUri());
+                load(main.ride.toUri());
             } else if (name.equals(getString(R.string.myrides)) ||
                     name.equals(getString(R.string.mydetails))) {
-                handleIntent(MY_RIDES_URI);
+                load(MY_RIDES_URI);
             }
             setTitle(name);
         }

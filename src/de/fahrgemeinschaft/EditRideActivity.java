@@ -109,7 +109,6 @@ public class EditRideActivity extends SherlockFragmentActivity
         switch (item.getItemId()) {
         case R.id.myrides:
             startActivity(new Intent(this, MainActivity.class)
-                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 .setData(MainActivity.MY_RIDES_URI));
             overridePendingTransition(R.anim.do_nix, R.anim.slide_in_top);
             break;
@@ -118,13 +117,11 @@ public class EditRideActivity extends SherlockFragmentActivity
             overridePendingTransition(R.anim.do_nix, R.anim.slide_in_top);
             break;
         case R.id.profile:
-            startActivity(Util.profileIntent(this)
-                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
+            startActivity(Util.profileIntent(this));
             overridePendingTransition(R.anim.do_nix, R.anim.slide_in_top);
             break;
         case android.R.id.home:
-            startActivity(new Intent(this, MainActivity.class)
-                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
+            startActivity(new Intent(this, MainActivity.class));
             overridePendingTransition(
                     R.anim.slide_in_top, R.anim.slide_out_bottom);
             break;
@@ -157,6 +154,7 @@ public class EditRideActivity extends SherlockFragmentActivity
                     R.anim.slide_in_top, R.anim.slide_out_bottom);
             Toast.makeText(this, getString(R.string.stored), Toast.LENGTH_SHORT)
                     .show();
+            finish();
         }
     }
 

@@ -198,18 +198,6 @@ public class Util {
         }
     }
 
-    public static Intent profileIntent(Context ctx) {
-        return new Intent(ctx, MainActivity.class)
-                .setData(Uri.parse("content://de.fahrgemeinschaft/profile"))
-                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-    }
-
-    public static Intent aboutIntent(Context ctx) {
-        return new Intent(ctx, MainActivity.class)
-                .setData(Uri.parse("content://de.fahrgemeinschaft/about"))
-                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-    }
-
     public static LabeledIntent labeledIntent(Intent intent,
                 int icon, String label, Context ctx) {
         PackageManager pm = ctx.getPackageManager();
@@ -247,6 +235,20 @@ public class Util {
 //        mail.setType("plain/text");
         return mail;
     }
+
+
+
+    public static Intent profileIntent(Context ctx) {
+        return new Intent(ctx, MainActivity.class)
+                .setData(Uri.parse("content://de.fahrgemeinschaft/profile"));
+    }
+
+    public static Intent aboutIntent(Context ctx) {
+        return new Intent(ctx, MainActivity.class)
+                .setData(Uri.parse("content://de.fahrgemeinschaft/about"));
+    }
+
+
 
     public static void fixStreifenhoernchen(View view) {
         Drawable bg = view.getBackground();
