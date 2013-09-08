@@ -18,7 +18,7 @@ import android.widget.TextView;
 public class RideRowView extends LinearLayout {
 
     private static final int DAY = 86400000;
-    private static final long NOTIME = 79140000;
+    private static final long NOTIME = 86340000;
     private static final SimpleDateFormat dayf =
             new SimpleDateFormat("EEE", Locale.GERMANY);
     private static final SimpleDateFormat datef =
