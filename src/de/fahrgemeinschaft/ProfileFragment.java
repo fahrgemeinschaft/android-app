@@ -67,6 +67,7 @@ public class ProfileFragment extends SherlockFragment
         v.findViewById(R.id.container).setOnClickListener(this);
         prefs.registerOnSharedPreferenceChangeListener(this);
         onSharedPreferenceChanged(prefs, "auth");
+        login.requestFocus();
     }
 
     @Override

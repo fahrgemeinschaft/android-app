@@ -8,18 +8,23 @@
 package de.fahrgemeinschaft.util;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.Toast;
 import de.fahrgemeinschaft.R;
 
-public class EditTextImageButton extends FrameLayout implements TextWatcher {
+public class EditTextImageButton extends FrameLayout
+                implements TextWatcher, OnFocusChangeListener, OnClickListener {
 
     static final String android = "http://schemas.android.com/apk/res/android";
 
@@ -56,17 +61,26 @@ public class EditTextImageButton extends FrameLayout implements TextWatcher {
         Util.fixStreifenhoernchen(text);
         Util.fixStreifenhoernchen(image);
         text.setSelectAllOnFocus(true);
-        text.setOnFocusChangeListener(new OnFocusChangeListener() {
+        text.setOnFocusChangeListener(this);
+        image.setOnFocusChangeListener(this);
+        image.setOnClickListener(this);
+    }
 
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    ((InputMethodManager) getContext()
-                            .getSystemService(Context.INPUT_METHOD_SERVICE))
-                            .hideSoftInputFromWindow(text.getWindowToken(), 0);
-                }
-            }
-        });
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (hasFocus) {
+            text.requestFocus();
+        } else {
+            ((InputMethodManager) getContext()
+                    .getSystemService(Context.INPUT_METHOD_SERVICE))
+                    .hideSoftInputFromWindow(text.getWindowToken(), 0);
+        }
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        text.requestFocus();
     }
 
     public void streifenhornchen(boolean on) {

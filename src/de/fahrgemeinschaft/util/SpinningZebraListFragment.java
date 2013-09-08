@@ -127,6 +127,7 @@ public abstract class SpinningZebraListFragment extends SherlockListFragment {
         rotate.setRepeatCount(Animation.INFINITE);
         stopSpinning("click here");
         swapCursor(cursor);
+        getListView().requestFocus();
     }
 
     public void swapCursor(Cursor cursor) {

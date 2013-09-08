@@ -184,6 +184,7 @@ public class RideDetailsFragment extends SherlockFragment
                 return position;
             }
         });
+        pager.requestFocus();
     }
 
     public void setSelection(int position) {

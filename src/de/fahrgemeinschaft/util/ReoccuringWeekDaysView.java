@@ -39,6 +39,7 @@ public class ReoccuringWeekDaysView extends LinearLayout {
             day.setText(weekDays[i < weekDays.length? i : 1].substring(0, 2));
             addView(day);
         }
+        setFocusable(true);
     }
 
     public void setDays(JSONObject details) {
@@ -71,6 +72,7 @@ public class ReoccuringWeekDaysView extends LinearLayout {
         day.setTextAppearance(getContext(), R.style.dark_Bold);
         day.setBackgroundResource(R.drawable.btn_night);
         day.setGravity(Gravity.CENTER);
+        day.setFocusable(true);
         return day;
     }
 
