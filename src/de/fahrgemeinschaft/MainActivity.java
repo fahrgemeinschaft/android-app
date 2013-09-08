@@ -50,6 +50,7 @@ public class MainActivity extends SherlockFragmentActivity
        OnPageChangeListener, ServiceCallback<String>,
        ServiceConnection {
 
+    private static final String POPUP = "popup";
     public MainFragment main;
     private MenuItem ic_profile;
     public RideListFragment results;
@@ -85,12 +86,14 @@ public class MainActivity extends SherlockFragmentActivity
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
         getSupportFragmentManager().addOnBackStackChangedListener(this);
         onBackStackChanged();
-        if (getIntent().getData() != null)
-            popup = true;
-        if (savedInstanceState != null)
-            load(getIntent().getData());
-        else
+        if (savedInstanceState == null) {
             handleIntent(getIntent());
+            if (getIntent().getData() != null)
+                popup = true;
+        } else {
+            load(getIntent().getData());
+            popup = savedInstanceState.getBoolean(POPUP);
+        }
     }
 
     @Override
@@ -401,6 +404,12 @@ public class MainActivity extends SherlockFragmentActivity
     @Override
     public void onServiceDisconnected(ComponentName name) {
         service = null;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(POPUP, popup);
+        super.onSaveInstanceState(outState);
     }
 
     public static long getNextDayMorning(long dep) {
