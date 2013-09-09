@@ -33,10 +33,31 @@ import org.teleportr.Ride.Mode;
 public class FahrgemeinschaftConnector extends Connector {
 
 
+    private static final String ID = "/id/";
+    private static final String PUT = "PUT";
+    private static final String POST = "POST";
+    private static final String TRIP = "/trip";
+    private static final String DELETE = "DELETE";
+    private static final String SESSION = "/session";
+    private static final String ZERO = "0";
+    private static final String EMPTY = "";
+    private static final String COMMA = ", ";
+    private static final String NULL = "null";
+    private static final String NOTIME = "2359";
+
+    private static final String USER = "user";
+    private static final String AUTH = "auth";
+    private static final String LOGIN = "login";
+    private static final String APIKEY = "apikey";
+    private static final String PASSWD = "Password";
+    private static final String AUTHKEY = "authkey";
+    private static final String AUTH_KEY = "AuthKey";
+
+    private static final String FAHRGEMEINSCHAFT_DE
+            = "http://service.fahrgemeinschaft.de";
+    public String endpoint =  FAHRGEMEINSCHAFT_DE;
+
     private String startDate;
-
-    public String endpoint =  "http://service.fahrgemeinschaft.de";
-
     static final SimpleDateFormat fulldf =
             new SimpleDateFormat("yyyyMMddHHmm", Locale.GERMAN);
     static final SimpleDateFormat df =
@@ -51,66 +72,79 @@ public class FahrgemeinschaftConnector extends Connector {
     public String authenticate(String credential) throws Exception {
         System.out.println("refreshing authtoken");
         HttpURLConnection post = (HttpURLConnection)
-                new URL(endpoint + "/session").openConnection();
-        post.setRequestProperty("apikey", Secret.APIKEY);
+                new URL(endpoint + SESSION).openConnection();
+        post.setRequestProperty(APIKEY, Secret.APIKEY);
         post.setDoOutput(true);
-        post.getOutputStream().write((
-                "{\"Email\": \"" + get("login")
-                + "\", \"Password\": \"" + credential
-                + "\"}").getBytes());
+        post.getOutputStream().write(new JSONObject()
+                    .put(EMAIL, get(LOGIN))
+                    .put(PASSWD, credential)
+                    .toString().getBytes());
         post.getOutputStream().close();
         JSONObject json = loadJson(post);
         if (post.getResponseCode() == 403)
             throw new AuthException();
-        JSONObject auth = json.getJSONObject("auth");
-        set("user", auth.getString("IDuser"));
-        JSONArray kvp = json.getJSONObject("user")
-                .getJSONArray("KeyValuePairs");
+        JSONObject auth = json.getJSONObject(AUTH);
+        set(USER, auth.getString(ID_USER));
+        JSONArray kvp = json.getJSONObject(USER)
+                .getJSONArray(KEY_VALUE_PAIRS);
         for (int i = 1; i < kvp.length(); i++) {
-            String key = kvp.getJSONObject(i).getString("Key");
-            if (key.equals("firstname"))
-                set("firstname", kvp.getJSONObject(i).getString("Value"));
-            else if (key.equals("lastname"))
-                set("lastname", kvp.getJSONObject(i).getString("Value"));
+            String key = kvp.getJSONObject(i).getString(KEY);
+            if (key.equals(FIRSTNAME))
+                set(FIRSTNAME, kvp.getJSONObject(i).getString(VALUE));
+            else if (key.equals(LASTNAME))
+                set(LASTNAME, kvp.getJSONObject(i).getString(VALUE));
         }
-        return auth.getString("AuthKey");
+        return auth.getString(AUTH_KEY);
     }
+
+    private static final String RADIUS_TO = "radius_to";
+    private static final String RADIUS_FROM = "radius_from";
+    private static final String SEARCH_ORIGIN = "?searchOrigin=";
+    private static final String TOLERANCE_RADIUS = "ToleranceRadius";
+    private static final String SEARCH_DESTINATION = "&searchDestination=";
+    private static final String RESULTS = "results";
+    private static final String REOCCUR = "Reoccur";
+    private static final String STARTDATE = "Startdate";
+    private static final String LATITUDE = "Latitude";
+    private static final String LONGITUDE = "Longitude";
 
     @Override
     public long search(Ride query) throws Exception {
         HttpURLConnection get;
         if (query == null) { // myrides
-            get = (HttpURLConnection) new URL(endpoint + "/trip").openConnection();
+            get = (HttpURLConnection) new URL(endpoint + TRIP).openConnection();
         } else {
             JSONObject from_json = new JSONObject();
             JSONObject to_json = new JSONObject();
             startDate = df.format(query.getDep());
             try {
-                from_json.put("Longitude", "" + query.getFrom().getLng());
-                from_json.put("Latitude", "" + query.getFrom().getLat());
-                from_json.put("Startdate", df.format(query.getDep()));
-                from_json.put("Reoccur", JSONObject.NULL);
-                from_json.put("ToleranceRadius", get("radius_from"));
+                from_json.put(LONGITUDE, query.getFrom().getLng());
+                from_json.put(LATITUDE, query.getFrom().getLat());
+                from_json.put(STARTDATE, df.format(query.getDep()));
+                from_json.put(REOCCUR, JSONObject.NULL);
+                from_json.put(TOLERANCE_RADIUS, get(RADIUS_FROM));
                 // place.put("Starttime", JSONObject.NULL);
-                to_json.put("Longitude", "" + query.getTo().getLng());
-                to_json.put("Latitude", "" + query.getTo().getLat());
-                to_json.put("ToleranceRadius", get("radius_to"));
+                to_json.put(LONGITUDE, query.getTo().getLng());
+                to_json.put(LATITUDE, query.getTo().getLat());
+                to_json.put(TOLERANCE_RADIUS, get(RADIUS_TO));
                 // place.put("ToleranceDays", "3");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            get = (HttpURLConnection) new URL(endpoint
-                    + "/trip?searchOrigin=" + from_json
-                    + "&searchDestination=" + to_json).openConnection();
+            get = (HttpURLConnection) new URL(new StringBuffer()
+                    .append(endpoint).append(TRIP)
+                    .append(SEARCH_ORIGIN).append(from_json)
+                    .append(SEARCH_DESTINATION).append(to_json)
+                    .toString()).openConnection();
         }
-        get.setRequestProperty("apikey", Secret.APIKEY);
+        get.setRequestProperty(APIKEY, Secret.APIKEY);
         if (getAuth() != null)
-            get.setRequestProperty("authkey", getAuth());
+            get.setRequestProperty(AUTHKEY, getAuth());
         JSONObject json = loadJson(get);
         if (get.getResponseCode() == 403)
             throw new AuthException();
         if (json != null) {
-            JSONArray results = json.getJSONArray("results");
+            JSONArray results = json.getJSONArray(RESULTS);
             System.out.println("FOUND " + results.length() + " rides");
 
             for (int i = 0; i < results.length(); i++) {
@@ -135,48 +169,82 @@ public class FahrgemeinschaftConnector extends Connector {
         } else return 0;
     }
 
+    private static final String KEY = "Key";
+    private static final String VALUE = "Value";
+    private static final String LASTNAME = "lastname";
+    private static final String FIRSTNAME = "firstname";
+    private static final String KEY_VALUE_PAIRS = "KeyValuePairs";
+    private static final String ID_USER = "IDuser";
+
+    private static final String OFFER = "offer";
+    private static final String TRIP_ID = "TripID";
+    private static final String TRIPTYPE = "Triptype";
+
     private static final String EMAIL = "Email";
     private static final String MOBILE = "Mobile";
     private static final String LANDLINE = "Landline";
     private static final String PLATE = "NumberPlate";
+    private static final String CONTACTMAIL = "Contactmail";
+    private static final String CONTACTMOBILE = "Contactmobile";
+    private static final String CONTACTLANDLINE = "Contactlandline";
+    private static final String ADDRESS = "Address";
+    private static final String STARTTIME = "Starttime";
+    private static final String DESTINATION = "Destination";
+    private static final String ORIGIN = "Origin";
+    private static final String ROUTINGS = "Routings";
+    private static final String PRICE = "Price";
+    private static final String BAHN = "Bahn";
+    private static final String RELEVANCE = "Relevance";
+    private static final String COMMENT = "Comment";
+    private static final String DESCRIPTION = "Description";
+    private static final String PRIVACY = "Privacy";
+    private static final String PLACES = "Places";
+    private static final String DE = "DE";
+    private static final String GEO = "geo";
+    private static final String PLACETYPE = "Placetype";
+    private static final String DEUTSCHLAND = "Deutschland";
+    private static final String COUNTRY_CODE = "CountryCode";
+    private static final String COUNTRY_NAME = "CountryName";
+    private static final String ROUTING_INDEX = "RoutingIndex";
+    
 
     private Ride parseRide(JSONObject json)  throws JSONException {
 
         Ride ride = new Ride().type(Ride.OFFER);
         if (startDate == null) ride.marked(); // myrides
-        ride.who(json.getString("IDuser"));
-        String value = json.getString("Contactmail");
-        if (!value.equals("") && !value.equals("null"))
+        ride.who(json.getString(ID_USER));
+        String value = json.getString(CONTACTMAIL);
+        if (!value.equals(EMPTY) && !value.equals(NULL))
             ride.set(EMAIL, value);
-        value = json.getString("Contactmobile");
-        if (!value.equals("") && !value.equals("null"))
+        value = json.getString(CONTACTMOBILE);
+        if (!value.equals(EMPTY) && !value.equals(NULL))
             ride.set(MOBILE, value);
-        value = json.getString("Contactlandline");
-        if (!value.equals("") && !value.equals("null"))
+        value = json.getString(CONTACTLANDLINE);
+        if (!value.equals(EMPTY) && !value.equals(NULL))
             ride.set(LANDLINE, value);
         value = json.getString(PLATE);
-        if (!value.equals("") && !value.equals("null")) {
+        if (!value.equals(EMPTY) && !value.equals(NULL)) {
             ride.set(PLATE, value);
-            if (value.equals("Bahn"))
+            if (value.equals(BAHN))
                 ride.mode(Mode.TRAIN);
         }
-        ride.getDetails().put("Privacy", json.getJSONObject("Privacy"));
-        ride.set("Comment", json.getString("Description"));
-        if (json.getInt("Relevance") == 10) {
+        ride.getDetails().put(PRIVACY, json.getJSONObject(PRIVACY));
+        ride.set(COMMENT, json.getString(DESCRIPTION));
+        if (json.getInt(RELEVANCE) == 10) {
             ride.activate();
         } else {
             ride.deactivate();
         }
-        ride.ref(json.getString("TripID"));
-        ride.seats(json.getInt("Places"));
-        if (!json.isNull("Price")) {
+        ride.ref(json.getString(TRIP_ID));
+        ride.seats(json.getInt(PLACES));
+        if (!json.isNull(PRICE)) {
             ride.price((int) Double.parseDouble(
-                    json.getString("Price")) * 100);
+                    json.getString(PRICE)) * 100);
         } else {
             ride.price(-1);
         }
 
-        JSONObject reoccur = json.getJSONObject("Reoccur");
+        JSONObject reoccur = json.getJSONObject(REOCCUR);
         boolean isReoccuring = false;
         for (int i = 0; i < 7; i++) {
             if (reoccur.getBoolean(FahrgemeinschaftConnector.DAYS[i])) {
@@ -186,7 +254,7 @@ public class FahrgemeinschaftConnector extends Connector {
         }
         if (isReoccuring) {
             ride.arr(new Date(reoccuring));
-            ride.getDetails().put("Reoccur", reoccur);
+            ride.getDetails().put(REOCCUR, reoccur);
         }
         String time = parseTime(json);
         if (startDate != null) {
@@ -195,43 +263,43 @@ public class FahrgemeinschaftConnector extends Connector {
             if (isReoccuring) {
                 ride.dep(parseDate(XMAS2050 + time));
             } else {
-                ride.dep(parseDate(json.getString("Startdate") + time));
+                ride.dep(parseDate(json.getString(STARTDATE) + time));
             }
         }
 
-        JSONArray routings = json.getJSONArray("Routings");
+        JSONArray routings = json.getJSONArray(ROUTINGS);
 
         ride.from(store(parsePlace(routings.getJSONObject(0)
-                .getJSONObject("Origin"))));
+                .getJSONObject(ORIGIN))));
 
         for (int j = 1; j < routings.length(); j++) {
             ride.via(store(parsePlace(routings.getJSONObject(j)
-                    .getJSONObject("Destination"))));
+                    .getJSONObject(DESTINATION))));
         }
 
         ride.to(store(parsePlace(routings.getJSONObject(0)
-                .getJSONObject("Destination"))));
+                .getJSONObject(DESTINATION))));
         return ride;
     }
 
     private Place parsePlace(JSONObject json) throws JSONException {
-        String[] split = json.getString("Address").split(", ");
+        String[] split = json.getString(ADDRESS).split(COMMA);
         return new Place(
-                    Double.parseDouble(json.getString("Latitude")),
-                    Double.parseDouble(json.getString("Longitude")))
-                .address(json.getString("Address"))
-                .name((split.length > 0)? split[0] : "");
+                    Double.parseDouble(json.getString(LATITUDE)),
+                    Double.parseDouble(json.getString(LONGITUDE)))
+                .address(json.getString(ADDRESS))
+                .name((split.length > 0)? split[0] : EMPTY);
     }
 
     private String parseTime(JSONObject json) throws JSONException {
 //              new Date(Long.parseLong(ride.getString("Enterdate"));
-        String time = "2359";
-        if (!json.isNull("Starttime")) {
-            time = json.getString("Starttime");
+        String time = NOTIME;
+        if (!json.isNull(STARTTIME)) {
+            time = json.getString(STARTTIME);
             if (time.length() == 3)
-                time = "0" + time;
+                time = ZERO + time;
             if (time.length() != 4)
-                time = "2359";
+                time = NOTIME;
         }
         return time;
     }
@@ -251,46 +319,47 @@ public class FahrgemeinschaftConnector extends Connector {
     public String publish(Ride offer) throws Exception {
         HttpURLConnection post;
         if (offer.getRef() == null) {
-            post = (HttpURLConnection) new URL(endpoint + "/trip")
+            post = (HttpURLConnection) new URL(endpoint + TRIP)
                 .openConnection();
-            post.setRequestMethod("POST");
+            post.setRequestMethod(POST);
         } else {
-            post = (HttpURLConnection) new URL(endpoint + "/trip/id/"
-                    + offer.getRef()).openConnection();
-            post.setRequestMethod("PUT");
+            post = (HttpURLConnection) new URL(new StringBuffer()
+                    .append(endpoint).append(TRIP).append(ID)
+                    .append(offer.getRef()).toString()).openConnection();
+            post.setRequestMethod(PUT);
         }
-        post.setRequestProperty("apikey", Secret.APIKEY);
+        post.setRequestProperty(APIKEY, Secret.APIKEY);
         if (getAuth() != null)
-            post.setRequestProperty("authkey", getAuth());
+            post.setRequestProperty(AUTHKEY, getAuth());
         post.setDoOutput(true);
         JSONObject json = new JSONObject();
 //        json.put("Smoker", "no");
-        json.put("Triptype", "offer");
-        json.put("TripID", offer.getRef());
-        json.put("IDuser", get("user"));
+        json.put(TRIPTYPE, OFFER);
+        json.put(TRIP_ID, offer.getRef());
+        json.put(ID_USER, get(USER));
         if (offer.getMode().equals(Mode.TRAIN)) {
-            json.put(PLATE, "Bahn");
+            json.put(PLATE, BAHN);
         } else {
             json.put(PLATE, offer.get(PLATE));
         }
         if (offer.isActive()) {
-            json.put("Relevance", 10);
+            json.put(RELEVANCE, 10);
         } else {
-            json.put("Relevance", 0);
+            json.put(RELEVANCE, 0);
         }
-        json.put("Places", offer.getSeats());
-        json.put("Price", offer.getPrice() / 100);
-        json.put("Contactmail", offer.get(EMAIL));
-        json.put("Contactmobile", offer.get(MOBILE));
-        json.put("Contactlandline", offer.get(LANDLINE));
+        json.put(PLACES, offer.getSeats());
+        json.put(PRICE, offer.getPrice() / 100);
+        json.put(CONTACTMAIL, offer.get(EMAIL));
+        json.put(CONTACTMOBILE, offer.get(MOBILE));
+        json.put(CONTACTLANDLINE, offer.get(LANDLINE));
         String dep = fulldf.format(offer.getDep());
-        json.put("Startdate", dep.subSequence(0, 8));
-        json.put("Starttime", dep.subSequence(8, 12));
-        json.put("Description", offer.get("Comment"));
-        if (!offer.getDetails().isNull("Privacy"))
-            json.put("Privacy", offer.getDetails().getJSONObject("Privacy"));
-        if (!offer.getDetails().isNull("Reoccur"))
-            json.put("Reoccur", offer.getDetails().getJSONObject("Reoccur"));
+        json.put(STARTDATE, dep.subSequence(0, 8));
+        json.put(STARTTIME, dep.subSequence(8, 12));
+        json.put(DESCRIPTION, offer.get(COMMENT));
+        if (!offer.getDetails().isNull(PRIVACY))
+            json.put(PRIVACY, offer.getDetails().getJSONObject(PRIVACY));
+        if (!offer.getDetails().isNull(REOCCUR))
+            json.put(REOCCUR, offer.getDetails().getJSONObject(REOCCUR));
         ArrayList<JSONObject> routings = new ArrayList<JSONObject>();
         List<Place> stops = offer.getPlaces();
         int max = stops.size() - 1;
@@ -298,41 +367,43 @@ public class FahrgemeinschaftConnector extends Connector {
             for (int orig = 0; orig < dest; orig++) {
                 int idx = (orig == 0? (dest == max? 0 : dest) : - dest);
                 JSONObject route = new JSONObject();
-                route.put("RoutingIndex", idx);
-                route.put("Origin", place(stops.get(orig)));
-                route.put("Destination", place(stops.get(dest)));
+                route.put(ROUTING_INDEX, idx);
+                route.put(ORIGIN, place(stops.get(orig)));
+                route.put(DESTINATION, place(stops.get(dest)));
                 routings.add(route);
             }
         }
-        json.put("Routings", new JSONArray(routings));
+        json.put(ROUTINGS, new JSONArray(routings));
         OutputStreamWriter out = new OutputStreamWriter(post.getOutputStream());
         out.write(json.toString());
         out.flush();
         out.close();
         JSONObject response = loadJson(post);
-        if (!response.isNull("tripID")) {
-            return response.getString("tripID");
+        if (!response.isNull(TRIP_ID)) {
+            return response.getString(TRIP_ID);
         } else return offer.getRef();
     }
 
     private JSONObject place(Place from) throws JSONException {
         JSONObject place = new JSONObject();
-        place.put("Latitude", from.getLat());
-        place.put("Longitude", from.getLng());
-        place.put("Address", from.getAddress());
-        place.put("CountryName", "Deutschland");
-        place.put("CountryCode", "DE");
-        place.put("Placetype", "geo");
+        place.put(LATITUDE, from.getLat());
+        place.put(LONGITUDE, from.getLng());
+        place.put(ADDRESS, from.getAddress());
+        place.put(COUNTRY_NAME, DEUTSCHLAND);
+        place.put(COUNTRY_CODE, DE);
+        place.put(PLACETYPE, GEO);
         return place;
     }
 
     @Override
     public String delete(Ride offer) throws Exception {
         HttpURLConnection delete = (HttpURLConnection) new URL(
-                endpoint + "/trip/id/" + offer.getRef()).openConnection();
-        delete.setRequestMethod("DELETE");
-        delete.setRequestProperty("authkey", getAuth());
-        delete.setRequestProperty("apikey", Secret.APIKEY);
+                new StringBuffer().append(endpoint).append(TRIP)
+                    .append(ID).append(offer.getRef())
+                    .toString()).openConnection();
+        delete.setRequestMethod(DELETE);
+        delete.setRequestProperty(AUTHKEY, getAuth());
+        delete.setRequestProperty(APIKEY, Secret.APIKEY);
         return loadJson(delete).toString();
     }
 }
