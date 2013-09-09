@@ -8,7 +8,6 @@
 package de.fahrgemeinschaft.util;
 
 import android.content.Context;
-import android.graphics.Rect;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -20,7 +19,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.Toast;
 import de.fahrgemeinschaft.R;
 
 public class EditTextImageButton extends FrameLayout

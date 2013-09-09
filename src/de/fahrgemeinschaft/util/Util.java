@@ -44,7 +44,7 @@ public class Util {
                     .setAction(ConnectorService.PUBLISH));
             return true;
         case R.id.delete:
-            r.delete(c);
+            r.delete();
             c.startService(new Intent(c, ConnectorService.class)
                     .setAction(ConnectorService.PUBLISH));
             return true;
@@ -53,8 +53,7 @@ public class Util {
                     "content://de.fahrgemeinschaft/rides/" + r.getId())));
             return true;
         case R.id.duplicate:
-            r.ref(null);
-            c.startActivity(new Intent(Intent.ACTION_EDIT, r.store(c)));
+            c.startActivity(new Intent(Intent.ACTION_EDIT, r.duplicate()));
             return true;
         case R.id.duplicate_retour:
             r.ref(null);

@@ -76,6 +76,7 @@ public class EditRideActivity extends SherlockFragmentActivity
                 setTitle(R.string.edit);
             }
         }
+        cursor.close();
         initFragments();
     }
 
