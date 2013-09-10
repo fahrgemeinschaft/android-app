@@ -10,60 +10,37 @@ package de.fahrgemeinschaft;
 import java.util.Calendar;
 
 import org.teleportr.ConnectorService;
-import org.teleportr.ConnectorService.ServiceCallback;
 import org.teleportr.Ride;
 
-import android.app.NotificationManager;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.support.v4.widget.CursorAdapter;
 import android.view.View;
 import android.view.View.OnClickListener;
-
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
 import de.fahrgemeinschaft.util.SpinningZebraListFragment.ListFragmentCallback;
-import de.fahrgemeinschaft.util.Util;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
-public class MainActivity extends SherlockFragmentActivity
-       implements OnClickListener, ListFragmentCallback, 
-       OnPageChangeListener, ServiceCallback<String>,
-       ServiceConnection, OnBackStackChangedListener {
+public class MainActivity extends BaseActivity
+       implements OnClickListener, ListFragmentCallback {
 
-    private static final String POPUP = "popup";
     public MainFragment main;
-    private MenuItem ic_profile;
     public RideListFragment results;
     private RideListFragment myrides;
     public RideDetailsFragment details;
     private RideDetailsFragment mydetails;
-    public ConnectorService service;
-    private MenuItem ic_myrides;
-    private boolean popup;
-    public static final String URI = "uri";
-    public static final String TAG = "Fahrgemeinschaft";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        PreferenceManager.setDefaultValues(this, R.xml.settings, false);
         FragmentManager fm = getSupportFragmentManager();
         main = (MainFragment) fm.findFragmentByTag("main");
         results = (RideListFragment)
@@ -73,40 +50,14 @@ public class MainActivity extends SherlockFragmentActivity
         details = (RideDetailsFragment)
                 fm.findFragmentByTag(getString(R.string.details));
         if (details == null) details = new RideDetailsFragment();
-        myrides = (RideListFragment)
-                fm.findFragmentByTag(getString(R.string.myrides));
-        if (myrides == null)
-            myrides = new RideListFragment();
-        myrides.setSpinningEnabled(false);
-        mydetails = (RideDetailsFragment)
-                fm.findFragmentByTag(getString(R.string.mydetails));
-        if (mydetails == null) mydetails = new RideDetailsFragment();
-        PreferenceManager.setDefaultValues(this, R.xml.settings, false);
-        getSupportFragmentManager().addOnBackStackChangedListener(this);
-        onBackStackChanged();
         if (savedInstanceState == null) {
-            if (getIntent().getData() != null) {
-                popup = true;
-            }
             handleIntent(getIntent());
-        } else {
-            popup = savedInstanceState.getBoolean(POPUP);
         }
     }
 
     @Override
-    protected void onStart() {
-        System.out.println("START");
-        bindService(new Intent(this, ConnectorService.class), this, 0);
-        super.onStart();
-    }
-
-    @Override
     public void onServiceConnected(ComponentName name, IBinder bg) {
-        service = ((ConnectorService.Bind) bg).getService();
-        service.myrides.register(this);
-        service.authCallback = this;
-        service.publish.register(this);
+        super.onServiceConnected(name, bg);
         service.search.register(results);
     }
 
@@ -156,21 +107,13 @@ public class MainActivity extends SherlockFragmentActivity
     }
 
     @Override
-    public void onListItemClick(int position, int id) {
-        switch (id) {
-        case SEARCH:
+    public void onListItemClick(int position, int fragment) {
+        if (fragment == SEARCH) {
             showFragment(details, getString(R.string.details),
                     R.anim.slide_in_right, R.anim.slide_out_right);
             details.setTargetFragment(results, SEARCH);
             details.setSelection(position);
-            break;
-        case MYRIDES:
-            showFragment(mydetails, getString(R.string.mydetails),
-                    R.anim.slide_in_right, R.anim.slide_out_right);
-            mydetails.setTargetFragment(myrides, MYRIDES);
-            mydetails.setSelection(position);
-            break;
-        }
+        } else super.onListItemClick(position, fragment);
     }
 
     @Override
@@ -178,166 +121,10 @@ public class MainActivity extends SherlockFragmentActivity
         main.ride.type(Ride.SEARCH).arr(getNextDayMorning(
                 main.ride.getArr() + 2 * 24 * 3600 * 1000)).store(this);
         startService(new Intent(this, ConnectorService.class)
-        .setAction(ConnectorService.SEARCH));
-    }
-
-    @Override
-    public void onPageSelected(final int position) {
-        System.out.println("selected " + position);
-//        results.getListView().setSelection(position);
-    }
-
-    public void contact(View v) {
-        Cursor cursor;
-        if (getIntent().getData().equals(MY_RIDES_URI)) {
-            cursor = ((CursorAdapter) myrides.getListAdapter()).getCursor();
-        } else {
-            cursor = ((CursorAdapter) results.getListAdapter()).getCursor();
-        }
-        cursor.moveToPosition(details.getSelection());
-        Util.openContactOptionsChooserDialog(this, cursor);
+                .setAction(ConnectorService.SEARCH));
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.action_bar, menu);
-        ic_profile = menu.findItem(R.id.profile);
-        ic_myrides = menu.findItem(R.id.myrides);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.myrides:
-            showMyRides();
-            return true;
-        case R.id.profile:
-            showProfile();
-            return true;
-        case R.id.settings:
-            startActivity(new Intent(this, SettingsActivity.class));
-            this.overridePendingTransition(
-                    R.anim.slide_in_top, R.anim.do_nix);
-            return true;
-        case android.R.id.home: // up
-            if (getSupportFragmentManager().getBackStackEntryCount() > 0)
-                getSupportFragmentManager().popBackStack();
-            else showAbout();
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
-    }
-
-    public void showAbout() {
-        showFragment(new AboutFragment(), getString(R.string.about),
-            R.anim.slide_in_left, R.anim.slide_out_left);
-    }
-
-    public void showProfile() {
-        showFragment(new ProfileFragment(), getString(R.string.profile),
-                R.anim.slide_in_top, R.anim.slide_out_top);
-    }
-
-    public void showMyRides() {
-        myrides.load(MY_RIDES_URI, MYRIDES);
-        showFragment(myrides, getString(R.string.myrides),
-                R.anim.slide_in_top, R.anim.slide_out_top);
-        startService(new Intent(this, ConnectorService.class)
-            .setAction(ConnectorService.PUBLISH));
-    }
-
-    private void showFragment(Fragment fragment, String name, int in, int out) {
-        setTitle(name);
-        FragmentManager fm = getSupportFragmentManager();
-        for (int i = fm.getBackStackEntryCount() - 1; i >= 0; i--) {
-            if (fm.getBackStackEntryAt(i).getName().equals(name)) {
-                for (int j = fm.getBackStackEntryCount() - 1; j > i; j--) {
-                    fm.popBackStackImmediate();
-                }
-                return;
-            }
-        }
-        fm.beginTransaction()
-            .setCustomAnimations(
-                in, R.anim.do_nix, R.anim.do_nix, out)
-            .add(R.id.container, fragment, name)
-            .addToBackStack(name)
-        .commit();
-    }
-
-    @Override
-    public void onBackStackChanged() {
-        FragmentManager fm = getSupportFragmentManager();
-        int backstack = fm.getBackStackEntryCount();
-        if (fm.getBackStackEntryCount() == 0) {
-            if (popup) { // hack
-                popup = false;
-                finish();
-            }
-            setTitle("");
-        } else {
-            setTitle(fm.getBackStackEntryAt(backstack - 1).getName());
-        }
-    }
-
-
-
-    @Override
-    public void onProgress(String what, int how) {
-        if (what.equals(ConnectorService.MYRIDES) && ic_myrides != null) {
-            ic_myrides.setActionView(R.layout.view_progress);
-        } else if (what.equals(ConnectorService.AUTH) && ic_profile != null) {
-            Crouton.makeText(this, what, Style.INFO).show();
-            ic_profile.setActionView(R.layout.view_progress);
-        }
-    }
-
-    @Override
-    public void onFail(String what, String reason) {
-        Crouton.makeText(this, what + " fail: " + reason, Style.ALERT).show();
-        if (what.equals(ConnectorService.MYRIDES) && ic_myrides != null) {
-            ic_myrides.setActionView(null);
-        } else if (what.equals(ConnectorService.AUTH) && ic_profile != null) {
-            ic_profile.setActionView(null);
-            showFragment(new ProfileFragment(), getString(R.string.profile),
-                    R.anim.slide_in_top, R.anim.slide_out_top);
-        }
-    }
-
-    @Override
-    public void onSuccess(String what, int number) {
-        if (what == null) return;
-        Crouton.makeText(this, what + " success.", Style.CONFIRM).show();
-        if (what.equals(ConnectorService.MYRIDES) && ic_myrides != null) {
-            ic_myrides.setActionView(null);
-        } else if (what.equals(ConnectorService.AUTH) & ic_profile != null) {
-            ic_profile.setActionView(null);
-            startService(new Intent(this, ConnectorService.class)
-                    .setAction(ConnectorService.SEARCH));
-            ((NotificationManager) getSystemService(Context
-                    .NOTIFICATION_SERVICE)).cancel(42);
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        unbindService(this);
-        super.onStop();
-    }
-
-    @Override
-    public void onServiceDisconnected(ComponentName name) {
-        service = null;
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putBoolean(POPUP, popup);
-        super.onSaveInstanceState(outState);
-    }
 
     public static long getNextDayMorning(long dep) {
         Calendar c = Calendar.getInstance();
@@ -348,20 +135,7 @@ public class MainActivity extends SherlockFragmentActivity
         return c.getTimeInMillis();
     }
 
-    @Override
-    public void onPageScrollStateChanged(int arg0) {}
 
-    @Override
-    public void onPageScrolled(int arg0, float arg1, int arg2) {}
-
-    private static final String AUTHORITY = "de.fahrgemeinschaft";
-    public static final Uri MY_RIDES_URI =
-            Uri.parse("content://de.fahrgemeinschaft/myrides");
-    public static final int SEARCH = 0;
-    public static final int MYRIDES = 1;
-    public static final int DETAILS = 2;
-    private static final int PROFILE = 3;
-    private static final int ABOUT = 112;
 
     static final UriMatcher uriMatcher = new UriMatcher(0);
     static {

@@ -193,15 +193,6 @@ public class RideDetailsFragment extends SherlockFragment
         updateOptionsMenu();
     }
 
-    public void swapCursor(Cursor cursor) {
-//        this.cursor = cursor;
-        updateOptionsMenu();
-        if (pager != null) {
-            pager.setCurrentItem(selected);
-            pager.getAdapter().notifyDataSetChanged();
-        }
-    }
-
     public int getSelection() {
         return selected;
     }
@@ -283,6 +274,8 @@ public class RideDetailsFragment extends SherlockFragment
     }
 
     public Cursor getCursor() {
+        if (cursor != null && cursor.isClosed())
+            cursor = null;
         if (cursor == null) {
             if (getTargetFragment() != null) {
                 cursor = ((RideListFragment) getTargetFragment()).getCursor();

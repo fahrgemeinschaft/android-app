@@ -9,6 +9,7 @@ package de.fahrgemeinschaft;
 
 import org.teleportr.ConnectorService;
 import org.teleportr.Ride;
+import org.teleportr.RidesProvider;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,16 +25,13 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.fahrgemeinschaft.util.EditTextPrivacyButton;
-import de.fahrgemeinschaft.util.Util;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
-public class EditRideActivity extends SherlockFragmentActivity
+public class EditRideActivity extends BaseActivity
         implements LoaderCallbacks<Cursor>, OnClickListener {
 
     public Ride ride;
@@ -45,7 +43,6 @@ public class EditRideActivity extends SherlockFragmentActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ride_edit);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (savedInstanceState != null) {
             ride = savedInstanceState.getParcelable("ride");
@@ -96,38 +93,18 @@ public class EditRideActivity extends SherlockFragmentActivity
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> arg0) {
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.action_bar, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+    public void onLoaderReset(Loader<Cursor> arg0) {}
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.myrides:
-            startActivity(new Intent(this, MainActivity.class)
-                .setData(MainActivity.MY_RIDES_URI));
-            overridePendingTransition(R.anim.do_nix, R.anim.slide_in_top);
-            break;
-        case R.id.settings:
-            startActivity(new Intent(this, SettingsActivity.class));
-            overridePendingTransition(R.anim.do_nix, R.anim.slide_in_top);
-            break;
-        case R.id.profile:
-            startActivity(Util.profileIntent(this));
-            overridePendingTransition(R.anim.do_nix, R.anim.slide_in_top);
-            break;
-        case android.R.id.home:
+        if (item.getItemId() == android.R.id.home) {
             startActivity(new Intent(this, MainActivity.class));
             overridePendingTransition(
                     R.anim.slide_in_top, R.anim.slide_out_bottom);
-            break;
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
-        return true;
     }
 
     @Override
@@ -150,11 +127,13 @@ public class EditRideActivity extends SherlockFragmentActivity
                     .setAction(ConnectorService.PUBLISH));
             startActivity(new Intent(this, MainActivity.class)
                     .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                    .setData(MainActivity.MY_RIDES_URI));
+                    .setData(RidesProvider.getMyRidesUri(this)));
             overridePendingTransition(
                     R.anim.slide_in_top, R.anim.slide_out_bottom);
             Toast.makeText(this, getString(R.string.stored), Toast.LENGTH_SHORT)
                     .show();
+            overridePendingTransition(
+                    R.anim.slide_in_top, R.anim.slide_out_bottom);
             finish();
         }
     }
@@ -169,10 +148,8 @@ public class EditRideActivity extends SherlockFragmentActivity
 
     @Override
     public void onBackPressed() {
-        setResult(RESULT_CANCELED);
-        finish();
-        overridePendingTransition(
-                R.anim.slide_in_top, R.anim.slide_out_bottom);
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0)
+            setResult(RESULT_CANCELED);
         super.onBackPressed();
     }
 }
