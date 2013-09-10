@@ -136,7 +136,6 @@ public abstract class SpinningZebraListFragment
         rotate.setRepeatMode(Animation.RESTART);
         rotate.setRepeatCount(Animation.INFINITE);
         stopSpinning("click here");
-        System.out.println("VIEW");
         if (state != null) {
             code = state.getInt(ID);
             uri = (Uri) (state.getParcelable(URI));
@@ -149,12 +148,6 @@ public abstract class SpinningZebraListFragment
                     .restartLoader(code, state, this);
         }
         getListView().requestFocus();
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        System.out.println("ACTIVITY CREATED " + savedInstanceState);
     }
 
     public void load(Uri uri, int id) {
@@ -190,13 +183,11 @@ public abstract class SpinningZebraListFragment
     @Override
     public void onAttach(Activity activity) {
         onScreen = true;
-        System.out.println("ATTACH");
         super.onAttach(activity);
     }
     
     @Override
     public void onDetach() {
-        System.out.println("DETACH");
         onScreen = false;
         super.onDetach();
     }

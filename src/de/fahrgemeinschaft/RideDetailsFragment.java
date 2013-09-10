@@ -31,10 +31,15 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -61,7 +66,8 @@ import de.fahrgemeinschaft.util.Util;
 public class RideDetailsFragment extends SherlockFragment
         implements Response.ErrorListener,
             OnPageChangeListener,
-            OnClickListener {
+            OnClickListener,
+            OnTouchListener {
 
     private static final String TAG = "Details";
     private static final SimpleDateFormat lrdate =
@@ -79,6 +85,8 @@ public class RideDetailsFragment extends SherlockFragment
     private MenuItem duplicate_retour;
     private MenuItem toggle_active;
     private Cursor cursor;
+    private View left_arrow;
+    private View right_arrow;
     private static ImageLoader imageLoader;
 
     @Override
@@ -185,6 +193,7 @@ public class RideDetailsFragment extends SherlockFragment
                     view.userId = cursor.getString(COLUMNS.WHO);
                 }
                 view.visible = Util.isVisible("Name", Ride.getDetails(cursor));
+                view.content.setOnTouchListener(RideDetailsFragment.this);
                 return view;
             }
 
@@ -193,7 +202,27 @@ public class RideDetailsFragment extends SherlockFragment
                 return position;
             }
         });
+        left_arrow = layout.findViewById(R.id.left_arrow);
+        right_arrow = layout.findViewById(R.id.right_arrow);
         pager.requestFocus();
+        pulseSwipeArrows();
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        System.out.println("foo");
+        pulseSwipeArrows();
+        return false;
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+        if (state == 1) {
+            left_arrow.clearAnimation();
+            right_arrow.clearAnimation();
+            fadeOutFast(left_arrow);
+            fadeOutFast(right_arrow);
+        }
     }
 
     public void setSelection(int position) {
@@ -218,7 +247,6 @@ public class RideDetailsFragment extends SherlockFragment
         pager.setOnPageChangeListener(this);
         updateOptionsMenu();
     }
-
 
     @Override
     public void onClick(View v) {
@@ -297,6 +325,64 @@ public class RideDetailsFragment extends SherlockFragment
             };
         }
         return cursor;
+    }
+
+    private void pulseSwipeArrows() {
+        animatePulse(left_arrow);
+        animatePulse(right_arrow);
+    }
+
+    private void fadeOutFast(final View view) {
+        Animation fade_out = new AlphaAnimation(0.5f, 0f);
+        fade_out.setAnimationListener(new AnimationListener() {
+
+            @Override
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+            }
+        });
+        fade_out.setDuration(300);
+        fade_out.setFillAfter(true);
+        view.startAnimation(fade_out);
+    }
+
+    private void animatePulse(final View view) {
+        Animation fade_in = new AlphaAnimation(0f, 1f);
+        fade_in.setAnimationListener(new AnimationListener() {
+
+            @Override
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Animation fade_out = new AlphaAnimation(1f, 0f);
+                fade_out.setAnimationListener(new AnimationListener() {
+
+                    @Override
+                    public void onAnimationStart(Animation animation) {}
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {}
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                    }
+                });
+                fade_out.setDuration(1700);
+                fade_out.setFillAfter(true);
+                view.startAnimation(fade_out);
+            }
+        });
+        fade_in.setDuration(200);
+        view.startAnimation(fade_in);
     }
 
 
@@ -478,9 +564,5 @@ public class RideDetailsFragment extends SherlockFragment
     }
 
     @Override
-    public void onPageScrollStateChanged(int arg0) {}
-
-    @Override
     public void onPageScrolled(int arg0, float arg1, int arg2) {}
-
 }
