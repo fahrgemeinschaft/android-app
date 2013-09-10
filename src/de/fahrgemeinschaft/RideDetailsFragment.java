@@ -163,11 +163,14 @@ public class RideDetailsFragment extends SherlockFragment
                             - System.currentTimeMillis() > 0  // future ride
                             && (cursor.getInt(COLUMNS.ACTIVE) == 1)) {
                         view.streifenhoernchen.setVisibility(View.GONE);
+                        view.grey_bg.setVisibility(View.GONE);
                     } else {
                         view.streifenhoernchen.setVisibility(View.VISIBLE);
+                        view.grey_bg.setVisibility(View.VISIBLE);
                     }
                 } else {
                     view.streifenhoernchen.setVisibility(View.GONE);
+                    view.grey_bg.setVisibility(View.GONE);
                 }
 
                 if (cursor.getString(COLUMNS.WHO).equals("")) {
@@ -314,6 +317,7 @@ public class RideDetailsFragment extends SherlockFragment
         TextView from_place;
         TextView to_place;
         TextView details;
+        View grey_bg;
         View streifenhoernchen;
         ReoccuringWeekDaysView reoccur;
         ProgressBar name_loading;
@@ -339,6 +343,7 @@ public class RideDetailsFragment extends SherlockFragment
             last_login = (TextView) findViewById(R.id.driver_active_date);
             reoccur = (ReoccuringWeekDaysView) findViewById(R.id.reoccur);
             row = (RideRowView) findViewById(R.id.row);
+            grey_bg = findViewById(R.id.grey_bg);
             streifenhoernchen = findViewById(R.id.streifenhoernchen);
             Util.fixStreifenhoernchen(streifenhoernchen);
             avatar.setOnClickListener(new OnClickListener() {
