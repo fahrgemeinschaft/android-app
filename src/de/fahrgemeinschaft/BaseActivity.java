@@ -16,14 +16,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.view.View;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -38,6 +36,8 @@ public class BaseActivity extends SherlockFragmentActivity
        OnPageChangeListener, ServiceCallback<String>,
        ServiceConnection, OnBackStackChangedListener {
 
+    private static final String SUCCESS = " success.";
+    private static final String FAIL = " fail: ";
     private MenuItem ic_profile;
     private MenuItem ic_myrides;
     public ConnectorService service;
@@ -92,17 +92,6 @@ public class BaseActivity extends SherlockFragmentActivity
     @Override
     public void onSpinningWheelClick() {}
 
-
-    public void contact(View v) {
-        Cursor cursor;
-//        if (getIntent().getData().equals(MY_RIDES_URI)) {
-//            cursor = ((CursorAdapter) myrides.getListAdapter()).getCursor();
-//        } else {
-//            cursor = ((CursorAdapter) results.getListAdapter()).getCursor();
-//        }
-//        cursor.moveToPosition(details.getSelection());
-//        Util.openContactOptionsChooserDialog(this, cursor);
-    }
     @Override
     public void onPageSelected(final int position) {
         System.out.println("selected " + position);
@@ -161,7 +150,7 @@ public class BaseActivity extends SherlockFragmentActivity
             .setAction(ConnectorService.PUBLISH));
     }
 
-    protected void showFragment(Fragment fragment, String name, int in, int out) {
+    protected void showFragment(Fragment f, String name, int in, int out) {
         setTitle(name);
         FragmentManager fm = getSupportFragmentManager();
         for (int i = fm.getBackStackEntryCount() - 1; i >= 0; i--) {
@@ -175,7 +164,7 @@ public class BaseActivity extends SherlockFragmentActivity
         fm.beginTransaction()
             .setCustomAnimations(
                 in, R.anim.do_nix, R.anim.do_nix, out)
-            .add(R.id.container, fragment, name)
+            .add(R.id.container, f, name)
             .addToBackStack(name)
         .commit();
     }
@@ -203,7 +192,7 @@ public class BaseActivity extends SherlockFragmentActivity
 
     @Override
     public void onFail(String what, String reason) {
-        Crouton.makeText(this, what + " fail: " + reason, Style.ALERT).show();
+        Crouton.makeText(this, what + FAIL + reason, Style.ALERT).show();
         if (what.equals(ConnectorService.MYRIDES) && ic_myrides != null) {
             ic_myrides.setActionView(null);
         } else if (what.equals(ConnectorService.AUTH) && ic_profile != null) {
@@ -216,7 +205,7 @@ public class BaseActivity extends SherlockFragmentActivity
     @Override
     public void onSuccess(String what, int number) {
         if (what == null) return;
-        Crouton.makeText(this, what + " success.", Style.CONFIRM).show();
+        Crouton.makeText(this, what + SUCCESS, Style.CONFIRM).show();
         if (what.equals(ConnectorService.MYRIDES) && ic_myrides != null) {
             ic_myrides.setActionView(null);
         } else if (what.equals(ConnectorService.AUTH) & ic_profile != null) {

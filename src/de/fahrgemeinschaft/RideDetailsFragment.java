@@ -32,6 +32,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
@@ -58,7 +59,9 @@ import de.fahrgemeinschaft.util.RideRowView;
 import de.fahrgemeinschaft.util.Util;
 
 public class RideDetailsFragment extends SherlockFragment
-        implements Response.ErrorListener, OnPageChangeListener {
+        implements Response.ErrorListener,
+            OnPageChangeListener,
+            OnClickListener {
 
     private static final String TAG = "Details";
     private static final SimpleDateFormat lrdate =
@@ -114,6 +117,8 @@ public class RideDetailsFragment extends SherlockFragment
                 if (v == null) {
                     v = getActivity().getLayoutInflater()
                             .inflate(R.layout.view_ride_details, null, false);
+                    v.findViewById(R.id.btn_contact)
+                            .setOnClickListener(RideDetailsFragment.this);
                 }
                 Cursor cursor = getCursor();
                 if (cursor.isClosed()) return v;
@@ -209,6 +214,13 @@ public class RideDetailsFragment extends SherlockFragment
         pager.setCurrentItem(selected);
         pager.setOnPageChangeListener(this);
         updateOptionsMenu();
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        getCursor().moveToPosition(selected);
+        Util.openContactOptionsChooserDialog(getActivity(), getCursor());
     }
 
     @Override
@@ -445,6 +457,7 @@ public class RideDetailsFragment extends SherlockFragment
           }
         }
     }
+
 
     @Override
     public void onErrorResponse(VolleyError err) {

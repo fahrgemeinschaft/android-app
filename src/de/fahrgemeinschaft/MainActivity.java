@@ -15,7 +15,6 @@ import org.teleportr.Ride;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.UriMatcher;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -32,9 +31,7 @@ public class MainActivity extends BaseActivity
 
     public MainFragment main;
     public RideListFragment results;
-    private RideListFragment myrides;
     public RideDetailsFragment details;
-    private RideDetailsFragment mydetails;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,12 +52,6 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    @Override
-    public void onServiceConnected(ComponentName name, IBinder bg) {
-        super.onServiceConnected(name, bg);
-        service.search.register(results);
-    }
-
     protected void handleIntent(Intent intent) {
         if (intent.getData() != null) {
             switch (uriMatcher.match(intent.getData())) {
@@ -75,6 +66,12 @@ public class MainActivity extends BaseActivity
                 break;
             }
         }
+    }
+
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder bg) {
+        super.onServiceConnected(name, bg);
+        service.search.register(results);
     }
 
     @Override
@@ -123,8 +120,6 @@ public class MainActivity extends BaseActivity
         startService(new Intent(this, ConnectorService.class)
                 .setAction(ConnectorService.SEARCH));
     }
-
-
 
     public static long getNextDayMorning(long dep) {
         Calendar c = Calendar.getInstance();

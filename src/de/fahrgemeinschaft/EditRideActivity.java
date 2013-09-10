@@ -34,6 +34,7 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 public class EditRideActivity extends BaseActivity
         implements LoaderCallbacks<Cursor>, OnClickListener {
 
+    private static final String RIDE = "ride";
     public Ride ride;
     public EditRideFragment3 f3;
     public EditRideFragment2 f2;
@@ -45,7 +46,7 @@ public class EditRideActivity extends BaseActivity
         setContentView(R.layout.activity_ride_edit);
 
         if (savedInstanceState != null) {
-            ride = savedInstanceState.getParcelable("ride");
+            ride = savedInstanceState.getParcelable(RIDE);
             ride.setContext(this);
         } else {
             ride = new Ride(this).type(Ride.OFFER);
@@ -142,7 +143,7 @@ public class EditRideActivity extends BaseActivity
     protected void onSaveInstanceState(Bundle outState) {
         ride.set("Comment", ((EditText) findViewById(
                 R.id.comment)).getText().toString());
-        outState.putParcelable("ride", ride);
+        outState.putParcelable(RIDE, ride);
         super.onSaveInstanceState(outState);
     }
 
