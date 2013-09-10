@@ -146,6 +146,7 @@ public class RideListFragment extends SpinningZebraListFragment
 
     @Override
     public void onCreateContextMenu(ContextMenu m, View v, ContextMenuInfo i) {
+        Cursor cursor = getCursor();
         cursor.moveToPosition(((AdapterView.AdapterContextMenuInfo)i).position);
         getActivity().getMenuInflater().inflate(R.menu.ride_actions, m);
         if (isMyRide(cursor)) {
@@ -174,8 +175,8 @@ public class RideListFragment extends SpinningZebraListFragment
         AdapterView.AdapterContextMenuInfo info =
                 (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
         System.out.println("POSITION " + info.position);
-        cursor.moveToPosition(info.position);
-        Ride ride = new Ride(cursor, getActivity());
+        getCursor().moveToPosition(info.position);
+        Ride ride = new Ride(getCursor(), getActivity());
         return Util.handleRideAction(item.getItemId(), ride, getActivity());
     }
 

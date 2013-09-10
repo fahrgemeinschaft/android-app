@@ -69,13 +69,13 @@ public class RideDetailsFragment extends SherlockFragment
             new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMANY);
     private ViewPager pager;
     private RequestQueue queue;
-    public Cursor cursor;
     private int selected;
     private MenuItem edit;
     private MenuItem delete;
     private MenuItem duplicate;
     private MenuItem duplicate_retour;
     private MenuItem toggle_active;
+    private Cursor cursor;
     private static ImageLoader imageLoader;
 
     @Override
@@ -103,10 +103,10 @@ public class RideDetailsFragment extends SherlockFragment
 
             @Override
             public int getCount() {
-                if (cursor == null)
+                if (getCursor() == null)
                     return 0;
                 else
-                    return cursor.getCount();
+                    return getCursor().getCount();
             }
 
             @Override
@@ -115,6 +115,7 @@ public class RideDetailsFragment extends SherlockFragment
                     v = getActivity().getLayoutInflater()
                             .inflate(R.layout.view_ride_details, null, false);
                 }
+                Cursor cursor = getCursor();
                 if (cursor.isClosed()) return v;
                 RideView view = (RideView) v;
                 
@@ -193,7 +194,7 @@ public class RideDetailsFragment extends SherlockFragment
     }
 
     public void swapCursor(Cursor cursor) {
-        this.cursor = cursor;
+//        this.cursor = cursor;
         updateOptionsMenu();
         if (pager != null) {
             pager.setCurrentItem(selected);
@@ -241,10 +242,11 @@ public class RideDetailsFragment extends SherlockFragment
     }
 
     private void updateOptionsMenu() {
+        Cursor cursor = getCursor();
         if (cursor != null && cursor.getCount() >= selected
                 && edit != null && getActivity() != null) {
             cursor.moveToPosition(selected);
-            if (isMyRide()) {
+            if (isMyRide(cursor)) {
                 edit.setVisible(true);
                 delete.setVisible(true);
                 duplicate.setVisible(true);
@@ -270,21 +272,23 @@ public class RideDetailsFragment extends SherlockFragment
         }
     }
 
-    private boolean isMyRide() {
-        return cursor.getString(COLUMNS.WHO).equals("") ||
-                cursor.getString(COLUMNS.WHO).equals(PreferenceManager
-                        .getDefaultSharedPreferences(getActivity())
-                        .getString("user", ""));
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        cursor.moveToPosition(selected);
-        Ride ride = new Ride(cursor, getActivity());
+        getCursor().moveToPosition(selected);
+        Ride ride = new Ride(getCursor(), getActivity());
         if (item.getItemId() == R.id.delete) {
             getActivity().getSupportFragmentManager().popBackStack();
         }
         return Util.handleRideAction(item.getItemId(), ride, getActivity());
+    }
+
+    public Cursor getCursor() {
+        if (cursor == null) {
+            if (getTargetFragment() != null) {
+                cursor = ((RideListFragment) getTargetFragment()).getCursor();
+            };
+        }
+        return cursor;
     }
 
 
