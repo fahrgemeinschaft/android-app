@@ -506,7 +506,7 @@ public class RideDetailsFragment extends SherlockFragment
                     JSONArray kvp = user.getJSONArray("KeyValuePairs");
                     String firstname = "n/a";
                     String lastname = "n/a";
-                    for (int i = 1; i < kvp.length(); i++) {
+                    for (int i = 0; i < kvp.length(); i++) {
                         String key = kvp.getJSONObject(i).getString("Key");
                         if (key.equals("firstname"))
                             firstname = kvp.getJSONObject(i).getString("Value");
