@@ -10,7 +10,11 @@ package de.fahrgemeinschaft.util;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +28,12 @@ import com.actionbarsherlock.app.SherlockListFragment;
 
 import de.fahrgemeinschaft.R;
 
-public abstract class SpinningZebraListFragment extends SherlockListFragment {
+public abstract class SpinningZebraListFragment
+            extends SherlockListFragment
+            implements LoaderCallbacks<Cursor> {
+
+    private static final String ID = "id";
+    private static final String URI = "uri";
 
     abstract public void bindListItemView(View view, Cursor cursor);
 
@@ -44,7 +53,8 @@ public abstract class SpinningZebraListFragment extends SherlockListFragment {
     private String smallText;
     private String largeText;
     private boolean spinning;
-    protected Cursor cursor;
+    private int code;
+    private Uri uri;
 
 
     @Override
@@ -53,8 +63,8 @@ public abstract class SpinningZebraListFragment extends SherlockListFragment {
     }
 
     @Override
-    public void onViewCreated(View layout, Bundle savedInstanceState) {
-        super.onViewCreated(layout, savedInstanceState);
+    public void onViewCreated(View layout, Bundle state) {
+        super.onViewCreated(layout, state);
         layout.setOnClickListener(null);
         setListAdapter(new CursorAdapter(getActivity(), null, 0) {
 
@@ -126,44 +136,47 @@ public abstract class SpinningZebraListFragment extends SherlockListFragment {
         rotate.setRepeatMode(Animation.RESTART);
         rotate.setRepeatCount(Animation.INFINITE);
         stopSpinning("click here");
-        swapCursor(cursor);
+        if (state != null) {
+            code = state.getInt(ID);
+            uri = (Uri) (state.getParcelable(URI));
+            System.out.println("init loader");
+            getActivity().getSupportLoaderManager()
+                    .initLoader(code, state, this);
+        } else if (uri != null) {
+            System.out.println("restart loader");
+            getActivity().getSupportLoaderManager()
+                    .restartLoader(code, state, this);
+        }
         getListView().requestFocus();
     }
 
-    public void swapCursor(Cursor cursor) {
-        this.cursor = cursor;
-        if (getListAdapter() != null) {
-            ((CursorAdapter) getListAdapter()).swapCursor(cursor);
+    public void load(Uri uri, int id) {
+        this.code = id;
+        this.uri = uri;
+        if (getActivity() != null) {
+            System.out.println("NEVER");
+            getActivity().getSupportLoaderManager()
+                .restartLoader(getId(), null, this);
         }
     }
-
-    public void startSpinning(String smallText, String largeText) {
-        this.smallText = smallText;
-        this.largeText = largeText;
-        spinning = true;
-        if (cursor != null && !cursor.isClosed() && getListAdapter() != null) {
-            ((CursorAdapter) getListAdapter()).notifyDataSetChanged();
-        }
-    }
-    
-    public void stopSpinning(String smallText) {
-        this.smallText = smallText;
-        this.largeText = "";
-        spinning = false;
-        if (cursor != null && !cursor.isClosed() && getListAdapter() != null) {
-            ((CursorAdapter) getListAdapter()).notifyDataSetChanged();
-        }
-    }
-
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-        Cursor c = ((CursorAdapter) getListView().getAdapter()).getCursor();
-        if (position != c.getCount()) {
-            ((ListFragmentCallback) getActivity()).onListItemClick(position);
-        } else {
-            ((ListFragmentCallback) getActivity()).onSpinningWheelClick();
+    public Loader<Cursor> onCreateLoader(int id, Bundle b) {
+        System.out.println("create loader for " + uri);
+        return new CursorLoader(getActivity(), uri, null, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor rides) {
+        if (getListAdapter() != null) {
+            ((CursorAdapter) getListAdapter()).swapCursor(rides);
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        if (getListAdapter() != null) {
+            ((CursorAdapter) getListAdapter()).swapCursor(null);
         }
     }
 
@@ -172,15 +185,59 @@ public abstract class SpinningZebraListFragment extends SherlockListFragment {
         onScreen = true;
         super.onAttach(activity);
     }
-
+    
     @Override
     public void onDetach() {
         onScreen = false;
         super.onDetach();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(URI, uri);
+        outState.putInt(ID, code);
+    }
+
+    public void startSpinning(String smallText, String largeText) {
+        this.smallText = smallText;
+        this.largeText = largeText;
+        spinning = true;
+        notifyDatasetChanged();
+    }
+
+    public void stopSpinning(String smallText) {
+        this.smallText = smallText;
+        this.largeText = "";
+        spinning = false;
+        notifyDatasetChanged();
+    }
+
+    public void notifyDatasetChanged() {
+        if (getCursor() != null && !getCursor().isClosed()
+                && getListAdapter() != null) {
+            ((CursorAdapter) getListAdapter()).notifyDataSetChanged();
+        }
+    }
+
+    public Cursor getCursor() {
+        if (getListView() != null) {
+            return ((CursorAdapter) getListView().getAdapter()).getCursor();
+        } else return null;
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int pos, long id) {
+        if (pos != getCursor().getCount()) {
+            ((ListFragmentCallback) getActivity()).onListItemClick(pos, code);
+        } else {
+            ((ListFragmentCallback) getActivity()).onSpinningWheelClick();
+        }
+        super.onListItemClick(l, v, pos, id);
+    }
+
     public interface ListFragmentCallback {
-        public void onListItemClick(int position);
+        public void onListItemClick(int position, int id);
         public void onSpinningWheelClick();
     }
 }

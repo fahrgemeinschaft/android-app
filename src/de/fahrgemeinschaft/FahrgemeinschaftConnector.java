@@ -178,6 +178,7 @@ public class FahrgemeinschaftConnector extends Connector {
 
     private static final String OFFER = "offer";
     private static final String TRIP_ID = "TripID";
+    private static final String TRIP_ID_WITH_SMALL_t = "tripID"; //wtf!
     private static final String TRIPTYPE = "Triptype";
 
     private static final String EMAIL = "Email";
@@ -379,8 +380,8 @@ public class FahrgemeinschaftConnector extends Connector {
         out.flush();
         out.close();
         JSONObject response = loadJson(post);
-        if (!response.isNull(TRIP_ID)) {
-            return response.getString(TRIP_ID);
+        if (!response.isNull(TRIP_ID_WITH_SMALL_t)) {
+            return response.getString(TRIP_ID_WITH_SMALL_t);
         } else return offer.getRef();
     }
 

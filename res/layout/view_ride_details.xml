@@ -11,6 +11,12 @@
     android:background="@color/light_green_translucent"
     android:padding="13dp" >
 
+    <View
+        android:id="@+id/grey_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grey_translucent" />
+
     <de.fahrgemeinschaft.util.RideRowView 
         android:id="@+id/row"
         android:layout_width="match_parent"
@@ -21,7 +27,6 @@
         android:background="@color/dark_green" />
 
     <Button
-        android:onClick="contact"
         android:id="@+id/btn_contact"
         android:layout_height="70dp"
         android:layout_width="match_parent"
@@ -136,6 +141,6 @@
         android:id="@+id/streifenhoernchen"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:background="@drawable/streifenhoernchen_grey" />
+        android:background="@drawable/streifenhoernchen" />
 
 </view>
