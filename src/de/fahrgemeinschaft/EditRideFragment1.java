@@ -30,7 +30,7 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-import de.fahrgemeinschaft.util.ButtonImageButton;
+import de.fahrgemeinschaft.util.PlaceImageButton;
 
 public class EditRideFragment1 extends SherlockFragment implements OnClickListener {
 
@@ -38,8 +38,8 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
     private Ride ride;
     private LinearLayout seats;
     private LinearLayout route;
-    private ButtonImageButton from;
-    private ButtonImageButton to;
+    private PlaceImageButton from;
+    private PlaceImageButton to;
 
     @Override
     public View onCreateView(final LayoutInflater lI, ViewGroup p, Bundle b) {
@@ -61,12 +61,12 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
         v.findViewById(R.id.seats_many).setOnClickListener(this);
 
         route = (LinearLayout) v.findViewById(R.id.route);
-        from = (ButtonImageButton) v.findViewById(R.id.from);
+        from = (PlaceImageButton) v.findViewById(R.id.from);
         from.btn.setOnClickListener(autocompletePlace);
-        from.icn.setOnClickListener(pickPlace);
-        to = (ButtonImageButton) v.findViewById(R.id.to);
+        from.icon.setOnClickListener(pickPlace);
+        to = (PlaceImageButton) v.findViewById(R.id.to);
         to.btn.setOnClickListener(autocompletePlace);
-        to.icn.setOnClickListener(pickPlace);
+        to.icon.setOnClickListener(pickPlace);
     }
 
     public void setRide(Ride ride) {
@@ -123,7 +123,7 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
         ride.removeVias();
         for (int i = 0; i < vias.size(); i++) {
             ride.via(vias.get(i).id);
-            ImageButton icn = addViaBtn(vias.get(i)).icn;
+            ImageButton icn = addViaBtn(vias.get(i)).icon;
             icn.setImageResource(R.drawable.icn_close);
             icn.setOnClickListener(new OnClickListener() {
 
@@ -188,17 +188,17 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
         }
     }
 
-    private ButtonImageButton addViaBtn(Place place) {
-        ButtonImageButton b = new ButtonImageButton(getActivity());
+    private PlaceImageButton addViaBtn(Place place) {
+        PlaceImageButton b = new PlaceImageButton(getActivity());
         b.btn.setText(getString(R.string.via));
         LayoutParams lp = new LayoutParams(
                 LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         lp.bottomMargin = getResources().getDimensionPixelSize(R.dimen.medium);
         lp.leftMargin = getResources().getDimensionPixelSize(R.dimen.xlarge);
         b.setLayoutParams(lp);
-        b.icn.setImageResource(R.drawable.icn_dropdown);
+        b.icon.setImageResource(R.drawable.icn_dropdown);
         b.btn.setOnClickListener(autocompletePlace);
-        b.icn.setOnClickListener(pickPlace);
+        b.icon.setOnClickListener(pickPlace);
         route.addView(b, route.getChildCount() - 1);
         if (place != null) {
             b.btn.setText(place.getName());

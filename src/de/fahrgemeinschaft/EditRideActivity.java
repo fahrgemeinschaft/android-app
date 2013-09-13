@@ -27,7 +27,7 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.view.MenuItem;
 
-import de.fahrgemeinschaft.util.EditTextPrivacyButton;
+import de.fahrgemeinschaft.util.PrivacyImageButton;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -119,7 +119,7 @@ public class EditRideActivity extends BaseActivity
             SharedPreferences prefs = PreferenceManager
                     .getDefaultSharedPreferences(this);
             if (!prefs.contains("Email")) {
-                prefs.edit().putString("Email", ((EditTextPrivacyButton)
+                prefs.edit().putString("Email", ((PrivacyImageButton)
                         findViewById(R.id.email)).text.getText().toString())
                         .commit();
             }
