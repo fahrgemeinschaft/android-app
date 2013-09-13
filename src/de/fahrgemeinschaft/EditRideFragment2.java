@@ -29,7 +29,7 @@ import android.widget.TimePicker;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-import de.fahrgemeinschaft.util.ButtonImageButton;
+import de.fahrgemeinschaft.util.DateImageButton;
 import de.fahrgemeinschaft.util.EditTextImageButton;
 import de.fahrgemeinschaft.util.EditTextImageButton.TextListener;
 import de.fahrgemeinschaft.util.ReoccuringWeekDaysView;
@@ -38,9 +38,9 @@ public class EditRideFragment2 extends SherlockFragment
         implements OnDateSetListener, OnTimeSetListener, TextListener {
 
     private Ride ride; 
-    private ButtonImageButton date;
+    private DateImageButton date;
     private View white_bg;
-    private ButtonImageButton time;
+    private DateImageButton time;
     private ReoccuringWeekDaysView reoccur;
     private EditTextImageButton price;
 
@@ -53,13 +53,13 @@ public class EditRideFragment2 extends SherlockFragment
     public void onViewCreated(View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
         
-        date = (ButtonImageButton) v.findViewById(R.id.date);
+        date = (DateImageButton) v.findViewById(R.id.date);
         white_bg = v.findViewById(R.id.white_bg);
         date.btn.setOnClickListener(pickDate);
-        date.icn.setOnClickListener(pickDate);
-        time = (ButtonImageButton) v.findViewById(R.id.time);
+        date.icon.setOnClickListener(pickDate);
+        time = (DateImageButton) v.findViewById(R.id.time);
         time.btn.setOnClickListener(pickTime);
-        time.icn.setOnClickListener(pickTime);
+        time.icon.setOnClickListener(pickTime);
         price = (EditTextImageButton) v.findViewById(R.id.price);
         price.text.setOnFocusChangeListener(onPriceChange);
         price.setTextListener("price", this);
@@ -72,13 +72,13 @@ public class EditRideFragment2 extends SherlockFragment
         setPrice(ride.getPrice());
         reoccur.setDays(ride.getDetails());
         if (reoccur.isReoccuring()) {
-            date.icn.setEnabled(false);
+            date.icon.setEnabled(false);
             date.btn.setEnabled(false);
             date.streifenhornchen(true);
             white_bg.setVisibility(View.VISIBLE);
             date.btn.setText(R.string.reccurence_date);
         } else {
-            date.icn.setEnabled(true);
+            date.icon.setEnabled(true);
             date.btn.setEnabled(true);
             date.streifenhornchen(false);
             white_bg.setVisibility(View.GONE);

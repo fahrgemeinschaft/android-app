@@ -10,7 +10,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <de.fahrgemeinschaft.util.EditTextPrivacyButton
+    <de.fahrgemeinschaft.util.PrivacyImageButton
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="@dimen/xlarge"
@@ -18,7 +18,7 @@
         android:inputType="textCapWords"
         android:src="@drawable/icn_view_user" />
 
-    <de.fahrgemeinschaft.util.EditTextPrivacyButton
+    <de.fahrgemeinschaft.util.PrivacyImageButton
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="@dimen/xlarge"
@@ -27,7 +27,7 @@
         android:inputType="textEmailAddress"
         android:src="@drawable/icn_contact_email" />
 
-    <de.fahrgemeinschaft.util.EditTextPrivacyButton
+    <de.fahrgemeinschaft.util.PrivacyImageButton
         android:id="@+id/plate"
         android:layout_width="match_parent"
         android:layout_height="@dimen/xlarge"
@@ -36,7 +36,7 @@
         android:inputType="textCapCharacters"
         android:src="@drawable/icn_contact_kfz" />
 
-    <de.fahrgemeinschaft.util.EditTextPrivacyButton
+    <de.fahrgemeinschaft.util.PrivacyImageButton
         android:id="@+id/landline"
         android:layout_width="match_parent"
         android:layout_height="@dimen/xlarge"
@@ -45,7 +45,7 @@
         android:inputType="phone"
         android:src="@drawable/icn_contact_phone" />
 
-    <de.fahrgemeinschaft.util.EditTextPrivacyButton
+    <de.fahrgemeinschaft.util.PrivacyImageButton
         android:id="@+id/mobile"
         android:layout_width="match_parent"
         android:layout_height="@dimen/xlarge"

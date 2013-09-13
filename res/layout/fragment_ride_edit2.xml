@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:background="@color/opacity_white" />
 
-        <de.fahrgemeinschaft.util.ButtonImageButton
+        <de.fahrgemeinschaft.util.DateImageButton
             android:id="@+id/date"
             android:layout_width="match_parent"
             android:src="@drawable/icn_datepicker"
@@ -29,7 +29,7 @@
 
     </RelativeLayout>
 
-    <de.fahrgemeinschaft.util.ButtonImageButton
+    <de.fahrgemeinschaft.util.DateImageButton
         android:id="@+id/time"
         android:layout_width="match_parent"
         android:layout_marginTop="@dimen/medium"
