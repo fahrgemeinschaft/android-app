@@ -31,7 +31,7 @@ public class WebActivity extends SherlockActivity {
         super.onCreate(savedInstanceState);
         webView = new WebView(this);
         progress = new ProgressDialog(this);
-//        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient() {
             
             @Override
