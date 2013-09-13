@@ -71,7 +71,7 @@ public class RideListFragment extends SpinningZebraListFragment
 
         long dep = ride.getLong(COLUMNS.DEPARTURE);
         if (isMyRide(ride)) {
-            if (dep - System.currentTimeMillis() > 0  // future ride
+            if (dep - System.currentTimeMillis() > -12*3600000  // future ride
                     && (ride.getInt(COLUMNS.ACTIVE) == 1)) {
                 v.showButtons();
                 v.streifenhoernchen.setVisibility(View.GONE);
