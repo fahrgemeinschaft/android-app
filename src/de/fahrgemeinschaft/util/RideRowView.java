@@ -31,7 +31,6 @@ public class RideRowView extends LinearLayout {
     TextView date;
     TextView time;
     TextView day;
-    ImageView reoccuring;
 
     public RideRowView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -47,20 +46,15 @@ public class RideRowView extends LinearLayout {
         date = (TextView) findViewById(R.id.date);
         time = (TextView) findViewById(R.id.time);
         day = (TextView) findViewById(R.id.day);
-        reoccuring = (ImageView) findViewById(R.id.reoccuring);
     }
 
     public void bind(Cursor cursor, Context ctx) {
         long timestamp = cursor.getLong(COLUMNS.DEPARTURE);
         Date dep = new Date(timestamp);
         if (timestamp > 2555448960000l) {
-            day.setText("");
-            day.setVisibility(GONE);
+            day.setText(R.string.reoccurring);
             date.setText("");
-            reoccuring.setVisibility(VISIBLE);
         } else {
-            reoccuring.setVisibility(GONE);
-            day.setVisibility(VISIBLE);
             day.setText(dayf.format(dep));
             date.setText(datef.format(dep));
         }

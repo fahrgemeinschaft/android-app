@@ -81,6 +81,7 @@
     <string name="name_hint">Nachname</string>
     <string name="reccurence">Regelmäßige Fahrt: jede Woche am</string>
     <string name="reccurence_date">Regelmäßige Fahrt</string>
+    <string name="reoccurring">regelmäßig</string>
     <string name="member_since">Dabei seit: %1$s</string>
     <string name="last_login">Letzter Login: %1$s</string>
 

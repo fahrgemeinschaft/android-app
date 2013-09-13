@@ -82,6 +82,7 @@
     <string name="name_hint">Surname</string>
     <string name="reccurence">recurring ride: every week at</string>
     <string name="reccurence_date">recurring ride</string>
+    <string name="reoccurring">reoccurring</string>
     <string name="member_since">Member since %1$s</string>
     <string name="last_login">Last login %1$s</string>
 
