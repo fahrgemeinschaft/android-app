@@ -11,12 +11,6 @@
     android:background="@color/light_green_translucent"
     android:padding="13dp" >
 
-    <View
-        android:id="@+id/grey_bg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/grey_translucent" />
-
     <de.fahrgemeinschaft.util.RideRowView 
         android:id="@+id/row"
         android:layout_width="match_parent"
