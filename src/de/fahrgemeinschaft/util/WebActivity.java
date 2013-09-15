@@ -7,6 +7,7 @@
 
 package de.fahrgemeinschaft.util;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -27,11 +28,14 @@ public class WebActivity extends SherlockActivity {
     private WebView webView;
 
     @Override
+    @SuppressLint("SetJavaScriptEnabled")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         webView = new WebView(this);
         progress = new ProgressDialog(this);
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setSaveFormData(false);
+        webView.getSettings().setSavePassword(false);
         webView.setWebViewClient(new WebViewClient() {
             
             @Override
