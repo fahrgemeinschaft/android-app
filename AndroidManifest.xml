@@ -71,7 +71,8 @@
 
         <activity android:name=".ProfileActivity" />
 
-        <activity android:name=".util.WebActivity" />
+        <activity android:name=".util.WebActivity"
+            android:configChanges="orientation|screenSize" />
 
         <receiver android:name=".AuthRequestReceiver" android:exported="false">
             <intent-filter>
