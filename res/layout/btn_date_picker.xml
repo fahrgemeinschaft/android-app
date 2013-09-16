@@ -14,7 +14,7 @@
         android:gravity="left|center_vertical"
         android:layout_gravity="left|center_vertical"
         android:background="@drawable/btn_white"
-        android:paddingLeft="16dp"
+        android:paddingLeft="@dimen/large"
         android:paddingRight="@dimen/xlarge"
         android:ellipsize="end"
         android:singleLine="true"
