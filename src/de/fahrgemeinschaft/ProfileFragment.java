@@ -116,7 +116,7 @@ public class ProfileFragment extends SherlockFragment
                 t.putString("password", password.text.getText().toString());
             t.commit();
             if (!logout) { // i.e. login
-                ((MainActivity)getActivity()).service
+                ((BaseActivity)getActivity()).service
                         .authenticate(password.text.getText().toString());
                 ((InputMethodManager) getActivity()
                         .getSystemService(Context.INPUT_METHOD_SERVICE))
@@ -131,7 +131,7 @@ public class ProfileFragment extends SherlockFragment
         case R.id.register:
             getActivity().startActivity(
                     new Intent(getActivity(), WebActivity.class)
-                    .setData(Uri.parse("file:///android_asset/register.html")));
+                    .setData(Uri.parse("http://www.fahrgemeinschaft.de/register_mobile.php")));
             getActivity().overridePendingTransition(
                     R.anim.do_nix, R.anim.slide_in_bottom);
             break;
