@@ -28,7 +28,7 @@ public class EditTextImageButton extends BaseImageButton
 
     @Override
     protected int inflate() {
-        return R.layout.btn_edit_text_image;
+        return R.layout.btn_edit_text;
     }
 
     public EditTextImageButton(Context context, AttributeSet attrs) {
