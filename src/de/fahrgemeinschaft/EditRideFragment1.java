@@ -62,19 +62,19 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
 
         route = (LinearLayout) v.findViewById(R.id.route);
         from = (PlaceImageButton) v.findViewById(R.id.from);
-        from.btn.setOnClickListener(autocompletePlace);
+        from.name.setOnClickListener(autocompletePlace);
         from.icon.setOnClickListener(pickPlace);
         to = (PlaceImageButton) v.findViewById(R.id.to);
-        to.btn.setOnClickListener(autocompletePlace);
+        to.name.setOnClickListener(autocompletePlace);
         to.icon.setOnClickListener(pickPlace);
     }
 
     public void setRide(Ride ride) {
         this.ride = ride;
         if (ride.getFrom() != null)
-            from.btn.setText(ride.getFrom().getName());
+            from.setPlace(ride.getFrom());
         if (ride.getTo() != null)
-            to.btn.setText(ride.getTo().getName());
+            to.setPlace(ride.getTo());
         setVias(ride.getVias());
         setMode(ride.getMode());
         setSeats(ride.getSeats());
@@ -162,25 +162,23 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
     @Override
     public void onActivityResult(final int i, int res, final Intent intent) {
         if (res == Activity.RESULT_OK) {
-            Cursor place = getActivity().getContentResolver()
-                    .query(intent.getData(), null, null, null, null);
-            place.moveToFirst();
+            Place place = new Place(intent.getData(), getActivity());
             if (i == 0) {
                 Log.d(TAG, "from " + intent.getDataString());
-                from.btn.setText(place.getString(2));
-                ride.from(place.getInt(0));
+                from.setPlace(place);
+                ride.from(place);
             } else if (i == route.getChildCount() - 1 ) {
                 Log.d(TAG, "to " + intent.getDataString());
-                to.btn.setText(place.getString(2));
-                ride.to(place.getInt(0));
+                to.setPlace(place);
+                ride.to(place);
             } else {
                 Log.d(TAG, "via " + intent.getDataString());
                 List<Place> vias = ride.getVias();
                 
                 if (i == route.getChildCount() - 2) { // new via?
-                    vias.add(new Place(place.getInt(0)).name(place.getString(2)));
+                    vias.add(place);
                 } else {
-                    vias.get(i + 1).name(place.getString(2)).id = place.getInt(0);
+                    vias.set(i + 1, place);
                 }
                 setVias(vias);
             }
@@ -190,18 +188,18 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
 
     private PlaceImageButton addViaBtn(Place place) {
         PlaceImageButton b = new PlaceImageButton(getActivity());
-        b.btn.setText(getString(R.string.via));
+        b.name.setText(getString(R.string.via));
         LayoutParams lp = new LayoutParams(
                 LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         lp.bottomMargin = getResources().getDimensionPixelSize(R.dimen.medium);
         lp.leftMargin = getResources().getDimensionPixelSize(R.dimen.xlarge);
         b.setLayoutParams(lp);
         b.icon.setImageResource(R.drawable.icn_dropdown);
-        b.btn.setOnClickListener(autocompletePlace);
+        b.name.setOnClickListener(autocompletePlace);
         b.icon.setOnClickListener(pickPlace);
         route.addView(b, route.getChildCount() - 1);
         if (place != null) {
-            b.btn.setText(place.getName());
+            b.setPlace(place);
         }
         return b;
     }
