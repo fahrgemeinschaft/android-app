@@ -18,7 +18,7 @@ public class DateImageButton extends BaseImageButton {
 
     @Override
     protected int inflate() {
-        return R.layout.btn_button_image;
+        return R.layout.btn_date_picker;
     }
 
     public DateImageButton(Context context) {
