@@ -7,12 +7,9 @@
 
 package de.fahrgemeinschaft;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
-import org.teleportr.Place;
 import org.teleportr.Ride;
 
 import android.app.Activity;
@@ -29,10 +26,12 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-import android.widget.Button;
 import android.widget.DatePicker;
 
 import com.actionbarsherlock.app.SherlockFragment;
+
+import de.fahrgemeinschaft.util.DateImageButton;
+import de.fahrgemeinschaft.util.PlaceImageButton;
 
 public class MainFragment extends SherlockFragment
         implements OnClickListener, OnDateSetListener {
@@ -42,9 +41,9 @@ public class MainFragment extends SherlockFragment
     protected static final String TAG = "fahrgemeinschaft";
     private static final int FROM = 42;
     private static final int TO = 55;
-    private Button when;
-    private Button from;
-    private Button to;
+    private DateImageButton when;
+    private PlaceImageButton from;
+    private PlaceImageButton to;
     public Ride ride;
 
     @Override
@@ -54,78 +53,64 @@ public class MainFragment extends SherlockFragment
 
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
-        from = (Button) v.findViewById(R.id.btn_autocomplete_from);
-        to = (Button) v.findViewById(R.id.btn_autocomplete_to);
-        when = (Button) v.findViewById(R.id.btn_pick_date);
-        to.setOnClickListener(this);
-        from.setOnClickListener(this);
-        when.setOnClickListener(this);
+        from = (PlaceImageButton) v.findViewById(R.id.btn_autocomplete_from);
+        from.name.setOnClickListener(this);
+        from.icon.setOnClickListener(this);
+        to = (PlaceImageButton) v.findViewById(R.id.btn_autocomplete_to);
+        to.name.setOnClickListener(this);
+        to.icon.setOnClickListener(this);
+        when = (DateImageButton) v.findViewById(R.id.btn_pick_date);
+        when.btn.setOnClickListener(this);
+        when.icon.setOnClickListener(this);
         v.findViewById(R.id.btn_mitfahren)
             .setOnClickListener((OnClickListener) getActivity());
         v.findViewById(R.id.btn_selberfahren)
             .setOnClickListener((OnClickListener) getActivity());
-        v.findViewById(R.id.btn_pick_to).setOnClickListener(this);
-        v.findViewById(R.id.btn_pick_from).setOnClickListener(this);
-        v.findViewById(R.id.icn_pick_date).setOnClickListener(this);
 
         if (savedInstanceState != null) {
             ride = savedInstanceState.getParcelable("ride");
             ride.setContext(getActivity());
-            Place place = ride.getFrom();
-            if (place != null)
-                from.setText(place.getName());
-            place = ride.getTo();
-            if (place != null)
-                to.setText(place.getName());
+            from.setPlace(ride.getFrom());
+            to.setPlace(ride.getTo());
         } else {
             ride = new Ride(getActivity());
             ride.dep(getMorning(System.currentTimeMillis()));
         }
-        setDateButtonText(ride.getDep());
+        when.setDate(ride.getDep());
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-        case R.id.btn_pick_from:
+    public void onClick(View btn) {
+        if (btn == from.name) {
+            startActivityForResult(new Intent(Intent.ACTION_PICK,
+                    PLACES_URI).putExtra("show_textfield", true), FROM);
+            getActivity().overridePendingTransition(
+                    R.anim.slide_in_left, R.anim.do_nix);
+        } else if (btn == from.icon) {
             startActivityForResult(new Intent(Intent.ACTION_PICK,
                     PLACES_URI), FROM);
             getActivity().overridePendingTransition(
                     R.anim.slide_in_left, R.anim.do_nix);
-            break;
-
-        case R.id.btn_pick_to:
+        } else if (btn == to.name) {
+            startActivityForResult(new Intent(Intent.ACTION_PICK,
+                    PLACES_URI.buildUpon().appendQueryParameter("from_id",
+                            String.valueOf(ride.getFromId())).build())
+            .putExtra("show_textfield", true), TO);
+            getActivity().overridePendingTransition(
+                    R.anim.slide_in_right, R.anim.do_nix);
+        } else if (btn == to.icon) {
             startActivityForResult(new Intent(Intent.ACTION_PICK,
                     PLACES_URI.buildUpon().appendQueryParameter("from_id",
                             String.valueOf(ride.getFromId())).build()), TO);
             getActivity().overridePendingTransition(
                     R.anim.slide_in_right, R.anim.do_nix);
-            break;
-
-        case R.id.btn_autocomplete_from:
-            startActivityForResult(new Intent(Intent.ACTION_PICK,
-                    PLACES_URI).putExtra("show_textfield", true), FROM);
-            getActivity().overridePendingTransition(
-                    R.anim.slide_in_left, R.anim.do_nix);
-            break;
-
-        case R.id.btn_autocomplete_to:
-            startActivityForResult(new Intent(Intent.ACTION_PICK,
-                    PLACES_URI.buildUpon().appendQueryParameter("from_id",
-                            String.valueOf(ride.getFromId())).build())
-                    .putExtra("show_textfield", true), TO);
-            getActivity().overridePendingTransition(
-                    R.anim.slide_in_right, R.anim.do_nix);
-            break;
-        case R.id.btn_pick_date:
-        case R.id.icn_pick_date:
+        } else if (btn == when.btn || btn == when.icon) {
             Calendar c = Calendar.getInstance();
             c.setTime(new Date(ride.getDep()));
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
             new DatePickerDialog(getActivity(), this, year, month, day).show();
-            break;
         }
     }
 
@@ -135,35 +120,17 @@ public class MainFragment extends SherlockFragment
             Log.d(TAG, "selected " + intent.getData());
             switch (req) {
             case FROM:
-                animatePulse(from);
+                animatePulse(from.name);
                 ride.from(intent.getData());
-                from.setText(ride.getFrom().getName());
+                from.setPlace(ride.getFrom());
                 break;
             case TO:
-                animatePulse(to);
+                animatePulse(to.name);
                 ride.to(intent.getData());
-                to.setText(ride.getTo().getName());
+                to.setPlace(ride.getTo());
                 break;
             }
         }
-    }
-
-    public void setDateButtonText(long date) {
-        Calendar cal = Calendar.getInstance();
-        int today = cal.get(Calendar.DAY_OF_YEAR);
-        int year = cal.get(Calendar.YEAR);
-        cal.setTimeInMillis(date);
-        int pickedYear = cal.get(Calendar.YEAR);
-        int dayOfYear = cal.get(Calendar.DAY_OF_YEAR);
-        if ((dayOfYear == -1 || dayOfYear == today) && year == pickedYear)
-            when.setText(getString(R.string.now));
-        else if ((dayOfYear == today + 1) && year == pickedYear)
-            when.setText(getString(R.string.tomorrow));
-        else if ((dayOfYear == today + 2) && year == pickedYear)
-            when.setText(getString(R.string.after_tomorrow));
-        else
-            when.setText(new SimpleDateFormat("dd. MMM yyyy",
-                    Locale.GERMANY).format(ride.getDep()));
     }
 
     @Override
@@ -177,7 +144,7 @@ public class MainFragment extends SherlockFragment
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
         ride.dep(cal.getTime());
-        setDateButtonText(ride.getDep());
+        when.setDate(ride.getDep());
     }
 
     private void animatePulse(final View view) {

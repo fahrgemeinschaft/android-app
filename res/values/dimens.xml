@@ -17,7 +17,7 @@
     <dimen name="larger">32dp</dimen>
     <dimen name="xlarger">48dp</dimen>
     <dimen name="large_icn">56dp</dimen>
-    <dimen name="place_height">62dp</dimen>
+    <dimen name="place_height">60dp</dimen>
     <dimen name="xlarge">60dp</dimen>
     <dimen name="xxlarge">76dp</dimen>
 

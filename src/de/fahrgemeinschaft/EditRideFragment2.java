@@ -7,9 +7,7 @@
 
 package de.fahrgemeinschaft;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 
 import org.teleportr.Ride;
 
@@ -82,7 +80,8 @@ public class EditRideFragment2 extends SherlockFragment
             date.btn.setEnabled(true);
             date.streifenhornchen(false);
             white_bg.setVisibility(View.GONE);
-            setDeparture(ride.getDep());
+            date.setDate(ride.getDep());
+            date.setTime(ride.getDep());
         }
     }
 
@@ -120,26 +119,6 @@ public class EditRideFragment2 extends SherlockFragment
         }
     };
 
-    private void setDeparture(long timestamp) {
-        Calendar cal = Calendar.getInstance();
-        int thisYear = cal.get(Calendar.YEAR);
-        int today = cal.get(Calendar.DAY_OF_YEAR);
-        cal.setTimeInMillis(timestamp);
-        date.btn.setText(new SimpleDateFormat("dd. MMM yyyy",
-                Locale.GERMANY).format(timestamp));
-        if (cal.get(Calendar.YEAR) == thisYear) {
-            if (cal.get(Calendar.DAY_OF_YEAR) == today)
-                date.btn.setText(getString(R.string.today));
-            else if (cal.get(Calendar.DAY_OF_YEAR) == today + 1)
-                date.btn.setText(getString(R.string.tomorrow));
-            else if (cal.get(Calendar.DAY_OF_YEAR) == today + 2)
-                date.btn.setText(getString(R.string.after_tomorrow));
-        }
-        time.btn.setText(new SimpleDateFormat("HH:mm",
-                Locale.GERMANY).format(timestamp));
-        ride.dep(timestamp);
-    }
-
     OnClickListener pickDate = new OnClickListener() {
         
         @Override
@@ -176,7 +155,8 @@ public class EditRideFragment2 extends SherlockFragment
         cal.set(Calendar.YEAR, year);
         cal.set(Calendar.MONTH, month);
         cal.set(Calendar.DAY_OF_MONTH, day);
-        setDeparture(cal.getTime().getTime());
+        date.setDate(cal.getTimeInMillis());
+        ride.dep(cal.getTimeInMillis());
     }
 
     @Override
@@ -185,6 +165,7 @@ public class EditRideFragment2 extends SherlockFragment
         cal.setTimeInMillis(ride.getDep());
         cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
         cal.set(Calendar.MINUTE, minute);
-        setDeparture(cal.getTime().getTime());
+        time.setTime(cal.getTimeInMillis());
+        ride.dep(cal.getTimeInMillis());
     }
 }
