@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Fahrgemeinschaft / Ridesharing App
+  Copyright (c) 2013 by it's authors.
+  Some rights reserved. See LICENSE.. 
+-->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" >
+
+    <TextView
+        android:id="@+id/name"
+        style="@style/place_pick_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/place_height"
+        android:layout_gravity="left"
+        android:background="@drawable/btn_white"
+        android:ellipsize="end"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="@dimen/large"
+        android:paddingRight="@dimen/xlarge"
+        android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|bottom"
+        android:ellipsize="end"
+        android:gravity="left|center_vertical"
+        android:paddingBottom="3dp"
+        android:paddingLeft="@dimen/large"
+        android:paddingRight="@dimen/xlarge"
+        android:singleLine="true"
+        android:textSize="13sp"
+        android:textColor="@color/darker_green_translucent"
+        tools:ignore="SmallSp" />
+
+    <ImageButton
+        android:id="@+id/icon"
+        android:layout_width="@dimen/place_height"
+        android:layout_height="@dimen/place_height"
+        android:layout_gravity="right|center_vertical"
+        android:background="@drawable/btn_white"
+        android:contentDescription="@string/app_name" />
+
+</merge>

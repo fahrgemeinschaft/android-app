@@ -83,6 +83,8 @@
             android:id="@+id/seats_zero"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
             android:layout_marginRight="@dimen/small"
             android:layout_weight="1"
             android:focusable="true"
@@ -94,6 +96,8 @@
             android:id="@+id/seats_one"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
             android:layout_marginLeft="@dimen/small"
             android:layout_marginRight="@dimen/small"
             android:layout_weight="1"
@@ -106,6 +110,8 @@
             android:id="@+id/seats_two"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
             android:layout_marginLeft="@dimen/small"
             android:layout_marginRight="@dimen/small"
             android:layout_weight="1"
@@ -118,6 +124,8 @@
             android:id="@+id/seats_three"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
             android:layout_marginLeft="@dimen/small"
             android:layout_marginRight="@dimen/small"
             android:layout_weight="1"
@@ -130,6 +138,8 @@
             android:id="@+id/seats_many"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
             android:layout_marginLeft="@dimen/small"
             android:layout_weight="1"
             android:focusable="true"
@@ -146,14 +156,14 @@
         android:focusableInTouchMode="true"
         android:orientation="vertical" >
 
-        <de.fahrgemeinschaft.util.ButtonImageButton
+        <de.fahrgemeinschaft.util.PlaceImageButton
             android:id="@+id/from"
             android:layout_width="match_parent"
             android:layout_marginBottom="@dimen/medium"
             android:src="@drawable/icn_dropdown"
             android:text="@string/from" />
 
-        <de.fahrgemeinschaft.util.ButtonImageButton
+        <de.fahrgemeinschaft.util.PlaceImageButton
             android:id="@+id/to"
             android:layout_width="match_parent"
             android:src="@drawable/icn_dropdown"

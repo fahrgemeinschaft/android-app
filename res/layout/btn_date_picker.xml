@@ -10,11 +10,11 @@
     <Button
         android:id="@+id/text"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/large_icn"
+        android:layout_height="@dimen/place_height"
         android:gravity="left|center_vertical"
         android:layout_gravity="left|center_vertical"
         android:background="@drawable/btn_white"
-        android:paddingLeft="16dp"
+        android:paddingLeft="@dimen/large"
         android:paddingRight="@dimen/xlarge"
         android:ellipsize="end"
         android:singleLine="true"
@@ -22,8 +22,8 @@
 
     <ImageButton
         android:id="@+id/icon"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:layout_height="@dimen/place_height"
+        android:layout_width="@dimen/place_height"
         android:layout_gravity="right|center_vertical"
         android:background="@drawable/btn_white"
         android:contentDescription="@string/app_name" />

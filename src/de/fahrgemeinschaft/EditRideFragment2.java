@@ -7,9 +7,7 @@
 
 package de.fahrgemeinschaft;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 
 import org.teleportr.Ride;
 
@@ -29,7 +27,7 @@ import android.widget.TimePicker;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-import de.fahrgemeinschaft.util.ButtonImageButton;
+import de.fahrgemeinschaft.util.DateImageButton;
 import de.fahrgemeinschaft.util.EditTextImageButton;
 import de.fahrgemeinschaft.util.EditTextImageButton.TextListener;
 import de.fahrgemeinschaft.util.ReoccuringWeekDaysView;
@@ -38,9 +36,9 @@ public class EditRideFragment2 extends SherlockFragment
         implements OnDateSetListener, OnTimeSetListener, TextListener {
 
     private Ride ride; 
-    private ButtonImageButton date;
+    private DateImageButton date;
     private View white_bg;
-    private ButtonImageButton time;
+    private DateImageButton time;
     private ReoccuringWeekDaysView reoccur;
     private EditTextImageButton price;
 
@@ -53,13 +51,13 @@ public class EditRideFragment2 extends SherlockFragment
     public void onViewCreated(View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
         
-        date = (ButtonImageButton) v.findViewById(R.id.date);
+        date = (DateImageButton) v.findViewById(R.id.date);
         white_bg = v.findViewById(R.id.white_bg);
         date.btn.setOnClickListener(pickDate);
-        date.icn.setOnClickListener(pickDate);
-        time = (ButtonImageButton) v.findViewById(R.id.time);
+        date.icon.setOnClickListener(pickDate);
+        time = (DateImageButton) v.findViewById(R.id.time);
         time.btn.setOnClickListener(pickTime);
-        time.icn.setOnClickListener(pickTime);
+        time.icon.setOnClickListener(pickTime);
         price = (EditTextImageButton) v.findViewById(R.id.price);
         price.text.setOnFocusChangeListener(onPriceChange);
         price.setTextListener("price", this);
@@ -72,17 +70,18 @@ public class EditRideFragment2 extends SherlockFragment
         setPrice(ride.getPrice());
         reoccur.setDays(ride.getDetails());
         if (reoccur.isReoccuring()) {
-            date.icn.setEnabled(false);
+            date.icon.setEnabled(false);
             date.btn.setEnabled(false);
             date.streifenhornchen(true);
             white_bg.setVisibility(View.VISIBLE);
             date.btn.setText(R.string.reccurence_date);
         } else {
-            date.icn.setEnabled(true);
+            date.icon.setEnabled(true);
             date.btn.setEnabled(true);
             date.streifenhornchen(false);
             white_bg.setVisibility(View.GONE);
-            setDeparture(ride.getDep());
+            date.setDate(ride.getDep());
+            date.setTime(ride.getDep());
         }
     }
 
@@ -120,26 +119,6 @@ public class EditRideFragment2 extends SherlockFragment
         }
     };
 
-    private void setDeparture(long timestamp) {
-        Calendar cal = Calendar.getInstance();
-        int thisYear = cal.get(Calendar.YEAR);
-        int today = cal.get(Calendar.DAY_OF_YEAR);
-        cal.setTimeInMillis(timestamp);
-        date.btn.setText(new SimpleDateFormat("dd. MMM yyyy",
-                Locale.GERMANY).format(timestamp));
-        if (cal.get(Calendar.YEAR) == thisYear) {
-            if (cal.get(Calendar.DAY_OF_YEAR) == today)
-                date.btn.setText(getString(R.string.today));
-            else if (cal.get(Calendar.DAY_OF_YEAR) == today + 1)
-                date.btn.setText(getString(R.string.tomorrow));
-            else if (cal.get(Calendar.DAY_OF_YEAR) == today + 2)
-                date.btn.setText(getString(R.string.after_tomorrow));
-        }
-        time.btn.setText(new SimpleDateFormat("HH:mm",
-                Locale.GERMANY).format(timestamp));
-        ride.dep(timestamp);
-    }
-
     OnClickListener pickDate = new OnClickListener() {
         
         @Override
@@ -176,7 +155,8 @@ public class EditRideFragment2 extends SherlockFragment
         cal.set(Calendar.YEAR, year);
         cal.set(Calendar.MONTH, month);
         cal.set(Calendar.DAY_OF_MONTH, day);
-        setDeparture(cal.getTime().getTime());
+        date.setDate(cal.getTimeInMillis());
+        ride.dep(cal.getTimeInMillis());
     }
 
     @Override
@@ -185,6 +165,7 @@ public class EditRideFragment2 extends SherlockFragment
         cal.setTimeInMillis(ride.getDep());
         cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
         cal.set(Calendar.MINUTE, minute);
-        setDeparture(cal.getTime().getTime());
+        time.setTime(cal.getTimeInMillis());
+        ride.dep(cal.getTimeInMillis());
     }
 }

@@ -130,6 +130,7 @@
     <color name="almost_medium_green">#9FBE47</color>
     <color name="dark_green">#5D6F29</color>
     <color name="darker_green">#525F26</color>
+    <color name="darker_green_translucent">#66525F26</color>
     <color name="light_opacity_white">#33FFFFFF</color>
     <color name="xlight_opacity_white">#11FFFFFF</color>
     <color name="opacity_white">#BBFFFFFF</color>

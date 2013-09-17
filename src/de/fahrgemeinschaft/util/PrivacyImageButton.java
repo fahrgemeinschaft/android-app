@@ -17,7 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import de.fahrgemeinschaft.R;
 
-public class EditTextPrivacyButton extends EditTextImageButton
+public class PrivacyImageButton extends EditTextImageButton
                 implements OnClickListener {
 
     static final String android = "http://schemas.android.com/apk/res/android";
@@ -28,11 +28,11 @@ public class EditTextPrivacyButton extends EditTextImageButton
     private PrivacyListener privacyListener;
 
 
-    public EditTextPrivacyButton(Context context, AttributeSet attrs) {
+    public PrivacyImageButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         setImageResource(attrs.getAttributeResourceValue(
                 android, "src", R.drawable.icn_dropdown));
-        image.setOnClickListener(this);
+        icon.setOnClickListener(this);
     }
 
     public void setImageResource(int resourceId) {
@@ -96,7 +96,7 @@ public class EditTextPrivacyButton extends EditTextImageButton
     }
 
     private void drawIcons(int resId) {
-        image.setImageDrawable(new LayerDrawable(new Drawable[] {
+        icon.setImageDrawable(new LayerDrawable(new Drawable[] {
                 getResources().getDrawable(imageResId),
                 getResources().getDrawable(resId)
         }));

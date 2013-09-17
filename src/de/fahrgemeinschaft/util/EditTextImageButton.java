@@ -17,52 +17,41 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import de.fahrgemeinschaft.R;
 
-public class EditTextImageButton extends FrameLayout
+public class EditTextImageButton extends BaseImageButton
                 implements TextWatcher, OnFocusChangeListener, OnClickListener {
-
-    static final String android = "http://schemas.android.com/apk/res/android";
 
     public EditText text;
     protected String key;
-    public ImageButton image;
     private TextListener textListener;
-    private static int ID = Integer.MAX_VALUE / 2;
 
-
+    @Override
+    protected int inflate() {
+        return R.layout.btn_edit_text;
+    }
 
     public EditTextImageButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        View.inflate(getContext(), R.layout.btn_edit_text_image, this);
-
         text = (EditText) findViewById(R.id.text);
+        text.setId(ID--);
         text.setHint(getContext().getString(attrs.getAttributeResourceValue(
                 android, "hint", R.string.app_name)));
         text.setInputType((attrs.getAttributeIntValue(
                 android, "inputType", InputType.TYPE_CLASS_TEXT)));
-
-        image = (ImageButton) findViewById(R.id.icon);
-        image.setImageResource(attrs.getAttributeResourceValue(
-                android, "src", R.drawable.icn_dropdown));
-        image.setContentDescription(getContext().getString(
-                attrs.getAttributeResourceValue(
-                android, "contentDescripion",
-                attrs.getAttributeResourceValue(
-                android, "hint", R.string.app_name))));
-
         text.addTextChangedListener(this);
-        image.setId(ID--);
-        text.setId(ID--);
         Util.fixStreifenhoernchen(text);
-        Util.fixStreifenhoernchen(image);
         text.setSelectAllOnFocus(true);
         text.setOnFocusChangeListener(this);
-        image.setOnFocusChangeListener(this);
-        image.setOnClickListener(this);
+        icon.setOnFocusChangeListener(this);
+        icon.setOnClickListener(this);
     }
+
+    @Override
+    public void onClick(View v) {
+        text.requestFocus();
+    }
+    
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
@@ -73,19 +62,6 @@ public class EditTextImageButton extends FrameLayout
                     .getSystemService(Context.INPUT_METHOD_SERVICE))
                     .hideSoftInputFromWindow(text.getWindowToken(), 0);
         }
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        text.requestFocus();
-    }
-
-    public void streifenhornchen(boolean on) {
-        View streifen = findViewById(R.id.inactive);
-        if (on) streifen.setVisibility(VISIBLE);
-        else streifen.setVisibility(INVISIBLE);
-        Util.fixStreifenhoernchen(streifen);
     }
 
     public interface TextListener {

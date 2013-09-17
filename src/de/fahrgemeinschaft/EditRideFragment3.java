@@ -21,8 +21,8 @@ import android.view.ViewGroup;
 import com.actionbarsherlock.app.SherlockFragment;
 
 import de.fahrgemeinschaft.util.EditTextImageButton.TextListener;
-import de.fahrgemeinschaft.util.EditTextPrivacyButton;
-import de.fahrgemeinschaft.util.EditTextPrivacyButton.PrivacyListener;
+import de.fahrgemeinschaft.util.PrivacyImageButton;
+import de.fahrgemeinschaft.util.PrivacyImageButton.PrivacyListener;
 
 public class EditRideFragment3 extends SherlockFragment
                 implements TextListener, PrivacyListener {
@@ -32,11 +32,11 @@ public class EditRideFragment3 extends SherlockFragment
     private static final String MOBILE = "Mobile";
     private static final String LANDLINE = "Landline";
     private static final String NAME = "Name";
-    private EditTextPrivacyButton email;
-    private EditTextPrivacyButton land;
-    private EditTextPrivacyButton mobile;
-    private EditTextPrivacyButton plate;
-    private EditTextPrivacyButton name;
+    private PrivacyImageButton email;
+    private PrivacyImageButton land;
+    private PrivacyImageButton mobile;
+    private PrivacyImageButton plate;
+    private PrivacyImageButton name;
     private SharedPreferences prefs;
 
 
@@ -50,11 +50,11 @@ public class EditRideFragment3 extends SherlockFragment
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
-        email = (EditTextPrivacyButton) v.findViewById(R.id.email);
-        land = (EditTextPrivacyButton) v.findViewById(R.id.landline);
-        mobile = (EditTextPrivacyButton) v.findViewById(R.id.mobile);
-        plate = (EditTextPrivacyButton) v.findViewById(R.id.plate);
-        name = (EditTextPrivacyButton) v.findViewById(R.id.name);
+        email = (PrivacyImageButton) v.findViewById(R.id.email);
+        land = (PrivacyImageButton) v.findViewById(R.id.landline);
+        mobile = (PrivacyImageButton) v.findViewById(R.id.mobile);
+        plate = (PrivacyImageButton) v.findViewById(R.id.plate);
+        name = (PrivacyImageButton) v.findViewById(R.id.name);
         email.setTextListener(EMAIL, this);
         mobile.setTextListener(MOBILE, this);
         land.setTextListener(LANDLINE, this);
@@ -105,7 +105,7 @@ public class EditRideFragment3 extends SherlockFragment
         }
     }
 
-    private void setPublic(EditTextPrivacyButton btn, JSONObject p, String key)
+    private void setPublic(PrivacyImageButton btn, JSONObject p, String key)
             throws JSONException {
         btn.setPrivacy(1);
         p.put(key, 1);

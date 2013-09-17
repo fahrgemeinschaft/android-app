@@ -16,88 +16,35 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <Button
-        android:id="@+id/btn_autocomplete_from"
-        android:layout_height="@dimen/large_icn"
-        android:layout_width="match_parent"
-        android:layout_above="@+id/btn_autocomplete_to"
-        android:layout_alignLeft="@+id/btn_autocomplete_to"
-        android:paddingLeft="16dp"
-        android:paddingRight="@dimen/xlarge"
-        android:ellipsize="end"
-        android:layout_marginBottom="21dp"
-        android:background="@drawable/btn_white"
-        android:singleLine="true"
-        android:gravity="left|center_vertical"
-        android:text="@string/from"
-        style="@style/place_pick_btn" />
-
-    <ImageButton
-        android:id="@+id/btn_pick_from"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_alignBottom="@+id/btn_autocomplete_from"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/btn_white"
-        android:src="@drawable/icn_dropdown"
-        android:contentDescription="@string/from" />
-
-    <Button
+    <de.fahrgemeinschaft.util.PlaceImageButton
         android:id="@+id/btn_autocomplete_to"
-        android:layout_height="@dimen/large_icn"
         android:layout_width="match_parent"
-        android:gravity="left|center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="@dimen/xlarge"
-        android:ellipsize="end"
         android:layout_centerVertical="true"
-        android:background="@drawable/btn_white"
-        android:text="@string/to"
-        android:singleLine="true"
-        style="@style/place_pick_btn" />
-
-    <ImageButton
-        android:id="@+id/btn_pick_to"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_alignBottom="@+id/btn_autocomplete_to"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/btn_white"
         android:src="@drawable/icn_dropdown"
-        android:contentDescription="@string/to" />
+        android:text="@string/to" />
 
-    <Button
-        android:id="@+id/btn_pick_date"
-        android:layout_height="@dimen/large_icn"
+    <de.fahrgemeinschaft.util.PlaceImageButton
+        android:id="@+id/btn_autocomplete_from"
         android:layout_width="match_parent"
-        android:layout_below="@+id/btn_autocomplete_to"
-        android:layout_alignLeft="@+id/btn_autocomplete_to"
-        android:paddingLeft="16dp"
-        android:paddingRight="@dimen/xlarge"
-        android:ellipsize="end"
-        android:layout_marginTop="21dp"
-        android:singleLine="true"
-        android:background="@drawable/btn_white"
-        android:gravity="left|center_vertical"
-        android:text="@string/when"
-        style="@style/place_pick_btn" />
+        android:layout_above="@id/btn_autocomplete_to"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:src="@drawable/icn_dropdown"
+        android:text="@string/from" />
 
-    <ImageButton
-        android:id="@+id/icn_pick_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/btn_pick_date"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/btn_white"
-        android:onClick="showTimePickerDialog"
+    <de.fahrgemeinschaft.util.DateImageButton
+        android:id="@+id/btn_pick_date"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/place_height"
+        android:layout_below="@id/btn_autocomplete_to"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:src="@drawable/icn_datepicker"
-        android:contentDescription="@string/date" />
+        android:text="@string/date" />
 
     <ImageView
         android:id="@+id/logo_fahrgemeinschaft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_autocomplete_from"
+        android:layout_above="@id/btn_autocomplete_from"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:src="@drawable/logo_fahrgemeinschaft"
