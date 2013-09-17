@@ -16,7 +16,34 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <Button
+    <de.fahrgemeinschaft.util.PlaceImageButton
+        android:id="@+id/btn_autocomplete_from"
+        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/icn_dropdown"
+        android:layout_marginRight="155dp"
+        android:text="@string/from" />
+
+    <de.fahrgemeinschaft.util.PlaceImageButton
+        android:id="@+id/btn_autocomplete_to"
+        android:layout_width="match_parent"
+        android:layout_centerVertical="true"
+        android:src="@drawable/icn_dropdown"
+        android:layout_marginRight="155dp"
+        android:text="@string/to" />
+
+    <de.fahrgemeinschaft.util.DateImageButton
+        android:id="@+id/btn_pick_date"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/place_height"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/icn_datepicker"
+        android:layout_marginRight="155dp"
+        android:text="@string/date" />
+<!--
+
+
+     <Button
         android:id="@+id/btn_autocomplete_from"
         android:layout_height="@dimen/large_icn"
         android:layout_width="match_parent"
@@ -56,7 +83,6 @@
         android:text="@string/to"
         android:singleLine="true"
         style="@style/place_pick_btn" />
-
     <ImageButton
         android:id="@+id/btn_pick_to"
         android:layout_height="wrap_content"
@@ -95,6 +121,7 @@
         android:src="@drawable/icn_datepicker"
         android:contentDescription="@string/date" />
 
+ -->
     <Button
         android:id="@+id/btn_mitfahren"
         android:layout_width="wrap_content"
