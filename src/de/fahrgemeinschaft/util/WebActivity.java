@@ -14,12 +14,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.JsResult;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.actionbarsherlock.app.SherlockActivity;
 
 import de.fahrgemeinschaft.R;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class WebActivity extends SherlockActivity {
 
@@ -36,6 +40,15 @@ public class WebActivity extends SherlockActivity {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setSaveFormData(false);
         webView.getSettings().setSavePassword(false);
+        webView.setWebChromeClient(new WebChromeClient(){
+            @Override
+            public boolean onJsAlert(WebView view, String url, String message,
+                    JsResult result) {
+                Crouton.makeText(WebActivity.this, message, Style.ALERT).show();
+                result.cancel();
+                return true; //super.onJsAlert(view, url, message, result);
+            }
+        });
         webView.setWebViewClient(new WebViewClient() {
             
             @Override

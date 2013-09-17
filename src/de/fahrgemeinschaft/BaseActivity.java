@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
@@ -38,7 +39,7 @@ public class BaseActivity extends SherlockFragmentActivity
 
     private static final String SUCCESS = " success.";
     private static final String FAIL = " fail: ";
-    private MenuItem ic_profile;
+    public MenuItem ic_profile;
     private MenuItem ic_myrides;
     public ConnectorService service;
     private RideListFragment myrides;
@@ -101,8 +102,17 @@ public class BaseActivity extends SherlockFragmentActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getSupportMenuInflater().inflate(R.menu.action_bar, menu);
         ic_profile = menu.findItem(R.id.profile);
+        setProfileIcon();
         ic_myrides = menu.findItem(R.id.myrides);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    public void setProfileIcon() {
+        if (PreferenceManager.getDefaultSharedPreferences(this).getString("auth", null) != null) {
+            ic_profile.setIcon(R.drawable.ic_topmenu_user_ok);
+        } else {
+            ic_profile.setIcon(R.drawable.ic_topmenu_user);
+        }
     }
 
     @Override
@@ -215,6 +225,7 @@ public class BaseActivity extends SherlockFragmentActivity
             ((NotificationManager) getSystemService(Context
                     .NOTIFICATION_SERVICE)).cancel(42);
         }
+        setProfileIcon();
     }
 
     @Override
