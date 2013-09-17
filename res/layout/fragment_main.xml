@@ -27,7 +27,7 @@
         android:id="@+id/btn_autocomplete_from"
         android:layout_width="match_parent"
         android:layout_above="@id/btn_autocomplete_to"
-        android:layout_marginBottom="21dp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:src="@drawable/icn_dropdown"
         android:text="@string/from" />
 
@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/place_height"
         android:layout_below="@id/btn_autocomplete_to"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:src="@drawable/icn_datepicker"
         android:text="@string/date" />
 
