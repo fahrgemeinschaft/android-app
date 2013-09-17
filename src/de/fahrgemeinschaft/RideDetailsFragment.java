@@ -447,7 +447,7 @@ public class RideDetailsFragment extends SherlockFragment
             protected void onCreate(Bundle savedInstanceState) {
                 setContentView(R.layout.view_big_image);
                 ImageView image = (ImageView) findViewById(R.id.image_large);
-                image.setImageResource(R.drawable.ic_call);
+                image.setImageResource(R.drawable.icn_view_user);
                 imageLoader.get(url, ImageLoader.getImageListener(image,
                               R.drawable.ic_loading, R.drawable.icn_view_none));
                 ScaleAnimation s = new ScaleAnimation(0.3f, 1, 0.3f, 1);

@@ -48,6 +48,6 @@
         android:id="@+id/seats"
         android:layout_height="match_parent"
         android:contentDescription="@string/seats"
-        android:src="@drawable/ic_seats" />
+        android:src="@drawable/icn_seats_full" />
 
 </merge>
