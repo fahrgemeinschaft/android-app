@@ -56,7 +56,7 @@ public class Util {
             c.startActivity(new Intent(Intent.ACTION_EDIT, r.duplicate()));
             return true;
         case R.id.duplicate_retour:
-            r.ref(null);
+            r.duplicate();
             List<Place> vias = r.getVias();
             Place from = r.getFrom();
             r.removeVias();

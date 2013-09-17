@@ -122,17 +122,19 @@ public class EditRideFragment2 extends SherlockFragment
 
     private void setDeparture(long timestamp) {
         Calendar cal = Calendar.getInstance();
+        int thisYear = cal.get(Calendar.YEAR);
         int today = cal.get(Calendar.DAY_OF_YEAR);
         cal.setTimeInMillis(timestamp);
-        if (cal.get(Calendar.DAY_OF_YEAR) == today)
-            date.btn.setText(getString(R.string.today));
-        else if (cal.get(Calendar.DAY_OF_YEAR) == today + 1)
-            date.btn.setText(getString(R.string.tomorrow));
-        else if (cal.get(Calendar.DAY_OF_YEAR) == today + 2)
-            date.btn.setText(getString(R.string.after_tomorrow));
-        else
-            date.btn.setText(new SimpleDateFormat("dd. MMM yyyy",
-                    Locale.GERMANY).format(timestamp));
+        date.btn.setText(new SimpleDateFormat("dd. MMM yyyy",
+                Locale.GERMANY).format(timestamp));
+        if (cal.get(Calendar.YEAR) == thisYear) {
+            if (cal.get(Calendar.DAY_OF_YEAR) == today)
+                date.btn.setText(getString(R.string.today));
+            else if (cal.get(Calendar.DAY_OF_YEAR) == today + 1)
+                date.btn.setText(getString(R.string.tomorrow));
+            else if (cal.get(Calendar.DAY_OF_YEAR) == today + 2)
+                date.btn.setText(getString(R.string.after_tomorrow));
+        }
         time.btn.setText(new SimpleDateFormat("HH:mm",
                 Locale.GERMANY).format(timestamp));
         ride.dep(timestamp);
