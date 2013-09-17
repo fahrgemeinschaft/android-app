@@ -115,6 +115,7 @@ public class ProfileFragment extends SherlockFragment
             if (prefs.getBoolean("remember_password", false))
                 t.putString("password", password.text.getText().toString());
             t.commit();
+            ((BaseActivity) getActivity()).setProfileIcon();
             if (!logout) { // i.e. login
                 ((BaseActivity)getActivity()).service
                         .authenticate(password.text.getText().toString());
