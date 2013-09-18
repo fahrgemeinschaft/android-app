@@ -154,15 +154,13 @@ public abstract class SpinningZebraListFragment
         this.code = id;
         this.uri = uri;
         if (getActivity() != null) {
-            System.out.println("NEVER");
             getActivity().getSupportLoaderManager()
-                .restartLoader(getId(), null, this);
+                .restartLoader(id, null, this);
         }
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle b) {
-        System.out.println("create loader for " + uri);
         return new CursorLoader(getActivity(), uri, null, null, null, null);
     }
 
