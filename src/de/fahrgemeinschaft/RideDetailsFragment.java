@@ -319,7 +319,8 @@ public class RideDetailsFragment extends SherlockFragment
         if (cursor == null) {
             if (getTargetFragment() != null) {
                 cursor = ((RideListFragment) getTargetFragment()).getCursor();
-                cursor.registerContentObserver(onChange);
+                if (cursor != null)
+                    cursor.registerContentObserver(onChange);
             };
         }
         return cursor;
