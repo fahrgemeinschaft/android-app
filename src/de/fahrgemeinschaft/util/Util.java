@@ -1,6 +1,7 @@
 package de.fahrgemeinschaft.util;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.json.JSONException;
@@ -30,6 +31,15 @@ import de.fahrgemeinschaft.MainActivity;
 import de.fahrgemeinschaft.R;
 
 public class Util {
+
+    public static long getNextDayMorning(long dep) {
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(dep + 24 * 3600000); // plus one day
+        c.set(Calendar.HOUR_OF_DAY, 0); // reset
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        return c.getTimeInMillis();
+    }
 
     public static boolean handleRideAction(int id, Ride ride, Context ctx) {
         switch (id) {

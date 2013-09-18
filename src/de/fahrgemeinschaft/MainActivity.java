@@ -7,8 +7,6 @@
 
 package de.fahrgemeinschaft;
 
-import java.util.Calendar;
-
 import org.teleportr.ConnectorService;
 import org.teleportr.Ride;
 
@@ -23,6 +21,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import de.fahrgemeinschaft.util.SpinningZebraListFragment.ListFragmentCallback;
+import de.fahrgemeinschaft.util.Util;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -115,20 +114,11 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onSpinningWheelClick() {
-        main.ride.type(Ride.SEARCH).arr(getNextDayMorning(
+        main.ride.type(Ride.SEARCH).arr(Util.getNextDayMorning(
                 main.ride.getArr() + 2 * 24 * 3600000)).store(this);
         startService(new Intent(this, ConnectorService.class)
                 .setAction(ConnectorService.SEARCH));
         results.load(main.ride.toUri(), SEARCH);
-    }
-
-    public static long getNextDayMorning(long dep) {
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(dep + 24 * 3600000); // plus one day
-        c.set(Calendar.HOUR_OF_DAY, 0); // reset
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        return c.getTimeInMillis();
     }
 
 

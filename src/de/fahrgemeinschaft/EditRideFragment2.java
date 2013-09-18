@@ -123,16 +123,20 @@ public class EditRideFragment2 extends SherlockFragment
         
         @Override
         public void onClick(View v) {
-            final Calendar c = Calendar.getInstance();
-            c.setTimeInMillis(ride.getDep());
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-            DatePickerDialog d = new DatePickerDialog(getActivity(),
-                    EditRideFragment2.this, year, month, day);
-            d.show();
+            openDatePicker();
         }
     };
+
+    public void openDatePicker() {
+        final Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(ride.getDep());
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog d = new DatePickerDialog(getActivity(),
+                EditRideFragment2.this, year, month, day);
+        d.show();
+    }
 
     OnClickListener pickTime = new OnClickListener() {
         

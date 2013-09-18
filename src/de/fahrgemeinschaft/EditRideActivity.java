@@ -54,7 +54,13 @@ public class EditRideActivity extends BaseActivity
                 getSupportLoaderManager().initLoader(0, null, this);
             }
         }
-        initFragments();
+        f1 = (EditRideFragment1) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment1);
+        f2 = (EditRideFragment2) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment2);
+        f3 = (EditRideFragment3) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment3);
+        setRide();
         findViewById(R.id.publish).setOnClickListener(this);
         setTitle(R.string.offer);
     }
@@ -73,18 +79,16 @@ public class EditRideActivity extends BaseActivity
             if (ride.getRef() != null) {
                 setTitle(R.string.edit);
             }
+            if (ride.getDep() < System.currentTimeMillis()) {
+                ride.dep(System.currentTimeMillis() + 24 * 3600000);
+                f2.openDatePicker();
+            }
         }
         cursor.close();
-        initFragments();
+        setRide();
     }
 
-    private void initFragments() {
-        f1 = (EditRideFragment1) getSupportFragmentManager()
-                .findFragmentById(R.id.fragment1);
-        f2 = (EditRideFragment2) getSupportFragmentManager()
-                .findFragmentById(R.id.fragment2);
-        f3 = (EditRideFragment3) getSupportFragmentManager()
-                .findFragmentById(R.id.fragment3);
+    private void setRide() {
         if (ride != null) {
             f1.setRide(ride);
             f2.setRide(ride);
