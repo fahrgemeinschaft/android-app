@@ -82,7 +82,7 @@ public class EditRideActivity extends BaseActivity
             long delta = ride.getDep() - System.currentTimeMillis();
             if (delta < 0) {
                 delta = delta % 86400000;
-                ride.dep(System.currentTimeMillis() + delta);
+                ride.dep(System.currentTimeMillis() + 86400000 + delta);
                 f2.openDatePicker();
             }
         }
