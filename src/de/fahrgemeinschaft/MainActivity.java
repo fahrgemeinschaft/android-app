@@ -116,9 +116,10 @@ public class MainActivity extends BaseActivity
     @Override
     public void onSpinningWheelClick() {
         main.ride.type(Ride.SEARCH).arr(getNextDayMorning(
-                main.ride.getArr() + 2 * 24 * 3600 * 1000)).store(this);
+                main.ride.getArr() + 2 * 24 * 3600000)).store(this);
         startService(new Intent(this, ConnectorService.class)
                 .setAction(ConnectorService.SEARCH));
+        results.load(main.ride.toUri(), SEARCH);
     }
 
     public static long getNextDayMorning(long dep) {
