@@ -99,9 +99,9 @@ public class EditRideActivity extends BaseActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            startActivity(new Intent(this, MainActivity.class));
             overridePendingTransition(
                     R.anim.slide_in_top, R.anim.slide_out_bottom);
+            finish();
             return true;
         } else {
             return super.onOptionsItemSelected(item);
