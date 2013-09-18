@@ -43,7 +43,9 @@ public class PlaceImageButton extends BaseImageButton {
     }
 
     public void setPlace(Place place) {
-        name.setText(place.getName());
-        address.setText(place.getAddress());
+        if (place != null) {
+            name.setText(place.getName());
+            address.setText(place.getAddress());
+        }
     }
 }
