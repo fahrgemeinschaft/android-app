@@ -19,9 +19,11 @@ import org.teleportr.Ride.COLUMNS;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
@@ -207,7 +209,6 @@ public class RideDetailsFragment extends SherlockFragment
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        System.out.println("foo");
         pulseSwipeArrows();
         return false;
     }
@@ -307,9 +308,6 @@ public class RideDetailsFragment extends SherlockFragment
     public boolean onOptionsItemSelected(MenuItem item) {
         getCursor().moveToPosition(selected);
         Ride ride = new Ride(getCursor(), getActivity());
-        if (item.getItemId() == R.id.delete) {
-            getActivity().getSupportFragmentManager().popBackStack();
-        }
         return Util.handleRideAction(item.getItemId(), ride, getActivity());
     }
 
@@ -319,10 +317,20 @@ public class RideDetailsFragment extends SherlockFragment
         if (cursor == null) {
             if (getTargetFragment() != null) {
                 cursor = ((RideListFragment) getTargetFragment()).getCursor();
+                cursor.registerContentObserver(onChange);
             };
         }
         return cursor;
     }
+
+    ContentObserver onChange = new ContentObserver(new Handler()) {
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            System.out.println("CHANGE");
+            pager.getAdapter().notifyDataSetChanged();
+        }
+    };
 
     private void pulseSwipeArrows() {
         animatePulse(left_arrow);

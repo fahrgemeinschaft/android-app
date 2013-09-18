@@ -24,7 +24,6 @@ import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents.Insert;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Toast;
 import de.fahrgemeinschaft.MainActivity;
@@ -32,59 +31,59 @@ import de.fahrgemeinschaft.R;
 
 public class Util {
 
-    public static boolean handleRideAction(int i, Ride r, FragmentActivity c) {
-        switch (i) {
+    public static boolean handleRideAction(int id, Ride ride, Context ctx) {
+        switch (id) {
         case R.id.toggle_active:
-            if (r.isActive()) {
-                r.deactivate().dirty().store(c);
+            if (ride.isActive()) {
+                ride.deactivate().dirty().store(ctx);
             } else {
-                r.activate().dirty().store(c);
+                ride.activate().dirty().store(ctx);
             }
-            c.startService(new Intent(c, ConnectorService.class)
+            ctx.startService(new Intent(ctx, ConnectorService.class)
                     .setAction(ConnectorService.PUBLISH));
             return true;
         case R.id.delete:
-            r.delete();
-            c.startService(new Intent(c, ConnectorService.class)
+            ride.delete();
+            ctx.startService(new Intent(ctx, ConnectorService.class)
                     .setAction(ConnectorService.PUBLISH));
             return true;
         case R.id.edit:
-            c.startActivity(new Intent(Intent.ACTION_EDIT, Uri.parse(
-                    "content://de.fahrgemeinschaft/rides/" + r.getId())));
+            ctx.startActivity(new Intent(Intent.ACTION_EDIT, Uri.parse(
+                    "content://de.fahrgemeinschaft/rides/" + ride.getId())));
             return true;
         case R.id.duplicate:
-            c.startActivity(new Intent(Intent.ACTION_EDIT, r.duplicate()));
+            ctx.startActivity(new Intent(Intent.ACTION_EDIT, ride.duplicate()));
             return true;
         case R.id.duplicate_retour:
-            r.duplicate();
-            List<Place> vias = r.getVias();
-            Place from = r.getFrom();
-            r.removeVias();
-            r.from(r.getTo());
+            ride.duplicate();
+            List<Place> vias = ride.getVias();
+            Place from = ride.getFrom();
+            ride.removeVias();
+            ride.from(ride.getTo());
             for (int j = vias.size() - 1; j >= 0; j--) {
-                r.via(vias.get(j));
+                ride.via(vias.get(j));
             }
-            r.to(from);
-            c.startActivity(new Intent(Intent.ACTION_EDIT, r.store(c)));
+            ride.to(from);
+            ctx.startActivity(new Intent(Intent.ACTION_EDIT, ride.store(ctx)));
             return true;
         case R.id.show_website:
-            c.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
+            ctx.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
                     "http://www.fahrgemeinschaft.de/" +
-                    "tripdetails.php?trip=" + r.getRef()
-                    )).setClass(c, WebActivity.class));
+                    "tripdetails.php?trip=" + ride.getRef()
+                    )).setClass(ctx, WebActivity.class));
             return true;
         case R.id.share:
             Intent share = new Intent(android.content.Intent.ACTION_SEND);
             share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
             share.setType("text/plain");
             share.putExtra(Intent.EXTRA_SUBJECT,
-                    "From " + r.getFrom().getName()
-                    + " to " + r.getTo().getName());
+                    "From " + ride.getFrom().getName()
+                    + " to " + ride.getTo().getName());
             share.putExtra(Intent.EXTRA_TEXT, 
                     "http://www.fahrgemeinschaft.de/" +
-                    "tripdetails.php?trip=" + r.getRef());
-            c.startActivity(Intent.createChooser(share,
-                    c.getString(R.string.share)));
+                    "tripdetails.php?trip=" + ride.getRef());
+            ctx.startActivity(Intent.createChooser(share,
+                    ctx.getString(R.string.share)));
             return true;
         }
         return false;

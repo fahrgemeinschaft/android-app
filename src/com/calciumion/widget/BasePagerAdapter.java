@@ -93,6 +93,10 @@ public abstract class BasePagerAdapter extends PagerAdapter {
         return view.getTag() != null && view.getTag() == object;
     }
 
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
+
     /**
      * Get the data item associated with the specified position in the data set.
      * 
