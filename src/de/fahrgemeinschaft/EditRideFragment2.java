@@ -81,7 +81,7 @@ public class EditRideFragment2 extends SherlockFragment
             date.streifenhornchen(false);
             white_bg.setVisibility(View.GONE);
             date.setDate(ride.getDep());
-            date.setTime(ride.getDep());
+            time.setTime(ride.getDep());
         }
     }
 
