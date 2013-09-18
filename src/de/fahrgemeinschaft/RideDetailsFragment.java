@@ -312,12 +312,15 @@ public class RideDetailsFragment extends SherlockFragment
     }
 
     public Cursor getCursor() {
-        if (cursor != null && cursor.isClosed())
+        if (cursor != null && cursor.isClosed()) {
+            cursor.unregisterContentObserver(onChange);
             cursor = null;
+        }
         if (cursor == null) {
             if (getTargetFragment() != null) {
                 cursor = ((RideListFragment) getTargetFragment()).getCursor();
                 cursor.registerContentObserver(onChange);
+                updateOptionsMenu();
             };
         }
         return cursor;
@@ -327,7 +330,6 @@ public class RideDetailsFragment extends SherlockFragment
         @Override
         public void onChange(boolean selfChange) {
             super.onChange(selfChange);
-            System.out.println("CHANGE");
             pager.getAdapter().notifyDataSetChanged();
         }
     };
