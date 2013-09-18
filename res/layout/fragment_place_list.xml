@@ -34,11 +34,12 @@
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:drawSelectorOnTop="true"
         android:layout_below="@id/autocomplete_text"
         android:cacheColorHint="#00000000"
         android:dividerHeight="@dimen/medium"
         android:divider="#00000000"
-        android:listSelector="@drawable/list_selector" />
+        android:listSelector="@drawable/list_selector_green" />
 
     <ProgressBar
         android:id="@+id/busy_search"
