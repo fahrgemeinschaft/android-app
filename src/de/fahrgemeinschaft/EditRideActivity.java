@@ -79,8 +79,10 @@ public class EditRideActivity extends BaseActivity
             if (ride.getRef() != null) {
                 setTitle(R.string.edit);
             }
-            if (ride.getDep() < System.currentTimeMillis()) {
-                ride.dep(System.currentTimeMillis() + 24 * 3600000);
+            long delta = ride.getDep() - System.currentTimeMillis();
+            if (delta < 0) {
+                delta = delta % 86400000;
+                ride.dep(System.currentTimeMillis() + delta);
                 f2.openDatePicker();
             }
         }
