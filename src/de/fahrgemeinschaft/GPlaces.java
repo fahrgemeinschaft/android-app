@@ -29,8 +29,6 @@ import android.util.Log;
 
 public class GPlaces extends Connector {
 
-
-    private static final String API_KEY = "AIzaSyBefOGpJAYaylGWlUo0qqhATcJSECortuM";
     private static final String TAG = "gPlaces";
 
     @Override
@@ -38,7 +36,7 @@ public class GPlaces extends Connector {
         String uri = "https://maps.googleapis.com/maps/api/place/details/json"
                 + "?sensor=true&reference=" + place.get("gplace:id");
         Log.d(TAG, uri);
-        String jsonResult = httpGet(uri + "&language=de&key=" + API_KEY);
+        String jsonResult = httpGet(uri + "&language=de&key=" + Secret.API_KEY);
         JSONObject result = new JSONObject(jsonResult)
         .getJSONObject("result");
         JSONObject location = result.getJSONObject("geometry")
@@ -95,7 +93,7 @@ public class GPlaces extends Connector {
             try {
                 StringBuilder sb = new StringBuilder(PLACES_API_BASE
                         + TYPE_AUTOCOMPLETE + OUT_JSON);
-                sb.append("?sensor=false&key=" + API_KEY);
+                sb.append("?sensor=false&key=" + Secret.API_KEY);
                 sb.append("&language=de&location=48.1,11.8&radius=3000");
                 sb.append("&input=" + URLEncoder.encode(text, "utf8"));
 
