@@ -248,8 +248,13 @@ public class RideDetailsFragment extends SherlockFragment
 
     @Override
     public void onClick(View v) {
-        getCursor().moveToPosition(selected);
-        Util.openContactOptionsChooserDialog(getActivity(), getCursor());
+        Cursor c = getCursor();
+        if (c.getCount() > 0) {
+            if (getCursor().getCount() <= selected)
+                selected = c.getCount() -1;
+            c.moveToPosition(selected);
+            Util.openContactOptionsChooserDialog(getActivity(), getCursor());
+        }
     }
 
     @Override
