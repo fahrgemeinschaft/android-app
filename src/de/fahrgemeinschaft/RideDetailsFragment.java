@@ -535,10 +535,6 @@ public class RideDetailsFragment extends SherlockFragment
                             R.string.member_since, lwdate.format(since)));
                     last_login.setText(getContext().getString(
                             R.string.last_login, lwhdate.format(logon)));
-                    //                  JSONArray rgd = user.getJSONArray("RegistrationDate");
-                    //                  reg_date.setText(user.getJSONArray("").getString("Value") + " " 
-                    //                          + kvp.getJSONObject(2).getString("Value"));
-                    //                  Log.d(TAG, json.toString());
 
                     name_loading.setVisibility(View.GONE);
                     name.setVisibility(View.VISIBLE);
