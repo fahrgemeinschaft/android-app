@@ -9,6 +9,7 @@ package de.fahrgemeinschaft;
 
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.net.MailTo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
@@ -43,6 +44,7 @@ public class AboutFragment extends SherlockFragment implements OnClickListener {
         v.findViewById(R.id.geohash).setOnClickListener(this);
         v.findViewById(R.id.teleportr).setOnClickListener(this);
         v.findViewById(R.id.volley).setOnClickListener(this);
+        v.findViewById(R.id.sonnenstreifen_logo).setOnClickListener(this);
         v.findViewById(R.id.iconmonstr).setOnClickListener(this);
         ((TextView) v.findViewById(R.id.iconmonstr)).setText(Html.fromHtml(
                 "most icons by<font color=#D0E987> iconmonstr</font>"));
@@ -86,6 +88,9 @@ public class AboutFragment extends SherlockFragment implements OnClickListener {
             openBrowser(
                 "https://android.googlesource.com/platform/frameworks/volley");
             break;
+        case R.id.sonnenstreifen_logo:
+            sendMail("fg@sonnenstreifen.de");
+            break;
         case R.id.iconmonstr:
             openBrowser("http://iconmonstr.com");
             break;
@@ -98,5 +103,10 @@ public class AboutFragment extends SherlockFragment implements OnClickListener {
     private void openBrowser(String url) {
         getActivity().startActivity(
                 new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+    }
+
+    private void sendMail(String adress) {
+        getActivity().startActivity(
+                new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"+ adress)));
     }
 }
