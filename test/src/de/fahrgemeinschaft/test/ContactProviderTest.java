@@ -14,23 +14,24 @@ public class ContactProviderTest extends ProviderTestCase2<ContactProvider> {
 
     @Override
     protected void setUp() throws Exception {
-        ContentValues cv = new ContentValues();
-        cv.put("mail", "foo@bar.net");
-        cv.put("mobile", "123456789");
-        cv.put("user", "foo");
-        getMockContentResolver().insert(Uri.parse(
-                "content://de.fahrgemeinschaft.test/contacts"), cv);
-        cv.put("mail", "blablamail@gmx.net");
-        cv.put("mobile", "123456789");
-        cv.put("user", "foo");
-        getMockContentResolver().insert(Uri.parse(
-                "content://de.fahrgemeinschaft.test/contacts"), cv);
-        cv.put("mail", "blablamail@gmx.net");
-        cv.put("mobile", "123456789");
-        cv.put("user", "foo");
-        getMockContentResolver().insert(Uri.parse(
-                "content://de.fahrgemeinschaft.test/contacts"), cv);
         super.setUp();
+        getProvider();
+        ContentValues cv = new ContentValues();
+        cv.put("mail", "afoo@bar.net");
+        cv.put("mobile", "123456789");
+        cv.put("user", "foo");
+        getMockContentResolver().insert(Uri.parse(
+                "content://de.fahrgemeinschaft.test/contacts"), cv);
+        cv.put("mail", "blablamail@gmx.net");
+        cv.put("mobile", "123456789");
+        cv.put("user", "foo");
+        getMockContentResolver().insert(Uri.parse(
+                "content://de.fahrgemeinschaft.test/contacts"), cv);
+        cv.put("mail", "blablamail@gmx.net");
+        cv.put("mobile", "123456789");
+        cv.put("user", "foo");
+        getMockContentResolver().insert(Uri.parse(
+                "content://de.fahrgemeinschaft.test/contacts"), cv);
     }
 
     public void testGetMails() {
@@ -41,7 +42,7 @@ public class ContactProviderTest extends ProviderTestCase2<ContactProvider> {
         mails.moveToFirst();
         assertEquals("blablamail@gmx.net", mails.getString(1));
         mails.moveToNext();
-        assertEquals("foo@bar.net", mails.getString(1));
+        assertEquals("afoo@bar.net", mails.getString(1));
     }
 
     public void testDelete() {
