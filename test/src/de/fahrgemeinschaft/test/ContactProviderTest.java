@@ -15,7 +15,6 @@ public class ContactProviderTest extends ProviderTestCase2<ContactProvider> {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        getProvider();
         ContentValues cv = new ContentValues();
         cv.put("mail", "afoo@bar.net");
         cv.put("mobile", "123456789");

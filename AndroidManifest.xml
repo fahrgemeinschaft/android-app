@@ -85,6 +85,11 @@
             </intent-filter>
         </receiver>
 
+        <provider
+            android:exported="false"
+            android:name=".ContactProvider"
+            android:authorities="de.fahrgemeinschaft.private" />
+
         <!-- teleportR Android Library -->
 
         <service android:name="org.teleportr.ConnectorService" />

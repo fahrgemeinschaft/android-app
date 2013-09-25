@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import org.teleportr.Ride;
 
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -27,10 +28,6 @@ import de.fahrgemeinschaft.util.PrivacyImageButton.PrivacyListener;
 public class EditRideFragment3 extends SherlockFragment
                 implements TextListener, PrivacyListener {
 
-    private static final String EMAIL = "Email";
-    private static final String PLATE = "NumberPlate";
-    private static final String MOBILE = "Mobile";
-    private static final String LANDLINE = "Landline";
     private static final String NAME = "Name";
     private PrivacyImageButton email;
     private PrivacyImageButton land;
@@ -55,14 +52,18 @@ public class EditRideFragment3 extends SherlockFragment
         mobile = (PrivacyImageButton) v.findViewById(R.id.mobile);
         plate = (PrivacyImageButton) v.findViewById(R.id.plate);
         name = (PrivacyImageButton) v.findViewById(R.id.name);
-        email.setTextListener(EMAIL, this);
-        mobile.setTextListener(MOBILE, this);
-        land.setTextListener(LANDLINE, this);
-        plate.setTextListener(PLATE, this);
-        email.setPrivacyListener(EMAIL, this);
-        mobile.setPrivacyListener(MOBILE, this);
-        land.setPrivacyListener(LANDLINE, this);
-        plate.setPrivacyListener(PLATE, this);
+        email.setTextListener(EditRideActivity.EMAIL, this);
+        String user = prefs.getString("user", "");
+        email.setAutocompleteUri(
+                Uri.parse("content://de.fahrgemeinschaft.test/users/" +
+                        user + "/mails"));
+        mobile.setTextListener(EditRideActivity.MOBILE, this);
+        land.setTextListener(EditRideActivity.LANDLINE, this);
+        plate.setTextListener(EditRideActivity.PLATE, this);
+        email.setPrivacyListener(EditRideActivity.EMAIL, this);
+        mobile.setPrivacyListener(EditRideActivity.MOBILE, this);
+        land.setPrivacyListener(EditRideActivity.LANDLINE, this);
+        plate.setPrivacyListener(EditRideActivity.PLATE, this);
         name.setPrivacyListener(NAME, this);
         name.text.setKeyListener(null);
     }
@@ -70,33 +71,42 @@ public class EditRideFragment3 extends SherlockFragment
     public void setRide(Ride ride) {
         try {
             JSONObject d = ride.getDetails();
-            if (!d.isNull(EMAIL)) email.text.setText(d.getString(EMAIL));
+            if (!d.isNull(EditRideActivity.EMAIL))
+                email.text.setText(d.getString(EditRideActivity.EMAIL));
             else email.text.setText(
-                    prefs.getString(EMAIL,
+                    prefs.getString(EditRideActivity.EMAIL,
                     prefs.getString("login", "")));
-            if (!d.isNull(LANDLINE)) land.text.setText(d.getString(LANDLINE));
-            else land.text.setText(prefs.getString(LANDLINE, ""));
-            if (!d.isNull(MOBILE)) mobile.text.setText(d.getString(MOBILE));
-            else mobile.text.setText(prefs.getString(MOBILE, ""));
+            if (!d.isNull(EditRideActivity.LANDLINE))
+                land.text.setText(d.getString(EditRideActivity.LANDLINE));
+            else land.text.setText(
+                    prefs.getString(EditRideActivity.LANDLINE, ""));
+            if (!d.isNull(EditRideActivity.MOBILE))
+                mobile.text.setText(d.getString(EditRideActivity.MOBILE));
+            else mobile.text.setText(
+                    prefs.getString(EditRideActivity.MOBILE, ""));
             if (ride.getMode().equals(Ride.Mode.TRAIN)) {
                 plate.setVisibility(View.GONE);
             } else {
                 plate.setVisibility(View.VISIBLE);
-                if (!d.isNull(PLATE)) {
-                    plate.text.setText(d.getString(PLATE));
-                } else plate.text.setText(prefs.getString(PLATE, ""));
+                if (!d.isNull(EditRideActivity.PLATE)) {
+                    plate.text.setText(d.getString(EditRideActivity.PLATE));
+                } else plate.text.setText(
+                        prefs.getString(EditRideActivity.PLATE, ""));
             }
             name.text.setText(prefs.getString("lastname", "n/a"));
             if (d.isNull("Privacy")) d.put("Privacy", new JSONObject());
             JSONObject p = d.getJSONObject("Privacy");
             if (!p.isNull("Email")) email.setPrivacy(p.getInt("Email")); // 'm'
             else setPublic(email, p, "Email");
-            if (!p.isNull(LANDLINE)) land.setPrivacy(p.getInt(LANDLINE));
-            else setPublic(land, p, LANDLINE);
-            if (!p.isNull(MOBILE)) mobile.setPrivacy(p.getInt(MOBILE));
-            else setPublic(mobile, p, MOBILE);
-            if (!p.isNull(PLATE)) plate.setPrivacy(p.getInt(PLATE));
-            else setPublic(plate, p, PLATE);
+            if (!p.isNull(EditRideActivity.LANDLINE))
+                land.setPrivacy(p.getInt(EditRideActivity.LANDLINE));
+            else setPublic(land, p, EditRideActivity.LANDLINE);
+            if (!p.isNull(EditRideActivity.MOBILE))
+                mobile.setPrivacy(p.getInt(EditRideActivity.MOBILE));
+            else setPublic(mobile, p, EditRideActivity.MOBILE);
+            if (!p.isNull(EditRideActivity.PLATE))
+                plate.setPrivacy(p.getInt(EditRideActivity.PLATE));
+            else setPublic(plate, p, EditRideActivity.PLATE);
             if (!p.isNull(NAME)) name.setPrivacy(p.getInt(NAME));
             else setPublic(name, p, NAME);
         } catch (JSONException e) {

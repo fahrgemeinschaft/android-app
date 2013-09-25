@@ -11,6 +11,7 @@ import org.teleportr.ConnectorService;
 import org.teleportr.Ride;
 import org.teleportr.RidesProvider;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -34,6 +35,10 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 public class EditRideActivity extends BaseActivity
         implements LoaderCallbacks<Cursor>, OnClickListener {
 
+    public static final String EMAIL = "Email";
+    public static final String PLATE = "NumberPlate";
+    public static final String MOBILE = "Mobile";
+    public static final String LANDLINE = "Landline";
     private static final String RIDE = "ride";
     public Ride ride;
     public EditRideFragment3 f3;
@@ -135,8 +140,12 @@ public class EditRideActivity extends BaseActivity
             startActivity(new Intent(this, MainActivity.class)
                     .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                     .setData(RidesProvider.getMyRidesUri(this)));
-            overridePendingTransition(
-                    R.anim.slide_in_top, R.anim.slide_out_bottom);
+            ContentValues cv = new ContentValues();
+            cv.put("mail", ride.get("EMAIL"));
+            cv.put("mobile", "123456789");
+            cv.put("user", "foo");
+            getContentResolver().insert(Uri.parse(
+                    "content://de.fahrgemeinschaft/contacts"), cv);
             Toast.makeText(this, getString(R.string.stored), Toast.LENGTH_SHORT)
                     .show();
             overridePendingTransition(

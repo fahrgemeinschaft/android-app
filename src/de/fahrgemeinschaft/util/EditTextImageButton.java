@@ -16,13 +16,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import de.fahrgemeinschaft.R;
 
 public class EditTextImageButton extends BaseImageButton
                 implements TextWatcher, OnFocusChangeListener, OnClickListener {
 
-    public EditText text;
+    public AutoCompleteTextView text;
     protected String key;
     private TextListener textListener;
 
@@ -33,7 +34,7 @@ public class EditTextImageButton extends BaseImageButton
 
     public EditTextImageButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        text = (EditText) findViewById(R.id.text);
+        text = (AutoCompleteTextView) findViewById(R.id.text);
         text.setId(ID--);
         text.setHint(getContext().getString(attrs.getAttributeResourceValue(
                 android, "hint", R.string.app_name)));

@@ -7,7 +7,7 @@
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/text"
         android:layout_width="match_parent"
         android:layout_height="@dimen/large_icn"
@@ -17,7 +17,6 @@
         android:imeOptions="flagNoExtractUi"
         android:paddingLeft="16dp"
         android:paddingRight="@dimen/xlarge"
-        android:singleLine="true"
         style="@style/place_pick_btn" />
 
     <ImageButton

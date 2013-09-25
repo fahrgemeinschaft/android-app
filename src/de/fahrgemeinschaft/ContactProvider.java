@@ -75,6 +75,6 @@ public class ContactProvider extends ContentProvider {
 
     static UriMatcher uriMatcher = new UriMatcher(0);
     static {
-        uriMatcher.addURI("de.fahrgemeinschaft.test", "users/*/mails", MAILS);
+        uriMatcher.addURI("de.fahrgemeinschaft.private", "users/*/mails", MAILS);
     }
 }

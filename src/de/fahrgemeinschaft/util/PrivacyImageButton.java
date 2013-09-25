@@ -10,11 +10,16 @@ package de.fahrgemeinschaft.util;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.net.Uri;
+import android.support.v4.widget.CursorAdapter;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.TextView;
 import de.fahrgemeinschaft.R;
 
 public class PrivacyImageButton extends EditTextImageButton
@@ -109,5 +114,22 @@ public class PrivacyImageButton extends EditTextImageButton
 
     public interface PrivacyListener {
         public void onPrivacyChange(String key, int visibility);
+    }
+
+    public void setAutocompleteUri(Uri uri) {
+        Cursor cursor = getContext().getContentResolver()
+                .query(uri, null, null, null, null);
+        text.setAdapter(new CursorAdapter(getContext(), cursor, false) {
+
+            @Override
+            public View newView(Context arg0, Cursor arg1, ViewGroup arg2) {
+                return new TextView(getContext());
+            }
+            
+            @Override
+            public void bindView(View v, Context arg1, Cursor c) {
+                ((TextView) v).setText(c.getString(1));
+            }
+        });
     }
 }
