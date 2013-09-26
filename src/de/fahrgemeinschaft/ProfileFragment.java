@@ -29,6 +29,7 @@ import android.widget.Button;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
+import de.fahrgemeinschaft.ContactProvider.CONTACT;
 import de.fahrgemeinschaft.util.EditTextImageButton;
 import de.fahrgemeinschaft.util.WebActivity;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
@@ -105,18 +106,24 @@ public class ProfileFragment extends SherlockFragment
                         RidesProvider.getMyRidesUri(getActivity()), null, null);
                 getActivity().getContentResolver().update(RidesProvider
                         .getRidesUri(getActivity()), null, null, null);
+                getActivity().getContentResolver().delete(Uri.parse(
+                "content://de.fahrgemeinschaft.private/users/"
+                        + prefs.getString(CONTACT.USER, null)),
+                null, null);
                 getActivity().startService(
                         new Intent(getActivity(), ConnectorService.class)
                         .setAction(ConnectorService.SEARCH));
             }
             Editor t = prefs.edit().remove("auth").remove("password")
-                    .remove("user").remove("firstname").remove("lastname")
+                    .remove(CONTACT.USER).remove("firstname").remove("lastname")
                     .putString("login", username.text.getText().toString());
             if (prefs.getBoolean("remember_password", false))
                 t.putString("password", password.text.getText().toString());
             t.commit();
             ((BaseActivity) getActivity()).setProfileIcon();
-            if (!logout) { // i.e. login
+            boolean login = !logout;
+            if (login) { // i.e. login
+                prefs.edit().putBoolean("init_contacts", true).commit();
                 ((BaseActivity)getActivity()).service
                         .authenticate(password.text.getText().toString());
                 ((InputMethodManager) getActivity()

@@ -7,15 +7,22 @@
 
 package de.fahrgemeinschaft;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.teleportr.ConnectorService;
 import org.teleportr.ConnectorService.ServiceCallback;
+import org.teleportr.Ride.COLUMNS;
 import org.teleportr.RidesProvider;
 
 import android.app.NotificationManager;
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -23,11 +30,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
+import de.fahrgemeinschaft.ContactProvider.CONTACT;
 import de.fahrgemeinschaft.util.SpinningZebraListFragment.ListFragmentCallback;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -216,10 +225,14 @@ public class BaseActivity extends SherlockFragmentActivity
     @Override
     public void onSuccess(String what, int number) {
         if (what == null) return;
-        Crouton.makeText(this, what + SUCCESS, Style.CONFIRM).show();
         if (what.equals(ConnectorService.MYRIDES) && ic_myrides != null) {
             ic_myrides.setActionView(null);
+            if (PreferenceManager.getDefaultSharedPreferences(this)
+                    .getBoolean("init_contacts", false)) {
+                new GetContactsFromMyridesTask().execute(new String[]{});
+            }
         } else if (what.equals(ConnectorService.AUTH) & ic_profile != null) {
+            Crouton.makeText(this, what + SUCCESS, Style.CONFIRM).show();
             ic_profile.setActionView(null);
             startService(new Intent(this, ConnectorService.class)
                     .setAction(ConnectorService.SEARCH));
@@ -227,6 +240,45 @@ public class BaseActivity extends SherlockFragmentActivity
                     .NOTIFICATION_SERVICE)).cancel(42);
         }
         setProfileIcon();
+    }
+
+    class GetContactsFromMyridesTask extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            Log.d(TAG, "getting contacts from myrides");
+            Cursor mr =  getContentResolver().query(RidesProvider
+                            .getMyRidesUri(BaseActivity.this),
+                                null, null, null, null);
+            System.out.println("myrides: " + mr.getCount());
+            try {
+                for (int i = 0; i < mr.getCount(); i++) {
+                    mr.moveToPosition(i);
+                    storeContacts(new JSONObject(
+                            mr.getString(COLUMNS.DETAILS)));
+                }
+                PreferenceManager.getDefaultSharedPreferences(BaseActivity.this)
+                        .edit().remove("init_contacts").commit();
+                Log.d(TAG, "got contacts from myrides");
+            } catch (JSONException e) {
+                Log.e(TAG, "error getting details");
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        public void storeContacts(JSONObject details) throws JSONException {
+            ContentValues cv = new ContentValues();
+            cv.put(CONTACT.EMAIL, details.getString(CONTACT.EMAIL));
+            cv.put(CONTACT.MOBILE, details.getString(CONTACT.MOBILE));
+            cv.put(CONTACT.LANDLINE, details.getString(CONTACT.LANDLINE));
+            cv.put(CONTACT.PLATE, details.getString(CONTACT.PLATE));
+            cv.put(CONTACT.USER, PreferenceManager
+                    .getDefaultSharedPreferences(BaseActivity.this)
+                    .getString(CONTACT.USER, ""));
+            getContentResolver().insert(Uri.parse(
+                    "content://de.fahrgemeinschaft.private/contacts"), cv);
+        }
     }
 
     @Override
