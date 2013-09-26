@@ -118,7 +118,8 @@ public class BaseActivity extends SherlockFragmentActivity
 
     public void setProfileIcon() {
         if (ic_profile == null) return;
-        if (PreferenceManager.getDefaultSharedPreferences(this).getString("auth", null) != null) {
+        if (PreferenceManager.getDefaultSharedPreferences(this)
+                .getString("auth", null) != null) {
             ic_profile.setIcon(R.drawable.ic_topmenu_user_ok);
         } else {
             ic_profile.setIcon(R.drawable.ic_topmenu_user);
@@ -251,28 +252,32 @@ public class BaseActivity extends SherlockFragmentActivity
                             .getMyRidesUri(BaseActivity.this),
                                 null, null, null, null);
             System.out.println("myrides: " + mr.getCount());
-            try {
                 for (int i = 0; i < mr.getCount(); i++) {
                     mr.moveToPosition(i);
-                    storeContacts(new JSONObject(
+                    try {
+                        storeContacts(new JSONObject(
                             mr.getString(COLUMNS.DETAILS)));
+                    } catch (JSONException e) {
+                        Log.e(TAG, "error getting myride details");
+                        e.printStackTrace();
+                    }
                 }
                 PreferenceManager.getDefaultSharedPreferences(BaseActivity.this)
                         .edit().remove("init_contacts").commit();
                 Log.d(TAG, "got contacts from myrides");
-            } catch (JSONException e) {
-                Log.e(TAG, "error getting details");
-                e.printStackTrace();
-            }
             return null;
         }
 
         public void storeContacts(JSONObject details) throws JSONException {
             ContentValues cv = new ContentValues();
-            cv.put(CONTACT.EMAIL, details.getString(CONTACT.EMAIL));
-            cv.put(CONTACT.MOBILE, details.getString(CONTACT.MOBILE));
-            cv.put(CONTACT.LANDLINE, details.getString(CONTACT.LANDLINE));
-            cv.put(CONTACT.PLATE, details.getString(CONTACT.PLATE));
+            if (details.has(CONTACT.EMAIL))
+                cv.put(CONTACT.EMAIL, details.getString(CONTACT.EMAIL));
+            if (details.has(CONTACT.MOBILE))
+                cv.put(CONTACT.MOBILE, details.getString(CONTACT.MOBILE));
+            if (details.has(CONTACT.LANDLINE))
+                cv.put(CONTACT.LANDLINE, details.getString(CONTACT.LANDLINE));
+            if (details.has(CONTACT.PLATE))
+                cv.put(CONTACT.PLATE, details.getString(CONTACT.PLATE));
             cv.put(CONTACT.USER, PreferenceManager
                     .getDefaultSharedPreferences(BaseActivity.this)
                     .getString(CONTACT.USER, ""));
