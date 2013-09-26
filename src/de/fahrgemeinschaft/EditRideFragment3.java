@@ -53,10 +53,9 @@ public class EditRideFragment3 extends SherlockFragment
         plate = (PrivacyImageButton) v.findViewById(R.id.plate);
         name = (PrivacyImageButton) v.findViewById(R.id.name);
         email.setTextListener(EditRideActivity.EMAIL, this);
-        String user = prefs.getString("user", "");
-        email.setAutocompleteUri(
-                Uri.parse("content://de.fahrgemeinschaft.test/users/" +
-                        user + "/mails"));
+        String uri = "content://de.fahrgemeinschaft.private/users/"
+                        + prefs.getString("user", "");
+        email.setAutocompleteUri(Uri.parse(uri + "/mails"));
         mobile.setTextListener(EditRideActivity.MOBILE, this);
         land.setTextListener(EditRideActivity.LANDLINE, this);
         plate.setTextListener(EditRideActivity.PLATE, this);
