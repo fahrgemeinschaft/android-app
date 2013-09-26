@@ -16,7 +16,7 @@ import de.fahrgemeinschaft.R;
 
 public abstract class BaseImageButton extends FrameLayout {
 
-    static final String android = "http://schemas.android.com/apk/res/android";
+    static final String droid = "http://schemas.android.com/apk/res/android";
 
     public ImageButton icon;
 
@@ -38,12 +38,12 @@ public abstract class BaseImageButton extends FrameLayout {
         icon = (ImageButton) findViewById(R.id.icon);
         icon.setId(ID--);
         icon.setImageResource(attrs.getAttributeResourceValue(
-                android, "src", R.drawable.ic_launcher));
+                droid, "src", R.drawable.ic_launcher));
         icon.setContentDescription(getContext().getString(
                 attrs.getAttributeResourceValue(
-                        android, "contentDescription",
+                        droid, "contentDescription",
                         attrs.getAttributeResourceValue(
-                                android, "text", R.string.app_name))));
+                                droid, "text", R.string.app_name))));
     }
 
     public void streifenhornchen(boolean on) {

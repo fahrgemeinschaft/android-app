@@ -8,23 +8,28 @@
 package de.fahrgemeinschaft.util;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.support.v4.widget.CursorAdapter;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
+import android.widget.TextView;
 import de.fahrgemeinschaft.R;
 
 public class EditTextImageButton extends BaseImageButton
                 implements TextWatcher, OnFocusChangeListener, OnClickListener {
 
-    public AutoCompleteTextView text;
     protected String key;
+    public AutoCompleteTextView text;
     private TextListener textListener;
 
     @Override
@@ -37,9 +42,9 @@ public class EditTextImageButton extends BaseImageButton
         text = (AutoCompleteTextView) findViewById(R.id.text);
         text.setId(ID--);
         text.setHint(getContext().getString(attrs.getAttributeResourceValue(
-                android, "hint", R.string.app_name)));
+                droid, "hint", R.string.app_name)));
         text.setInputType((attrs.getAttributeIntValue(
-                android, "inputType", InputType.TYPE_CLASS_TEXT)));
+                droid, "inputType", InputType.TYPE_CLASS_TEXT)));
         text.addTextChangedListener(this);
         Util.fixStreifenhoernchen(text);
         text.setSelectAllOnFocus(true);
@@ -85,4 +90,27 @@ public class EditTextImageButton extends BaseImageButton
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int cnt) {}
+
+    public void setAutocompleteUri(Uri uri) {
+        Cursor cursor = getContext().getContentResolver().query(uri,
+                null, null, null, null);
+        text.setAdapter(new CursorAdapter(getContext(), cursor, false) {
+
+            @Override
+            public View newView(Context ctx, Cursor c, ViewGroup r) {
+                return LayoutInflater.from(ctx).inflate(
+                        android.R.layout.simple_dropdown_item_1line, r, false);
+            }
+
+            @Override
+            public void bindView(View v, Context arg1, Cursor c) {
+                ((TextView) v).setText(c.getString(1));
+            }
+
+            @Override
+            public CharSequence convertToString(Cursor cursor) {
+                return cursor.getString(1);
+            }
+        });
+    }
 }

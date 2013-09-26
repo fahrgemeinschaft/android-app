@@ -36,7 +36,7 @@ public class DateImageButton extends BaseImageButton {
         btn = (Button) findViewById(R.id.text);
         btn.setId(ID--);
         btn.setText(getContext().getString(attrs.getAttributeResourceValue(
-                android, "text", R.string.app_name)));
+                droid, "text", R.string.app_name)));
     }
 
     public void setDate(long timestamp) {

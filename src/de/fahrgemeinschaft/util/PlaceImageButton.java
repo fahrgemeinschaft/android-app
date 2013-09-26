@@ -37,7 +37,7 @@ public class PlaceImageButton extends BaseImageButton {
         name = (TextView) findViewById(R.id.name);
         name.setId(ID--);
         name.setText(getContext().getString(attrs.getAttributeResourceValue(
-                android, "text", R.string.app_name)));
+                droid, "text", R.string.app_name)));
         address = (TextView) findViewById(R.id.address);
         address.setId(ID--);
     }
