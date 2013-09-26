@@ -1,6 +1,7 @@
 package de.fahrgemeinschaft.test;
 
 import de.fahrgemeinschaft.ContactProvider;
+import de.fahrgemeinschaft.ContactProvider.CONTACT;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
@@ -16,19 +17,19 @@ public class ContactProviderTest extends ProviderTestCase2<ContactProvider> {
     protected void setUp() throws Exception {
         super.setUp();
         ContentValues cv = new ContentValues();
-        cv.put("mail", "afoo@bar.net");
-        cv.put("mobile", "123456789");
-        cv.put("user", "foo");
+        cv.put(CONTACT.EMAIL, "afoo@bar.net");
+        cv.put(CONTACT.MOBILE, "123456789");
+        cv.put(CONTACT.USER, "foo");
         getMockContentResolver().insert(Uri.parse(
                 "content://de.fahrgemeinschaft.test/contacts"), cv);
-        cv.put("mail", "blablamail@gmx.net");
-        cv.put("mobile", "123456789");
-        cv.put("user", "foo");
+        cv.put(CONTACT.EMAIL, "blablamail@gmx.net");
+        cv.put(CONTACT.MOBILE, "123456789");
+        cv.put(CONTACT.USER, "foo");
         getMockContentResolver().insert(Uri.parse(
                 "content://de.fahrgemeinschaft.test/contacts"), cv);
-        cv.put("mail", "blablamail@gmx.net");
-        cv.put("mobile", "123456789");
-        cv.put("user", "foo");
+        cv.put(CONTACT.EMAIL, "blablamail@gmx.net");
+        cv.put(CONTACT.MOBILE, "123456789");
+        cv.put(CONTACT.USER, "foo");
         getMockContentResolver().insert(Uri.parse(
                 "content://de.fahrgemeinschaft.test/contacts"), cv);
     }
@@ -56,13 +57,13 @@ public class ContactProviderTest extends ProviderTestCase2<ContactProvider> {
 
     public void testStoreContactsBeforeLogin() {
         ContentValues cv = new ContentValues();
-        cv.put("mail", "fg@sonnenstreifen.de");
-        cv.put("mobile", "123456789");
+        cv.put(CONTACT.EMAIL, "fg@sonnenstreifen.de");
+        cv.put(CONTACT.MOBILE, "123456789");
         getMockContentResolver().insert(Uri.parse(
                 "content://de.fahrgemeinschaft.test/contacts"), cv);
         // reassign all empty contacts to now logged in user..
         cv.clear();
-        cv.put("user", "bar");
+        cv.put(CONTACT.USER, "bar");
         getMockContentResolver().update(Uri.parse(
                 "content://de.fahrgemeinschaft.test/contacts"), cv, null, null);
         Cursor mails = getMockContentResolver().query(Uri.parse(

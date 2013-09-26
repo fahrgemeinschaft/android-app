@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
+import de.fahrgemeinschaft.ContactProvider.CONTACT;
 import de.fahrgemeinschaft.util.EditTextImageButton.TextListener;
 import de.fahrgemeinschaft.util.PrivacyImageButton;
 import de.fahrgemeinschaft.util.PrivacyImageButton.PrivacyListener;
@@ -52,17 +53,17 @@ public class EditRideFragment3 extends SherlockFragment
         mobile = (PrivacyImageButton) v.findViewById(R.id.mobile);
         plate = (PrivacyImageButton) v.findViewById(R.id.plate);
         name = (PrivacyImageButton) v.findViewById(R.id.name);
-        email.setTextListener(EditRideActivity.EMAIL, this);
+        email.setTextListener(CONTACT.EMAIL, this);
         String uri = "content://de.fahrgemeinschaft.private/users/"
                         + prefs.getString("user", "");
         email.setAutocompleteUri(Uri.parse(uri + "/mails"));
-        mobile.setTextListener(EditRideActivity.MOBILE, this);
-        land.setTextListener(EditRideActivity.LANDLINE, this);
-        plate.setTextListener(EditRideActivity.PLATE, this);
-        email.setPrivacyListener(EditRideActivity.EMAIL, this);
-        mobile.setPrivacyListener(EditRideActivity.MOBILE, this);
-        land.setPrivacyListener(EditRideActivity.LANDLINE, this);
-        plate.setPrivacyListener(EditRideActivity.PLATE, this);
+        mobile.setTextListener(CONTACT.MOBILE, this);
+        land.setTextListener(CONTACT.LANDLINE, this);
+        plate.setTextListener(CONTACT.PLATE, this);
+        email.setPrivacyListener(CONTACT.EMAIL, this);
+        mobile.setPrivacyListener(CONTACT.MOBILE, this);
+        land.setPrivacyListener(CONTACT.LANDLINE, this);
+        plate.setPrivacyListener(CONTACT.PLATE, this);
         name.setPrivacyListener(NAME, this);
         name.text.setKeyListener(null);
     }
@@ -70,42 +71,42 @@ public class EditRideFragment3 extends SherlockFragment
     public void setRide(Ride ride) {
         try {
             JSONObject d = ride.getDetails();
-            if (!d.isNull(EditRideActivity.EMAIL))
-                email.text.setText(d.getString(EditRideActivity.EMAIL));
+            if (!d.isNull(CONTACT.EMAIL))
+                email.text.setText(d.getString(CONTACT.EMAIL));
             else email.text.setText(
-                    prefs.getString(EditRideActivity.EMAIL,
+                    prefs.getString(CONTACT.EMAIL,
                     prefs.getString("login", "")));
-            if (!d.isNull(EditRideActivity.LANDLINE))
-                land.text.setText(d.getString(EditRideActivity.LANDLINE));
+            if (!d.isNull(CONTACT.LANDLINE))
+                land.text.setText(d.getString(CONTACT.LANDLINE));
             else land.text.setText(
-                    prefs.getString(EditRideActivity.LANDLINE, ""));
-            if (!d.isNull(EditRideActivity.MOBILE))
-                mobile.text.setText(d.getString(EditRideActivity.MOBILE));
+                    prefs.getString(CONTACT.LANDLINE, ""));
+            if (!d.isNull(CONTACT.MOBILE))
+                mobile.text.setText(d.getString(CONTACT.MOBILE));
             else mobile.text.setText(
-                    prefs.getString(EditRideActivity.MOBILE, ""));
+                    prefs.getString(CONTACT.MOBILE, ""));
             if (ride.getMode().equals(Ride.Mode.TRAIN)) {
                 plate.setVisibility(View.GONE);
             } else {
                 plate.setVisibility(View.VISIBLE);
-                if (!d.isNull(EditRideActivity.PLATE)) {
-                    plate.text.setText(d.getString(EditRideActivity.PLATE));
+                if (!d.isNull(CONTACT.PLATE)) {
+                    plate.text.setText(d.getString(CONTACT.PLATE));
                 } else plate.text.setText(
-                        prefs.getString(EditRideActivity.PLATE, ""));
+                        prefs.getString(CONTACT.PLATE, ""));
             }
             name.text.setText(prefs.getString("lastname", "n/a"));
             if (d.isNull("Privacy")) d.put("Privacy", new JSONObject());
             JSONObject p = d.getJSONObject("Privacy");
             if (!p.isNull("Email")) email.setPrivacy(p.getInt("Email")); // 'm'
             else setPublic(email, p, "Email");
-            if (!p.isNull(EditRideActivity.LANDLINE))
-                land.setPrivacy(p.getInt(EditRideActivity.LANDLINE));
-            else setPublic(land, p, EditRideActivity.LANDLINE);
-            if (!p.isNull(EditRideActivity.MOBILE))
-                mobile.setPrivacy(p.getInt(EditRideActivity.MOBILE));
-            else setPublic(mobile, p, EditRideActivity.MOBILE);
-            if (!p.isNull(EditRideActivity.PLATE))
-                plate.setPrivacy(p.getInt(EditRideActivity.PLATE));
-            else setPublic(plate, p, EditRideActivity.PLATE);
+            if (!p.isNull(CONTACT.LANDLINE))
+                land.setPrivacy(p.getInt(CONTACT.LANDLINE));
+            else setPublic(land, p, CONTACT.LANDLINE);
+            if (!p.isNull(CONTACT.MOBILE))
+                mobile.setPrivacy(p.getInt(CONTACT.MOBILE));
+            else setPublic(mobile, p, CONTACT.MOBILE);
+            if (!p.isNull(CONTACT.PLATE))
+                plate.setPrivacy(p.getInt(CONTACT.PLATE));
+            else setPublic(plate, p, CONTACT.PLATE);
             if (!p.isNull(NAME)) name.setPrivacy(p.getInt(NAME));
             else setPublic(name, p, NAME);
         } catch (JSONException e) {

@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.view.MenuItem;
 
+import de.fahrgemeinschaft.ContactProvider.CONTACT;
 import de.fahrgemeinschaft.util.PrivacyImageButton;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -35,10 +36,6 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 public class EditRideActivity extends BaseActivity
         implements LoaderCallbacks<Cursor>, OnClickListener {
 
-    public static final String EMAIL = "Email";
-    public static final String PLATE = "NumberPlate";
-    public static final String MOBILE = "Mobile";
-    public static final String LANDLINE = "Landline";
     private static final String RIDE = "ride";
     public Ride ride;
     public EditRideFragment3 f3;
@@ -141,11 +138,11 @@ public class EditRideActivity extends BaseActivity
                     .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                     .setData(RidesProvider.getMyRidesUri(this)));
             ContentValues cv = new ContentValues();
-            cv.put("mail", ride.get("EMAIL"));
+            cv.put(CONTACT.EMAIL, ride.get(CONTACT.EMAIL));
             cv.put("mobile", "123456789");
-            cv.put("user", "foo");
+            cv.put("user", prefs.getString("user", ""));
             getContentResolver().insert(Uri.parse(
-                    "content://de.fahrgemeinschaft/contacts"), cv);
+                    "content://de.fahrgemeinschaft.private/contacts"), cv);
             Toast.makeText(this, getString(R.string.stored), Toast.LENGTH_SHORT)
                     .show();
             overridePendingTransition(

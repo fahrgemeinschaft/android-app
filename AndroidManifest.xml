@@ -98,6 +98,7 @@
             android:exported="false"
             android:name="org.teleportr.RidesProvider"
             android:authorities="de.fahrgemeinschaft" />
-    </application>
+
+        </application>
 
 </manifest>
