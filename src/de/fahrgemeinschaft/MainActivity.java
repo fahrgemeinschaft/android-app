@@ -78,9 +78,7 @@ public class MainActivity extends BaseActivity
         Ride r = main.ride;
         switch (v.getId()) {
         case R.id.btn_selberfahren:
-            long now = System.currentTimeMillis();
             Uri uri = r.type(Ride.OFFER)
-                    .dep(r.getDep() < now? now + 3600000 : r.getDep())
                     .mode(Ride.Mode.CAR).seats(3).store(this);
             startActivity(new Intent(Intent.ACTION_EDIT, uri));
             overridePendingTransition(

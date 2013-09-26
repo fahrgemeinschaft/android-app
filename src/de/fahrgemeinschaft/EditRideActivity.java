@@ -7,6 +7,8 @@
 
 package de.fahrgemeinschaft;
 
+import java.util.Date;
+
 import org.teleportr.ConnectorService;
 import org.teleportr.Ride;
 import org.teleportr.RidesProvider;
@@ -46,25 +48,26 @@ public class EditRideActivity extends BaseActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ride_edit);
-
-        if (savedInstanceState != null) {
-            ride = savedInstanceState.getParcelable(RIDE);
-            ride.setContext(this);
-        } else {
-            ride = new Ride(this).type(Ride.OFFER);
-            if (getIntent().getData() != null) {
-                getSupportLoaderManager().initLoader(0, null, this);
-            }
-        }
+        setTitle(R.string.offer);
         f1 = (EditRideFragment1) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment1);
         f2 = (EditRideFragment2) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment2);
         f3 = (EditRideFragment3) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment3);
-        setRide();
         findViewById(R.id.publish).setOnClickListener(this);
-        setTitle(R.string.offer);
+        if (savedInstanceState != null) {
+            ride = savedInstanceState.getParcelable(RIDE);
+            ride.setContext(this);
+            setRide();
+        } else {
+            if (getIntent().getData() != null) {
+                getSupportLoaderManager().initLoader(0, null, this);
+            } else {
+                ride = new Ride(this).type(Ride.OFFER).dep(new Date());
+                setRide();
+            }
+        }
     }
 
     @Override
@@ -75,29 +78,30 @@ public class EditRideActivity extends BaseActivity
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        System.out.println("got " + cursor.getCount());
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             ride = new Ride(cursor, this);
+            setRide();
+        }
+        cursor.close();
+    }
+
+    private void setRide() {
+        if (ride != null) {
             if (ride.getRef() != null) {
                 setTitle(R.string.edit);
             }
+            f1.setRide(ride);
+            f2.setRide(ride);
+            f3.setRide(ride);
+            ((EditText)findViewById(R.id.comment)).setText(ride.get("Comment"));
             long delta = ride.getDep() - System.currentTimeMillis();
             if (delta < 0) {
                 delta = delta % 86400000;
                 ride.dep(System.currentTimeMillis() + 86400000 + delta);
                 f2.openDatePicker();
             }
-        }
-        cursor.close();
-        setRide();
-    }
-
-    private void setRide() {
-        if (ride != null) {
-            f1.setRide(ride);
-            f2.setRide(ride);
-            f3.setRide(ride);
-            ((EditText)findViewById(R.id.comment)).setText(ride.get("Comment"));
         }
     }
 
