@@ -108,6 +108,7 @@ public class BaseActivity extends SherlockFragmentActivity
     }
 
     public void setProfileIcon() {
+        if (ic_profile == null) return;
         if (PreferenceManager.getDefaultSharedPreferences(this).getString("auth", null) != null) {
             ic_profile.setIcon(R.drawable.ic_topmenu_user_ok);
         } else {

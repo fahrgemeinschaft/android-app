@@ -11,7 +11,7 @@ import android.net.Uri;
 public class ContactProvider extends ContentProvider {
 
     private static final String AUTHORITY = "de.fahrgemeinschaft.private";
-    private static final int VERSION = 2;
+    private static final String TABLE = "contacts";
 
     public static final class CONTACT {
         public static final String USER = "user";
@@ -21,8 +21,7 @@ public class ContactProvider extends ContentProvider {
         public static final String LANDLINE = "Landline";
     }
 
-    private static final String TABLE = "contacts";
-    private static final int MAILS = 0;
+    private static final int VERSION = 3;
     private SQLiteOpenHelper db;
 
     @Override
@@ -42,6 +41,8 @@ public class ContactProvider extends ContentProvider {
 
             @Override
             public void onUpgrade(SQLiteDatabase db, int oldV, int newV) {
+                db.execSQL("DROP table contacts;");
+                onCreate(db);
             }
         };
         return false;
@@ -58,18 +59,34 @@ public class ContactProvider extends ContentProvider {
         return null;
     }
 
-    private static final String SELECT_MAILS = "SELECT _id, " + CONTACT.EMAIL +
-            ", " + "COUNT(" + CONTACT.EMAIL + ") AS count FROM contacts " +
-            "WHERE " + CONTACT.USER +  " IS ? " +
-            "GROUP BY " + CONTACT.EMAIL + " ORDER BY count DESC";
+
+    private static String SELECT(String something) {
+        return "SELECT _id, " + something +
+                ", " + "COUNT(" + something + ") AS count FROM contacts " +
+                "WHERE " + CONTACT.USER +  " IS ? " +
+                "GROUP BY " + something + " ORDER BY count DESC";
+    }
+
+    private static final String SELECT_MAILS = SELECT(CONTACT.EMAIL);
+    private static final String SELECT_MOBILES = SELECT(CONTACT.MOBILE);
+    private static final String SELECT_LANDLINES = SELECT(CONTACT.LANDLINE);
+    private static final String SELECT_PLATES = SELECT(CONTACT.PLATE);
 
     @Override
     public Cursor query(Uri uri, String[] p, String s, String[] a, String o) {
         System.out.println("query " + uri);
         switch(uriMatcher.match(uri)) {
         case MAILS:
-            
             return db.getReadableDatabase().rawQuery(SELECT_MAILS,
+                    new String[]{ uri.getPathSegments().get(1) });
+        case MOBILES:
+            return db.getReadableDatabase().rawQuery(SELECT_MOBILES,
+                    new String[]{ uri.getPathSegments().get(1) });
+        case LANDLINES:
+            return db.getReadableDatabase().rawQuery(SELECT_LANDLINES,
+                    new String[]{ uri.getPathSegments().get(1) });
+        case PLATES:
+            return db.getReadableDatabase().rawQuery(SELECT_PLATES,
                     new String[]{ uri.getPathSegments().get(1) });
         }
         return null;
@@ -88,8 +105,16 @@ public class ContactProvider extends ContentProvider {
                 new String[]{ uri.getLastPathSegment() });
     }
 
+    private static final int MAILS = 1;
+    private static final int MOBILES = 2;
+    private static final int LANDLINES = 3;
+    private static final int PLATES = 4;
+
     static UriMatcher uriMatcher = new UriMatcher(0);
     static {
         uriMatcher.addURI(AUTHORITY, "users/*/mails", MAILS);
+        uriMatcher.addURI(AUTHORITY, "users/*/mobiles", MOBILES);
+        uriMatcher.addURI(AUTHORITY, "users/*/landlines", LANDLINES);
+        uriMatcher.addURI(AUTHORITY, "users/*/plates", PLATES);
     }
 }

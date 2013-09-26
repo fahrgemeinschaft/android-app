@@ -20,17 +20,17 @@ public class ContactProviderTest extends ProviderTestCase2<ContactProvider> {
                 "de.fahrgemeinschaft.private", getProvider());
         ContentValues cv = new ContentValues();
         cv.put(CONTACT.EMAIL, "afoo@bar.net");
-        cv.put(CONTACT.MOBILE, "123456789");
+        cv.put(CONTACT.MOBILE, "456");
         cv.put(CONTACT.USER, "foo");
         getMockContentResolver().insert(Uri.parse(
                 "content://de.fahrgemeinschaft.private/contacts"), cv);
         cv.put(CONTACT.EMAIL, "blablamail@gmx.net");
-        cv.put(CONTACT.MOBILE, "123456789");
+        cv.put(CONTACT.MOBILE, "123");
         cv.put(CONTACT.USER, "foo");
         getMockContentResolver().insert(Uri.parse(
                 "content://de.fahrgemeinschaft.private/contacts"), cv);
         cv.put(CONTACT.EMAIL, "blablamail@gmx.net");
-        cv.put(CONTACT.MOBILE, "123456789");
+        cv.put(CONTACT.MOBILE, "123");
         cv.put(CONTACT.USER, "foo");
         getMockContentResolver().insert(Uri.parse(
                 "content://de.fahrgemeinschaft.private/contacts"), cv);
@@ -42,9 +42,22 @@ public class ContactProviderTest extends ProviderTestCase2<ContactProvider> {
                 null, null, null, null);
         assertEquals(2, mails.getCount());
         mails.moveToFirst();
+        assertEquals("count", 2, mails.getInt(2));
         assertEquals("blablamail@gmx.net", mails.getString(1));
         mails.moveToNext();
+        assertEquals("count", 1, mails.getInt(2));
         assertEquals("afoo@bar.net", mails.getString(1));
+    }
+
+    public void testGetMobiles() {
+        Cursor mails = getMockContentResolver().query(Uri.parse(
+                "content://de.fahrgemeinschaft.private/users/foo/mobiles"),
+                null, null, null, null);
+        assertEquals(2, mails.getCount());
+        mails.moveToFirst();
+        assertEquals("123", mails.getString(1));
+        mails.moveToNext();
+        assertEquals("456", mails.getString(1));
     }
 
     public void testDelete() {

@@ -40,6 +40,7 @@ public class EditTextImageButton extends BaseImageButton
     public EditTextImageButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         text = (AutoCompleteTextView) findViewById(R.id.text);
+        text.setThreshold(1);
         text.setId(ID--);
         text.setHint(getContext().getString(attrs.getAttributeResourceValue(
                 droid, "hint", R.string.app_name)));
@@ -91,10 +92,8 @@ public class EditTextImageButton extends BaseImageButton
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int cnt) {}
 
-    public void setAutocompleteUri(Uri uri) {
-        Cursor cursor = getContext().getContentResolver().query(uri,
-                null, null, null, null);
-        text.setAdapter(new CursorAdapter(getContext(), cursor, false) {
+    public void setAutocompleteUri(final Uri uri) {
+        text.setAdapter(new CursorAdapter(getContext(), null, false) {
 
             @Override
             public View newView(Context ctx, Cursor c, ViewGroup r) {
@@ -105,6 +104,15 @@ public class EditTextImageButton extends BaseImageButton
             @Override
             public void bindView(View v, Context arg1, Cursor c) {
                 ((TextView) v).setText(c.getString(1));
+            }
+
+            @Override
+            public Cursor runQueryOnBackgroundThread(CharSequence constraint) {
+                if (constraint == null) constraint = "";
+                return getContext().getContentResolver()
+                        .query(uri.buildUpon().appendQueryParameter(
+                                "q", constraint.toString()).build(),
+                                null, null, null, null);
             }
 
             @Override

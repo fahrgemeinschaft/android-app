@@ -138,9 +138,11 @@ public class EditRideActivity extends BaseActivity
                     .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                     .setData(RidesProvider.getMyRidesUri(this)));
             ContentValues cv = new ContentValues();
+            cv.put(CONTACT.USER, prefs.getString(CONTACT.USER, ""));
             cv.put(CONTACT.EMAIL, ride.get(CONTACT.EMAIL));
-            cv.put("mobile", "123456789");
-            cv.put("user", prefs.getString("user", ""));
+            cv.put(CONTACT.MOBILE, ride.get(CONTACT.MOBILE));
+            cv.put(CONTACT.LANDLINE, ride.get(CONTACT.LANDLINE));
+            cv.put(CONTACT.PLATE, ride.get(CONTACT.PLATE));
             getContentResolver().insert(Uri.parse(
                     "content://de.fahrgemeinschaft.private/contacts"), cv);
             Toast.makeText(this, getString(R.string.stored), Toast.LENGTH_SHORT)
