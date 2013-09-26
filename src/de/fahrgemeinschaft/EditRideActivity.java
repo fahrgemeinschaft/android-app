@@ -122,7 +122,7 @@ public class EditRideActivity extends BaseActivity
 
     @Override
     public void onClick(View v) {
-        if (ride.getFrom() == null || ride.getTo() == null) {
+        if (ride.getFrom() == null && ride.getTo() == null) {
             Crouton.makeText(this, getString(R.string.incomplete), Style.INFO)
                 .show();
         } else {

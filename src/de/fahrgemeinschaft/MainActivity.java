@@ -85,7 +85,7 @@ public class MainActivity extends BaseActivity
                     R.anim.slide_in_bottom, R.anim.slide_out_top);
             break;
         case R.id.btn_mitfahren:
-            if (main.ride.getFrom() == null || main.ride.getTo() == null) {
+            if (main.ride.getFrom() == null && main.ride.getTo() == null) {
                 Crouton.makeText(this, getString(R.string.incomplete),
                         Style.INFO).show();
                 return;
