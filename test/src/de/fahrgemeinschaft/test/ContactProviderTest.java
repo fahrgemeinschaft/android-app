@@ -38,13 +38,23 @@ public class ContactProviderTest extends ProviderTestCase2<ContactProvider> {
 
     public void testGetMails() {
         Cursor mails = getMockContentResolver().query(Uri.parse(
-                "content://de.fahrgemeinschaft.private/users/foo/mails"),
+                "content://de.fahrgemeinschaft.private/users/foo/mails?q="),
                 null, null, null, null);
         assertEquals(2, mails.getCount());
         mails.moveToFirst();
         assertEquals("count", 2, mails.getInt(2));
         assertEquals("blablamail@gmx.net", mails.getString(1));
         mails.moveToNext();
+        assertEquals("count", 1, mails.getInt(2));
+        assertEquals("afoo@bar.net", mails.getString(1));
+    }
+
+    public void testAutocompleteMails() {
+        Cursor mails = getMockContentResolver().query(Uri.parse(
+                "content://de.fahrgemeinschaft.private/users/foo/mails?q=af"),
+                null, null, null, null);
+        assertEquals(1, mails.getCount());
+        mails.moveToFirst();
         assertEquals("count", 1, mails.getInt(2));
         assertEquals("afoo@bar.net", mails.getString(1));
     }
