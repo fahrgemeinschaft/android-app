@@ -9,7 +9,6 @@ package de.fahrgemeinschaft;
 
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.net.MailTo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;

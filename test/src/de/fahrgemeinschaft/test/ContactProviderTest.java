@@ -84,7 +84,7 @@ public class ContactProviderTest extends ProviderTestCase2<ContactProvider> {
                 null, null, null, null);
         assertEquals(2, mails.getCount());
         Cursor mobiles = getMockContentResolver().query(Uri.parse(
-                "content://de.fahrgemeinschaft.private/users/foo/mails"),
+                "content://de.fahrgemeinschaft.private/users/foo/mobiles"),
                 null, null, null, null);
         assertEquals(2, mobiles.getCount());
     }
