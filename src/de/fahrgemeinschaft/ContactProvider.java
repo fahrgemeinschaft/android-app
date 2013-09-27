@@ -70,6 +70,7 @@ public class ContactProvider extends ContentProvider {
         return "SELECT _id, " + something +
                 ", " + "COUNT(" + something + ") AS count FROM contacts " +
                 "WHERE " + CONTACT.USER +  " IS ? " +
+                "AND " + something + " LIKE ? " +
                 "AND " + something + " IS NOT NULL " +
                 "AND " + something + " IS NOT '' " +
                 "GROUP BY " + something + " ORDER BY count DESC";
@@ -82,20 +83,22 @@ public class ContactProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] p, String s, String[] a, String o) {
-        System.out.println("query " + uri);
+        String query = uri.getQueryParameter("q");
+        if (query == null) query = "";
+        query = query + "%";
         switch(uriMatcher.match(uri)) {
         case MAILS:
             return db.getReadableDatabase().rawQuery(SELECT_MAILS,
-                    new String[]{ uri.getPathSegments().get(1) });
+                    new String[]{ uri.getPathSegments().get(1), query });
         case MOBILES:
             return db.getReadableDatabase().rawQuery(SELECT_MOBILES,
-                    new String[]{ uri.getPathSegments().get(1) });
+                    new String[]{ uri.getPathSegments().get(1), query });
         case LANDLINES:
             return db.getReadableDatabase().rawQuery(SELECT_LANDLINES,
-                    new String[]{ uri.getPathSegments().get(1) });
+                    new String[]{ uri.getPathSegments().get(1), query });
         case PLATES:
             return db.getReadableDatabase().rawQuery(SELECT_PLATES,
-                    new String[]{ uri.getPathSegments().get(1) });
+                    new String[]{ uri.getPathSegments().get(1), query });
         }
         return null;
     }
