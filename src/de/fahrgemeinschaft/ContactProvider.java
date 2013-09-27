@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
+import android.util.Log;
 
 public class ContactProvider extends ContentProvider {
 
@@ -55,6 +56,11 @@ public class ContactProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
+        if (values.containsKey(CONTACT.PLATE) 
+                && values.getAsString(CONTACT.PLATE).equals("Bahn")) {
+            System.out.println("removed: " + values.getAsString(CONTACT.PLATE));
+            values.remove(CONTACT.PLATE);
+        }
         db.getWritableDatabase().insert(TABLE, null, values);
         return null;
     }
@@ -65,6 +71,7 @@ public class ContactProvider extends ContentProvider {
                 ", " + "COUNT(" + something + ") AS count FROM contacts " +
                 "WHERE " + CONTACT.USER +  " IS ? " +
                 "AND " + something + " IS NOT NULL " +
+                "AND " + something + " IS NOT '' " +
                 "GROUP BY " + something + " ORDER BY count DESC";
     }
 
