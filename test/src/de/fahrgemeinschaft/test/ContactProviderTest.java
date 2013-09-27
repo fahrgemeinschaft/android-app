@@ -60,14 +60,30 @@ public class ContactProviderTest extends ProviderTestCase2<ContactProvider> {
     }
 
     public void testGetMobiles() {
-        Cursor mails = getMockContentResolver().query(Uri.parse(
+        Cursor mobiles = getMockContentResolver().query(Uri.parse(
                 "content://de.fahrgemeinschaft.private/users/foo/mobiles"),
                 null, null, null, null);
-        assertEquals(2, mails.getCount());
-        mails.moveToFirst();
-        assertEquals("123", mails.getString(1));
-        mails.moveToNext();
-        assertEquals("456", mails.getString(1));
+        assertEquals(2, mobiles.getCount());
+        mobiles.moveToFirst();
+        assertEquals("123", mobiles.getString(1));
+        mobiles.moveToNext();
+        assertEquals("456", mobiles.getString(1));
+    }
+
+    public void testEmptyValues() {
+        ContentValues cv = new ContentValues();
+        cv.put(CONTACT.EMAIL, "");
+        cv.put(CONTACT.USER, "foo");
+        getMockContentResolver().insert(Uri.parse(
+                "content://de.fahrgemeinschaft.private/contacts"), cv);
+        Cursor mails = getMockContentResolver().query(Uri.parse(
+                "content://de.fahrgemeinschaft.private/users/foo/mails"),
+                null, null, null, null);
+//        assertEquals(2, mails.getCount());
+        Cursor mobiles = getMockContentResolver().query(Uri.parse(
+                "content://de.fahrgemeinschaft.private/users/foo/mails"),
+                null, null, null, null);
+        assertEquals(2, mobiles.getCount());
     }
 
     public void testDelete() {
