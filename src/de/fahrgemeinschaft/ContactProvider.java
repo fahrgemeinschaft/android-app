@@ -64,6 +64,7 @@ public class ContactProvider extends ContentProvider {
         return "SELECT _id, " + something +
                 ", " + "COUNT(" + something + ") AS count FROM contacts " +
                 "WHERE " + CONTACT.USER +  " IS ? " +
+                "AND " + something + " IS NOT NULL " +
                 "GROUP BY " + something + " ORDER BY count DESC";
     }
 
