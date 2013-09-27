@@ -98,12 +98,13 @@ public class EditTextImageButton extends BaseImageButton
             @Override
             public View newView(Context ctx, Cursor c, ViewGroup r) {
                 return LayoutInflater.from(ctx).inflate(
-                        android.R.layout.simple_dropdown_item_1line, r, false);
+                        R.layout.contacts_list_entry, r, false);
             }
 
             @Override
             public void bindView(View v, Context arg1, Cursor c) {
-                ((TextView) v).setText(c.getString(1));
+                ((TextView) v.findViewById(R.id.contacts_value))
+                    .setText(c.getString(1));
             }
 
             @Override
