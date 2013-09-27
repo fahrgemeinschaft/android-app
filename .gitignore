@@ -6,3 +6,6 @@ build
 .settings
 .classpath
 project.properties
+old APKs
+fahrgemeinschaft.keystore
+src/de/fahrgemeinschaft/Secret.java
