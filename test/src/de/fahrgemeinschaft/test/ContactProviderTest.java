@@ -21,16 +21,19 @@ public class ContactProviderTest extends ProviderTestCase2<ContactProvider> {
         ContentValues cv = new ContentValues();
         cv.put(CONTACT.EMAIL, "afoo@bar.net");
         cv.put(CONTACT.MOBILE, "456");
+        cv.put(CONTACT.PLATE, "XYZ");
         cv.put(CONTACT.USER, "foo");
         getMockContentResolver().insert(Uri.parse(
                 "content://de.fahrgemeinschaft.private/contacts"), cv);
         cv.put(CONTACT.EMAIL, "blablamail@gmx.net");
         cv.put(CONTACT.MOBILE, "123");
+        cv.put(CONTACT.PLATE, "ABC");
         cv.put(CONTACT.USER, "foo");
         getMockContentResolver().insert(Uri.parse(
                 "content://de.fahrgemeinschaft.private/contacts"), cv);
         cv.put(CONTACT.EMAIL, "blablamail@gmx.net");
         cv.put(CONTACT.MOBILE, "123");
+        cv.put(CONTACT.PLATE, "XYZ");
         cv.put(CONTACT.USER, "foo");
         getMockContentResolver().insert(Uri.parse(
                 "content://de.fahrgemeinschaft.private/contacts"), cv);
@@ -79,11 +82,23 @@ public class ContactProviderTest extends ProviderTestCase2<ContactProvider> {
         Cursor mails = getMockContentResolver().query(Uri.parse(
                 "content://de.fahrgemeinschaft.private/users/foo/mails"),
                 null, null, null, null);
-//        assertEquals(2, mails.getCount());
+        assertEquals(2, mails.getCount());
         Cursor mobiles = getMockContentResolver().query(Uri.parse(
                 "content://de.fahrgemeinschaft.private/users/foo/mails"),
                 null, null, null, null);
         assertEquals(2, mobiles.getCount());
+    }
+
+    public void testBahn() {
+        ContentValues cv = new ContentValues();
+        cv.put(CONTACT.PLATE, "Bahn");
+        cv.put(CONTACT.USER, "foo");
+        getMockContentResolver().insert(Uri.parse(
+                "content://de.fahrgemeinschaft.private/contacts"), cv);
+        Cursor plates = getMockContentResolver().query(Uri.parse(
+                "content://de.fahrgemeinschaft.private/users/foo/mails"),
+                null, null, null, null);
+        assertEquals(2, plates.getCount());
     }
 
     public void testDelete() {
