@@ -26,13 +26,9 @@ import de.fahrgemeinschaft.R;
 public class ReoccuringWeekDaysView extends LinearLayout {
 
     static final String android = "http://schemas.android.com/apk/res/android";
-
     private JSONObject details;
-
     private boolean clickable;
-
     private boolean reoccuring;
-
     public boolean isReoccuring() {
         return reoccuring;
     }
