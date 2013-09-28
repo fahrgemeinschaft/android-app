@@ -25,6 +25,7 @@ import de.fahrgemeinschaft.R;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
+@SuppressLint("SetJavaScriptEnabled")
 public class WebActivity extends SherlockActivity {
 
     private static final String TAG = "Fahrgemeinschaft";
@@ -32,7 +33,6 @@ public class WebActivity extends SherlockActivity {
     private WebView webView;
 
     @Override
-    @SuppressLint("SetJavaScriptEnabled")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         webView = new WebView(this);
