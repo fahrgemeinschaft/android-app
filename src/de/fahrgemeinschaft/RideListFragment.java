@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import org.teleportr.ConnectorService;
+import org.teleportr.RidesProvider;
 import org.teleportr.ConnectorService.ServiceCallback;
 import org.teleportr.Ride;
 import org.teleportr.Ride.COLUMNS;
@@ -253,6 +254,8 @@ public class RideListFragment extends SpinningZebraListFragment
                         new Intent(getContext(), ConnectorService.class)
                                 .setAction(ConnectorService.PUBLISH));
                 }
+                getContext().getContentResolver().update(RidesProvider
+                        .getRidesUri(getContext()), null, null, null);
                 break;
             case R.id.decrease_seats:
                 if (ride.getSeats() >= 1) {
@@ -261,6 +264,8 @@ public class RideListFragment extends SpinningZebraListFragment
                         new Intent(getContext(), ConnectorService.class)
                         .setAction(ConnectorService.PUBLISH));
                 }
+                getContext().getContentResolver().update(RidesProvider
+                        .getRidesUri(getContext()), null, null, null);
             }
         }
     }

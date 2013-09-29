@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import org.teleportr.ConnectorService;
 import org.teleportr.Place;
 import org.teleportr.Ride;
+import org.teleportr.RidesProvider;
 import org.teleportr.Ride.COLUMNS;
 
 import android.content.ComponentName;
@@ -49,11 +50,15 @@ public class Util {
             } else {
                 ride.activate().dirty().store(ctx);
             }
+            ctx.getContentResolver().update(RidesProvider
+                    .getRidesUri(ctx), null, null, null);
             ctx.startService(new Intent(ctx, ConnectorService.class)
                     .setAction(ConnectorService.PUBLISH));
             return true;
         case R.id.delete:
             ride.delete();
+            ctx.getContentResolver().update(RidesProvider
+                    .getRidesUri(ctx), null, null, null);
             ctx.startService(new Intent(ctx, ConnectorService.class)
                     .setAction(ConnectorService.PUBLISH));
             return true;

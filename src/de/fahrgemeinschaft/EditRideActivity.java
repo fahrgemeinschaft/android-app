@@ -149,6 +149,8 @@ public class EditRideActivity extends BaseActivity
             cv.put(CONTACT.PLATE, ride.get(CONTACT.PLATE));
             getContentResolver().insert(Uri.parse(
                     "content://de.fahrgemeinschaft.private/contacts"), cv);
+            this.getContentResolver().update(RidesProvider
+                    .getRidesUri(this), null, null, null);
             Toast.makeText(this, getString(R.string.stored), Toast.LENGTH_SHORT)
                     .show();
             overridePendingTransition(
