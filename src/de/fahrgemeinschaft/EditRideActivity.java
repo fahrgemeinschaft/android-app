@@ -97,7 +97,7 @@ public class EditRideActivity extends BaseActivity
             f3.setRide(ride);
             ((EditText)findViewById(R.id.comment)).setText(ride.get("Comment"));
             long delta = ride.getDep() - System.currentTimeMillis();
-            if (delta < 0) {
+            if (delta < 12 * 3600000) {
                 delta = delta % 86400000;
                 ride.dep(System.currentTimeMillis() + 86400000 + delta);
                 f2.openDatePicker();
