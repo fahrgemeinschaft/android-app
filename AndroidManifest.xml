@@ -7,8 +7,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.fahrgemeinschaft"
-    android:versionCode="60"
-    android:versionName="beta 0.9.7" >
+    android:versionCode="61"
+    android:versionName="beta 0.9.7.1" >
 
 
     <uses-sdk
@@ -16,6 +16,7 @@
         android:targetSdkVersion="18" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
         android:allowBackup="false"
