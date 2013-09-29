@@ -220,7 +220,7 @@ public abstract class SpinningZebraListFragment
     }
 
     public Cursor getCursor() {
-        if (getListView() != null) {
+        if (getActivity() != null && getListView() != null) {
             return ((CursorAdapter) getListView().getAdapter()).getCursor();
         } else return null;
     }
