@@ -81,6 +81,7 @@ public class MainActivity extends BaseActivity
         switch (v.getId()) {
         case R.id.btn_selberfahren:
             Uri uri = r.type(Ride.OFFER)
+                    .dep(setNowTime(r.getDep()))
                     .mode(Ride.Mode.CAR).seats(3).store(this);
             startActivity(new Intent(Intent.ACTION_EDIT, uri));
             overridePendingTransition(
@@ -92,7 +93,9 @@ public class MainActivity extends BaseActivity
                         Style.INFO).show();
                 return;
             }
-            r.type(Ride.SEARCH).arr(r.getDep() + 48 * 3600000).store(this);
+            r.type(Ride.SEARCH)
+                    .dep(setMorningTime(r.getDep()))
+                    .arr(r.getDep() + 48 * 3600000).store(this);
             startService(new Intent(this, ConnectorService.class)
                 .setAction(ConnectorService.SEARCH));
             results.load(r.toUri(), SEARCH);
@@ -123,7 +126,7 @@ public class MainActivity extends BaseActivity
 
 
 
-    public static long getMorningTime(long dep) {
+    public static long setMorningTime(long dep) {
         Calendar c = Calendar.getInstance();
         c.setTimeInMillis(dep);
         c.set(Calendar.HOUR_OF_DAY, 0); // reset
@@ -133,7 +136,7 @@ public class MainActivity extends BaseActivity
         return c.getTimeInMillis();
     }
 
-    public static long getNowTime(long dep) {
+    public static long setNowTime(long dep) {
         Calendar c = Calendar.getInstance();
         c.setTimeInMillis(dep);
         Calendar now = Calendar.getInstance();
