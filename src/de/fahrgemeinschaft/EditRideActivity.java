@@ -136,11 +136,6 @@ public class EditRideActivity extends BaseActivity
                         .commit();
             }
             ride.marked().dirty().store(this);
-            startService(new Intent(this, ConnectorService.class)
-                    .setAction(ConnectorService.PUBLISH));
-            startActivity(new Intent(this, MainActivity.class)
-                    .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                    .setData(RidesProvider.getMyRidesUri(this)));
             ContentValues cv = new ContentValues();
             cv.put(CONTACT.USER, prefs.getString(CONTACT.USER, ""));
             cv.put(CONTACT.EMAIL, ride.get(CONTACT.EMAIL));
@@ -151,6 +146,8 @@ public class EditRideActivity extends BaseActivity
                     "content://de.fahrgemeinschaft.private/contacts"), cv);
             this.getContentResolver().update(RidesProvider
                     .getRidesUri(this), null, null, null);
+            startService(new Intent(this, ConnectorService.class)
+                    .setAction(ConnectorService.PUBLISH));
             Toast.makeText(this, getString(R.string.stored), Toast.LENGTH_SHORT)
                     .show();
             overridePendingTransition(
