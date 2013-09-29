@@ -75,7 +75,9 @@ public class EditRideFragment2 extends SherlockFragment
             date.streifenhornchen(true);
             white_bg.setVisibility(View.VISIBLE);
             date.btn.setText(R.string.reccurence_date);
+            ride.type(FahrgemeinschaftConnector.TYPE_OFFER_REOCCURING);
         } else {
+            ride.type(Ride.OFFER);
             date.icon.setEnabled(true);
             date.btn.setEnabled(true);
             date.streifenhornchen(false);

@@ -2,9 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.fahrgemeinschaft.test"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0" xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-sdk android:minSdkVersion="17" />
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="18" />
 
     <instrumentation
         android:name="android.test.InstrumentationTestRunner"
@@ -12,10 +14,12 @@
 
     <application
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" >
+        android:label="@string/app_name"
+         tools:ignore="AllowBackup">
         <uses-library android:name="android.test.runner" />
 
         <provider
+            android:exported="false"
             android:name="de.fahrgemeinschaft.ContactProvider"
             android:authorities="de.fahrgemeinschaft.test" />
 

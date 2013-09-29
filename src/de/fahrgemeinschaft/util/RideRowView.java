@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import org.teleportr.Ride.COLUMNS;
 
+import de.fahrgemeinschaft.FahrgemeinschaftConnector;
 import de.fahrgemeinschaft.R;
 import android.content.Context;
 import android.database.Cursor;
@@ -51,7 +52,8 @@ public class RideRowView extends LinearLayout {
     public void bind(Cursor cursor, Context ctx) {
         long timestamp = cursor.getLong(COLUMNS.DEPARTURE);
         Date dep = new Date(timestamp);
-        if (timestamp > 2555448960000l) {
+        if (cursor.getInt(COLUMNS.TYPE) ==
+                FahrgemeinschaftConnector.TYPE_OFFER_REOCCURING) {
             day.setText(R.string.reoccurring);
             date.setText("");
         } else {
