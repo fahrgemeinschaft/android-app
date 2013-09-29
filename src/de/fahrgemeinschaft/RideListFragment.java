@@ -48,6 +48,7 @@ public class RideListFragment extends SpinningZebraListFragment
             new SimpleDateFormat("dd.MM.", Locale.GERMANY);
     private String[] split;
     private long currently_searching_date;
+    private boolean isItThisFragment;
 
     @Override
     public void bindListItemView(View view, Cursor ride) {
@@ -168,15 +169,21 @@ public class RideListFragment extends SpinningZebraListFragment
             m.findItem(R.id.toggle_active).setVisible(false);
             m.findItem(R.id.duplicate_retour).setVisible(false);
         }
+        isItThisFragment = true;
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        if (!isItThisFragment) {
+            System.out.println("AHA");
+            return false;
+        }
+        isItThisFragment = false;
         AdapterView.AdapterContextMenuInfo info =
                 (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
-        System.out.println("POSITION " + info.position);
-        getCursor().moveToPosition(info.position);
-        Ride ride = new Ride(getCursor(), getActivity());
+        Cursor cursor = getCursor();
+        cursor.moveToPosition(info.position);
+        Ride ride = new Ride(cursor, getActivity());
         return Util.handleRideAction(item.getItemId(), ride, getActivity());
     }
 
