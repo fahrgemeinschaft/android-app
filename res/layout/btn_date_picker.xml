@@ -15,7 +15,7 @@
         android:layout_gravity="left|center_vertical"
         android:background="@drawable/btn_white"
         android:paddingLeft="@dimen/large"
-        android:paddingRight="@dimen/xlarge"
+        android:layout_marginRight="@dimen/xlarge"
         android:ellipsize="end"
         android:singleLine="true"
         style="@style/place_pick_btn" />

@@ -28,6 +28,7 @@ public abstract class BaseImageButton extends FrameLayout {
         View.inflate(getContext(), inflate(), this);
         icon = (ImageButton) findViewById(R.id.icon);
         icon.setId(ID--);
+        setBackgroundResource(R.drawable.btn_white);
     }
 
     protected abstract int inflate();
@@ -44,6 +45,7 @@ public abstract class BaseImageButton extends FrameLayout {
                         droid, "contentDescription",
                         attrs.getAttributeResourceValue(
                                 droid, "text", R.string.app_name))));
+        setBackgroundResource(R.drawable.btn_white);
     }
 
     public void streifenhornchen(boolean on) {

@@ -8,7 +8,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" >
 
-    <TextView
+    <Button
         android:id="@+id/name"
         style="@style/place_pick_btn"
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
         android:ellipsize="end"
         android:gravity="left|center_vertical"
         android:paddingLeft="@dimen/large"
-        android:paddingRight="@dimen/xlarge"
+        android:layout_marginRight="@dimen/xlarge"
         android:singleLine="true" />
 
     <TextView

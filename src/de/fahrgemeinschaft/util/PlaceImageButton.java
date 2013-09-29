@@ -11,12 +11,13 @@ import org.teleportr.Place;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.Button;
 import android.widget.TextView;
 import de.fahrgemeinschaft.R;
 
 public class PlaceImageButton extends BaseImageButton {
 
-    public TextView name;
+    public Button name;
     private TextView address;
 
     @Override
@@ -26,7 +27,7 @@ public class PlaceImageButton extends BaseImageButton {
 
     public PlaceImageButton(Context context) {
         super(context);
-        name = (TextView) findViewById(R.id.name);
+        name = (Button) findViewById(R.id.name);
         name.setId(ID--);
         address = (TextView) findViewById(R.id.address);
         address.setId(ID--);
@@ -34,7 +35,7 @@ public class PlaceImageButton extends BaseImageButton {
 
     public PlaceImageButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        name = (TextView) findViewById(R.id.name);
+        name = (Button) findViewById(R.id.name);
         name.setId(ID--);
         name.setText(getContext().getString(attrs.getAttributeResourceValue(
                 droid, "text", R.string.app_name)));

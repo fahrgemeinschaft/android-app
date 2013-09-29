@@ -100,6 +100,7 @@ public class PlaceListFragment extends ListFragment
             toggle.setImageResource(R.drawable.icn_search);
             if (getListView().getAdapter().getCount() == 0)
                 getActivity().finish();
+            getListView().requestFocus();
         }
         ((InputMethodManager) getActivity().getSystemService(Context
                 .INPUT_METHOD_SERVICE)).toggleSoftInput(0, 0);
