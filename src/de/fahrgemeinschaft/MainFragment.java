@@ -74,7 +74,6 @@ public class MainFragment extends SherlockFragment
             to.setPlace(ride.getTo());
         } else {
             ride = new Ride(getActivity());
-            ride.dep(getMorning(System.currentTimeMillis()));
         }
         when.setDate(ride.getDep());
     }
@@ -187,15 +186,4 @@ public class MainFragment extends SherlockFragment
         outState.putParcelable("ride", ride);
         super.onSaveInstanceState(outState);
     }
-
-    public static long getMorning(long dep) {
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(dep);
-        c.set(Calendar.HOUR_OF_DAY, 0); // reset
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        c.set(Calendar.MILLISECOND, 0);
-        return c.getTimeInMillis();
-    }
-
 }

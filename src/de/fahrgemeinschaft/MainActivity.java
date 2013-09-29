@@ -7,6 +7,8 @@
 
 package de.fahrgemeinschaft;
 
+import java.util.Calendar;
+
 import org.teleportr.ConnectorService;
 import org.teleportr.Ride;
 
@@ -117,6 +119,29 @@ public class MainActivity extends BaseActivity
         startService(new Intent(this, ConnectorService.class)
                 .setAction(ConnectorService.SEARCH));
         results.load(main.ride.toUri(), SEARCH);
+    }
+
+
+
+    public static long getMorningTime(long dep) {
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(dep);
+        c.set(Calendar.HOUR_OF_DAY, 0); // reset
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        return c.getTimeInMillis();
+    }
+
+    public static long getNowTime(long dep) {
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(dep);
+        Calendar now = Calendar.getInstance();
+        now.set(Calendar.SECOND, 0);
+        now.set(Calendar.MILLISECOND, 0);
+        now.set(Calendar.DAY_OF_YEAR, c.get(Calendar.DAY_OF_YEAR));
+        now.set(Calendar.YEAR, c.get(Calendar.YEAR));
+        return now.getTimeInMillis();
     }
 
 
