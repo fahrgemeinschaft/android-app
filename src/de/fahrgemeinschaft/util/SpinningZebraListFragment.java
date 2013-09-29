@@ -34,6 +34,7 @@ public abstract class SpinningZebraListFragment
 
     private static final String ID = "id";
     private static final String URI = "uri";
+    private static final String SPIN = "spinning_enabled";
 
     abstract public void bindListItemView(View view, Cursor cursor);
 
@@ -138,6 +139,7 @@ public abstract class SpinningZebraListFragment
         stopSpinning("click here");
         if (state != null) {
             code = state.getInt(ID);
+            setSpinningEnabled(state.getBoolean(SPIN));
             uri = (Uri) (state.getParcelable(URI));
             getActivity().getSupportLoaderManager()
                     .initLoader(code, state, this);
@@ -191,8 +193,9 @@ public abstract class SpinningZebraListFragment
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(URI, uri);
         outState.putInt(ID, code);
+        outState.putParcelable(URI, uri);
+        outState.putBoolean(SPIN, spinningEnabled);
     }
 
     public void startSpinning(String smallText, String largeText) {
