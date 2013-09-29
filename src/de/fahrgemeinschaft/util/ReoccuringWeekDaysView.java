@@ -114,7 +114,7 @@ public class ReoccuringWeekDaysView extends LinearLayout {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        EditRideActivity ediot = (EditRideActivity) getContext();
-        ediot.f2.setRide(ediot.ride);
+        EditRideActivity edit = (EditRideActivity) getContext();
+        edit.f2.setRide(edit.ride);
     }
 }

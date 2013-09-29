@@ -139,11 +139,9 @@ public abstract class SpinningZebraListFragment
         if (state != null) {
             code = state.getInt(ID);
             uri = (Uri) (state.getParcelable(URI));
-            System.out.println("init loader");
             getActivity().getSupportLoaderManager()
                     .initLoader(code, state, this);
         } else if (uri != null) {
-            System.out.println("restart loader");
             getActivity().getSupportLoaderManager()
                     .restartLoader(code, state, this);
         }
