@@ -84,6 +84,7 @@
     <string name="reoccurring">regelmäßig</string>
     <string name="member_since">Dabei seit: %1$s</string>
     <string name="last_login">Letzter Login: %1$s</string>
+    <string name="no_comment">kein Beschreibungstext angegeben</string>
 
     <string name="visibility">Sichtbarkeit</string>
     <string-array name="visibility">

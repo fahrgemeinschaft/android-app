@@ -125,6 +125,7 @@
                 android:background="@color/almost_medium_green"
                 android:padding="@dimen/medium"
                 android:singleLine="false"
+                android:hint="@string/no_comment"
                 android:textColor="@color/opacity_black" />
 
             <de.fahrgemeinschaft.util.ReoccuringWeekDaysView

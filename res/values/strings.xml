@@ -85,6 +85,7 @@
     <string name="reoccurring">reoccurring</string>
     <string name="member_since">Member since %1$s</string>
     <string name="last_login">Last login %1$s</string>
+    <string name="no_comment">no Comment available</string>
 
     <string name="visibility">Visibility</string>
     <string-array name="visibility">
