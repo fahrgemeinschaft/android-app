@@ -16,8 +16,11 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,9 +35,11 @@ import com.actionbarsherlock.app.SherlockFragment;
 
 import de.fahrgemeinschaft.util.DateImageButton;
 import de.fahrgemeinschaft.util.PlaceImageButton;
+import de.fahrgemeinschaft.util.WebActivity;
 
 public class MainFragment extends SherlockFragment
-        implements OnClickListener, OnDateSetListener {
+        implements OnClickListener, 
+        OnDateSetListener, OnSharedPreferenceChangeListener {
 
     public static final Uri PLACES_URI
             = Uri.parse("content://de.fahrgemeinschaft/places");
@@ -45,6 +50,7 @@ public class MainFragment extends SherlockFragment
     private PlaceImageButton from;
     private PlaceImageButton to;
     public Ride ride;
+    private SharedPreferences prefs;
 
     @Override
     public View onCreateView(final LayoutInflater lI, ViewGroup p, Bundle b) {
@@ -53,6 +59,7 @@ public class MainFragment extends SherlockFragment
 
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
+        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         from = (PlaceImageButton) v.findViewById(R.id.btn_autocomplete_from);
         from.name.setOnClickListener(this);
         from.icon.setOnClickListener(this);
@@ -67,6 +74,9 @@ public class MainFragment extends SherlockFragment
         v.findViewById(R.id.btn_selberfahren)
             .setOnClickListener((OnClickListener) getActivity());
 
+        prefs.registerOnSharedPreferenceChangeListener(this);
+        prefs.edit().putBoolean("paywahl", true).commit();
+
         if (savedInstanceState != null) {
             ride = savedInstanceState.getParcelable("ride");
             ride.setContext(getActivity());
@@ -76,6 +86,21 @@ public class MainFragment extends SherlockFragment
             ride = new Ride(getActivity());
         }
         when.setDate(ride.getDep());
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+        if (key.equals("paywahl")) {
+            if (prefs.contains("paywahl")) {
+                getActivity().startActivity(
+                        new Intent(getActivity(), WebActivity.class)
+                        .setData(Uri.parse("http://www.sonnenstreifen.de/kunden/fahrgemeinschaft/spendenstand.php")));
+                getActivity().overridePendingTransition(
+                        R.anim.do_nix, R.anim.slide_in_top);
+            } else {
+
+            }
+        }
     }
 
     @Override
@@ -109,6 +134,7 @@ public class MainFragment extends SherlockFragment
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
+            prefs.edit().putBoolean("paywahl", false).commit();
             new DatePickerDialog(getActivity(), this, year, month, day).show();
         }
     }
