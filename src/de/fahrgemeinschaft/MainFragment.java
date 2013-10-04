@@ -147,6 +147,7 @@ public class MainFragment extends SherlockFragment
     }
 
     private void animatePulse(final View view) {
+        final int padding = view.getPaddingLeft();
         Animation fade_in = new AlphaAnimation(0.3f, 1f);
         fade_in.setAnimationListener(new AnimationListener() {
 
@@ -171,6 +172,7 @@ public class MainFragment extends SherlockFragment
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         view.setBackgroundResource(R.drawable.btn_white);
+                        view.setPadding(padding, 0, 0, 0);
                     }
                 });
                 fade_out.setDuration(1400);

@@ -32,9 +32,9 @@
         android:paddingLeft="@dimen/large"
         android:paddingRight="@dimen/xlarge"
         android:singleLine="true"
-        android:textSize="13sp"
         android:textColor="@color/darker_green_translucent"
-        tools:ignore="SmallSp" />
+        android:textSize="13sp"
+        tools:ignore="SmallSp,SmallSp" />
 
     <ImageButton
         android:id="@+id/icon"
