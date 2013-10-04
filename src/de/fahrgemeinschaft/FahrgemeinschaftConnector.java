@@ -54,6 +54,8 @@ public class FahrgemeinschaftConnector extends Connector {
     private static final String AUTHKEY = "authkey";
     private static final String AUTH_KEY = "AuthKey";
 
+    public static String USER_AGENT = "Android-App";
+
     private static final String FAHRGEMEINSCHAFT_DE
             = "http://service.fahrgemeinschaft.de";
     public String endpoint =  FAHRGEMEINSCHAFT_DE;
@@ -67,11 +69,13 @@ public class FahrgemeinschaftConnector extends Connector {
         "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
     };
 
+
     @Override
     public String authenticate(String credential) throws Exception {
         System.out.println("refreshing authtoken");
         HttpURLConnection post = (HttpURLConnection)
                 new URL(endpoint + SESSION).openConnection();
+        post.setRequestProperty("User-Agent", USER_AGENT);
         post.setRequestProperty(APIKEY, Secret.APIKEY);
         post.setDoOutput(true);
         post.getOutputStream().write(new JSONObject()
@@ -101,6 +105,7 @@ public class FahrgemeinschaftConnector extends Connector {
     private static final String SEARCH_ORIGIN = "?searchOrigin=";
     private static final String TOLERANCE_RADIUS = "ToleranceRadius";
     private static final String SEARCH_DESTINATION = "&searchDestination=";
+    private static final String ONLY_DESTINATION = "?searchDestination=";
     private static final String RESULTS = "results";
     private static final String REOCCUR = "Reoccur";
     private static final String STARTDATE = "Startdate";
@@ -110,32 +115,41 @@ public class FahrgemeinschaftConnector extends Connector {
     @Override
     public long search(Ride query) throws Exception {
         HttpURLConnection get;
+        StringBuffer url = new StringBuffer().append(endpoint).append(TRIP);
         if (query == null) { // myrides
             get = (HttpURLConnection) new URL(endpoint + TRIP).openConnection();
         } else {
-            JSONObject from_json = new JSONObject();
-            JSONObject to_json = new JSONObject();
             startDate = df.format(query.getDep());
             try {
-                from_json.put(LONGITUDE, query.getFrom().getLng());
-                from_json.put(LATITUDE, query.getFrom().getLat());
-                from_json.put(STARTDATE, df.format(query.getDep()));
-                from_json.put(REOCCUR, JSONObject.NULL);
-                from_json.put(TOLERANCE_RADIUS, get(RADIUS_FROM));
+                if (query.getFrom() != null) {
+                    JSONObject from_json = new JSONObject();
+                    from_json.put(LONGITUDE, query.getFrom().getLng());
+                    from_json.put(LATITUDE, query.getFrom().getLat());
+                    from_json.put(TOLERANCE_RADIUS, get(RADIUS_FROM));
+                    from_json.put(STARTDATE, df.format(query.getDep()));
+                    from_json.put(REOCCUR, JSONObject.NULL);
+                    url.append(SEARCH_ORIGIN).append(from_json);
+                }
+                if (query.getTo() != null) {
+                    JSONObject to_json = new JSONObject();
+                    to_json.put(LONGITUDE, query.getTo().getLng());
+                    to_json.put(LATITUDE, query.getTo().getLat());
+                    to_json.put(TOLERANCE_RADIUS, get(RADIUS_TO));
+                    if (query.getFrom() == null) {
+                        to_json.put(STARTDATE, df.format(query.getDep()));
+                        url.append(ONLY_DESTINATION).append(to_json);
+                    } else {
+                        url.append(SEARCH_DESTINATION).append(to_json);
+                    }
+                }
                 // place.put("Starttime", JSONObject.NULL);
-                to_json.put(LONGITUDE, query.getTo().getLng());
-                to_json.put(LATITUDE, query.getTo().getLat());
-                to_json.put(TOLERANCE_RADIUS, get(RADIUS_TO));
                 // place.put("ToleranceDays", "3");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            get = (HttpURLConnection) new URL(new StringBuffer()
-                    .append(endpoint).append(TRIP)
-                    .append(SEARCH_ORIGIN).append(from_json)
-                    .append(SEARCH_DESTINATION).append(to_json)
-                    .toString()).openConnection();
+            get = (HttpURLConnection) new URL(url.toString()).openConnection();
         }
+        get.setRequestProperty("User-Agent", USER_AGENT);
         get.setRequestProperty(APIKEY, Secret.APIKEY);
         if (getAuth() != null)
             get.setRequestProperty(AUTHKEY, getAuth());
@@ -333,6 +347,7 @@ public class FahrgemeinschaftConnector extends Connector {
                     .append(offer.getRef()).toString()).openConnection();
             post.setRequestMethod(PUT);
         }
+        post.setRequestProperty("User-Agent", USER_AGENT);
         post.setRequestProperty(APIKEY, Secret.APIKEY);
         if (getAuth() != null)
             post.setRequestProperty(AUTHKEY, getAuth());
