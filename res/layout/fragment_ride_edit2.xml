@@ -23,6 +23,7 @@
 
         <de.fahrgemeinschaft.util.DateImageButton
             android:id="@+id/date"
+            android:layout_height="@dimen/large_icn"
             android:layout_width="match_parent"
             android:src="@drawable/icn_datepicker"
             android:text="@string/date" />
@@ -31,6 +32,7 @@
 
     <de.fahrgemeinschaft.util.DateImageButton
         android:id="@+id/time"
+        android:layout_height="@dimen/large_icn"
         android:layout_width="match_parent"
         android:layout_marginTop="@dimen/medium"
         android:src="@drawable/icn_timepicker"
