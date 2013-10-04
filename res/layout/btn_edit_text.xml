@@ -16,7 +16,7 @@
         android:background="@drawable/btn_white"
         android:imeOptions="flagNoExtractUi"
         android:paddingLeft="16dp"
-        android:paddingRight="@dimen/xlarge"
+        android:layout_marginRight="@dimen/large_icn"
         style="@style/place_pick_btn" />
 
     <ImageButton
