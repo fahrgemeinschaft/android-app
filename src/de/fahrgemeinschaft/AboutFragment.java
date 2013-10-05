@@ -44,17 +44,17 @@ public class AboutFragment extends SherlockFragment implements OnClickListener {
         v.findViewById(R.id.teleportr).setOnClickListener(this);
         v.findViewById(R.id.volley).setOnClickListener(this);
         v.findViewById(R.id.sonnenstreifen_logo).setOnClickListener(this);
+        v.findViewById(R.id.subphisticated_logo).setOnClickListener(this);
         v.findViewById(R.id.iconmonstr).setOnClickListener(this);
         ((TextView) v.findViewById(R.id.iconmonstr)).setText(Html.fromHtml(
                 "most icons by<font color=#D0E987> iconmonstr</font>"));
         try {
-            ((TextView)v.findViewById(R.id.version)).setText( "// " +
+            ((TextView)v.findViewById(R.id.version)).setText( "" +
                     getActivity().getPackageManager().getPackageInfo(
                             getActivity().getPackageName(), 0).versionName);
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         }
-        v.findViewById(R.id.subphisticated_logo).setOnClickListener(this);
         v.findViewById(R.id.git_url).setOnClickListener(this);
     }
 
@@ -94,7 +94,7 @@ public class AboutFragment extends SherlockFragment implements OnClickListener {
             openBrowser("http://iconmonstr.com");
             break;
         case R.id.subphisticated_logo:
-            openBrowser("http://subphisticated.com");
+            sendMail("fg@subphisticated.com");
             break;
         }
     }
