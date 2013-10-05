@@ -222,6 +222,7 @@ public class FahrgemeinschaftConnector extends Connector {
     private static final String ROUTING_INDEX = "RoutingIndex";
     
 
+    @SuppressWarnings("deprecation")
     private Ride parseRide(JSONObject json)  throws JSONException {
 
         Ride ride = new Ride().type(Ride.OFFER).mode(Mode.CAR);
@@ -270,9 +271,21 @@ public class FahrgemeinschaftConnector extends Connector {
             ride.type(TYPE_OFFER_REOCCURING);
         }
         if (isMyride) {
-            ride.dep(parseDate(json.getString(STARTDATE) + time));
+            if (time.equals(EMPTY)) {
+                Date date = parseDate(json.getString(STARTDATE) + NOTIME);
+                date.setSeconds(59);
+                ride.dep(date);
+            } else {
+                ride.dep(parseDate(json.getString(STARTDATE) + time));
+            }
         } else {
-            ride.dep(parseDate(startDate + time));
+            if (time.equals(EMPTY)) {
+                Date date = parseDate(startDate + NOTIME);
+                date.setSeconds(59);
+                ride.dep(date);
+            } else {
+                ride.dep(parseDate(startDate + time));
+            }
         }
 
         JSONArray routings = json.getJSONArray(ROUTINGS);
@@ -312,13 +325,13 @@ public class FahrgemeinschaftConnector extends Connector {
 
     private String parseTime(JSONObject json) throws JSONException {
 //              new Date(Long.parseLong(ride.getString("Enterdate"));
-        String time = NOTIME;
+        String time = EMPTY;
         if (!json.isNull(STARTTIME)) {
             time = json.getString(STARTTIME);
             if (time.length() == 3)
                 time = ZERO + time;
             if (time.length() != 4)
-                time = NOTIME;
+                time = EMPTY;
         }
         return time;
     }
