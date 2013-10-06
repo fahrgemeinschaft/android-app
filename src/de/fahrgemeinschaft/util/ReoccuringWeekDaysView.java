@@ -25,6 +25,7 @@ import de.fahrgemeinschaft.R;
 
 public class ReoccuringWeekDaysView extends LinearLayout {
 
+    private static final String CLICKABLE = "clickable";
     static final String android = "http://schemas.android.com/apk/res/android";
     private JSONObject details;
     private boolean clickable;
@@ -35,7 +36,7 @@ public class ReoccuringWeekDaysView extends LinearLayout {
 
     public ReoccuringWeekDaysView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        clickable = attrs.getAttributeBooleanValue(android, "clickable", true);
+        clickable = attrs.getAttributeBooleanValue(android, CLICKABLE, true);
         String[] weekDays = new DateFormatSymbols().getShortWeekdays();
         for (int i = 2; i <= weekDays.length; i++) {
             TextView day = makeRecurringDayButton(getContext());
@@ -49,7 +50,8 @@ public class ReoccuringWeekDaysView extends LinearLayout {
         this.details = details;
         try {
             reoccuring = false;
-            JSONObject days = details.getJSONObject("Reoccur");
+            JSONObject days = details.getJSONObject(
+                    FahrgemeinschaftConnector.REOCCUR);
             for (int i = 0; i < 7; i++) {
                 boolean selected = days.getBoolean(
                         FahrgemeinschaftConnector.DAYS[i]);
@@ -110,7 +112,7 @@ public class ReoccuringWeekDaysView extends LinearLayout {
                     reoccuring = true;
                 } else days.put(FahrgemeinschaftConnector.DAYS[i], false);
             }
-            details.put("Reoccur", days);
+            details.put(FahrgemeinschaftConnector.REOCCUR, days);
         } catch (JSONException e) {
             e.printStackTrace();
         }

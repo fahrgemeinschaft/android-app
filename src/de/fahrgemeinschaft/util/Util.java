@@ -28,10 +28,18 @@ import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents.Insert;
 import android.view.View;
 import android.widget.Toast;
+import de.fahrgemeinschaft.ContactProvider.CONTACT;
+import de.fahrgemeinschaft.FahrgemeinschaftConnector;
 import de.fahrgemeinschaft.MainActivity;
 import de.fahrgemeinschaft.R;
 
 public class Util {
+
+    private static final String MAILTO = "mailto:";
+    private static final String SMS = "sms:";
+    private static final String TEL = "tel:";
+
+
 
     public static long getNextDayMorning(long dep) {
         Calendar c = Calendar.getInstance();
@@ -63,8 +71,8 @@ public class Util {
                     .setAction(ConnectorService.PUBLISH));
             return true;
         case R.id.edit:
-            ctx.startActivity(new Intent(Intent.ACTION_EDIT, Uri.parse(
-                    "content://de.fahrgemeinschaft/rides/" + ride.getId())));
+            ctx.startActivity(new Intent(Intent.ACTION_EDIT,
+                    RidesProvider.getRideUri(ctx, ride.getId())));
             return true;
         case R.id.duplicate:
             ctx.startActivity(new Intent(Intent.ACTION_EDIT, ride.duplicate()));
@@ -83,8 +91,8 @@ public class Util {
             return true;
         case R.id.show_website:
             ctx.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
-                    "http://www.fahrgemeinschaft.de/" +
-                    "tripdetails.php?trip=" + ride.getRef()
+                    FahrgemeinschaftConnector.FAHRGEMEINSCHAFT_DE
+                    + "/tripdetails.php?trip=" + ride.getRef()
                     )).setClass(ctx, WebActivity.class));
             return true;
         case R.id.share:
@@ -95,8 +103,8 @@ public class Util {
                     "From " + ride.getFrom().getName()
                     + " to " + ride.getTo().getName());
             share.putExtra(Intent.EXTRA_TEXT, 
-                    "http://www.fahrgemeinschaft.de/" +
-                    "tripdetails.php?trip=" + ride.getRef());
+                    FahrgemeinschaftConnector.FAHRGEMEINSCHAFT_DE
+                    + "/tripdetails.php?trip=" + ride.getRef());
             ctx.startActivity(Intent.createChooser(share,
                     ctx.getString(R.string.share)));
             return true;
@@ -106,16 +114,14 @@ public class Util {
 
     public static boolean isVisible(String key, JSONObject details) {
         try {
-            return details.getJSONObject("Privacy").getInt(key) == 1;
+            return details.getJSONObject(
+                    FahrgemeinschaftConnector.PRIVACY)
+                            .getInt(key) == 1;
         } catch (JSONException e) {
             e.printStackTrace();
             return false;
         }
     }
-
-    private static final String EMAIL = "Email";
-    private static final String MOBILE = "Mobile";
-    private static final String LANDLINE = "Landline";
 
     public static void openContactOptionsChooserDialog(Context ctx, Cursor c) {
         String route = c.getString(COLUMNS.FROM_NAME)
@@ -140,21 +146,21 @@ public class Util {
         String dingens;
         try {
             JSONObject privacy = details.getJSONObject("Privacy");
-            if (details.has(MOBILE)) {
-                dingens = details.getString(MOBILE);
+            if (details.has(CONTACT.MOBILE)) {
+                dingens = details.getString(CONTACT.MOBILE);
                 contact.putExtra(Insert.PHONE, dingens);
                 intents.add(labeledIntent(callIntent(dingens),
                         R.drawable.icn_contact_handy, dingens, ctx));
                 intents.add(labeledIntent(smsIntent(dingens, route),
                         R.drawable.icn_contact_sms, dingens, ctx));
-            } else if (privacy.getInt(MOBILE) == 4) { // members
+            } else if (privacy.getInt(CONTACT.MOBILE) == 4) { // members
                 intents.add(labeledIntent(profileIntent(ctx),
                         R.drawable.icn_contact_handy,
                         ctx.getString(R.string.login_required), ctx));
                 intents.add(labeledIntent(profileIntent(ctx),
                         R.drawable.icn_contact_sms,
                         ctx.getString(R.string.login_required), ctx));
-            } else if (privacy.getInt(MOBILE) == 0) { // request
+            } else if (privacy.getInt(CONTACT.MOBILE) == 0) { // request
                 intents.add(labeledIntent(web,
                         R.drawable.icn_contact_handy,
                         ctx.getString(R.string.request_contact), ctx));
@@ -164,32 +170,32 @@ public class Util {
                 Toast.makeText(ctx, ctx.getString(R.string.why_request),
                         Toast.LENGTH_LONG).show();
             }
-            if (details.has(LANDLINE)) {
-                dingens = details.getString(LANDLINE);
+            if (details.has(CONTACT.LANDLINE)) {
+                dingens = details.getString(CONTACT.LANDLINE);
                 contact.putExtra(Insert.SECONDARY_PHONE, dingens);
                 intents.add(labeledIntent(callIntent(dingens),
                         R.drawable.icn_contact_phone, dingens, ctx));
-            } else if (privacy.getInt(LANDLINE) == 4) { // members
+            } else if (privacy.getInt(CONTACT.LANDLINE) == 4) { // members
                 intents.add(labeledIntent(profileIntent(ctx),
                         R.drawable.icn_contact_phone,
                         ctx.getString(R.string.login_required), ctx));
-            } else if (privacy.getInt(LANDLINE) == 0) { // request
+            } else if (privacy.getInt(CONTACT.LANDLINE) == 0) { // request
                 intents.add(labeledIntent(web,
                         R.drawable.icn_contact_phone,
                         ctx.getString(R.string.request_contact), ctx));
                 Toast.makeText(ctx, ctx.getString(R.string.why_request),
                         Toast.LENGTH_LONG).show();
             }
-            if (details.has(EMAIL)) { // 'm'
-                dingens = details.getString(EMAIL);
+            if (details.has(CONTACT.EMAIL)) { // 'm'
+                dingens = details.getString(CONTACT.EMAIL);
                 contact.putExtra(Insert.EMAIL, dingens);
                 intents.add(labeledIntent(mailIntent(dingens, route),
                         R.drawable.icn_contact_email, dingens, ctx));
-            } else if (privacy.getInt(EMAIL) == 4) { // members
+            } else if (privacy.getInt(CONTACT.EMAIL) == 4) { // members
                 intents.add(labeledIntent(profileIntent(ctx),
                         R.drawable.icn_contact_email,
                         ctx.getString(R.string.login_required), ctx));
-            } else if (privacy.getInt(EMAIL) == 0) { // request
+            } else if (privacy.getInt(CONTACT.EMAIL) == 0) { // request
                 intents.add(labeledIntent(web,
                         R.drawable.icn_contact_email,
                         ctx.getString(R.string.request_contact), ctx));
@@ -229,20 +235,20 @@ public class Util {
     }
 
     private static Intent callIntent(String num) {
-        Intent call = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + num));
+        Intent call = new Intent(Intent.ACTION_DIAL, Uri.parse(TEL + num));
         return call;
     }
 
     private static Intent smsIntent(String num, String text) {
-        Intent sms = new Intent(Intent.ACTION_SENDTO, Uri.parse("sms:" + num));
-        sms.putExtra("sms_body", text + "\n noch Platz?");
+        Intent sms = new Intent(Intent.ACTION_SENDTO, Uri.parse(SMS + num));
+        sms.putExtra("sms_body", "noch Platz? \n" + text);
         sms.addCategory(Intent.CATEGORY_DEFAULT);
 //        sms.setType("vnd.android-dir/mms-sms");
         return sms;
     }
 
     private static Intent mailIntent(String a, String text) {
-        Intent mail = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"+ a));
+        Intent mail = new Intent(Intent.ACTION_SENDTO, Uri.parse(MAILTO+ a));
         mail.putExtra(Intent.EXTRA_TEXT, text + "\n noch Platz frei?");
         mail.putExtra(Intent.EXTRA_SUBJECT, "Fahrgemeinschaft");
 //        mail.setType("plain/text");

@@ -32,6 +32,7 @@ public abstract class SpinningZebraListFragment
             extends SherlockListFragment
             implements LoaderCallbacks<Cursor> {
 
+    private static final String EMPTY = "";
     private static final String ID = "id";
     private static final String URI = "uri";
     private static final String SPIN = "spinning_enabled";
@@ -136,7 +137,7 @@ public abstract class SpinningZebraListFragment
         rotate.setDuration(600);
         rotate.setRepeatMode(Animation.RESTART);
         rotate.setRepeatCount(Animation.INFINITE);
-        stopSpinning("click here");
+        stopSpinning(getString(R.string.search_continue));
         if (state != null) {
             code = state.getInt(ID);
             setSpinningEnabled(state.getBoolean(SPIN));
@@ -207,7 +208,7 @@ public abstract class SpinningZebraListFragment
 
     public void stopSpinning(String smallText) {
         this.smallText = smallText;
-        this.largeText = "";
+        this.largeText = EMPTY;
         spinning = false;
         notifyDatasetChanged();
     }

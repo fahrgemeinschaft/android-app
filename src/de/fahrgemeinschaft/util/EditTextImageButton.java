@@ -28,9 +28,13 @@ import de.fahrgemeinschaft.R;
 public class EditTextImageButton extends BaseImageButton
                 implements TextWatcher, OnFocusChangeListener, OnClickListener {
 
-    protected String key;
+    private static final String Q = "q";
+    private static final String EMPTY = "";
+    private static final String INPUT_TYPE = "inputType";
+    private static final String HINT = "hint";
     public AutoCompleteTextView text;
     private TextListener textListener;
+    protected String key;
 
     @Override
     protected int inflate() {
@@ -43,9 +47,9 @@ public class EditTextImageButton extends BaseImageButton
         text.setThreshold(1);
         text.setId(ID--);
         text.setHint(getContext().getString(attrs.getAttributeResourceValue(
-                droid, "hint", R.string.app_name)));
+                droid, HINT, R.string.app_name)));
         text.setInputType((attrs.getAttributeIntValue(
-                droid, "inputType", InputType.TYPE_CLASS_TEXT)));
+                droid, INPUT_TYPE, InputType.TYPE_CLASS_TEXT)));
         text.addTextChangedListener(this);
         Util.fixStreifenhoernchen(text);
         text.setSelectAllOnFocus(true);
@@ -109,10 +113,10 @@ public class EditTextImageButton extends BaseImageButton
 
             @Override
             public Cursor runQueryOnBackgroundThread(CharSequence constraint) {
-                if (constraint == null) constraint = "";
+                if (constraint == null) constraint = EMPTY;
                 return getContext().getContentResolver()
                         .query(uri.buildUpon().appendQueryParameter(
-                                "q", constraint.toString()).build(),
+                                Q, constraint.toString()).build(),
                                 null, null, null, null);
             }
 

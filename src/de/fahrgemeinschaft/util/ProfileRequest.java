@@ -17,15 +17,20 @@ import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.ImageLoader.ImageCache;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import de.fahrgemeinschaft.FahrgemeinschaftConnector;
 import de.fahrgemeinschaft.Secret;
 
 public class ProfileRequest extends JsonObjectRequest {
 
+    private static final String E_TAG = "ETag";
+    private static final String DATE = "Date";
     private HashMap<String, String> headers;
+    static final String PROFILE_URL =
+            FahrgemeinschaftConnector.FAHRGEMEINSCHAFT_DE + "/user/";
 
     public ProfileRequest(String userid, Listener<JSONObject> listener,
             ErrorListener errorListener) {
-        super(Method.GET, "http://service.fahrgemeinschaft.de/user/" + userid,
+        super(Method.GET, PROFILE_URL + userid,
                 null, listener, errorListener);
         setShouldCache(Boolean.TRUE);
     }
@@ -44,7 +49,7 @@ public class ProfileRequest extends JsonObjectRequest {
     public Map<String, String> headers() {
         if (headers == null) {
             headers = new HashMap<String, String>();
-            headers.put("apikey", Secret.APIKEY);
+            headers.put(FahrgemeinschaftConnector.APIKEY, Secret.APIKEY);
         }
         return headers;
     }
@@ -60,6 +65,7 @@ public class ProfileRequest extends JsonObjectRequest {
             return mImageCache.get(key);
         }
     };
+
     private static final LruCache<String, Bitmap> mImageCache
             = new LruCache<String, Bitmap>(20);
 
@@ -69,11 +75,11 @@ public class ProfileRequest extends JsonObjectRequest {
         long serverDate = 0;
         String serverEtag = null;
         String headerValue;
-        headerValue = headers.get("Date");
+        headerValue = headers.get(DATE);
         if (headerValue != null) {
             // serverDate = parseDateAsEpoch(headerValue);
         }
-        serverEtag = headers.get("ETag");
+        serverEtag = headers.get(E_TAG);
         final long cacheHitButRefreshed = 3 * 60 * 1000;
         // in 3 minutes cache will be hit, but also refreshed on background
         final long cacheExpired = 24 * 60 * 60 * 1000;

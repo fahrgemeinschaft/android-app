@@ -50,7 +50,6 @@
     <string name="mode_car">Car</string>
     <string name="mode_rail">Train</string>
     <string name="price">Price</string>
-    <string name="currency">€</string>
     <string name="comment">Comments for your Ride</string>
 
     <string name="username">eMail</string>

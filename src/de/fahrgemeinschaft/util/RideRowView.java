@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 public class RideRowView extends LinearLayout {
 
+    private static final String EUR = "€";
+    private static final String EMPTY = "";
     private static final int MINUTE = 60000;
     private static final long NOTIME = 59000;
     private static final SimpleDateFormat dayf =
@@ -55,20 +57,20 @@ public class RideRowView extends LinearLayout {
         if (cursor.getInt(COLUMNS.TYPE) ==
                 FahrgemeinschaftConnector.TYPE_OFFER_REOCCURING) {
             day.setText(R.string.reoccurring);
-            date.setText("");
+            date.setText(EMPTY);
         } else {
             day.setText(dayf.format(dep));
             date.setText(datef.format(dep));
         }
         System.out.println(timestamp % MINUTE);
         if (timestamp % MINUTE == NOTIME) {
-            time.setText("");
+            time.setText(EMPTY);
         } else {
             time.setText(timef.format(dep));
         }
         if (cursor.getInt(COLUMNS.PRICE) != -1) {
             price.setVisibility(View.VISIBLE);
-            price.setText(cursor.getInt(COLUMNS.PRICE) / 100 + "€");
+            price.setText(cursor.getInt(COLUMNS.PRICE) / 100 + EUR);
         } else {
             price.setVisibility(View.INVISIBLE);
         }

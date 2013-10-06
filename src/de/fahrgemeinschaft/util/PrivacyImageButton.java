@@ -31,7 +31,7 @@ public class PrivacyImageButton extends EditTextImageButton
     public PrivacyImageButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         setImageResource(attrs.getAttributeResourceValue(
-                android, "src", R.drawable.icn_dropdown));
+                android, SRC, R.drawable.icn_dropdown));
         icon.setOnClickListener(this);
     }
 

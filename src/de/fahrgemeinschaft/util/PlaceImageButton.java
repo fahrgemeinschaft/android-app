@@ -17,8 +17,8 @@ import de.fahrgemeinschaft.R;
 
 public class PlaceImageButton extends BaseImageButton {
 
-    public Button name;
     private TextView address;
+    public Button name;
 
     @Override
     protected int inflate() {
@@ -38,7 +38,7 @@ public class PlaceImageButton extends BaseImageButton {
         name = (Button) findViewById(R.id.name);
         name.setId(ID--);
         name.setText(getContext().getString(attrs.getAttributeResourceValue(
-                droid, "text", R.string.app_name)));
+                droid, TEXT, R.string.app_name)));
         address = (TextView) findViewById(R.id.address);
         address.setId(ID--);
     }
