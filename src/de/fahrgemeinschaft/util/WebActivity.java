@@ -13,7 +13,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
@@ -176,19 +175,6 @@ public class WebActivity extends SherlockActivity {
             }
         }
     };
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (webView.canGoBack()) {
-                webView.goBack();
-                return true;
-            }
-        }
-        overridePendingTransition(
-                R.anim.do_nix, R.anim.slide_out_bottom);
-        return super.onKeyUp(keyCode, event);
-    }
 
     @Override
     public void onBackPressed() {
