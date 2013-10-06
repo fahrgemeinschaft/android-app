@@ -7,8 +7,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.fahrgemeinschaft"
-    android:versionCode="63"
-    android:versionName="beta 0.9.8" >
+    android:versionCode="64"
+    android:versionName="beta 0.9.9" >
 
 
     <uses-sdk
