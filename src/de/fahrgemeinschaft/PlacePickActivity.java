@@ -16,6 +16,7 @@ import de.fahrgemeinschaft.PlaceListFragment.PlacePickListener;
 public class PlacePickActivity extends FragmentActivity implements
         PlacePickListener {
 
+    public static final String SHOW_TEXTFIELD = "show_textfield";
     private PlaceListFragment place_list;
 
     /** Called when the activity is first created. */
@@ -33,7 +34,7 @@ public class PlacePickActivity extends FragmentActivity implements
         place_list = (PlaceListFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.place_list);
 
-        if (getIntent().getBooleanExtra("show_textfield", false)) {
+        if (getIntent().getBooleanExtra(SHOW_TEXTFIELD, false)) {
             place_list.toggleSearchField();
         }
     }

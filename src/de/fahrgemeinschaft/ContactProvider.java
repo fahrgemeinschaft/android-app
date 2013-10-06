@@ -10,8 +10,9 @@ import android.net.Uri;
 
 public class ContactProvider extends ContentProvider {
 
-    private static final String AUTHORITY = "de.fahrgemeinschaft.private";
     private static final String TABLE = "contacts";
+    public static final String AUTHORITY = "de.fahrgemeinschaft.private";
+    public static final String URI = "content://" + AUTHORITY + "/contacts";
 
     public static final class CONTACT {
         public static final String USER = "user";
@@ -56,8 +57,8 @@ public class ContactProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         if (values.containsKey(CONTACT.PLATE) 
-                && values.getAsString(CONTACT.PLATE).equals("Bahn")) {
-            System.out.println("removed: " + values.getAsString(CONTACT.PLATE));
+                && values.getAsString(CONTACT.PLATE)
+                .equals(FahrgemeinschaftConnector.BAHN)) {
             values.remove(CONTACT.PLATE);
         }
         db.getWritableDatabase().insert(TABLE, null, values);

@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.teleportr.Ride;
+import org.teleportr.RidesProvider;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -21,7 +22,6 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -41,16 +41,15 @@ public class MainFragment extends SherlockFragment
         implements OnClickListener, 
         OnDateSetListener, OnSharedPreferenceChangeListener {
 
-    public static final Uri PLACES_URI
-            = Uri.parse("content://de.fahrgemeinschaft/places");
+    private static final String STATE = "ride";
     protected static final String TAG = "fahrgemeinschaft";
     private static final int FROM = 42;
     private static final int TO = 55;
+    private SharedPreferences prefs;
     private DateImageButton when;
     private PlaceImageButton from;
     private PlaceImageButton to;
     public Ride ride;
-    private SharedPreferences prefs;
 
     @Override
     public View onCreateView(final LayoutInflater lI, ViewGroup p, Bundle b) {
@@ -78,7 +77,7 @@ public class MainFragment extends SherlockFragment
         prefs.edit().putBoolean("paywahl", true).commit();
 
         if (savedInstanceState != null) {
-            ride = savedInstanceState.getParcelable("ride");
+            ride = savedInstanceState.getParcelable(STATE);
             ride.setContext(getActivity());
             from.setPlace(ride.getFrom());
             to.setPlace(ride.getTo());
@@ -107,24 +106,27 @@ public class MainFragment extends SherlockFragment
     public void onClick(View btn) {
         if (btn == from.name) {
             startActivityForResult(new Intent(Intent.ACTION_PICK,
-                    PLACES_URI).putExtra("show_textfield", true), FROM);
+                    RidesProvider.getPlacesUri(getActivity()))
+                    .putExtra(PlacePickActivity.SHOW_TEXTFIELD, true), FROM);
             getActivity().overridePendingTransition(
                     R.anim.slide_in_left, R.anim.do_nix);
         } else if (btn == from.icon) {
             startActivityForResult(new Intent(Intent.ACTION_PICK,
-                    PLACES_URI), FROM);
+                    RidesProvider.getPlacesUri(getActivity())), FROM);
             getActivity().overridePendingTransition(
                     R.anim.slide_in_left, R.anim.do_nix);
         } else if (btn == to.name) {
             startActivityForResult(new Intent(Intent.ACTION_PICK,
-                    PLACES_URI.buildUpon().appendQueryParameter("from_id",
+                    RidesProvider.getPlacesUri(getActivity())
+                    .buildUpon().appendQueryParameter(Ride.FROM_ID,
                             String.valueOf(ride.getFromId())).build())
-            .putExtra("show_textfield", true), TO);
+            .putExtra(PlacePickActivity.SHOW_TEXTFIELD, true), TO);
             getActivity().overridePendingTransition(
                     R.anim.slide_in_right, R.anim.do_nix);
         } else if (btn == to.icon) {
             startActivityForResult(new Intent(Intent.ACTION_PICK,
-                    PLACES_URI.buildUpon().appendQueryParameter("from_id",
+                    RidesProvider.getPlacesUri(getActivity())
+                    .buildUpon().appendQueryParameter(Ride.FROM_ID,
                             String.valueOf(ride.getFromId())).build()), TO);
             getActivity().overridePendingTransition(
                     R.anim.slide_in_right, R.anim.do_nix);
@@ -134,7 +136,6 @@ public class MainFragment extends SherlockFragment
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
-            prefs.edit().putBoolean("paywahl", false).commit();
             new DatePickerDialog(getActivity(), this, year, month, day).show();
         }
     }
@@ -142,7 +143,6 @@ public class MainFragment extends SherlockFragment
     @Override
     public void onActivityResult(int req, int res, final Intent intent) {
         if (res == Activity.RESULT_OK) {
-            Log.d(TAG, "selected " + intent.getData());
             switch (req) {
             case FROM:
                 animatePulse(from.name);
@@ -211,7 +211,7 @@ public class MainFragment extends SherlockFragment
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable("ride", ride);
+        outState.putParcelable(STATE, ride);
         super.onSaveInstanceState(outState);
     }
 }

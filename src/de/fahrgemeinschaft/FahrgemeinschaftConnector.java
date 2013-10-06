@@ -194,10 +194,13 @@ public class FahrgemeinschaftConnector extends Connector {
     private static final String TRIP_ID_WITH_SMALL_t = "tripID"; //wtf!
     private static final String TRIPTYPE = "Triptype";
 
-    private static final String EMAIL = "Email";
-    private static final String MOBILE = "Mobile";
-    private static final String LANDLINE = "Landline";
-    private static final String PLATE = "NumberPlate";
+    public static final String BAHN = "Bahn";
+    public static final String PRICE = "Price";
+    public static final String EMAIL = "Email";
+    public static final String MOBILE = "Mobile";
+    public static final String COMMENT = "Comment";
+    public static final String LANDLINE = "Landline";
+    public static final String PLATE = "NumberPlate";
     private static final String CONTACTMAIL = "Contactmail";
     private static final String CONTACTMOBILE = "Contactmobile";
     private static final String CONTACTLANDLINE = "Contactlandline";
@@ -206,10 +209,7 @@ public class FahrgemeinschaftConnector extends Connector {
     private static final String DESTINATION = "Destination";
     private static final String ORIGIN = "Origin";
     private static final String ROUTINGS = "Routings";
-    private static final String PRICE = "Price";
-    private static final String BAHN = "Bahn";
     private static final String RELEVANCE = "Relevance";
-    private static final String COMMENT = "Comment";
     private static final String DESCRIPTION = "Description";
     private static final String PRIVACY = "Privacy";
     private static final String PLACES = "Places";

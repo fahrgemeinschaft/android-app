@@ -38,11 +38,12 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 public class EditRideActivity extends BaseActivity
         implements LoaderCallbacks<Cursor>, OnClickListener {
 
+    private static final String EMPTY = "";
     private static final String RIDE = "ride";
-    public Ride ride;
     public EditRideFragment3 f3;
     public EditRideFragment2 f2;
     public EditRideFragment1 f1;
+    public Ride ride;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,7 +79,6 @@ public class EditRideActivity extends BaseActivity
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        System.out.println("got " + cursor.getCount());
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             ride = new Ride(cursor, this);
@@ -95,7 +95,8 @@ public class EditRideActivity extends BaseActivity
             f1.setRide(ride);
             f2.setRide(ride);
             f3.setRide(ride);
-            ((EditText)findViewById(R.id.comment)).setText(ride.get("Comment"));
+            ((EditText)findViewById(R.id.comment))
+                .setText(ride.get(FahrgemeinschaftConnector.COMMENT));
             long delta = ride.getDep() - System.currentTimeMillis();
             if (delta < -12 * 3600000) {
                 delta = delta % 86400000;
@@ -126,30 +127,30 @@ public class EditRideActivity extends BaseActivity
             Crouton.makeText(this, getString(R.string.incomplete), Style.INFO)
                 .show();
         } else {
-            ride.set("Comment", ((EditText) findViewById(
-                    R.id.comment)).getText().toString());
+            ride.set(FahrgemeinschaftConnector.COMMENT,
+                    ((EditText) findViewById(R.id.comment))
+                            .getText().toString());
             SharedPreferences prefs = PreferenceManager
                     .getDefaultSharedPreferences(this);
-            if (!prefs.contains("Email")) {
-                prefs.edit().putString("Email", ((PrivacyImageButton)
-                        findViewById(R.id.email)).text.getText().toString())
-                        .commit();
+            if (!prefs.contains(FahrgemeinschaftConnector.EMAIL)) {
+                prefs.edit().putString(FahrgemeinschaftConnector.EMAIL,
+                        ((PrivacyImageButton) findViewById(R.id.email))
+                                .text.getText().toString()).commit();
             }
             ride.marked().dirty().store(this);
             ContentValues cv = new ContentValues();
-            cv.put(CONTACT.USER, prefs.getString(CONTACT.USER, ""));
+            cv.put(CONTACT.USER, prefs.getString(CONTACT.USER, EMPTY));
             cv.put(CONTACT.EMAIL, ride.get(CONTACT.EMAIL));
             cv.put(CONTACT.MOBILE, ride.get(CONTACT.MOBILE));
             cv.put(CONTACT.LANDLINE, ride.get(CONTACT.LANDLINE));
             cv.put(CONTACT.PLATE, ride.get(CONTACT.PLATE));
-            getContentResolver().insert(Uri.parse(
-                    "content://de.fahrgemeinschaft.private/contacts"), cv);
+            getContentResolver().insert(Uri.parse(ContactProvider.URI), cv);
             this.getContentResolver().update(RidesProvider
                     .getRidesUri(this), null, null, null);
             startService(new Intent(this, ConnectorService.class)
                     .setAction(ConnectorService.PUBLISH));
-            Toast.makeText(this, getString(R.string.stored), Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(this, getString(R.string.stored),
+                    Toast.LENGTH_SHORT).show();
             overridePendingTransition(
                     R.anim.slide_in_top, R.anim.slide_out_bottom);
             finish();
@@ -158,8 +159,9 @@ public class EditRideActivity extends BaseActivity
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        ride.set("Comment", ((EditText) findViewById(
-                R.id.comment)).getText().toString());
+        ride.set(FahrgemeinschaftConnector.COMMENT,
+                ((EditText) findViewById(R.id.comment))
+                        .getText().toString());
         outState.putParcelable(RIDE, ride);
         super.onSaveInstanceState(outState);
     }

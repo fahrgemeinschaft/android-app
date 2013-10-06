@@ -46,6 +46,7 @@ public class BaseActivity extends SherlockFragmentActivity
        OnPageChangeListener, ServiceCallback<String>,
        ServiceConnection, OnBackStackChangedListener {
 
+    private static final String INIT_CONTACTS = "init_contacts";
     private static final String SUCCESS = " success.";
     private static final String FAIL = " fail: ";
     public MenuItem ic_profile;
@@ -229,7 +230,7 @@ public class BaseActivity extends SherlockFragmentActivity
         if (what.equals(ConnectorService.MYRIDES) && ic_myrides != null) {
             ic_myrides.setActionView(null);
             if (PreferenceManager.getDefaultSharedPreferences(this)
-                    .getBoolean("init_contacts", false)) {
+                    .getBoolean(INIT_CONTACTS, false)) {
                 new GetContactsFromMyridesTask().execute(new String[]{});
             }
         } else if (what.equals(ConnectorService.AUTH) & ic_profile != null) {
@@ -244,6 +245,8 @@ public class BaseActivity extends SherlockFragmentActivity
     }
 
     class GetContactsFromMyridesTask extends AsyncTask<String, String, String> {
+
+        private static final String EMPTY = "";
 
         @Override
         protected String doInBackground(String... params) {
@@ -263,7 +266,7 @@ public class BaseActivity extends SherlockFragmentActivity
                     }
                 }
                 PreferenceManager.getDefaultSharedPreferences(BaseActivity.this)
-                        .edit().remove("init_contacts").commit();
+                        .edit().remove(INIT_CONTACTS).commit();
                 Log.d(TAG, "got contacts from myrides");
             return null;
         }
@@ -280,9 +283,8 @@ public class BaseActivity extends SherlockFragmentActivity
                 cv.put(CONTACT.PLATE, details.getString(CONTACT.PLATE));
             cv.put(CONTACT.USER, PreferenceManager
                     .getDefaultSharedPreferences(BaseActivity.this)
-                    .getString(CONTACT.USER, ""));
-            getContentResolver().insert(Uri.parse(
-                    "content://de.fahrgemeinschaft.private/contacts"), cv);
+                    .getString(CONTACT.USER, EMPTY));
+            getContentResolver().insert(Uri.parse(ContactProvider.URI), cv);
         }
     }
 
