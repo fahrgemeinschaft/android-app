@@ -56,7 +56,7 @@ public class FahrgemeinschaftConnector extends Connector {
 
     public static String USER_AGENT = "Android-App";
 
-    private static final String FAHRGEMEINSCHAFT_DE
+    public static final String FAHRGEMEINSCHAFT_DE
             = "http://service.fahrgemeinschaft.de";
     public String endpoint =  FAHRGEMEINSCHAFT_DE;
 
@@ -100,8 +100,8 @@ public class FahrgemeinschaftConnector extends Connector {
         return auth.getString(AUTH_KEY);
     }
 
-    private static final String RADIUS_TO = "radius_to";
-    private static final String RADIUS_FROM = "radius_from";
+    public static final String RADIUS_TO = "radius_to";
+    public static final String RADIUS_FROM = "radius_from";
     private static final String SEARCH_ORIGIN = "?searchOrigin=";
     private static final String TOLERANCE_RADIUS = "ToleranceRadius";
     private static final String SEARCH_DESTINATION = "&searchDestination=";
@@ -199,6 +199,7 @@ public class FahrgemeinschaftConnector extends Connector {
     public static final String EMAIL = "Email";
     public static final String MOBILE = "Mobile";
     public static final String COMMENT = "Comment";
+    public static final String PRIVACY = "Privacy";
     public static final String LANDLINE = "Landline";
     public static final String PLATE = "NumberPlate";
     private static final String CONTACTMAIL = "Contactmail";
@@ -211,7 +212,6 @@ public class FahrgemeinschaftConnector extends Connector {
     private static final String ROUTINGS = "Routings";
     private static final String RELEVANCE = "Relevance";
     private static final String DESCRIPTION = "Description";
-    private static final String PRIVACY = "Privacy";
     private static final String PLACES = "Places";
     private static final String DE = "DE";
     private static final String GEO = "geo";

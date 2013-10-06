@@ -12,12 +12,11 @@ import java.util.List;
 import org.teleportr.Place;
 import org.teleportr.Ride;
 import org.teleportr.Ride.Mode;
+import org.teleportr.RidesProvider;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,12 +32,11 @@ import de.fahrgemeinschaft.util.PlaceImageButton;
 
 public class EditRideFragment1 extends SherlockFragment implements OnClickListener {
 
-    private static final String TAG = "Fahrgemeinschaft";
-    private Ride ride;
-    private LinearLayout seats;
-    private LinearLayout route;
     private PlaceImageButton from;
     private PlaceImageButton to;
+    private LinearLayout route;
+    private LinearLayout seats;
+    private Ride ride;
 
     @Override
     public View onCreateView(final LayoutInflater lI, ViewGroup p, Bundle b) {
@@ -142,7 +140,7 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
         @Override
         public void onClick(View v) {
             startActivityForResult(new Intent(Intent.ACTION_PICK,
-                    Uri.parse("content://de.fahrgemeinschaft/places")),
+                    RidesProvider.getPlacesUri(getActivity())),
                     route.indexOfChild((View) v.getParent()));
         }
     };
@@ -152,8 +150,8 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
         @Override
         public void onClick(View v) {
             startActivityForResult(new Intent(Intent.ACTION_PICK,
-                    Uri.parse("content://de.fahrgemeinschaft/places"))
-                            .putExtra("show_textfield", true),
+                    RidesProvider.getPlacesUri(getActivity()))
+                    .putExtra(PlacePickActivity.SHOW_TEXTFIELD, true),
                     route.indexOfChild((View) v.getParent()));
         }
     };
@@ -163,17 +161,13 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
         if (res == Activity.RESULT_OK) {
             Place place = new Place(intent.getData(), getActivity());
             if (i == 0) {
-                Log.d(TAG, "from " + intent.getDataString());
                 from.setPlace(place);
                 ride.from(place);
             } else if (i == route.getChildCount() - 1 ) {
-                Log.d(TAG, "to " + intent.getDataString());
                 to.setPlace(place);
                 ride.to(place);
             } else {
-                Log.d(TAG, "via " + intent.getDataString());
                 List<Place> vias = ride.getVias();
-                
                 if (i == route.getChildCount() - 2) { // new via?
                     vias.add(place);
                 } else {

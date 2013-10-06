@@ -30,9 +30,11 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 public class MainActivity extends BaseActivity
        implements OnClickListener, ListFragmentCallback {
 
-    public MainFragment main;
-    public RideListFragment results;
+    public static final long TWO_DAYS = 48 * 3600000;
+    public static final String MAIN = "main";
     public RideDetailsFragment details;
+    public RideListFragment results;
+    public MainFragment main;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,7 @@ public class MainActivity extends BaseActivity
         setContentView(R.layout.activity_main);
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
         FragmentManager fm = getSupportFragmentManager();
-        main = (MainFragment) fm.findFragmentByTag("main");
+        main = (MainFragment) fm.findFragmentByTag(MAIN);
         results = (RideListFragment)
                 fm.findFragmentByTag(getString(R.string.results));
         if (results == null) results = new RideListFragment();
@@ -95,7 +97,7 @@ public class MainActivity extends BaseActivity
             }
             r.type(Ride.SEARCH)
                     .dep(setMorningTime(r.getDep()))
-                    .arr(r.getDep() + 48 * 3600000).store(this);
+                    .arr(r.getDep() + TWO_DAYS).store(this);
             startService(new Intent(this, ConnectorService.class)
                 .setAction(ConnectorService.SEARCH));
             results.load(r.toUri(), SEARCH);
@@ -118,7 +120,7 @@ public class MainActivity extends BaseActivity
     @Override
     public void onSpinningWheelClick() {
         main.ride.type(Ride.SEARCH).arr(Util.getNextDayMorning(
-                main.ride.getArr() + 2 * 24 * 3600000)).store(this);
+                main.ride.getArr() + TWO_DAYS)).store(this);
         startService(new Intent(this, ConnectorService.class)
                 .setAction(ConnectorService.SEARCH));
         results.load(main.ride.toUri(), SEARCH);
@@ -149,6 +151,7 @@ public class MainActivity extends BaseActivity
 
 
 
+    public static final String AUTHORITY = "de.fahrgemeinschaft";
     static final UriMatcher uriMatcher = new UriMatcher(0);
     static {
         uriMatcher.addURI(AUTHORITY, "rides", SEARCH);

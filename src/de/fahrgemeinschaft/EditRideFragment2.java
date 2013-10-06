@@ -35,12 +35,15 @@ import de.fahrgemeinschaft.util.ReoccuringWeekDaysView;
 public class EditRideFragment2 extends SherlockFragment 
         implements OnDateSetListener, OnTimeSetListener, TextListener {
 
-    private Ride ride; 
-    private DateImageButton date;
-    private View white_bg;
-    private DateImageButton time;
+    private static final String IS_VALID_PRICE_REGEX = "\\d+\\.?\\d*";
+    private static final String EMPTY = "";
+    private static final String EUR = " €";
     private ReoccuringWeekDaysView reoccur;
     private EditTextImageButton price;
+    private DateImageButton date;
+    private DateImageButton time;
+    private View white_bg;
+    private Ride ride; 
 
     @Override
     public View onCreateView(final LayoutInflater lI, ViewGroup p, Bundle b) {
@@ -60,7 +63,7 @@ public class EditRideFragment2 extends SherlockFragment
         time.icon.setOnClickListener(pickTime);
         price = (EditTextImageButton) v.findViewById(R.id.price);
         price.text.setOnFocusChangeListener(onPriceChange);
-        price.setTextListener("price", this);
+        price.setTextListener(Ride.PRICE, this);
         reoccur = (ReoccuringWeekDaysView) v.findViewById(R.id.reoccur);
         time.requestFocus();
     }
@@ -92,16 +95,16 @@ public class EditRideFragment2 extends SherlockFragment
 
     protected void setPrice(int p) {
         if (p != 0) {
-            price.text.setText((p / 100) + " €");
+            price.text.setText((p / 100) + EUR);
         } else {
-            price.text.setText("");
+            price.text.setText(EMPTY);
         }
         ride.price(p);
     }
 
     @Override
     public void onTextChange(String key, String text) {
-        if (text.matches("\\d+\\.?\\d*"))
+        if (text.matches(IS_VALID_PRICE_REGEX))
             ride.price((int) Double.valueOf(text).doubleValue() * 100);
     }
 
@@ -116,7 +119,7 @@ public class EditRideFragment2 extends SherlockFragment
                 ((EditText) v).selectAll();
             } else {
                 String p = price.text.getText().toString();
-                if (p.matches("\\d+\\.?\\d*"))
+                if (p.matches(IS_VALID_PRICE_REGEX))
                     setPrice((int) Double.valueOf(p).doubleValue() * 100);
                 else
                     setPrice(ride.getPrice());
@@ -151,9 +154,8 @@ public class EditRideFragment2 extends SherlockFragment
             c.setTimeInMillis(ride.getDep());
             int min = c.get(Calendar.MINUTE);
             int hour = c.get(Calendar.HOUR_OF_DAY);
-            TimePickerDialog t = new TimePickerDialog(getActivity(),
-                    EditRideFragment2.this, hour, min, true);
-            t.show();
+            new TimePickerDialog(getActivity(),
+                    EditRideFragment2.this, hour, min, true).show();
         }
     };
 

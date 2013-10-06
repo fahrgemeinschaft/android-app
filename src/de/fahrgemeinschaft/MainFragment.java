@@ -17,10 +17,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,11 +35,10 @@ import de.fahrgemeinschaft.util.PlaceImageButton;
 public class MainFragment extends SherlockFragment
         implements OnClickListener, OnDateSetListener {
 
-    private static final String STATE = "ride";
     protected static final String TAG = "fahrgemeinschaft";
+    private static final String STATE = "ride";
     private static final int FROM = 42;
     private static final int TO = 55;
-    private SharedPreferences prefs;
     private DateImageButton when;
     private PlaceImageButton from;
     private PlaceImageButton to;
@@ -55,7 +51,6 @@ public class MainFragment extends SherlockFragment
 
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
-        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         from = (PlaceImageButton) v.findViewById(R.id.btn_autocomplete_from);
         from.name.setOnClickListener(this);
         from.icon.setOnClickListener(this);

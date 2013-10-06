@@ -30,10 +30,11 @@ public class EditRideFragment3 extends SherlockFragment
                 implements TextListener, PrivacyListener {
 
     private static final String NAME = "Name";
-    private PrivacyImageButton email;
-    private PrivacyImageButton land;
+    private static final String EMPTY = "";
     private PrivacyImageButton mobile;
     private PrivacyImageButton plate;
+    private PrivacyImageButton email;
+    private PrivacyImageButton land;
     private PrivacyImageButton name;
     private SharedPreferences prefs;
 
@@ -55,7 +56,7 @@ public class EditRideFragment3 extends SherlockFragment
         name = (PrivacyImageButton) v.findViewById(R.id.name);
         email.setTextListener(CONTACT.EMAIL, this);
         String uri = "content://de.fahrgemeinschaft.private/users/"
-                        + prefs.getString("user", "");
+                        + prefs.getString("user", EMPTY);
         email.setAutocompleteUri(Uri.parse(uri + "/mails"));
         mobile.setAutocompleteUri(Uri.parse(uri + "/mobiles"));
         land.setAutocompleteUri(Uri.parse(uri + "/landlines"));
@@ -78,15 +79,15 @@ public class EditRideFragment3 extends SherlockFragment
                 email.text.setText(d.getString(CONTACT.EMAIL));
             else email.text.setText(
                     prefs.getString(CONTACT.EMAIL,
-                    prefs.getString("login", "")));
+                    prefs.getString(ProfileFragment.LOGIN, EMPTY)));
             if (!d.isNull(CONTACT.LANDLINE))
                 land.text.setText(d.getString(CONTACT.LANDLINE));
             else land.text.setText(
-                    prefs.getString(CONTACT.LANDLINE, ""));
+                    prefs.getString(CONTACT.LANDLINE, EMPTY));
             if (!d.isNull(CONTACT.MOBILE))
                 mobile.text.setText(d.getString(CONTACT.MOBILE));
             else mobile.text.setText(
-                    prefs.getString(CONTACT.MOBILE, ""));
+                    prefs.getString(CONTACT.MOBILE, EMPTY));
             if (ride.getMode().equals(Ride.Mode.TRAIN)) {
                 plate.setVisibility(View.GONE);
             } else {
@@ -94,13 +95,15 @@ public class EditRideFragment3 extends SherlockFragment
                 if (!d.isNull(CONTACT.PLATE)) {
                     plate.text.setText(d.getString(CONTACT.PLATE));
                 } else plate.text.setText(
-                        prefs.getString(CONTACT.PLATE, ""));
+                        prefs.getString(CONTACT.PLATE, EMPTY));
             }
-            name.text.setText(prefs.getString("lastname", "n/a"));
-            if (d.isNull("Privacy")) d.put("Privacy", new JSONObject());
-            JSONObject p = d.getJSONObject("Privacy");
-            if (!p.isNull("Email")) email.setPrivacy(p.getInt("Email")); // 'm'
-            else setPublic(email, p, "Email");
+            name.text.setText(prefs.getString(ProfileFragment.LASTNAME, EMPTY));
+            if (d.isNull(FahrgemeinschaftConnector.PRIVACY))
+                d.put(FahrgemeinschaftConnector.PRIVACY, new JSONObject());
+            JSONObject p = d.getJSONObject(FahrgemeinschaftConnector.PRIVACY);
+            if (!p.isNull(CONTACT.EMAIL))
+                email.setPrivacy(p.getInt(CONTACT.EMAIL)); // 'm'
+            else setPublic(email, p, CONTACT.EMAIL);
             if (!p.isNull(CONTACT.LANDLINE))
                 land.setPrivacy(p.getInt(CONTACT.LANDLINE));
             else setPublic(land, p, CONTACT.LANDLINE);
@@ -114,7 +117,6 @@ public class EditRideFragment3 extends SherlockFragment
             else setPublic(name, p, NAME);
         } catch (JSONException e) {
             e.printStackTrace();
-            //TODO what?
         }
     }
 
@@ -139,7 +141,8 @@ public class EditRideFragment3 extends SherlockFragment
     public void onPrivacyChange(String key, int privacy) {
         try {
             ((EditRideActivity)getActivity()).ride.getDetails()
-                .getJSONObject("Privacy").put(key, privacy);
+                .getJSONObject(FahrgemeinschaftConnector.PRIVACY)
+                        .put(key, privacy);
         } catch (JSONException e) {
             e.printStackTrace();
         }

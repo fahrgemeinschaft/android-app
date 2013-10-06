@@ -46,21 +46,19 @@ public class BaseActivity extends SherlockFragmentActivity
        OnPageChangeListener, ServiceCallback<String>,
        ServiceConnection, OnBackStackChangedListener {
 
-    private static final String INIT_CONTACTS = "init_contacts";
+    public static final String TAG = "Fahrgemeinschaft";
     private static final String SUCCESS = " success.";
     private static final String FAIL = " fail: ";
-    public MenuItem ic_profile;
-    private MenuItem ic_myrides;
-    public ConnectorService service;
-    private RideListFragment myrides;
-    private RideDetailsFragment mydetails;
-    public static final String TAG = "Fahrgemeinschaft";
-    public static final String AUTHORITY = "de.fahrgemeinschaft";
-    public static final int SEARCH = 0;
     public static final int MYRIDES = 1;
     public static final int DETAILS = 2;
     public static final int PROFILE = 3;
     public static final int ABOUT = 112;
+    public static final int SEARCH = 0;
+    private RideDetailsFragment mydetails;
+    private RideListFragment myrides;
+    public ConnectorService service;
+    private MenuItem ic_myrides;
+    public MenuItem ic_profile;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -230,7 +228,7 @@ public class BaseActivity extends SherlockFragmentActivity
         if (what.equals(ConnectorService.MYRIDES) && ic_myrides != null) {
             ic_myrides.setActionView(null);
             if (PreferenceManager.getDefaultSharedPreferences(this)
-                    .getBoolean(INIT_CONTACTS, false)) {
+                    .getBoolean(ProfileFragment.INIT_CONTACTS, false)) {
                 new GetContactsFromMyridesTask().execute(new String[]{});
             }
         } else if (what.equals(ConnectorService.AUTH) & ic_profile != null) {
@@ -266,7 +264,7 @@ public class BaseActivity extends SherlockFragmentActivity
                     }
                 }
                 PreferenceManager.getDefaultSharedPreferences(BaseActivity.this)
-                        .edit().remove(INIT_CONTACTS).commit();
+                        .edit().remove(ProfileFragment.INIT_CONTACTS).commit();
                 Log.d(TAG, "got contacts from myrides");
             return null;
         }

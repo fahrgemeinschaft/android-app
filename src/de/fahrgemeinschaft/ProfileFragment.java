@@ -38,11 +38,19 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 public class ProfileFragment extends SherlockFragment
         implements OnClickListener, OnSharedPreferenceChangeListener {
 
+    public static final String REMEMBER_PASSWORD = "remember_password";
+    public static final String INIT_CONTACTS = "init_contacts";
+    public static final String FIRSTNAME = "firstname";
+    public static final String LASTNAME = "lastname";
+    public static final String PASSWORD = "password";
+    public static final String LOGIN = "login";
+    public static final String AUTH = "auth";
+    public static final String EMPTY = "";
     private EditTextImageButton username;
     private EditTextImageButton password;
     private SharedPreferences prefs;
-    private Button login;
     private Button register;
+    private Button login;
 
 
     @Override
@@ -62,21 +70,22 @@ public class ProfileFragment extends SherlockFragment
         register = (Button) v.findViewById(R.id.register);
         register.setOnClickListener(this);
         super.onViewCreated(v, savedInstanceState);
-        username.text.setText(prefs.getString("login",
-                prefs.getString("Email", "")));
-        password.text.setText(prefs.getString("password", ""));
+        username.text.setText(prefs.getString(LOGIN,
+                prefs.getString(CONTACT.EMAIL, EMPTY)));
+        password.text.setText(prefs.getString(PASSWORD, EMPTY));
         v.findViewById(R.id.container).setOnClickListener(this);
         prefs.registerOnSharedPreferenceChangeListener(this);
-        onSharedPreferenceChanged(prefs, "auth");
+        onSharedPreferenceChanged(prefs, AUTH);
         login.requestFocus();
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-        if (key.equals("auth")) {
-            if (prefs.contains("auth")) {
+        if (key.equals(AUTH)) {
+            if (prefs.contains(AUTH)) {
                 login.setText(R.string.logout);
-//                login.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.btn_logout, 0, 0);
+//                login.setCompoundDrawablesRelativeWithIntrinsicBounds(
+//                            0, R.drawable.btn_logout, 0, 0);
                 password.setVisibility(View.GONE);
                 register.setVisibility(View.GONE);
             } else {
@@ -98,7 +107,7 @@ public class ProfileFragment extends SherlockFragment
     public void onClick(View v) {
         switch(v.getId()) {
         case R.id.login:
-            boolean logout = prefs.contains("auth");
+            boolean logout = prefs.contains(AUTH);
             if (logout) {
                 Crouton.makeText(getActivity(), getString(
                         R.string.logout), Style.CONFIRM).show();
@@ -114,16 +123,16 @@ public class ProfileFragment extends SherlockFragment
                         new Intent(getActivity(), ConnectorService.class)
                         .setAction(ConnectorService.SEARCH));
             }
-            Editor t = prefs.edit().remove("auth").remove("password")
-                    .remove(CONTACT.USER).remove("firstname").remove("lastname")
-                    .putString("login", username.text.getText().toString());
-            if (prefs.getBoolean("remember_password", false))
-                t.putString("password", password.text.getText().toString());
+            Editor t = prefs.edit().remove(AUTH).remove(PASSWORD)
+                    .remove(CONTACT.USER).remove(FIRSTNAME).remove(LASTNAME)
+                    .putString(LOGIN, username.text.getText().toString());
+            if (prefs.getBoolean(REMEMBER_PASSWORD, false))
+                t.putString(PASSWORD, password.text.getText().toString());
             t.commit();
             ((BaseActivity) getActivity()).setProfileIcon();
             boolean login = !logout;
             if (login) { // i.e. login
-                prefs.edit().putBoolean("init_contacts", true).commit();
+                prefs.edit().putBoolean(INIT_CONTACTS, true).commit();
                 ((BaseActivity)getActivity()).service
                         .authenticate(password.text.getText().toString());
                 ((InputMethodManager) getActivity()
@@ -139,11 +148,11 @@ public class ProfileFragment extends SherlockFragment
         case R.id.register:
             getActivity().startActivity(
                     new Intent(getActivity(), WebActivity.class)
-                    .setData(Uri.parse("http://www.fahrgemeinschaft.de/register_mobile.php")));
+                    .setData(Uri.parse("http://" +
+                            "www.fahrgemeinschaft.de/register_mobile.php")));
             getActivity().overridePendingTransition(
                     R.anim.do_nix, R.anim.slide_in_bottom);
             break;
         }
     }
-
 }

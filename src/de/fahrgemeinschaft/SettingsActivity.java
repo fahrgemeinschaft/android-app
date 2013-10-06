@@ -28,6 +28,7 @@ import de.fahrgemeinschaft.util.WebActivity;
 public class SettingsActivity extends SherlockPreferenceActivity
         implements OnSharedPreferenceChangeListener {
 
+    private static final String REFRESH = "refresh";
     private static final String DONATE_URL = "http://www.sonnenstreifen.de/" +
                                 "kunden/fahrgemeinschaft/spendenstand.php";
     private static final String REMEMBER = "remember_password";
@@ -49,7 +50,7 @@ public class SettingsActivity extends SherlockPreferenceActivity
 
     @SuppressWarnings("deprecation")
     void setSummaries() {
-        ListPreference list = (ListPreference) findPreference("refresh");
+        ListPreference list = (ListPreference) findPreference(REFRESH);
         if (list.getEntry() != null) {
             list.setSummary(getResources().getString(
                     R.string.refresh_description, list.getEntry()));
@@ -63,25 +64,23 @@ public class SettingsActivity extends SherlockPreferenceActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-        if (key.equals("radius_from") || key.equals("radius_to")) {
+        if (key.equals(FahrgemeinschaftConnector.RADIUS_FROM)
+                || key.equals(FahrgemeinschaftConnector.RADIUS_TO)) {
             radius_changed = true;
-        } else if (key.equals("refresh")) {
+        } else if (key.equals(REFRESH)) {
             setSummaries();
         } else if (key.equals(REMEMBER) && !prefs.getBoolean(key, false)) {
-            prefs.edit().remove("password").commit();
+            prefs.edit().remove(ProfileFragment.PASSWORD).commit();
         }
     }
 
     @Override
     protected void onPause() {
         if (radius_changed) {
-            Log.d(MainActivity.TAG, "clear cache");
-            getContentResolver().delete(
-                    RidesProvider.getRidesUri(this), null, null);
+            getContentResolver().update( // invalidate cache
+                    RidesProvider.getRidesUri(this), null, null, null);
             startService(new Intent(this, ConnectorService.class)
                     .setAction(ConnectorService.SEARCH));
-            prefs.edit().putLong("cleanup",
-                    System.currentTimeMillis()).commit();
         }
         overridePendingTransition(R.anim.do_nix, R.anim.slide_out_top);
         super.onPause();

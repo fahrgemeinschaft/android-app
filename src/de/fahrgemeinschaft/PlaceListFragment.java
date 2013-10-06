@@ -9,6 +9,8 @@ package de.fahrgemeinschaft;
 
 import org.teleportr.ConnectorService;
 import org.teleportr.Place;
+import org.teleportr.Ride;
+import org.teleportr.RidesProvider;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,7 +24,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,14 +38,16 @@ import android.widget.TextView;
 public class PlaceListFragment extends ListFragment
         implements LoaderCallbacks<Cursor>, TextWatcher {
 
+    private static final String FROM_ID_EQUALS = "from_id=";
+    private static final String QUERY_EQUALS = "&q=";
+    private static final String EMPTY = "";
     private static final int GPLACES = 42;
     private static final int LOCAL = 55;
-    private static final String TAG = "PlaceList";
     private EditText search_field;
     private CursorAdapter adapter;
-    private Uri uri;
-    private ProgressBar wheel;
     private ImageButton toggle;
+    private ProgressBar wheel;
+    private Uri uri;
 
     @Override
     public View onCreateView(LayoutInflater f, ViewGroup p, Bundle state) {
@@ -59,14 +62,13 @@ public class PlaceListFragment extends ListFragment
         wheel = (ProgressBar) view.findViewById(R.id.busy_search);
         toggle = (ImageButton) view.findViewById(R.id.toggle);
         search_field.addTextChangedListener(this);
-        toggle.setOnClickListener(
-                new OnClickListener() {
-                    
-                    @Override
-                    public void onClick(View arg0) {
-                        toggleSearchField();
-                    }
-                });
+        toggle.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                toggleSearchField();
+            }
+        });
 
         adapter = new CursorAdapter(getActivity(), null, false) {
 
@@ -111,10 +113,10 @@ public class PlaceListFragment extends ListFragment
         String text = search_field.getText().toString();
         switch (id) {
         case LOCAL:
-            String from_id = uri.getQueryParameter("from_id");
+            String from_id = uri.getQueryParameter(Ride.FROM_ID);
             uri = uri.buildUpon().encodedQuery(
-                    ((from_id != null)? "from_id=" +from_id : "")
-                    + "&q=" + text).build();
+                    ((from_id != null)? FROM_ID_EQUALS + from_id : EMPTY)
+                    + QUERY_EQUALS + text).build();
             return new CursorLoader(getActivity(), uri, null, null, null, null);
         case GPLACES:
             return new GPlaces.AutocompleteLoader(getActivity(),
@@ -140,7 +142,7 @@ public class PlaceListFragment extends ListFragment
 
     @Override
     public void onLoaderReset(Loader<Cursor> arg0) {
-        // TODO Auto-generated method stub
+        adapter.swapCursor(null);
     }
 
     @Override
@@ -165,16 +167,14 @@ public class PlaceListFragment extends ListFragment
             uri = new Place()
                 .name(adapter.getCursor().getString(2))
                 .address(adapter.getCursor().getString(3))
-                .set("gplace:id", adapter.getCursor().getString(4))
+                .set(GPlaces.GPLACES_ID, adapter.getCursor().getString(4))
                 .store(getActivity());
-            Log.d(TAG, "picked new gPlace: " + uri);
             getActivity().startService(
                     new Intent(getActivity(), ConnectorService.class)
                         .setAction(ConnectorService.RESOLVE));
         } else {
-            uri = Uri.parse("content://" + getActivity().getPackageName()
-                    + "/places/"+ adapter.getCursor().getLong(0));
-            Log.d(TAG, "picked: " + uri);
+            uri = RidesProvider.getPlaceUri(getActivity(),
+                    adapter.getCursor().getInt(0));
         }
         ((PlacePickListener) getActivity()).onPlacePicked(uri);
     }

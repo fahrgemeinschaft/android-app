@@ -7,6 +7,8 @@
 
 package de.fahrgemeinschaft;
 
+import org.teleportr.Ride;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,15 +21,9 @@ public class PlacePickActivity extends FragmentActivity implements
     public static final String SHOW_TEXTFIELD = "show_textfield";
     private PlaceListFragment place_list;
 
-    /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-//        WindowManager.LayoutParams params = getWindow().getAttributes();
-//        params.dimAmount = 0.7f;
-//        getWindow().setAttributes(params);
 
         setContentView(R.layout.activity_place_pick);
 
@@ -41,26 +37,21 @@ public class PlacePickActivity extends FragmentActivity implements
 
     @Override
     public void onPlacePicked(Uri uri) {
-
         setResult(RESULT_OK, new Intent("", uri));
-        finish();
-        if (getIntent().getData().getQueryParameter("from_id") == null)
+        if (getIntent().getData().getQueryParameter(Ride.FROM_ID) == null)
             overridePendingTransition(R.anim.do_nix, R.anim.slide_out_left);
         else
             overridePendingTransition(R.anim.do_nix, R.anim.slide_out_right);
-
-        // .parse("https://maps.googleapis.com/maps/api/place"
-        // + "/details/json?sensor=true&reference="
+        finish();
     }
 
     @Override
     public void onBackPressed() {
         setResult(RESULT_CANCELED);
-        finish();
-        if (getIntent().getData().getQueryParameter("from_id") == null)
+        if (getIntent().getData().getQueryParameter(Ride.FROM_ID) == null)
             overridePendingTransition(R.anim.do_nix, R.anim.slide_out_left);
         else
             overridePendingTransition(R.anim.do_nix, R.anim.slide_out_right);
-        super.onBackPressed();
+        finish();
     }
 }

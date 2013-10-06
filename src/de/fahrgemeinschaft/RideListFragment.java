@@ -11,16 +11,15 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import org.teleportr.ConnectorService;
-import org.teleportr.RidesProvider;
 import org.teleportr.ConnectorService.ServiceCallback;
 import org.teleportr.Ride;
 import org.teleportr.Ride.COLUMNS;
 import org.teleportr.Ride.Mode;
+import org.teleportr.RidesProvider;
 
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.view.ContextMenu;
@@ -34,6 +33,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import de.fahrgemeinschaft.ContactProvider.CONTACT;
 import de.fahrgemeinschaft.util.RideRowView;
 import de.fahrgemeinschaft.util.SpinningZebraListFragment;
 import de.fahrgemeinschaft.util.Util;
@@ -43,13 +43,16 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 public class RideListFragment extends SpinningZebraListFragment
             implements ServiceCallback<Ride> {
 
-    private static final SimpleDateFormat day =
-            new SimpleDateFormat("EEE", Locale.GERMANY);
     private static final SimpleDateFormat date =
             new SimpleDateFormat("dd.MM.", Locale.GERMANY);
-    private String[] split;
+    private static final SimpleDateFormat day =
+            new SimpleDateFormat("EEE", Locale.GERMANY);
+    private static final String WHILE = " while ";
+    private static final String SPACE = " ";
+    private static final String EMPTY = "";
     private long currently_searching_date;
     private boolean isItThisFragment;
+    private String[] split;
 
     @Override
     public void bindListItemView(View view, Cursor ride) {
@@ -102,18 +105,17 @@ public class RideListFragment extends SpinningZebraListFragment
     }
 
     private boolean isMyRide(Cursor ride) {
-        return (ride.getString(COLUMNS.WHO).equals("") ||
+        return (ride.getString(COLUMNS.WHO).equals(EMPTY) ||
                 ride.getString(COLUMNS.WHO).equals(PreferenceManager
                         .getDefaultSharedPreferences(getActivity())
-                        .getString("user", "")));
+                        .getString(CONTACT.USER, EMPTY)));
     }
 
     @Override
     public void onFail(Ride query, String reason) {
         if (onScreen) {
-            Crouton.makeText(getActivity(), 
-                    reason + " while "
-                    + day.format(query.getDep()) + " "
+            Crouton.makeText(getActivity(), reason + WHILE
+                    + day.format(query.getDep()) + SPACE
                     + date.format(query.getDep()), Style.ALERT).show();
             stopSpinning(reason);
         }
@@ -125,7 +127,7 @@ public class RideListFragment extends SpinningZebraListFragment
         if (onScreen) {
             currently_searching_date = query.getDep();
             startSpinning(getString(R.string.searching),
-                    day.format(currently_searching_date) + " "
+                    day.format(currently_searching_date) + SPACE
                             + date.format(currently_searching_date));
         }
     }
@@ -135,8 +137,8 @@ public class RideListFragment extends SpinningZebraListFragment
         if (onScreen) {
             if (numberOfRidesFound == 0) {
                 Toast.makeText(getActivity(), 
-                        getString(R.string.nothing) + " "
-                                + day.format(currently_searching_date) + " "
+                        getString(R.string.nothing) + SPACE
+                                + day.format(currently_searching_date) + SPACE
                                 + date.format(currently_searching_date),
                                 Toast.LENGTH_SHORT).show();
             }
@@ -176,7 +178,6 @@ public class RideListFragment extends SpinningZebraListFragment
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         if (!isItThisFragment) {
-            System.out.println("AHA");
             return false;
         }
         isItThisFragment = false;
@@ -212,14 +213,14 @@ public class RideListFragment extends SpinningZebraListFragment
             super.onFinishInflate();
             streifenhoernchen = findViewById(R.id.streifenhoernchen);
             Util.fixStreifenhoernchen(streifenhoernchen);
-            grey_bg = findViewById(R.id.grey_bg);
-            loading = (ProgressBar) findViewById(R.id.loading);
             from_place = (TextView) findViewById(R.id.from_place);
             from_city = (TextView) findViewById(R.id.from_city);
+            loading = (ProgressBar) findViewById(R.id.loading);
             to_place = (TextView) findViewById(R.id.to_place);
             to_city = (TextView) findViewById(R.id.to_city);
             row = (RideRowView) findViewById(R.id.row);
             mode = (ImageView) findViewById(R.id.mode);
+            grey_bg = findViewById(R.id.grey_bg);
         }
 
         public void showButtons() {
@@ -242,10 +243,8 @@ public class RideListFragment extends SpinningZebraListFragment
             switch (v.getId()) {
             case R.id.edit:
                 getContext().startActivity(new Intent(getContext(),
-                        EditRideActivity.class).setData(Uri.parse(
-                                "content://de.fahrgemeinschaft/rides/" + id)));
-//                getActivity().overridePendingTransition(
-//                        R.anim.slide_out_left, R.anim.slide_in_right);
+                        EditRideActivity.class).setData(RidesProvider
+                                .getRideUri(getContext(), id)));
                 break;
             case R.id.increase_seats:
                 if (ride.getSeats() <= 3) { // 4 is max / means many

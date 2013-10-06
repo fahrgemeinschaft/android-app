@@ -16,12 +16,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.teleportr.Ride;
 import org.teleportr.Ride.COLUMNS;
+import org.teleportr.RidesProvider;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -40,8 +40,8 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 import android.view.animation.Animation.AnimationListener;
+import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -60,6 +60,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.calciumion.widget.BasePagerAdapter;
 
+import de.fahrgemeinschaft.ContactProvider.CONTACT;
 import de.fahrgemeinschaft.util.ProfileRequest;
 import de.fahrgemeinschaft.util.ReoccuringWeekDaysView;
 import de.fahrgemeinschaft.util.RideRowView;
@@ -71,25 +72,28 @@ public class RideDetailsFragment extends SherlockFragment
             OnClickListener,
             OnTouchListener {
 
-    private static final String TAG = "Details";
     private static final SimpleDateFormat lrdate =
             new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.GERMANY);
     private static final SimpleDateFormat lwdate =
             new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
     private static final SimpleDateFormat lwhdate =
             new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMANY);
-    private ViewPager pager;
-    private RequestQueue queue;
-    private int selected;
-    private MenuItem edit;
-    private MenuItem delete;
-    private MenuItem duplicate;
+    private static final String SELECTED = "selected";
+    private static final String TAG = "Details";
+    private static final String NAME = "Name";
+    private static final String EMPTY = "";
+    private static ImageLoader imageLoader;
     private MenuItem duplicate_retour;
     private MenuItem toggle_active;
-    private Cursor cursor;
-    private View left_arrow;
+    private MenuItem duplicate;
+    private MenuItem delete;
+    private MenuItem edit;
+    private RequestQueue queue;
     private View right_arrow;
-    private static ImageLoader imageLoader;
+    private View left_arrow;
+    private ViewPager pager;
+    private Cursor cursor;
+    private int selected;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,7 +103,7 @@ public class RideDetailsFragment extends SherlockFragment
         imageLoader = new ImageLoader(queue, ProfileRequest.imageCache);
         queue.start();
         if (savedInstanceState != null) {
-            selected = savedInstanceState.getInt("selected");
+            selected = savedInstanceState.getInt(SELECTED);
         }
     }
 
@@ -150,8 +154,8 @@ public class RideDetailsFragment extends SherlockFragment
                 else view.reoccur.setVisibility(View.GONE);
 
                 try {
-                    view.details.setText(
-                            Ride.getDetails(cursor).getString("Comment"));
+                    view.details.setText(Ride.getDetails(cursor)
+                            .getString(FahrgemeinschaftConnector.COMMENT));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -160,9 +164,9 @@ public class RideDetailsFragment extends SherlockFragment
                     .initLoader((int) cursor.getLong(0), null, view);
 
                 view.avatar.setImageResource(R.drawable.icn_view_user);
-                view.name.setText("");
-                view.last_login.setText("");
-                view.reg_date.setText("");
+                view.name.setText(EMPTY);
+                view.last_login.setText(EMPTY);
+                view.reg_date.setText(EMPTY);
                 view.name_loading.setVisibility(View.VISIBLE);
                 view.name.setVisibility(View.GONE);
                 view.last_login.setVisibility(View.GONE);
@@ -180,9 +184,9 @@ public class RideDetailsFragment extends SherlockFragment
                     view.streifenhoernchen.setVisibility(View.GONE);
                 }
 
-                if (cursor.getString(COLUMNS.WHO).equals("")) {
+                if (cursor.getString(COLUMNS.WHO).equals(EMPTY)) {
                     String user = PreferenceManager.getDefaultSharedPreferences(
-                            getActivity()).getString("user", "");
+                            getActivity()).getString(CONTACT.USER, EMPTY);
                     queue.add(new ProfileRequest(user,
                             view, RideDetailsFragment.this));
                     view.userId = user;
@@ -191,7 +195,7 @@ public class RideDetailsFragment extends SherlockFragment
                             view, RideDetailsFragment.this));
                     view.userId = cursor.getString(COLUMNS.WHO);
                 }
-                view.visible = Util.isVisible("Name", Ride.getDetails(cursor));
+                view.visible = Util.isVisible(NAME, Ride.getDetails(cursor));
                 view.content.setOnTouchListener(RideDetailsFragment.this);
                 return view;
             }
@@ -234,7 +238,7 @@ public class RideDetailsFragment extends SherlockFragment
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putInt("selected", selected);
+        outState.putInt(SELECTED, selected);
         super.onSaveInstanceState(outState);
     }
 
@@ -341,8 +345,8 @@ public class RideDetailsFragment extends SherlockFragment
     };
 
     private void pulseSwipeArrows() {
-        animatePulse(left_arrow);
         animatePulse(right_arrow);
+        animatePulse(left_arrow);
     }
 
     private void fadeOutFast(final View view) {
@@ -403,6 +407,21 @@ public class RideDetailsFragment extends SherlockFragment
     static class RideView extends RelativeLayout
         implements LoaderCallbacks<Cursor>, Response.Listener<JSONObject> {
 
+        private static final String _BIG_JPG = "_big.jpg";
+        private static final String SLASH = "/";
+        private static final String UGC_PA = "/ugc/pa/";
+        private static final String PATH_TO = "PathTo";
+        private static final String PHOTO_ID = "PhotoID";
+        private static final String AVATAR_PHOTO = "AvatarPhoto";
+        private static final String LASTVISIT_DATE = "LastvisitDate";
+        private static final String REGISTRATION_DATE = "RegistrationDate";
+        private static final String SPACE = " ";
+        private static final String VALUE = "Value";
+        private static final String KEY = "Key";
+        private static final String NOT_AVAILABLE = "n/a";
+        private static final String KEY_VALUE_PAIRS = "KeyValuePairs";
+        private static final String USER_ID = "UserID";
+        private static final String DASH = "- ";
         LinearLayout driver_info;
         String url;
         RideRowView row;
@@ -481,9 +500,9 @@ public class RideDetailsFragment extends SherlockFragment
 
         @Override
         public Loader<Cursor> onCreateLoader(int ride_id, Bundle b) {
-            return new CursorLoader(getContext(), Uri.parse(
-                    "content://de.fahrgemeinschaft/rides/" + ride_id + "/rides")
-                    ,null, null, null, null);
+            return new CursorLoader(getContext(), RidesProvider
+                    .getSubRidesUri(getContext(), ride_id),
+                            null, null, null, null);
         }
 
         @Override
@@ -494,7 +513,7 @@ public class RideDetailsFragment extends SherlockFragment
                         LayoutInflater.from(getContext())
                         .inflate(R.layout.view_place_bubble, null, false);
                 ((TextView) view.getChildAt(1))
-                        .setText("- " + c.getString(COLUMNS.FROM_NAME));
+                        .setText(DASH + c.getString(COLUMNS.FROM_NAME));
                 ((ImageView) view.getChildAt(0))
                         .setImageResource(R.drawable.shape_via);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -512,25 +531,25 @@ public class RideDetailsFragment extends SherlockFragment
         @Override
         public void onResponse(JSONObject json) {
             try {
-                JSONObject user = json.getJSONObject("user");
-                if (user.getString("UserID").equals(userId)) {
-                    JSONArray kvp = user.getJSONArray("KeyValuePairs");
-                    String firstname = "n/a";
-                    String lastname = "n/a";
+                JSONObject user = json.getJSONObject(CONTACT.USER);
+                if (user.getString(USER_ID).equals(userId)) {
+                    JSONArray kvp = user.getJSONArray(KEY_VALUE_PAIRS);
+                    String firstname = NOT_AVAILABLE;
+                    String lastname = NOT_AVAILABLE;
                     for (int i = 0; i < kvp.length(); i++) {
-                        String key = kvp.getJSONObject(i).getString("Key");
-                        if (key.equals("firstname"))
-                            firstname = kvp.getJSONObject(i).getString("Value");
-                        else if (key.equals("lastname"))
-                            lastname = kvp.getJSONObject(i).getString("Value");
+                        String key = kvp.getJSONObject(i).getString(KEY);
+                        if (key.equals(ProfileFragment.FIRSTNAME))
+                            firstname = kvp.getJSONObject(i).getString(VALUE);
+                        else if (key.equals(ProfileFragment.LASTNAME))
+                            lastname = kvp.getJSONObject(i).getString(VALUE);
                     }
                     if (visible) {
-                        name.setText(firstname + " " + lastname);
+                        name.setText(firstname + SPACE + lastname);
                     } else {
                         name.setText(firstname);
                     }
-                    Date since = lrdate.parse(user.getString("RegistrationDate"));
-                    Date logon = lrdate.parse(user.getString("LastvisitDate"));
+                    Date since = lrdate.parse(user.getString(REGISTRATION_DATE));
+                    Date logon = lrdate.parse(user.getString(LASTVISIT_DATE));
                     reg_date.setText(getContext().getString(
                             R.string.member_since, lwdate.format(since)));
                     last_login.setText(getContext().getString(
@@ -540,12 +559,15 @@ public class RideDetailsFragment extends SherlockFragment
                     name.setVisibility(View.VISIBLE);
                     last_login.setVisibility(View.VISIBLE);
                     reg_date.setVisibility(View.VISIBLE);
-                    if (!user.isNull("AvatarPhoto")) {
-                        JSONObject photo = user.getJSONObject("AvatarPhoto");
-                        String id = photo.getString("PhotoID");
-                        String path = photo.getString("PathTo");
-                        url = "http://service.fahrgemeinschaft.de//"
-                                + "ugc/pa/" + path +"/"+ id + "_big.jpg";
+                    if (!user.isNull(AVATAR_PHOTO)) {
+                        JSONObject photo = user.getJSONObject(AVATAR_PHOTO);
+                        String id = photo.getString(PHOTO_ID);
+                        String path = photo.getString(PATH_TO);
+                        StringBuffer sb = new StringBuffer();
+                        sb.append(FahrgemeinschaftConnector.FAHRGEMEINSCHAFT_DE)
+                                .append(UGC_PA).append(path).append(SLASH)
+                                .append(id).append(_BIG_JPG);
+                        url = sb.toString();
                         imageLoader.get(url, ImageLoader.getImageListener(avatar,
                                 R.drawable.ic_loading, R.drawable.icn_view_none));
                     }
@@ -564,10 +586,10 @@ public class RideDetailsFragment extends SherlockFragment
     }
 
     private boolean isMyRide(Cursor ride) {
-        return (ride.getString(COLUMNS.WHO).equals("") ||
+        return (ride.getString(COLUMNS.WHO).equals(EMPTY) ||
                 ride.getString(COLUMNS.WHO).equals(PreferenceManager
                         .getDefaultSharedPreferences(getActivity())
-                        .getString("user", "")));
+                        .getString(CONTACT.USER, EMPTY)));
     }
 
     @Override
