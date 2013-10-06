@@ -18,6 +18,8 @@ import de.fahrgemeinschaft.R;
 
 public class DateImageButton extends BaseImageButton {
 
+    static final SimpleDateFormat df =
+            new SimpleDateFormat("HH:mm", Locale.GERMANY);
     public Button btn;
 
     @Override
@@ -34,9 +36,9 @@ public class DateImageButton extends BaseImageButton {
     public DateImageButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         btn = (Button) findViewById(R.id.text);
-        btn.setId(ID--);
         btn.setText(getContext().getString(attrs.getAttributeResourceValue(
-                droid, "text", R.string.app_name)));
+                droid, TEXT, R.string.app_name)));
+        btn.setId(ID--);
     }
 
     public void setDate(long timestamp) {
@@ -57,7 +59,6 @@ public class DateImageButton extends BaseImageButton {
     }
 
     public void setTime(long timestamp) {
-        btn.setText(new SimpleDateFormat("HH:mm",
-                Locale.GERMANY).format(timestamp));
+        btn.setText(df.format(timestamp));
     }
 }

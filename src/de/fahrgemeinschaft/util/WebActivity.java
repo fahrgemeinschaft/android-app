@@ -9,23 +9,21 @@ package de.fahrgemeinschaft.util;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
 
+import de.fahrgemeinschaft.R;
+import de.fahrgemeinschaft.Secret;
 import de.fahrgemeinschaft.inappbilling.util.IabHelper;
 import de.fahrgemeinschaft.inappbilling.util.IabHelper.OnConsumeFinishedListener;
 import de.fahrgemeinschaft.inappbilling.util.IabHelper.OnIabPurchaseFinishedListener;
@@ -33,9 +31,6 @@ import de.fahrgemeinschaft.inappbilling.util.IabHelper.OnIabSetupFinishedListene
 import de.fahrgemeinschaft.inappbilling.util.IabResult;
 import de.fahrgemeinschaft.inappbilling.util.Inventory;
 import de.fahrgemeinschaft.inappbilling.util.Purchase;
-
-import de.fahrgemeinschaft.R;
-import de.fahrgemeinschaft.Secret;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -157,19 +152,6 @@ public class WebActivity extends SherlockActivity
         } else {
             // handle error
         }
-    }
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (webView.canGoBack()) {
-                webView.goBack();
-                return true;
-            }
-        }
-        overridePendingTransition(
-                R.anim.do_nix, R.anim.slide_out_bottom);
-        return super.onKeyUp(keyCode, event);
     }
 
     @Override

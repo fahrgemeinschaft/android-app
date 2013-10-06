@@ -22,6 +22,10 @@ package de.fahrgemeinschaft.inappbilling.util;
  * call {@link #getResult()}.
  */
 public class IabException extends Exception {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     IabResult mResult;
 
     public IabException(IabResult r) {

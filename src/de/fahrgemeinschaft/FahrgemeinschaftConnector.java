@@ -46,10 +46,10 @@ public class FahrgemeinschaftConnector extends Connector {
     private static final String NULL = "null";
     private static final String NOTIME = "2359";
 
-    private static final String USER = "user";
-    private static final String AUTH = "auth";
-    private static final String LOGIN = "login";
-    private static final String APIKEY = "apikey";
+    public static final String USER = "user";
+    public static final String AUTH = "auth";
+    public static final String LOGIN = "login";
+    public static final String APIKEY = "apikey";
     private static final String PASSWD = "Password";
     private static final String AUTHKEY = "authkey";
     private static final String AUTH_KEY = "AuthKey";
@@ -106,11 +106,11 @@ public class FahrgemeinschaftConnector extends Connector {
     private static final String TOLERANCE_RADIUS = "ToleranceRadius";
     private static final String SEARCH_DESTINATION = "&searchDestination=";
     private static final String ONLY_DESTINATION = "?searchDestination=";
-    private static final String RESULTS = "results";
-    private static final String REOCCUR = "Reoccur";
     private static final String STARTDATE = "Startdate";
-    private static final String LATITUDE = "Latitude";
     private static final String LONGITUDE = "Longitude";
+    private static final String LATITUDE = "Latitude";
+    private static final String RESULTS = "results";
+    public static final String REOCCUR = "Reoccur";
 
     @Override
     public long search(Ride query) throws Exception {
