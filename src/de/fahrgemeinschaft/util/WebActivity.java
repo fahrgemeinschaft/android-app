@@ -19,6 +19,7 @@ import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -26,6 +27,9 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockActivity;
 
 import de.fahrgemeinschaft.inappbilling.util.IabHelper;
+import de.fahrgemeinschaft.inappbilling.util.IabHelper.OnConsumeFinishedListener;
+import de.fahrgemeinschaft.inappbilling.util.IabHelper.OnIabPurchaseFinishedListener;
+import de.fahrgemeinschaft.inappbilling.util.IabHelper.OnIabSetupFinishedListener;
 import de.fahrgemeinschaft.inappbilling.util.IabResult;
 import de.fahrgemeinschaft.inappbilling.util.Inventory;
 import de.fahrgemeinschaft.inappbilling.util.Purchase;
@@ -36,13 +40,14 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
 @SuppressLint({ "SetJavaScriptEnabled", "JavascriptInterface" })
-public class WebActivity extends SherlockActivity {
+public class WebActivity extends SherlockActivity 
+        implements OnIabPurchaseFinishedListener,
+        OnConsumeFinishedListener, OnIabSetupFinishedListener {
 
     private static final String TAG = "Fahrgemeinschaft";
     private ProgressDialog progress;
     private WebView webView;
 
-    static final String ITEM_SKU = "android.test.refunded";
     IabHelper mHelper;
 
     @Override
@@ -53,6 +58,15 @@ public class WebActivity extends SherlockActivity {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setSaveFormData(false);
         webView.getSettings().setSavePassword(false);
+        String base64EncodedPublicKey = Secret.LICENSE_KEY;
+        Log.d(TAG, "Creating IAB helper.");
+        mHelper = new IabHelper(this, base64EncodedPublicKey);
+        mHelper.enableDebugLogging(true);
+        Log.d(TAG, "Starting setup.");
+        mHelper.startSetup(this);
+        webView.loadUrl(getIntent().getDataString());
+        webView.requestFocus(View.FOCUS_DOWN);
+        setContentView(webView);
         webView.setWebChromeClient(new WebChromeClient(){
 
             @Override
@@ -86,47 +100,33 @@ public class WebActivity extends SherlockActivity {
             }
         });
         
-        String base64EncodedPublicKey = Secret.LICENSE_KEY;
-        Log.d(TAG, "Creating IAB helper.");
-        mHelper = new IabHelper(this, base64EncodedPublicKey);
-        mHelper.enableDebugLogging(true);
-        Log.d(TAG, "Starting setup.");
-        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-            public void onIabSetupFinished(IabResult result) {
-                Log.d(TAG, "Setup finished.");
-                
-                if (!result.isSuccess()) {
-                    // Oh noes, there was a problem.
-//                        complain("Problem setting up in-app billing: " + result);
-                    return;
-                }
-                
-                // Hooray, IAB is fully set up. Now, let's get an inventory of stuff we own.
-                Log.d(TAG, "Setup successful. Querying inventory.");
-                mHelper.queryInventoryAsync(mGotInventoryListener);
+        webView.addJavascriptInterface(new Object(){
+            @JavascriptInterface
+            public String donate(String amount) {
+                String sku = "de.fahrgemeinschaft.donate_" + amount;
+                // TESTING //
+                sku = "android.test.purchased";
+                // TESTING //
+                mHelper.launchPurchaseFlow(WebActivity.this,
+                        sku, 0, WebActivity.this, "");
+                return null;
             }
-        });
-        webView.loadUrl(getIntent().getDataString());
-        webView.requestFocus(View.FOCUS_DOWN);
-        setContentView(webView);
+            @JavascriptInterface
+            public String close() {
+                finish();
+                return null;
+            }
+        }, "fg");
     }
 
-    // Listener that's called when we finish querying the items and subscriptions we own
-    IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
-        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
-            Log.d(TAG, "Query inventory finished.");
-            if (result.isFailure()) {
-                // ERROR
-                return;
-            }
-            Log.d(TAG, "Query inventory was successful.");
-            //buyClick(this);
+    public void onIabSetupFinished(IabResult result) {
+        Log.d(TAG, "Setup finished.");
+        
+        if (!result.isSuccess()) {
+            // Oh noes, there was a problem.
+            Crouton.makeText(WebActivity.this, "geht ned", Style.ALERT);
+            return;
         }
-    };
-
-    public void buyClick(View view) {
-        mHelper.launchPurchaseFlow(this, ITEM_SKU, 10001,   
-              mPurchaseFinishedListener, "");
     }
 
     @Override
@@ -138,48 +138,26 @@ public class WebActivity extends SherlockActivity {
           }
     }
 
-    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener 
-                        = new IabHelper.OnIabPurchaseFinishedListener() {
-        public void onIabPurchaseFinished(IabResult result, 
-                    Purchase purchase) {
-            if (result.isFailure()) {
-                // Handle error
-                return;
-            }
-            else if (purchase.getSku().equals(ITEM_SKU)) {
-                consumeItem();
-            }
+    public void onIabPurchaseFinished(IabResult result, 
+            Purchase purchase) {
+        if (result.isFailure()) {
+            // Handle error
+            return;
         }
-    };
-
-    public void consumeItem() {
-        mHelper.queryInventoryAsync(mReceivedInventoryListener);
+        else {
+            webView.loadUrl("");
+            mHelper.consumeAsync(purchase, this);
+        }
     }
 
-    IabHelper.QueryInventoryFinishedListener mReceivedInventoryListener 
-                   = new IabHelper.QueryInventoryFinishedListener() {
-        public void onQueryInventoryFinished(IabResult result,
-                   Inventory inventory) {
-            if (result.isFailure()) {
-            // Handle failure
-            } else {
-                mHelper.consumeAsync(inventory.getPurchase(ITEM_SKU), 
-                mConsumeFinishedListener);
-            }
+    public void onConsumeFinished(Purchase purchase, 
+            IabResult result) {
+        if (result.isSuccess()) {
+            // SUCCESS! show thank you message
+        } else {
+            // handle error
         }
-    };
-
-    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener =
-                new IabHelper.OnConsumeFinishedListener() {
-        public void onConsumeFinished(Purchase purchase, 
-                            IabResult result) {
-            if (result.isSuccess()) {
-                // SUCCESS! show thank you message
-            } else {
-                // handle error
-            }
-        }
-    };
+    }
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
@@ -208,4 +186,5 @@ public class WebActivity extends SherlockActivity {
         if (mHelper != null) mHelper.dispose();
             mHelper = null;
     }
+
 }
