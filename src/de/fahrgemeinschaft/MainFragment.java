@@ -18,7 +18,6 @@ import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -35,11 +34,9 @@ import com.actionbarsherlock.app.SherlockFragment;
 
 import de.fahrgemeinschaft.util.DateImageButton;
 import de.fahrgemeinschaft.util.PlaceImageButton;
-import de.fahrgemeinschaft.util.WebActivity;
 
 public class MainFragment extends SherlockFragment
-        implements OnClickListener, 
-        OnDateSetListener, OnSharedPreferenceChangeListener {
+        implements OnClickListener, OnDateSetListener {
 
     private static final String STATE = "ride";
     protected static final String TAG = "fahrgemeinschaft";
@@ -73,9 +70,6 @@ public class MainFragment extends SherlockFragment
         v.findViewById(R.id.btn_selberfahren)
             .setOnClickListener((OnClickListener) getActivity());
 
-        prefs.registerOnSharedPreferenceChangeListener(this);
-        prefs.edit().putBoolean("paywahl", true).commit();
-
         if (savedInstanceState != null) {
             ride = savedInstanceState.getParcelable(STATE);
             ride.setContext(getActivity());
@@ -85,21 +79,6 @@ public class MainFragment extends SherlockFragment
             ride = new Ride(getActivity());
         }
         when.setDate(ride.getDep());
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-        if (key.equals("paywahl")) {
-            if (prefs.contains("paywahl")) {
-                getActivity().startActivity(
-                        new Intent(getActivity(), WebActivity.class)
-                        .setData(Uri.parse("http://www.sonnenstreifen.de/kunden/fahrgemeinschaft/spendenstand.php")));
-                getActivity().overridePendingTransition(
-                        R.anim.do_nix, R.anim.slide_in_top);
-            } else {
-
-            }
-        }
     }
 
     @Override
