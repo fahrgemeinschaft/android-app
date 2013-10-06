@@ -16,7 +16,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import de.fahrgemeinschaft.ContactProvider.CONTACT;
 import de.fahrgemeinschaft.util.Util;
 
 public class AuthRequestReceiver extends BroadcastReceiver {
@@ -24,6 +26,13 @@ public class AuthRequestReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context ctx, Intent intent) {
         if (intent.getAction().equals(ConnectorService.AUTH)) {
+            PreferenceManager.getDefaultSharedPreferences(ctx).edit()
+                    .remove(ProfileFragment.FIRSTNAME)
+                    .remove(ProfileFragment.LASTNAME)
+                    .remove(ProfileFragment.PASSWORD)
+                    .remove(ConnectorService.AUTH)
+                    .remove(CONTACT.USER)
+                    .commit();
             Notification notify = new NotificationCompat.Builder(ctx)
                     .setContentIntent(PendingIntent.getActivity(
                             ctx, 42, Util.profileIntent(ctx), 0))
