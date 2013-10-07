@@ -171,5 +171,7 @@ public class EditRideActivity extends BaseActivity
         if (getSupportFragmentManager().getBackStackEntryCount() == 0)
             setResult(RESULT_CANCELED);
         super.onBackPressed();
+        overridePendingTransition(
+                R.anim.slide_in_top, R.anim.slide_out_bottom);
     }
 }
