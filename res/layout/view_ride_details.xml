@@ -118,15 +118,45 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/details"
+            <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/small"
                 android:background="@color/almost_medium_green"
-                android:padding="@dimen/medium"
-                android:singleLine="false"
-                android:hint="@string/no_comment"
-                android:textColor="@color/opacity_black" />
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/details"
+                    android:layout_width="0dip"
+                    android:layout_weight="1"
+                    android:background="@color/almost_medium_green"
+                    android:hint="@string/no_comment"
+                    android:padding="@dimen/medium"
+                    android:singleLine="false"
+                    android:textColor="@color/opacity_black" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:background="@color/light_green"
+                    android:orientation="vertical" >
+
+                    <ImageView
+                        android:id="@+id/transport_mode"
+                        android:layout_width="wrap_content"
+                        android:layout_marginBottom="@dimen/small"
+                        android:layout_marginLeft="@dimen/small"
+                        android:background="@color/almost_medium_green"
+                        android:contentDescription="TODO"
+                        android:src="@drawable/icn_mode_car" />
+
+                    <View
+                        android:layout_height="0dip"
+                        android:layout_width="fill_parent"
+                        android:layout_weight="1"
+                        android:background="@color/almost_medium_green" />
+                </LinearLayout>
+            </LinearLayout>
 
             <de.fahrgemeinschaft.util.ReoccuringWeekDaysView
                 android:id="@+id/reoccur"

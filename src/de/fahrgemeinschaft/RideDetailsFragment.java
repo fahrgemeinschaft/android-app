@@ -16,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.teleportr.Ride;
 import org.teleportr.Ride.COLUMNS;
+import org.teleportr.Ride.Mode;
 import org.teleportr.RidesProvider;
 
 import android.app.Dialog;
@@ -153,6 +154,11 @@ public class RideDetailsFragment extends SherlockFragment
                     view.reoccur.setVisibility(View.VISIBLE);
                 else view.reoccur.setVisibility(View.GONE);
 
+                if (cursor.getString(COLUMNS.MODE).equals(Mode.CAR.name())) {
+                    view.transport_mode.setImageResource(R.drawable.icn_mode_car);
+                } else {
+                    view.transport_mode.setImageResource(R.drawable.icn_mode_train);
+                }
                 try {
                     view.details.setText(Ride.getDetails(cursor)
                             .getString(FahrgemeinschaftConnector.COMMENT));
@@ -360,8 +366,7 @@ public class RideDetailsFragment extends SherlockFragment
             public void onAnimationRepeat(Animation animation) {}
 
             @Override
-            public void onAnimationEnd(Animation animation) {
-            }
+            public void onAnimationEnd(Animation animation) {}
         });
         fade_out.setDuration(300);
         fade_out.setFillAfter(true);
@@ -390,8 +395,7 @@ public class RideDetailsFragment extends SherlockFragment
                     public void onAnimationRepeat(Animation animation) {}
 
                     @Override
-                    public void onAnimationEnd(Animation animation) {
-                    }
+                    public void onAnimationEnd(Animation animation) {}
                 });
                 fade_out.setDuration(1700);
                 fade_out.setFillAfter(true);
@@ -434,6 +438,7 @@ public class RideDetailsFragment extends SherlockFragment
         LinearLayout content;
         TextView from_place;
         TextView to_place;
+        ImageView transport_mode;
         TextView details;
         View streifenhoernchen;
         ReoccuringWeekDaysView reoccur;
@@ -451,6 +456,7 @@ public class RideDetailsFragment extends SherlockFragment
             FrameLayout to = (FrameLayout) findViewById(R.id.to_place);
             to_place = (TextView) to.getChildAt(1);
             ((ImageView)to.getChildAt(0)).setImageResource(R.drawable.shape_to);
+            transport_mode = (ImageView) findViewById(R.id.transport_mode);
             details = (TextView) findViewById(R.id.details);
             content = (LinearLayout) findViewById(R.id.content);
             avatar = (ImageView)findViewById(R.id.avatar);
