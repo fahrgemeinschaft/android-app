@@ -57,6 +57,7 @@ public abstract class SpinningZebraListFragment
     private boolean spinning;
     private int code;
     private Uri uri;
+    private boolean viewCreated;
 
 
     @Override
@@ -148,6 +149,7 @@ public abstract class SpinningZebraListFragment
             getActivity().getSupportLoaderManager()
                     .restartLoader(code, state, this);
         }
+        viewCreated = true;
         getListView().requestFocus();
     }
 
@@ -221,7 +223,7 @@ public abstract class SpinningZebraListFragment
     }
 
     public Cursor getCursor() {
-        if (getActivity() != null && getListView() != null) {
+        if (getActivity() != null && viewCreated == true && getListView() != null) {
             return ((CursorAdapter) getListView().getAdapter()).getCursor();
         } else return null;
     }
