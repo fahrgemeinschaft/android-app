@@ -29,7 +29,7 @@ public class SettingsActivity extends SherlockPreferenceActivity
         implements OnSharedPreferenceChangeListener {
 
     private static final String REFRESH = "refresh";
-    private static final String DONATE_URL = "http://www.sonnenstreifen.de/" +
+    public static final String DONATE_URL = "http://www.sonnenstreifen.de/" +
                                 "kunden/fahrgemeinschaft/spendenstand.php";
     private static final String REMEMBER = "remember_password";
     private SharedPreferences prefs;
@@ -60,6 +60,7 @@ public class SettingsActivity extends SherlockPreferenceActivity
             .setData(Uri.parse(DONATE_URL)));
         findPreference("special").setIntent(new Intent(this,
                 SettingsSpecialActivity.class));
+        findPreference("feedback").setIntent(Util.mailIntent("android@fahrgemeinschaft.de", ""));
     }
 
     @Override

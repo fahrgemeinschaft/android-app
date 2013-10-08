@@ -32,13 +32,17 @@
             android:summary="@string/refresh_description"
             android:defaultValue="600000" />
 
-        <Preference
-            android:key="special"
-            android:title="Special Expert" />
+       <Preference
+            android:key="feedback"
+            android:title="@string/feedback" />
 
        <Preference
             android:key="donate"
             android:title="@string/donate" />
+
+        <Preference
+            android:key="special"
+            android:title="Special Expert" />
 
        <Preference
             android:key="about"

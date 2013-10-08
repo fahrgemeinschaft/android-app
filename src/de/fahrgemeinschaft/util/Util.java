@@ -189,7 +189,7 @@ public class Util {
             if (details.has(CONTACT.EMAIL)) { // 'm'
                 dingens = details.getString(CONTACT.EMAIL);
                 contact.putExtra(Insert.EMAIL, dingens);
-                intents.add(labeledIntent(mailIntent(dingens, route),
+                intents.add(labeledIntent(mailIntent(dingens, route + "\n noch Platz frei?"),
                         R.drawable.icn_contact_email, dingens, ctx));
             } else if (privacy.getInt(CONTACT.EMAIL) == 4) { // members
                 intents.add(labeledIntent(profileIntent(ctx),
@@ -247,9 +247,9 @@ public class Util {
         return sms;
     }
 
-    private static Intent mailIntent(String a, String text) {
+    public static Intent mailIntent(String a, String text) {
         Intent mail = new Intent(Intent.ACTION_SENDTO, Uri.parse(MAILTO+ a));
-        mail.putExtra(Intent.EXTRA_TEXT, text + "\n noch Platz frei?");
+        mail.putExtra(Intent.EXTRA_TEXT, text);
         mail.putExtra(Intent.EXTRA_SUBJECT, "Fahrgemeinschaft");
 //        mail.setType("plain/text");
         return mail;
