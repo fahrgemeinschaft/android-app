@@ -11,7 +11,9 @@ import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
@@ -106,9 +108,6 @@ public class WebActivity extends SherlockActivity
             @JavascriptInterface
             public String donate(String amount) {
                 String sku = "de.fahrgemeinschaft.donate_" + amount;
-                // TESTING //
-                //sku = "android.test.purchased";
-                // TESTING //
                 ArrayList<String> skus = new ArrayList<String>();
                 skus.add(sku);
                 try {
@@ -156,6 +155,9 @@ public class WebActivity extends SherlockActivity
     public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
         if (result.isSuccess()) {
             System.out.println("purchased :)");
+            SharedPreferences prefs = this.getSharedPreferences(
+                    "de.fahrgemeinschaft", Context.MODE_PRIVATE);
+            prefs.edit().putBoolean("free", true).commit();
             consume(purchase);
         } else {
             System.out.println("purchase failed :(");
@@ -164,13 +166,31 @@ public class WebActivity extends SherlockActivity
 
     private void consume(final Purchase purchase) {
         final String amount = purchase.getSku().split("_")[1];
-        //final String amount = "42";
         handler.post(new Runnable() {
             
             @Override
             public void run() {
                 webView.loadUrl(DONATE_URL + amount + Secret.DONATE_KEY);
-                mHelper.consumeAsync(purchase, WebActivity.this);
+                webView.setWebViewClient(new WebViewClient() {
+
+                    @Override
+                    public void onPageStarted(WebView v, String url, Bitmap favic) {
+                        Log.d(TAG, "url");
+                        if (url.startsWith("http")) {
+                            Log.d(TAG, "url http");
+                            progress.show();
+                        }
+                        super.onPageStarted(v, url, favic);
+                    }
+
+                    @Override
+                    public void onPageFinished(WebView view, String url) {
+                        Log.d(TAG, "finished");
+                        progress.dismiss();
+                        super.onPageFinished(view, url);
+                        mHelper.consumeAsync(purchase, WebActivity.this);
+                    }
+                });
             }
         });
     }
@@ -187,8 +207,6 @@ public class WebActivity extends SherlockActivity
 
     @Override
     public void onBackPressed() {
-        setResult(RESULT_CANCELED);
-        finish();
         overridePendingTransition(R.anim.do_nix, R.anim.slide_out_bottom);
         super.onBackPressed();
     }
