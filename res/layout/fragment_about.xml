@@ -50,20 +50,9 @@
             android:textColor="@color/dark_green"
             android:textSize="23sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="// license"
-            android:textColor="@color/medium_green"
-            android:textSize="23sp"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText" />
-
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:layout_marginTop="0dp"
             android:background="@color/medium_green" />
 
         <TextView
@@ -95,7 +84,7 @@ along with this program.  If not, see http://www.gnu.org/licenses/."
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:text="// build by"
+            android:text="// build with"
             android:textColor="@color/medium_green"
             android:textSize="23sp"
             android:textStyle="bold"
@@ -106,16 +95,6 @@ along with this program.  If not, see http://www.gnu.org/licenses/."
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:background="@color/medium_green" />
-
-        <ImageView
-            android:id="@+id/sonnenstreifen_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:contentDescription="sonnenstreifen"
-            android:src="@drawable/icn_snnnstrfn"
-            android:layout_marginTop="12dp"
-            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/crouton"
@@ -183,32 +162,6 @@ along with this program.  If not, see http://www.gnu.org/licenses/."
             tools:ignore="HardcodedText" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
-            android:gravity="right"
-            android:text="// styled by"
-            android:textColor="@color/medium_green"
-            android:textSize="23sp"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="@color/medium_green" />
-
-        <ImageView
-            android:id="@+id/subphisticated_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:contentDescription="subphisticated UI"
-            android:src="@drawable/icn_sbphstctd"
-            android:layout_marginTop="12dp"
-            tools:ignore="HardcodedText" />
-
-        <TextView
             android:id="@+id/iconmonstr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -220,21 +173,10 @@ along with this program.  If not, see http://www.gnu.org/licenses/."
             android:textStyle="bold"
             tools:ignore="HardcodedText" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
-            android:gravity="right"
-            android:text="// source"
-            android:textColor="@color/medium_green"
-            android:textSize="23sp"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText" />
-
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:layout_marginTop="0dp"
+            android:layout_marginTop="12dp"
             android:background="@color/medium_green" />
 
         <TextView
@@ -257,6 +199,27 @@ along with this program.  If not, see http://www.gnu.org/licenses/."
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:background="@color/medium_green" />
+
+        <ImageView
+            android:id="@+id/subphisticated_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:contentDescription="subphisticated UI"
+            android:src="@drawable/icn_sbphstctd"
+            android:layout_marginTop="17dp"
+            tools:ignore="HardcodedText" />
+
+        <ImageView
+            android:id="@+id/sonnenstreifen_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:contentDescription="sonnenstreifen"
+            android:src="@drawable/icn_snnnstrfn"
+            android:layout_marginTop="12dp"
+            tools:ignore="HardcodedText" />
+
     </LinearLayout>
 
 </ScrollView>

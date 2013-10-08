@@ -49,7 +49,7 @@ public class AboutFragment extends SherlockFragment implements OnClickListener {
         ((TextView) v.findViewById(R.id.iconmonstr)).setText(Html.fromHtml(
                 "most icons by<font color=#D0E987> iconmonstr</font>"));
         try {
-            ((TextView)v.findViewById(R.id.version)).setText( "" +
+            ((TextView)v.findViewById(R.id.version)).setText( "Version " +
                     getActivity().getPackageManager().getPackageInfo(
                             getActivity().getPackageName(), 0).versionName);
         } catch (NameNotFoundException e) {
