@@ -62,10 +62,8 @@ public class WebActivity extends SherlockActivity
         webView.getSettings().setSaveFormData(false);
         webView.getSettings().setSavePassword(false);
         String base64EncodedPublicKey = Secret.LICENSE_KEY;
-        Log.d(TAG, "Creating IAB helper.");
         mHelper = new IabHelper(this, base64EncodedPublicKey);
         mHelper.enableDebugLogging(true);
-        Log.d(TAG, "Starting setup.");
         mHelper.startSetup(this);
         webView.loadUrl(getIntent().getDataString());
         webView.requestFocus(View.FOCUS_DOWN);
@@ -86,9 +84,7 @@ public class WebActivity extends SherlockActivity
 
             @Override
             public void onPageStarted(WebView v, String url, Bitmap favic) {
-                Log.d(TAG, "url");
                 if (url.startsWith("http")) {
-                    Log.d(TAG, "url http");
                     progress.show();
                 }
                 super.onPageStarted(v, url, favic);
@@ -96,7 +92,6 @@ public class WebActivity extends SherlockActivity
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                Log.d(TAG, "finished");
                 progress.dismiss();
                 overridePendingTransition(
                         R.anim.do_nix, R.anim.slide_out_bottom);
@@ -114,7 +109,6 @@ public class WebActivity extends SherlockActivity
                     Inventory inventory = mHelper.queryInventory(true, skus);
                     Purchase purchase = inventory.getPurchase(sku);
                     if (purchase != null) {
-                        System.out.println("obviously not yet consumed");
                         consume(purchase);
                     } else {
                         mHelper.launchPurchaseFlow(WebActivity.this,
@@ -134,11 +128,8 @@ public class WebActivity extends SherlockActivity
     }
 
     public void onIabSetupFinished(IabResult result) {
-        Log.d(TAG, "Setup finished.");
-        
         if (!result.isSuccess()) {
-            // Oh noes, there was a problem.
-            Crouton.makeText(WebActivity.this, "geht ned", Style.ALERT);
+            Crouton.makeText(WebActivity.this, "Payment error", Style.ALERT);
             return;
         }
     }
@@ -154,13 +145,10 @@ public class WebActivity extends SherlockActivity
 
     public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
         if (result.isSuccess()) {
-            System.out.println("purchased :)");
             SharedPreferences prefs = this.getSharedPreferences(
                     "de.fahrgemeinschaft", Context.MODE_PRIVATE);
             prefs.edit().putBoolean("free", true).commit();
             consume(purchase);
-        } else {
-            System.out.println("purchase failed :(");
         }
     }
 
@@ -175,9 +163,7 @@ public class WebActivity extends SherlockActivity
 
                     @Override
                     public void onPageStarted(WebView v, String url, Bitmap favic) {
-                        Log.d(TAG, "url");
                         if (url.startsWith("http")) {
-                            Log.d(TAG, "url http");
                             progress.show();
                         }
                         super.onPageStarted(v, url, favic);
@@ -185,7 +171,6 @@ public class WebActivity extends SherlockActivity
 
                     @Override
                     public void onPageFinished(WebView view, String url) {
-                        Log.d(TAG, "finished");
                         progress.dismiss();
                         super.onPageFinished(view, url);
                         mHelper.consumeAsync(purchase, WebActivity.this);
@@ -195,15 +180,7 @@ public class WebActivity extends SherlockActivity
         });
     }
 
-    public void onConsumeFinished(Purchase purchase, IabResult result) {
-        if (result.isSuccess()) {
-            System.out.println("consumed :)");
-            // SUCCESS! show thank you message
-        } else {
-            System.out.println("consume failed :(");
-            // handle error
-        }
-    }
+    public void onConsumeFinished(Purchase purchase, IabResult result) {}
 
     @Override
     public void onBackPressed() {

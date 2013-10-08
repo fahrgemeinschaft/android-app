@@ -62,7 +62,6 @@ public class RideRowView extends LinearLayout {
             day.setText(dayf.format(dep));
             date.setText(datef.format(dep));
         }
-        System.out.println(timestamp % MINUTE);
         if (timestamp % MINUTE == NOTIME) {
             time.setText(EMPTY);
         } else {
