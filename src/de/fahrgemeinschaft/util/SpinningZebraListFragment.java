@@ -57,8 +57,6 @@ public abstract class SpinningZebraListFragment
     private boolean spinning;
     private int code;
     private Uri uri;
-    private boolean viewCreated;
-
 
     @Override
     public View onCreateView(final LayoutInflater lI, ViewGroup p, Bundle b) {
@@ -149,7 +147,6 @@ public abstract class SpinningZebraListFragment
             getActivity().getSupportLoaderManager()
                     .restartLoader(code, state, this);
         }
-        viewCreated = true;
         getListView().requestFocus();
     }
 
@@ -216,15 +213,14 @@ public abstract class SpinningZebraListFragment
     }
 
     public void notifyDatasetChanged() {
-        if (getCursor() != null && !getCursor().isClosed()
-                && getListAdapter() != null) {
+        if (getCursor() != null && !getCursor().isClosed()) {
             ((CursorAdapter) getListAdapter()).notifyDataSetChanged();
         }
     }
 
     public Cursor getCursor() {
-        if (getActivity() != null && viewCreated == true && getListView() != null) {
-            return ((CursorAdapter) getListView().getAdapter()).getCursor();
+        if (getActivity() != null && getView() != null) {
+            return ((CursorAdapter) getListAdapter()).getCursor();
         } else return null;
     }
 
