@@ -7,9 +7,9 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.fahrgemeinschaft"
-    android:versionCode="67"
-    android:versionName="1.0" >
-
+    android:installLocation="auto"
+    android:versionCode="68"
+    android:versionName="1.0.1" >
 
     <uses-sdk
         android:minSdkVersion="8"
