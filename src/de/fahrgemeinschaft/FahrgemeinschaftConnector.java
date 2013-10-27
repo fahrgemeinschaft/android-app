@@ -173,7 +173,7 @@ public class FahrgemeinschaftConnector extends Connector {
     public static long getNextDayMorning(long dep) {
         if (dep != 0) {
             Calendar c = Calendar.getInstance();
-            c.setTimeInMillis(dep + 24 * 3600000); // plus one day
+            c.setTimeInMillis(dep + 25 * 3600000); // plus one(!) day
             c.set(Calendar.HOUR_OF_DAY, 0); // reset
             c.set(Calendar.MINUTE, 0);
             c.set(Calendar.SECOND, 0);
