@@ -17,7 +17,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
@@ -46,13 +45,13 @@ public class WebActivity extends SherlockActivity
         OnConsumeFinishedListener, OnIabSetupFinishedListener {
 
     private static final String DONATE_URL = "http://sonnenstreifen.de/kunden/fahrgemeinschaft/spendenstand.php?b=";
-    private static final String TAG = "Fahrgemeinschaft";
     private ProgressDialog progress;
     private WebView webView;
 
     private Handler handler;
     IabHelper mHelper;
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
