@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
+import de.fahrgemeinschaft.ContactProvider.CONTACT;
 import de.fahrgemeinschaft.util.PlaceImageButton;
 
 public class EditRideFragment1 extends SherlockFragment implements OnClickListener {
@@ -87,6 +88,7 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
                 .setTextColor(getResources().getColor(R.color.dark_green));
             ((TextView) getActivity().findViewById(R.id.mode_rail_text))
                 .setTextColor(getResources().getColor(R.color.white));
+            ride.set(CONTACT.PLATE, "");
             break;
         case TRAIN:
             getActivity().findViewById(R.id.mode_car).setSelected(false);
