@@ -27,8 +27,10 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -191,7 +193,8 @@ public class RideListFragment extends SpinningZebraListFragment
 
 
 
-    static class RideView extends RelativeLayout implements OnClickListener {
+    static class RideView extends RelativeLayout
+        implements OnClickListener, OnLongClickListener {
 
         View streifenhoernchen;
         View grey_bg;
@@ -225,10 +228,12 @@ public class RideListFragment extends SpinningZebraListFragment
 
         public void showButtons() {
             findViewById(R.id.stub).setVisibility(View.VISIBLE);
-            findViewById(R.id.edit).setOnClickListener(this);
+            View edit = findViewById(R.id.edit);
+            edit.setFocusable(false);
+            edit.setOnClickListener(this);
+            edit.setOnLongClickListener(this);
             findViewById(R.id.increase_seats).setOnClickListener(this);
             findViewById(R.id.decrease_seats).setOnClickListener(this);
-            findViewById(R.id.edit).setFocusable(false);
             findViewById(R.id.increase_seats).setFocusable(false);
             findViewById(R.id.decrease_seats).setFocusable(false);
         }
@@ -266,6 +271,12 @@ public class RideListFragment extends SpinningZebraListFragment
                 getContext().getContentResolver().update(RidesProvider
                         .getRidesUri(getContext()), null, null, null);
             }
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            ((ListView) getParent()).showContextMenuForChild(this);
+            return false;
         }
     }
 }
