@@ -7,7 +7,7 @@
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <AutoCompleteTextView
+    <de.fahrgemeinschaft.util.AutoCompletePicker
         android:id="@+id/text"
         android:layout_width="match_parent"
         android:layout_height="@dimen/large_icn"

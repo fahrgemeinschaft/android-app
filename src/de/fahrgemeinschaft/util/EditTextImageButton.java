@@ -19,14 +19,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import de.fahrgemeinschaft.R;
 
 public class EditTextImageButton extends BaseImageButton
-                implements TextWatcher, OnFocusChangeListener, OnClickListener {
+                implements TextWatcher, OnClickListener {
 
     private static final String Q = "q";
     private static final String EMPTY = "";
@@ -53,26 +51,12 @@ public class EditTextImageButton extends BaseImageButton
         text.addTextChangedListener(this);
         Util.fixStreifenhoernchen(text);
         text.setSelectAllOnFocus(true);
-        text.setOnFocusChangeListener(this);
-        icon.setOnFocusChangeListener(this);
         icon.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         text.requestFocus();
-    }
-    
-
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        if (hasFocus) {
-            text.requestFocus();
-        } else {
-            ((InputMethodManager) getContext()
-                    .getSystemService(Context.INPUT_METHOD_SERVICE))
-                    .hideSoftInputFromWindow(text.getWindowToken(), 0);
-        }
     }
 
     public interface TextListener {
