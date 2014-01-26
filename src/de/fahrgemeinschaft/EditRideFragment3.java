@@ -57,10 +57,10 @@ public class EditRideFragment3 extends SherlockFragment
         email.setTextListener(CONTACT.EMAIL, this);
         String uri = "content://de.fahrgemeinschaft.private/users/"
                         + prefs.getString("user", EMPTY);
-        email.setAutocompleteUri(Uri.parse(uri + "/mails"));
-        mobile.setAutocompleteUri(Uri.parse(uri + "/mobiles"));
-        land.setAutocompleteUri(Uri.parse(uri + "/landlines"));
-        plate.setAutocompleteUri(Uri.parse(uri + "/plates"));
+        email.text.setAutocompleteUri(Uri.parse(uri + "/mails"));
+        mobile.text.setAutocompleteUri(Uri.parse(uri + "/mobiles"));
+        land.text.setAutocompleteUri(Uri.parse(uri + "/landlines"));
+        plate.text.setAutocompleteUri(Uri.parse(uri + "/plates"));
         mobile.setTextListener(CONTACT.MOBILE, this);
         land.setTextListener(CONTACT.LANDLINE, this);
         plate.setTextListener(CONTACT.PLATE, this);
