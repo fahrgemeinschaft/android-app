@@ -1,10 +1,12 @@
 bin
 gen
+*.iml
 build
 .gradle
 .project
 .settings
 .classpath
+local.properties
 project.properties
 old APKs
 fahrgemeinschaft.keystore
