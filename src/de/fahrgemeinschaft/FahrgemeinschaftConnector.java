@@ -57,7 +57,7 @@ public class FahrgemeinschaftConnector extends Connector {
     public static String USER_AGENT = "Android-App";
 
     public static final String FAHRGEMEINSCHAFT_DE
-            = "http://service.fahrgemeinschaft.de";
+            = "https://service.fahrgemeinschaft.de";
     public String endpoint =  FAHRGEMEINSCHAFT_DE;
 
     private String startDate;
