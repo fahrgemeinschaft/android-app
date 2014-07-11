@@ -30,7 +30,7 @@ public class EditTextImageButton extends BaseImageButton
     private static final String EMPTY = "";
     private static final String INPUT_TYPE = "inputType";
     private static final String HINT = "hint";
-    public AutoCompleteTextView text;
+    public AutoCompletePicker text;
     private TextListener textListener;
     protected String key;
 
@@ -41,7 +41,7 @@ public class EditTextImageButton extends BaseImageButton
 
     public EditTextImageButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        text = (AutoCompleteTextView) findViewById(R.id.text);
+        text = (AutoCompletePicker) findViewById(R.id.text);
         text.setThreshold(1);
         text.setId(ID--);
         text.setHint(getContext().getString(attrs.getAttributeResourceValue(
@@ -80,34 +80,4 @@ public class EditTextImageButton extends BaseImageButton
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int cnt) {}
 
-    public void setAutocompleteUri(final Uri uri) {
-        text.setAdapter(new CursorAdapter(getContext(), null, false) {
-
-            @Override
-            public View newView(Context ctx, Cursor c, ViewGroup r) {
-                return LayoutInflater.from(ctx).inflate(
-                        R.layout.contacts_list_entry, r, false);
-            }
-
-            @Override
-            public void bindView(View v, Context arg1, Cursor c) {
-                ((TextView) v.findViewById(R.id.contacts_value))
-                    .setText(c.getString(1));
-            }
-
-            @Override
-            public Cursor runQueryOnBackgroundThread(CharSequence constraint) {
-                if (constraint == null) constraint = EMPTY;
-                return getContext().getContentResolver()
-                        .query(uri.buildUpon().appendQueryParameter(
-                                Q, constraint.toString()).build(),
-                                null, null, null, null);
-            }
-
-            @Override
-            public CharSequence convertToString(Cursor cursor) {
-                return cursor.getString(1);
-            }
-        });
-    }
 }
