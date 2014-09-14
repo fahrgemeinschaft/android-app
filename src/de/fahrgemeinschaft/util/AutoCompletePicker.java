@@ -25,7 +25,7 @@ public class AutoCompletePicker extends AutoCompleteTextView
     
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        if (hasFocus) {
+        if (hasFocus && getAdapter() != null) {
             showDropDown();
             performFiltering("", 0);
         }
