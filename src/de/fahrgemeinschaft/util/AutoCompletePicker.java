@@ -71,4 +71,16 @@ public class AutoCompletePicker extends AutoCompleteTextView
             }
         });
     }
+
+    boolean initialDefault;
+
+    public void onFilterComplete(int count) {
+        if (!initialDefault && count > 0) {
+            Object selectedItem = getAdapter().getItem(0);
+            replaceText(convertSelectionToString(selectedItem));
+            initialDefault = true;
+        }
+        super.onFilterComplete(count);
+    }
+
 }
