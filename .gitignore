@@ -1,6 +1,7 @@
 bin
 gen
 *.iml
+.idea
 build
 .gradle
 .project
