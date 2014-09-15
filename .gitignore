@@ -6,6 +6,7 @@ build
 .project
 .settings
 .classpath
+.idea
 local.properties
 project.properties
 old APKs
