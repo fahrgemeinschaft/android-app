@@ -6,13 +6,18 @@ buildscript {
         classpath 'com.android.tools.build:gradle:0.12.+'
     }
 }
+
 apply plugin: 'android'
 
 repositories {
     mavenCentral()
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
+    compile name: 'android-library', ext: 'aar'
     compile fileTree(dir: 'libs', include: '*.jar')
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
 }
