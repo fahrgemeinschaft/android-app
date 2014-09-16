@@ -19,12 +19,6 @@ public class ContactProviderTest extends ProviderTestCase2<ContactProvider> {
         getMockContentResolver().addProvider(
                 "de.fahrgemeinschaft.private", getProvider());
         ContentValues cv = new ContentValues();
-        cv.put(CONTACT.EMAIL, "afoo@bar.net");
-        cv.put(CONTACT.MOBILE, "456");
-        cv.put(CONTACT.PLATE, "XYZ");
-        cv.put(CONTACT.USER, "foo");
-        getMockContentResolver().insert(Uri.parse(
-                "content://de.fahrgemeinschaft.private/contacts"), cv);
         cv.put(CONTACT.EMAIL, "blablamail@gmx.net");
         cv.put(CONTACT.MOBILE, "123");
         cv.put(CONTACT.PLATE, "ABC");
@@ -37,6 +31,12 @@ public class ContactProviderTest extends ProviderTestCase2<ContactProvider> {
         cv.put(CONTACT.USER, "foo");
         getMockContentResolver().insert(Uri.parse(
                 "content://de.fahrgemeinschaft.private/contacts"), cv);
+        cv.put(CONTACT.EMAIL, "afoo@bar.net");
+        cv.put(CONTACT.MOBILE, "456");
+        cv.put(CONTACT.PLATE, "XYZ");
+        cv.put(CONTACT.USER, "foo");
+        getMockContentResolver().insert(Uri.parse(
+                "content://de.fahrgemeinschaft.private/contacts"), cv);
     }
 
     public void testGetMails() {
@@ -45,11 +45,11 @@ public class ContactProviderTest extends ProviderTestCase2<ContactProvider> {
                 null, null, null, null);
         assertEquals(2, mails.getCount());
         mails.moveToFirst();
-        assertEquals("count", 2, mails.getInt(2));
-        assertEquals("blablamail@gmx.net", mails.getString(1));
-        mails.moveToNext();
         assertEquals("count", 1, mails.getInt(2));
         assertEquals("afoo@bar.net", mails.getString(1));
+        mails.moveToNext();
+        assertEquals("count", 2, mails.getInt(2));
+        assertEquals("blablamail@gmx.net", mails.getString(1));
     }
 
     public void testAutocompleteMails() {
@@ -68,9 +68,9 @@ public class ContactProviderTest extends ProviderTestCase2<ContactProvider> {
                 null, null, null, null);
         assertEquals(2, mobiles.getCount());
         mobiles.moveToFirst();
-        assertEquals("123", mobiles.getString(1));
-        mobiles.moveToNext();
         assertEquals("456", mobiles.getString(1));
+        mobiles.moveToNext();
+        assertEquals("123", mobiles.getString(1));
     }
 
     public void testEmptyValues() {
