@@ -30,6 +30,7 @@
         android:layout_height="@dimen/xlarge"
         android:hint="@string/password"
         android:inputType="textPassword"
+        android:nextFocusDown="@+id/login"
         android:src="@drawable/icn_password" />
 
     <Button
@@ -45,6 +46,8 @@
         android:textColor="@color/light_green"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:nextFocusUp="@+id/password"
+        android:nextFocusDown="@+id/register"
         android:text="@string/login" />
 
     <View
@@ -53,6 +56,7 @@
 
     <Button
         android:id="@+id/register"
+        android:nextFocusUp="@id/login"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_gravity="bottom"
