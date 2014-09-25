@@ -46,6 +46,9 @@
     <string name="show_website">Öffne Website</string>
     <string name="share">Teilen</string>
     <string name="stored">Fahrt gespeichert</string>
+    <string name="past_ride">
+        Fahrt liegt in der Vergangenheit. Bitte gib ein neues Datum ein:
+    </string>
 
     <string name="mode_car">Auto</string>
     <string name="mode_rail">Zug</string>

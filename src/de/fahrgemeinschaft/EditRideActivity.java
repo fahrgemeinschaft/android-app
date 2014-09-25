@@ -101,6 +101,8 @@ public class EditRideActivity extends BaseActivity
             if (delta < -12 * 3600000) {
                 delta = delta % 86400000;
                 ride.dep(System.currentTimeMillis() + 86400000 + delta);
+                Crouton.makeText(this, getString(R.string.past_ride), Style.INFO)
+                        .show();
                 f2.openDatePicker();
             }
         }

@@ -47,6 +47,9 @@
     <string name="show_website">Show Website</string>
     <string name="share">Share</string>
     <string name="stored">Ride stored</string>
+    <string name="past_ride">
+        Ride is in the past. Please choose a new date:
+    </string>
 
     <string name="mode_car">Car</string>
     <string name="mode_rail">Train</string>
