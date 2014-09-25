@@ -23,7 +23,7 @@
     <string name="publish">publish</string>
     <string name="search">search</string>
     <string name="offer">offer</string>
-    <string name="incomplete">incomplete</string>
+    <string name="incomplete">Ride incomplete, please enter Origin and Destination</string>
     <string name="searching">searching for</string>
     <string name="nothing">nothing found for</string>
     <string name="search_continue">continue searching</string>
@@ -46,7 +46,7 @@
     <string name="duplicate_retour">Duplicate Retour</string>
     <string name="show_website">Show Website</string>
     <string name="share">Share</string>
-    <string name="stored">stored</string>
+    <string name="stored">Ride stored</string>
 
     <string name="mode_car">Car</string>
     <string name="mode_rail">Train</string>

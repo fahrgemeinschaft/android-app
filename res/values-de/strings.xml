@@ -22,7 +22,7 @@
     <string name="publish" >veröffentlichen</string>
     <string name="search">suchen</string>
     <string name="offer">anbieten</string>
-    <string name="incomplete">unvollständig</string>
+    <string name="incomplete">Fahrt unvollständig, bitte gib Start und Ziel ein</string>
     <string name="searching">suche für</string>
     <string name="nothing">keine Ergebnisse für</string>
     <string name="search_continue">weiter suchen</string>
@@ -45,7 +45,7 @@
     <string name="duplicate_retour">Duplizieren Retour</string>
     <string name="show_website">Öffne Website</string>
     <string name="share">Teilen</string>
-    <string name="stored">gespeichert</string>
+    <string name="stored">Fahrt gespeichert</string>
 
     <string name="mode_car">Auto</string>
     <string name="mode_rail">Zug</string>
