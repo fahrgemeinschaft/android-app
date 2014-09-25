@@ -67,13 +67,14 @@ public class ContactProvider extends ContentProvider {
 
 
     private static String SELECT(String something) {
-        return "SELECT _id, " + something +
-                ", " + "COUNT(" + something + ") AS count FROM contacts " +
-                "WHERE " + CONTACT.USER +  " IS ? " +
-                "AND " + something + " LIKE ? " +
-                "AND " + something + " IS NOT NULL " +
-                "AND " + something + " IS NOT '' " +
-                "GROUP BY " + something + " ORDER BY count DESC";
+        return "SELECT _id, " + something + "," +
+                " COUNT(" + something + ") AS count FROM contacts" +
+                " WHERE " + CONTACT.USER +  " IS ?" +
+                " AND " + something + " LIKE ?" +
+                " AND " + something + " IS NOT NULL" +
+                " AND " + something + " IS NOT ''" +
+                " GROUP BY " + something +
+                " ORDER BY _id DESC";
     }
 
     private static final String SELECT_MAILS = SELECT(CONTACT.EMAIL);
