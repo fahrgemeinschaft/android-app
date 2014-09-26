@@ -110,8 +110,6 @@ public class ProfileFragment extends SherlockFragment
         case R.id.login:
             boolean logout = prefs.contains(AUTH);
             if (logout) {
-                Crouton.makeText(getActivity(), getString(
-                        R.string.logout), Style.CONFIRM).show();
                 getActivity().getContentResolver().delete(
                         RidesProvider.getMyRidesUri(getActivity()), null, null);
                 getActivity().getContentResolver().update(RidesProvider

@@ -47,8 +47,6 @@ public class BaseActivity extends SherlockFragmentActivity
        ServiceConnection, OnBackStackChangedListener {
 
     public static final String TAG = "Fahrgemeinschaft";
-    private static final String SUCCESS = " success.";
-    private static final String FAIL = " fail: ";
     public static final int MYRIDES = 1;
     public static final int DETAILS = 2;
     public static final int PROFILE = 3;
@@ -205,14 +203,17 @@ public class BaseActivity extends SherlockFragmentActivity
         if (what.equals(ConnectorService.MYRIDES) && ic_myrides != null) {
             ic_myrides.setActionView(R.layout.view_progress);
         } else if (what.equals(ConnectorService.AUTH) && ic_profile != null) {
-            Crouton.makeText(this, what, Style.INFO).show();
             ic_profile.setActionView(R.layout.view_progress);
         }
     }
 
     @Override
     public void onFail(String what, String reason) {
-        Crouton.makeText(this, what + FAIL + reason, Style.ALERT).show();
+        if (reason.equals("wrong login or password")) {
+            Crouton.makeText(this, getString(R.string.auth_error), Style.ALERT).show();
+        } else {
+            Crouton.makeText(this, getString(R.string.auth_no_network), Style.ALERT).show();
+        }
         if (what.equals(ConnectorService.MYRIDES) && ic_myrides != null) {
             ic_myrides.setActionView(null);
         } else if (what.equals(ConnectorService.AUTH) && ic_profile != null) {
@@ -232,7 +233,8 @@ public class BaseActivity extends SherlockFragmentActivity
                 new GetContactsFromMyridesTask().execute(new String[]{});
             }
         } else if (what.equals(ConnectorService.AUTH) & ic_profile != null) {
-            Crouton.makeText(this, what + SUCCESS, Style.CONFIRM).show();
+            Crouton.makeText(this, getString(R.string.auth_success), Style.CONFIRM)
+                    .show();
             ic_profile.setActionView(null);
             startService(new Intent(this, ConnectorService.class)
                     .setAction(ConnectorService.SEARCH));

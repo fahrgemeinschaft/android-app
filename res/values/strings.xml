@@ -56,6 +56,9 @@
     <string name="price">Price</string>
     <string name="comment">Comments for your Ride</string>
 
+    <string name="auth_success">Successfully logged in</string>
+    <string name="auth_error">wrong Username or Password</string>
+    <string name="auth_no_network">no Internet connection</string>
     <string name="username">eMail</string>
     <string name="password">Password</string>
     <string name="login">login</string>

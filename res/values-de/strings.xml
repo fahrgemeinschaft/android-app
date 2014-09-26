@@ -55,6 +55,9 @@
     <string name="price">Preis</string>
     <string name="comment">Anmerkungen zur Fahrt</string>
 
+    <string name="auth_success">Erfolgreich eingeloggt</string>
+    <string name="auth_error">Benutzername oder Passwort falsch</string>
+    <string name="auth_no_network">Keine Verbindung zum Internet</string>
     <string name="username">eMail</string>
     <string name="password">Passwort</string>
     <string name="login">anmelden</string>
