@@ -12,4 +12,4 @@ local.properties
 project.properties
 old APKs
 fahrgemeinschaft.keystore
-src/de/fahrgemeinschaft/Secret.java
+src/main/java/de/fahrgemeinschaft/Secret.java
