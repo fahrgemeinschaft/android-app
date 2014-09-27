@@ -38,7 +38,7 @@ public class Util {
     private static final String MAILTO = "mailto:";
     private static final String SMS = "sms:";
     private static final String TEL = "tel:";
-
+    public static final String TRIP_DETAIL_URL = "https://www.fahrgemeinschaft.de/tripdetails.php?trip=";
 
 
     public static long getNextDayMorning(long dep) {
@@ -91,9 +91,8 @@ public class Util {
             return true;
         case R.id.show_website:
             ctx.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
-                    FahrgemeinschaftConnector.FAHRGEMEINSCHAFT_DE
-                    + "/tripdetails.php?trip=" + ride.getRef()
-                    )).setClass(ctx, WebActivity.class));
+                    TRIP_DETAIL_URL + ride.getRef()
+                    )));
             return true;
         case R.id.share:
             Intent share = new Intent(android.content.Intent.ACTION_SEND);
@@ -103,8 +102,7 @@ public class Util {
                     "From " + ride.getFrom().getName()
                     + " to " + ride.getTo().getName());
             share.putExtra(Intent.EXTRA_TEXT, 
-                    FahrgemeinschaftConnector.FAHRGEMEINSCHAFT_DE
-                    + "/tripdetails.php?trip=" + ride.getRef());
+                    TRIP_DETAIL_URL + ride.getRef());
             ctx.startActivity(Intent.createChooser(share,
                     ctx.getString(R.string.share)));
             return true;
@@ -129,9 +127,7 @@ public class Util {
         Intent contact = new Intent(Intent.ACTION_INSERT, Contacts.CONTENT_URI);
         contact.putExtra(Insert.NAME, route);
         Intent web = new Intent(Intent.ACTION_VIEW, Uri.parse(
-                "http://www.fahrgemeinschaft.de/" +
-                "tripdetails.php?trip=" + c.getString(COLUMNS.REF)))
-                        .setClass(ctx, WebActivity.class);
+                TRIP_DETAIL_URL + c.getString(COLUMNS.REF)));
         ArrayList<Intent> intents = new ArrayList<Intent>() {
             private static final long serialVersionUID = 1L;
 
@@ -235,7 +231,8 @@ public class Util {
     }
 
     private static Intent callIntent(String num) {
-        Intent call = new Intent(Intent.ACTION_DIAL, Uri.parse(TEL + num));
+        Intent call = new Intent(Intent.ACTION_DIAL, Uri.parse(TEL + num))
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
         return call;
     }
 
