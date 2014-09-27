@@ -212,7 +212,9 @@ public class BaseActivity extends SherlockFragmentActivity
         if (reason.equals("wrong login or password")) {
             Crouton.makeText(this, getString(R.string.auth_error), Style.ALERT).show();
         } else {
-            Crouton.makeText(this, getString(R.string.auth_no_network), Style.ALERT).show();
+            if (reason.contains("Unknown")) {
+                Crouton.makeText(this, getString(R.string.auth_no_network), Style.ALERT).show();
+            }
         }
         if (what.equals(ConnectorService.MYRIDES) && ic_myrides != null) {
             ic_myrides.setActionView(null);
