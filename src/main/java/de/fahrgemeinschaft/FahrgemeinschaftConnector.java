@@ -395,6 +395,7 @@ public class FahrgemeinschaftConnector extends Connector {
             json.put(REOCCUR, offer.getDetails().getJSONObject(REOCCUR));
         ArrayList<JSONObject> routings = new ArrayList<JSONObject>();
         List<Place> stops = offer.getPlaces();
+	System.out.println(stops.get(0).getAddress());
         int max = stops.size() - 1;
         for (int dest = max; dest >= 0 ; dest--) {
             for (int orig = 0; orig < dest; orig++) {
@@ -406,6 +407,7 @@ public class FahrgemeinschaftConnector extends Connector {
                 routings.add(route);
             }
         }
+	System.out.println(new JSONArray(routings));
         json.put(ROUTINGS, new JSONArray(routings));
         OutputStreamWriter out = new OutputStreamWriter(post.getOutputStream());
         out.write(json.toString());
