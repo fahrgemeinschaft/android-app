@@ -26,9 +26,13 @@ import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents.Insert;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.Toast;
+
+import de.fahrgemeinschaft.BaseActivity;
 import de.fahrgemeinschaft.ContactProvider.CONTACT;
+import de.fahrgemeinschaft.EditRideActivity;
 import de.fahrgemeinschaft.FahrgemeinschaftConnector;
 import de.fahrgemeinschaft.MainActivity;
 import de.fahrgemeinschaft.R;
@@ -64,6 +68,9 @@ public class Util {
                     .setAction(ConnectorService.PUBLISH));
             return true;
         case R.id.delete:
+            if (isEditRideActivity(ctx)) {
+                ((BaseActivity) ctx).finish();
+            }
             ride.delete();
             ctx.getContentResolver().update(RidesProvider
                     .getRidesUri(ctx), null, null, null);
@@ -71,13 +78,25 @@ public class Util {
                     .setAction(ConnectorService.PUBLISH));
             return true;
         case R.id.edit:
-            ctx.startActivity(new Intent(Intent.ACTION_EDIT,
-                    RidesProvider.getRideUri(ctx, ride.getId())));
+            if (isEditRideActivity(ctx)) {
+                FragmentManager fMgr = ((BaseActivity) ctx).getSupportFragmentManager();
+                for (int i = 0; i < fMgr.getBackStackEntryCount(); i++)
+                    fMgr.popBackStack();
+            } else {
+                ctx.startActivity(new Intent(Intent.ACTION_EDIT,
+                        RidesProvider.getRideUri(ctx, ride.getId())));
+            }
             return true;
         case R.id.duplicate:
+            if (isEditRideActivity(ctx)) {
+                ((BaseActivity) ctx).finish();
+            }
             ctx.startActivity(new Intent(Intent.ACTION_EDIT, ride.duplicate()));
             return true;
         case R.id.duplicate_retour:
+            if (isEditRideActivity(ctx)) {
+                ((BaseActivity) ctx).finish();
+            }
             ride.duplicate();
             List<Place> vias = ride.getVias();
             Place from = ride.getFrom();
@@ -108,6 +127,11 @@ public class Util {
             return true;
         }
         return false;
+    }
+
+    private static boolean isEditRideActivity(Context ctx) {
+        return ctx.getClass().getSimpleName()
+                .equals(EditRideActivity.class.getSimpleName());
     }
 
     public static boolean isVisible(String key, JSONObject details) {
