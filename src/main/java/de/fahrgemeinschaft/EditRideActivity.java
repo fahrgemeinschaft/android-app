@@ -28,10 +28,13 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.fahrgemeinschaft.ContactProvider.CONTACT;
 import de.fahrgemeinschaft.util.PrivacyImageButton;
+import de.fahrgemeinschaft.util.Util;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -112,15 +115,32 @@ public class EditRideActivity extends BaseActivity
     public void onLoaderReset(Loader<Cursor> arg0) {}
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getSupportMenuInflater().inflate(R.menu.ride_actions, menu);
+        menu.findItem(R.id.edit).setVisible(false);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            overridePendingTransition(
-                    R.anim.slide_in_top, R.anim.slide_out_bottom);
-            finish();
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case android.R.id.home: // up
+                finish();
+                return true;
+            case R.id.myrides:
+            case R.id.profile:
+            case R.id.settings:
+                return super.onOptionsItemSelected(item);
+            default:
+                return Util.handleRideAction(item.getItemId(), ride, this);
         }
+    }
+
+    @Override
+    public void finish() {
+        overridePendingTransition(
+                R.anim.slide_in_top, R.anim.slide_out_bottom);
+        super.finish();
     }
 
     @Override
