@@ -116,6 +116,8 @@ public class RideDetailsFragment extends SherlockFragment
     @Override
     public void onViewCreated(View layout, Bundle savedInstanceState) {
         super.onViewCreated(layout, savedInstanceState);
+        left_arrow = layout.findViewById(R.id.left_arrow);
+        right_arrow = layout.findViewById(R.id.right_arrow);
         pager = (ViewPager) layout.findViewById(R.id.pager);
         pager.setAdapter(new BasePagerAdapter() {
 
@@ -211,8 +213,6 @@ public class RideDetailsFragment extends SherlockFragment
                 return position;
             }
         });
-        left_arrow = layout.findViewById(R.id.left_arrow);
-        right_arrow = layout.findViewById(R.id.right_arrow);
         pager.requestFocus();
         pulseSwipeArrows();
     }
@@ -226,10 +226,7 @@ public class RideDetailsFragment extends SherlockFragment
     @Override
     public void onPageScrollStateChanged(int state) {
         if (state == 1) {
-            left_arrow.clearAnimation();
-            right_arrow.clearAnimation();
-            fadeOutFast(left_arrow);
-            fadeOutFast(right_arrow);
+            pulseSwipeArrows();
         }
     }
 
@@ -334,8 +331,13 @@ public class RideDetailsFragment extends SherlockFragment
         if (cursor == null) {
             if (getTargetFragment() != null) {
                 cursor = ((RideListFragment) getTargetFragment()).getCursor();
-                if (cursor != null)
+                if (cursor != null) {
                     cursor.registerContentObserver(onChange);
+                    if (pager != null) {
+                        pager.getAdapter().notifyDataSetChanged();
+                        pulseSwipeArrows();
+                    }
+                }
             };
         }
         return cursor;
@@ -351,8 +353,20 @@ public class RideDetailsFragment extends SherlockFragment
     };
 
     private void pulseSwipeArrows() {
-        animatePulse(right_arrow);
-        animatePulse(left_arrow);
+        if (pager == null || getCursor() == null)
+            return;
+        if (selected > 0) {
+            left_arrow.setVisibility(View.VISIBLE);
+            animatePulse(left_arrow);
+        } else {
+            left_arrow.setVisibility(View.INVISIBLE);
+        }
+        if (selected < getCursor().getCount() - 1) {
+            right_arrow.setVisibility(View.VISIBLE);
+            animatePulse(right_arrow);
+        } else {
+            right_arrow.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void fadeOutFast(final View view) {

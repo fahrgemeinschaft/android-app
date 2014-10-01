@@ -247,9 +247,7 @@ public class RideListFragment extends SpinningZebraListFragment
             Ride ride = new Ride(id, getContext());
             switch (v.getId()) {
             case R.id.edit:
-                getContext().startActivity(new Intent(getContext(),
-                        EditRideActivity.class).setData(RidesProvider
-                                .getRideUri(getContext(), id)));
+                Util.handleRideAction(R.id.edit, ride, getContext());
                 break;
             case R.id.increase_seats:
                 if (ride.getSeats() <= 3) { // 4 is max / means many
