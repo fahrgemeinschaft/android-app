@@ -13,7 +13,6 @@ import org.teleportr.RidesProvider;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.PreferenceManager;
@@ -23,14 +22,11 @@ import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.fahrgemeinschaft.util.Util;
-import de.fahrgemeinschaft.util.WebActivity;
 
 public class SettingsActivity extends SherlockPreferenceActivity
         implements OnSharedPreferenceChangeListener {
 
     private static final String REFRESH = "refresh";
-    public static final String DONATE_URL = "http://www.sonnenstreifen.de/" +
-                                "kunden/fahrgemeinschaft/spendenstand.php";
     private static final String REMEMBER = "remember_password";
     private SharedPreferences prefs;
     private boolean radius_changed;
@@ -56,8 +52,6 @@ public class SettingsActivity extends SherlockPreferenceActivity
                     R.string.refresh_description, list.getEntry()));
         } else Log.d("settings", "no refresh entry");
         findPreference("about").setIntent(Util.aboutIntent(this));
-        findPreference("donate").setIntent(new Intent(this, WebActivity.class)
-            .setData(Uri.parse(DONATE_URL)));
         findPreference("special").setIntent(new Intent(this,
                 SettingsSpecialActivity.class));
         findPreference("feedback").setIntent(Util.mailIntent("android@fahrgemeinschaft.de", ""));

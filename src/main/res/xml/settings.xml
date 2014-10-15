@@ -36,10 +36,6 @@
             android:key="feedback"
             android:title="@string/feedback" />
 
-       <Preference
-            android:key="donate"
-            android:title="@string/donate" />
-
         <Preference
             android:key="special"
             android:title="Special Expert" />

@@ -15,7 +15,6 @@ import org.teleportr.Ride;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.UriMatcher;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,7 +25,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import de.fahrgemeinschaft.util.SpinningZebraListFragment.ListFragmentCallback;
 import de.fahrgemeinschaft.util.Util;
-import de.fahrgemeinschaft.util.WebActivity;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -104,23 +102,6 @@ public class MainActivity extends BaseActivity
             startService(new Intent(this, ConnectorService.class)
                 .setAction(ConnectorService.SEARCH));
             results.load(r.toUri(), SEARCH);
-            SharedPreferences prefs = this.getSharedPreferences(
-                    "de.fahrgemeinschaft", Context.MODE_PRIVATE);
-            if (prefs.contains("searches")) {
-                int searches = prefs.getInt("searches", 0);
-                searches = searches + 1;
-                prefs.edit().putInt("searches", searches).commit();
-            } else {
-                prefs.edit().putInt("searches", 0).commit();
-            }
-            int searches = prefs.getInt("searches", 0);
-            if (searches % 5 == 2 && !prefs.getBoolean("free", false)) {
-                startActivity(
-                        new Intent(this, WebActivity.class)
-                        .setData(Uri.parse(SettingsActivity.DONATE_URL)));
-                overridePendingTransition(
-                        R.anim.do_nix, R.anim.slide_in_bottom);
-            }
             showFragment(results, getString(R.string.results),
                     R.anim.slide_in_right,R.anim.slide_out_right);
             break;
