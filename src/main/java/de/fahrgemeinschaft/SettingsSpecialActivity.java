@@ -10,6 +10,7 @@ package de.fahrgemeinschaft;
 import android.os.Bundle;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import com.actionbarsherlock.view.MenuItem;
 
 import de.fahrgemeinschaft.util.Util;
 
@@ -26,4 +27,10 @@ public class SettingsSpecialActivity extends SherlockPreferenceActivity {
         findPreference("about").setIntent(Util.aboutIntent(this));
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        finish();
+        overridePendingTransition(R.anim.do_nix, R.anim.slide_out_top);
+        return true;
+    }
 }
