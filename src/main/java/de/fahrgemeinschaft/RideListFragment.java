@@ -78,8 +78,7 @@ public class RideListFragment extends SpinningZebraListFragment
 
         long dep = ride.getLong(COLUMNS.DEPARTURE);
         if (isMyRide(ride)) {
-            if (dep - System.currentTimeMillis() > -12*3600000  // future ride
-                    && (ride.getInt(COLUMNS.ACTIVE) == 1)) {
+            if ((isFuture(dep) && isActive(ride)) || isReoccuring(ride)) {
                 v.showButtons();
                 v.streifenhoernchen.setVisibility(View.GONE);
                 v.grey_bg.setVisibility(View.GONE);
@@ -104,6 +103,19 @@ public class RideListFragment extends SpinningZebraListFragment
         } else {
             v.mode.setImageResource(R.drawable.icn_mode_train);
         }
+    }
+
+    private boolean isReoccuring(Cursor ride) {
+        return ride.getInt(COLUMNS.TYPE)
+                    == FahrgemeinschaftConnector.TYPE_OFFER_REOCCURING;
+    }
+
+    private boolean isActive(Cursor ride) {
+        return (ride.getInt(COLUMNS.ACTIVE) == 1);
+    }
+
+    private boolean isFuture(long dep) {
+        return dep - System.currentTimeMillis() > -12*3600000;
     }
 
     private boolean isMyRide(Cursor ride) {

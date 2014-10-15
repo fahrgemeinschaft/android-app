@@ -181,9 +181,8 @@ public class RideDetailsFragment extends SherlockFragment
                 view.reg_date.setVisibility(View.GONE);
 
                 if (isMyRide(cursor)) {
-                    if (cursor.getLong(COLUMNS.DEPARTURE)
-                            - System.currentTimeMillis() > 0  // future ride
-                            && (cursor.getInt(COLUMNS.ACTIVE) == 1)) {
+                    if ((isFuture(cursor.getLong(COLUMNS.DEPARTURE))
+                            && isActive(cursor)) || isReoccuring(cursor)) {
                         view.streifenhoernchen.setVisibility(View.GONE);
                     } else {
                         view.streifenhoernchen.setVisibility(View.VISIBLE);
@@ -215,6 +214,19 @@ public class RideDetailsFragment extends SherlockFragment
         });
         pager.requestFocus();
         pulseSwipeArrows();
+    }
+
+    private boolean isReoccuring(Cursor ride) {
+        return ride.getInt(COLUMNS.TYPE)
+                == FahrgemeinschaftConnector.TYPE_OFFER_REOCCURING;
+    }
+
+    private boolean isActive(Cursor ride) {
+        return (ride.getInt(COLUMNS.ACTIVE) == 1);
+    }
+
+    private boolean isFuture(long dep) {
+        return dep - System.currentTimeMillis() > -12*3600000;
     }
 
     @Override
