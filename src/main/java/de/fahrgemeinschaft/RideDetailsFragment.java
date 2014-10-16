@@ -224,10 +224,6 @@ public class RideDetailsFragment extends SherlockFragment
         return (ride.getInt(COLUMNS.ACTIVE) == 1);
     }
 
-    private boolean isFuture(long dep) {
-        return dep - System.currentTimeMillis() > -12*3600000;
-    }
-
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         pulseSwipeArrows();
@@ -306,16 +302,11 @@ public class RideDetailsFragment extends SherlockFragment
                 delete.setVisible(true);
                 duplicate.setVisible(true);
                 duplicate_retour.setVisible(true);
-                if (cursor.getLong(COLUMNS.DEPARTURE)
-                        - System.currentTimeMillis() > 0) { // future ride
-                    toggle_active.setVisible(true);
-                    if (cursor.getInt(COLUMNS.ACTIVE) == 1) {
-                        toggle_active.setTitle(R.string.deactivate);
-                    } else {
-                        toggle_active.setTitle(R.string.activate);
-                    }
-                } else { // past ride
-                    toggle_active.setVisible(false);
+                toggle_active.setVisible(true);
+                if (cursor.getInt(COLUMNS.ACTIVE) == 1) {
+                    toggle_active.setTitle(R.string.deactivate);
+                } else {
+                    toggle_active.setTitle(R.string.activate);
                 }
             } else {
                 edit.setVisible(false);
