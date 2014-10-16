@@ -16,9 +16,9 @@
     </item>
     <item>
         <shape
-            android:innerRadius="2dp"
+            android:innerRadius="1dp"
             android:shape="ring"
-            android:thickness="2dp"
+            android:thickness="3dp"
             android:useLevel="false" >
             <size
                 android:height="26dp"
