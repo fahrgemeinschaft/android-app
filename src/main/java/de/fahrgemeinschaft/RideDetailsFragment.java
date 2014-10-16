@@ -442,7 +442,6 @@ public class RideDetailsFragment extends SherlockFragment
         private static final String KEY_VALUE_PAIRS = "KeyValuePairs";
         private static final String USER_ID = "UserID";
         private static final String DASH = "- ";
-        LinearLayout driver_info;
         String url;
         RideRowView row;
         String userId;
