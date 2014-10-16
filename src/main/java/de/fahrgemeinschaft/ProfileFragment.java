@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -82,18 +83,20 @@ public class ProfileFragment extends SherlockFragment
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
         if (key.equals(AUTH)) {
+            Drawable icon;
             if (prefs.contains(AUTH)) {
                 login.setText(R.string.logout);
                 username.text.setKeyListener(null);
-//                login.setCompoundDrawablesRelativeWithIntrinsicBounds(
-//                            0, R.drawable.btn_logout, 0, 0);
+                icon = getResources().getDrawable(R.drawable.btn_logout);
                 password.setVisibility(View.GONE);
                 register.setVisibility(View.GONE);
             } else {
                 login.setText(R.string.login);
+                icon = getResources().getDrawable(R.drawable.btn_login);
                 password.setVisibility(View.VISIBLE);
                 register.setVisibility(View.VISIBLE);
             }
+            login.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
         }
     }
 
@@ -142,7 +145,6 @@ public class ProfileFragment extends SherlockFragment
                 getActivity().getContentResolver().update(RidesProvider
                         .getRidesUri(getActivity()), null, null, null);
             }
-            getActivity().getSupportFragmentManager().popBackStack();
             break;
         case R.id.register:
             getActivity().startActivity(
