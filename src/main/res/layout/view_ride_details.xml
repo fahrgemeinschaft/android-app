@@ -7,6 +7,7 @@
 
 <view xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
+    android:layout_width="match_parent"
     class="de.fahrgemeinschaft.RideDetailsFragment$RideView"
     android:background="@color/light_green_translucent"
     android:padding="13dp" >
@@ -54,13 +55,11 @@
 
             <include
                 android:id="@+id/from_place"
-                layout="@layout/view_place_bubble"
-                android:layout_width="match_parent" />
+                layout="@layout/view_place_bubble" />
 
             <include
                 android:id="@+id/to_place"
-                layout="@layout/view_place_bubble"
-                android:layout_width="match_parent" />
+                layout="@layout/view_place_bubble" />
 
             <LinearLayout 
                 android:layout_width="match_parent"
@@ -129,6 +128,7 @@
                     android:id="@+id/details"
                     android:layout_width="0dip"
                     android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:background="@color/almost_medium_green"
                     android:hint="@string/no_comment"
                     android:padding="@dimen/medium"
@@ -144,6 +144,7 @@
                     <ImageView
                         android:id="@+id/transport_mode"
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/small"
                         android:layout_marginLeft="@dimen/small"
                         android:background="@color/almost_medium_green"

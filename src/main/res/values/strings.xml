@@ -138,7 +138,7 @@
         <item name="refresh_24h">86400000</item>
     </string-array>
     <string name="create_contact">Create Contact</string>
-    <string name="create_contact_desc" translatable="false">
+    <string name="create_contact_desc">
         Save to Phonebook as contact option
     </string>
     <string name="verbose" translatable="false">Debug Toasts</string>

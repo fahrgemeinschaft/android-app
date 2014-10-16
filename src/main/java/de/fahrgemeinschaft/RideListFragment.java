@@ -196,7 +196,7 @@ public class RideListFragment extends SpinningZebraListFragment
 
 
 
-    static class RideView extends RelativeLayout
+    public static class RideView extends RelativeLayout
         implements OnClickListener, OnLongClickListener {
 
         View streifenhoernchen;

@@ -4,48 +4,43 @@
   Copyright (c) 2013 by it's authors.
   Some rights reserved. See LICENSE.. 
 -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="@dimen/place_height"
+    android:background="@color/opacity_white" >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/place_height"
-        android:background="@color/opacity_white" >
+    <ImageView
+        android:id="@+id/place_type"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="3dp"
+        android:background="#00000000"
+        android:src="@drawable/icn_pin" />
 
-        <ImageView
-            android:id="@+id/place_type"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="3dp"
-            android:background="#00000000"
-            android:src="@drawable/icn_pin" />
+    <TextView
+        android:id="@+id/place_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@+id/place_type"
+        android:background="#00000000"
+        android:singleLine="true"
+        android:textSize="21sp"
+        android:textStyle="bold"
+        android:textColor="@color/darker_green" />
 
-        <TextView
-            android:id="@+id/place_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@+id/place_type"
-            android:background="#00000000"
-            android:singleLine="true"
-            android:textSize="21sp"
-            android:textStyle="bold"
-            android:textColor="@color/darker_green" />
-
-        <TextView
-            android:id="@+id/place_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/place_type"
-            android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@+id/place_type"
-            android:background="#00000000"
-            android:singleLine="true"
-            android:textSize="13sp"
-            android:textColor="@color/darker_green" />
-    </RelativeLayout>
-
-</FrameLayout>
+    <TextView
+        android:id="@+id/place_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/place_type"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@+id/place_type"
+        android:background="#00000000"
+        android:singleLine="true"
+        android:textSize="13sp"
+        android:textColor="@color/darker_green" />
+</RelativeLayout>

@@ -61,16 +61,14 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".SettingsActivity">
+        <activity android:name=".SettingsActivity" android:exported="false" >
             <intent-filter>
                 <action android:name="android.intent.action.MANAGE_NETWORK_USAGE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".SettingsSpecialActivity" />
-
-        <activity android:name=".ProfileActivity" />
+        <activity android:name=".SettingsSpecialActivity" android:exported="false"/>
 
         <activity android:name=".util.WebActivity"
             android:configChanges="orientation|screenSize" />

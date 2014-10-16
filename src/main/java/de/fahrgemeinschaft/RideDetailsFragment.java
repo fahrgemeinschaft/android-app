@@ -424,7 +424,7 @@ public class RideDetailsFragment extends SherlockFragment
 
 
 
-    static class RideView extends RelativeLayout
+    public static class RideView extends RelativeLayout
         implements LoaderCallbacks<Cursor>, Response.Listener<JSONObject> {
 
         private static final String _BIG_JPG = "_big.jpg";
