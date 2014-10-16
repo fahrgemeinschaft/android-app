@@ -55,10 +55,14 @@
 
             <include
                 android:id="@+id/from_place"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 layout="@layout/view_place_bubble" />
 
             <include
                 android:id="@+id/to_place"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 layout="@layout/view_place_bubble" />
 
             <LinearLayout 
