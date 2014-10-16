@@ -173,7 +173,7 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
                 if (i == route.getChildCount() - 2) { // new via?
                     vias.add(place);
                 } else {
-                    vias.set(i + 1, place);
+                    vias.set(i - 1, place);
                 }
                 setVias(vias);
             }
