@@ -31,6 +31,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
+import android.view.View;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -202,6 +203,13 @@ public class BaseActivity extends SherlockFragmentActivity
     public void onProgress(String what, int how) {
         if (what.equals(ConnectorService.MYRIDES) && ic_myrides != null) {
             ic_myrides.setActionView(R.layout.view_progress);
+            ic_myrides.getActionView().setOnClickListener(
+                    new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showMyRides();
+                }
+            });
         } else if (what.equals(ConnectorService.AUTH) && ic_profile != null) {
             ic_profile.setActionView(R.layout.view_progress);
         }
