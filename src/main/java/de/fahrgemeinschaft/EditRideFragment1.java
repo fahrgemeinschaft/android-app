@@ -63,8 +63,8 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
         from.name.setOnClickListener(autocompletePlace);
         from.icon.setOnClickListener(pickPlace);
         to = (PlaceImageButton) v.findViewById(R.id.to);
-        to.name.setOnClickListener(autocompletePlace);
-        to.icon.setOnClickListener(pickPlace);
+        to.icon.setOnClickListener(pickDestinationPlace);
+        to.name.setOnClickListener(autocompleteDestinationPlace);
     }
 
     public void setRide(Ride ride) {
@@ -158,6 +158,31 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
         }
     };
 
+    OnClickListener pickDestinationPlace = new OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            startActivityForResult(new Intent(Intent.ACTION_PICK,
+                    RidesProvider.getPlacesUri(getActivity())
+                        .buildUpon().appendQueryParameter(Ride.FROM_ID,
+                            String.valueOf(ride.getFromId())).build()),
+                    route.indexOfChild((View) v.getParent()));
+        }
+    };
+
+    OnClickListener autocompleteDestinationPlace = new OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            startActivityForResult(new Intent(Intent.ACTION_PICK,
+                    RidesProvider.getPlacesUri(getActivity())
+                        .buildUpon().appendQueryParameter(Ride.FROM_ID,
+                            String.valueOf(ride.getFromId())).build())
+                    .putExtra(PlacePickActivity.SHOW_TEXTFIELD, true),
+                    route.indexOfChild((View) v.getParent()));
+        }
+    };
+
     @Override
     public void onActivityResult(final int i, int res, final Intent intent) {
         if (res == Activity.RESULT_OK) {
@@ -190,8 +215,8 @@ public class EditRideFragment1 extends SherlockFragment implements OnClickListen
         lp.leftMargin = getResources().getDimensionPixelSize(R.dimen.xlarge);
         b.setLayoutParams(lp);
         b.icon.setImageResource(R.drawable.icn_dropdown);
-        b.name.setOnClickListener(autocompletePlace);
-        b.icon.setOnClickListener(pickPlace);
+        b.icon.setOnClickListener(pickDestinationPlace);
+        b.name.setOnClickListener(autocompleteDestinationPlace);
         route.addView(b, route.getChildCount() - 1);
         if (place != null) {
             b.setPlace(place);
