@@ -24,7 +24,7 @@
             android:gravity="center_horizontal"
             android:padding="3dp"
             android:singleLine="false"
-            android:text="Copyright (C) 2013, 2014 by it&apos;s authors.\n Some rights reserved. See LICENSE"
+            android:text="Copyright (C) 2013-2014 by it&apos;s authors.\n Some rights reserved. See LICENSE"
             android:textColor="@color/darker_green"
             android:textSize="12sp"
             android:textStyle="bold"
