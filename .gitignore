@@ -11,5 +11,5 @@ build
 local.properties
 project.properties
 old APKs
-fahrgemeinschaft.keystore
+release.jks
 src/main/java/de/fahrgemeinschaft/Secret.java

@@ -8,12 +8,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.fahrgemeinschaft"
     android:installLocation="auto"
-    android:versionCode="73"
-    android:versionName="1.1.0.0.0.0.1" >
+    android:versionCode="75"
+    android:versionName="1.1" >
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="20" />
+        android:targetSdkVersion="21" />
 
     <uses-permission android:name="android.permission.INTERNET" />
 

@@ -33,4 +33,22 @@ android {
         minSdkVersion 8
         targetSdkVersion 20
     }
+
+    signingConfigs {
+        release {
+            storeFile file("release.jks")
+            keyAlias "app"
+            storePassword System.console().readLine("\nZauberspruch: ")
+            keyPassword System.console().readLine("\nZauberspruch again: ")
+        }
+    }
+
+    buildTypes {
+        release {
+            runProguard true
+            proguardFiles 'proguard-rules.txt'
+            signingConfig signingConfigs.release
+        }
+    }
+
 }
