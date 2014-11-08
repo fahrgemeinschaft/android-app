@@ -33,4 +33,12 @@ android {
         minSdkVersion 8
         targetSdkVersion 20
     }
+
+    buildTypes {
+        release {
+            runProguard true
+            proguardFiles 'proguard.txt'
+        }
+    }
+
 }
