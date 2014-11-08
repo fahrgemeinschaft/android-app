@@ -105,6 +105,10 @@ public class RideListFragment extends SpinningZebraListFragment
         }
     }
 
+    private boolean isFuture(long dep) {
+         return dep - System.currentTimeMillis() > -12*3600000;
+    }
+
     private boolean isReoccuring(Cursor ride) {
         return ride.getInt(COLUMNS.TYPE)
                     == FahrgemeinschaftConnector.TYPE_OFFER_REOCCURING;
