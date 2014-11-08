@@ -8,7 +8,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.fahrgemeinschaft"
     android:installLocation="auto"
-    android:versionCode="73"
+    android:versionCode="75"
     android:versionName="1.1" >
 
     <uses-sdk
