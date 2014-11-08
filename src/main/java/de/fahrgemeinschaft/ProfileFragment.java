@@ -155,6 +155,7 @@ public class ProfileFragment extends SherlockFragment
                         Context.NOTIFICATION_SERVICE)).cancel(42);
                 getActivity().getContentResolver().update(RidesProvider
                         .getRidesUri(getActivity()), null, null, null);
+                password.text.setText("");
             }
             break;
         case R.id.register:
