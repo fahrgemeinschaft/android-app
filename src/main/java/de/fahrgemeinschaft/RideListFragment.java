@@ -78,7 +78,7 @@ public class RideListFragment extends SpinningZebraListFragment
 
         long dep = ride.getLong(COLUMNS.DEPARTURE);
         if (isMyRide(ride)) {
-            if (isActive(ride)) {
+            if ((isFuture(dep) && isActive(ride)) || isReoccuring(ride)) {
                 v.showButtons();
                 v.streifenhoernchen.setVisibility(View.GONE);
                 v.grey_bg.setVisibility(View.GONE);
@@ -103,6 +103,10 @@ public class RideListFragment extends SpinningZebraListFragment
         } else {
             v.mode.setImageResource(R.drawable.icn_mode_train);
         }
+    }
+
+    private boolean isFuture(long dep) {
+         return dep - System.currentTimeMillis() > -12*3600000;
     }
 
     private boolean isReoccuring(Cursor ride) {
