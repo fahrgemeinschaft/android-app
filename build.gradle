@@ -34,10 +34,20 @@ android {
         targetSdkVersion 20
     }
 
+    signingConfigs {
+        release {
+            storeFile file("release.jks")
+            storePassword "abc123"
+            keyAlias "fg"
+            keyPassword "abc123"
+        }
+    }
+
     buildTypes {
         release {
             runProguard true
-            proguardFiles 'proguard.txt'
+            proguardFiles 'proguard-rules.txt'
+            signingConfig signingConfigs.release
         }
     }
 
