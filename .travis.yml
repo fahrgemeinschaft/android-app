@@ -1,0 +1,16 @@
+language: android
+android:
+  components:
+  - build-tools-20.0.0
+  - android-20
+  - sys-img-armeabi-v7a-android-19
+  - sys-img-x86-android-17
+before_script:
+- echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
+- emulator -avd test -no-skin -no-audio -no-window &
+- android-wait-for-emulator
+- adb shell input keyevent 82 &
+script: ./gradlew build connectedAndroidTest
+before_install:
+- openssl aes-256-cbc -K $encrypted_e986c24765b2_key -iv $encrypted_e986c24765b2_iv
+  -in Secret.java.enc -out src/main/java/de/fahrgemeinschaft/Secret.java -d

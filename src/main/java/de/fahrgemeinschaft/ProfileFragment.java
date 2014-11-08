@@ -56,6 +56,7 @@ public class ProfileFragment extends SherlockFragment
 
     @Override
     public View onCreateView(final LayoutInflater lI, ViewGroup p, Bundle b) {
+        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         getActivity().startService(
                 new Intent(getActivity(), ConnectorService.class));
         return lI.inflate(R.layout.fragment_profile, p, false);
@@ -63,7 +64,6 @@ public class ProfileFragment extends SherlockFragment
 
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
-        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         username = (EditTextImageButton) v.findViewById(R.id.username);
         password = (EditTextImageButton) v.findViewById(R.id.password);
         login = (Button) v.findViewById(R.id.login);
@@ -75,9 +75,20 @@ public class ProfileFragment extends SherlockFragment
                 prefs.getString(CONTACT.EMAIL, EMPTY)));
         password.text.setText(prefs.getString(PASSWORD, EMPTY));
         v.findViewById(R.id.container).setOnClickListener(this);
+        login.requestFocus();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         prefs.registerOnSharedPreferenceChangeListener(this);
         onSharedPreferenceChanged(prefs, AUTH);
-        login.requestFocus();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        prefs.unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -144,6 +155,7 @@ public class ProfileFragment extends SherlockFragment
                         Context.NOTIFICATION_SERVICE)).cancel(42);
                 getActivity().getContentResolver().update(RidesProvider
                         .getRidesUri(getActivity()), null, null, null);
+                password.text.setText("");
             }
             break;
         case R.id.register:
