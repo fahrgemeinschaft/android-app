@@ -181,7 +181,8 @@ public class RideDetailsFragment extends SherlockFragment
                 view.reg_date.setVisibility(View.GONE);
 
                 if (isMyRide(cursor)) {
-                    if (isActive(cursor)) {
+                    if ((isFuture(cursor.getLong(COLUMNS.DEPARTURE))
+                            && isActive(cursor)) || isReoccuring(cursor)) {
                         view.streifenhoernchen.setVisibility(View.GONE);
                     } else {
                         view.streifenhoernchen.setVisibility(View.VISIBLE);

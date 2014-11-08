@@ -78,7 +78,7 @@ public class RideListFragment extends SpinningZebraListFragment
 
         long dep = ride.getLong(COLUMNS.DEPARTURE);
         if (isMyRide(ride)) {
-            if (isActive(ride)) {
+            if ((isFuture(dep) && isActive(ride)) || isReoccuring(ride)) {
                 v.showButtons();
                 v.streifenhoernchen.setVisibility(View.GONE);
                 v.grey_bg.setVisibility(View.GONE);
