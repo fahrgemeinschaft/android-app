@@ -97,12 +97,13 @@ public class ProfileFragment extends SherlockFragment
             Drawable icon;
             if (prefs.contains(AUTH)) {
                 login.setText(R.string.logout);
-                username.text.setKeyListener(null);
+                username.text.setEnabled(false);
                 icon = getResources().getDrawable(R.drawable.btn_logout);
                 password.setVisibility(View.GONE);
                 register.setVisibility(View.GONE);
             } else {
                 login.setText(R.string.login);
+                username.text.setEnabled(true);
                 icon = getResources().getDrawable(R.drawable.btn_login);
                 password.setVisibility(View.VISIBLE);
                 register.setVisibility(View.VISIBLE);
