@@ -37,9 +37,9 @@ android {
     signingConfigs {
         release {
             storeFile file("release.jks")
-            storePassword "abc123"
             keyAlias "fg"
-            keyPassword "abc123"
+            storePassword System.console().readLine("\nZauberspruch: ")
+            keyPassword System.console().readLine("\nZauberspruch again: ")
         }
     }
 
